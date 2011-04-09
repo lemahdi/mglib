@@ -10,8 +10,6 @@ enum yytokentype {
     ABS,
     EOL
 };
-extern int yylval;
-/*extern "C" { */int yylex(void); //}
 
 #endif
 

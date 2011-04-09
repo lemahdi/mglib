@@ -1,7 +1,7 @@
 /* recognize tokens for the calculator and print them out */
 %{
-  #include "scanner.h"
-  yylval = 1;
+  #include "typedef.h"
+  #include "parser.tab.h"
 %}
 
 %%
@@ -11,6 +11,9 @@
 "*"	{ return MUL; }
 "/"	{ return DIV; }
 "|"	{ return ABS; }
+"("	{ return OP; }
+")"	{ return CP; }
+"//".*	/* ignore comments */
 [0-9]+	{ yylval=atoi(yytext); return NUMBER; }
 \n	{ return EOL; }
 [ \t]	{ /* ignore white spaces */ }
