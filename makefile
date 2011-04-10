@@ -1,5 +1,5 @@
 OUTPUT_BINARY = calculator
-CC = g++
+CC = g++ -g
 
 scanner := my_scanner.l
 parser := my_parser.ypp

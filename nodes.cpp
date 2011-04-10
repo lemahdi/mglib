@@ -95,8 +95,19 @@ void NodeManager::Insert(const Coord& aC, Node* aN)
 			vCN = AllNodes[0];
 	}
 
-	cerr << "ERROR" << endl;
+	cerr << "ERROR: cannot insert node into parsing tree" << endl;
 	return;
+}
+
+bool NodeManager::CheckIndex(const char* aIdx)
+{
+	if (strcmp(aIdx, "i"))
+	{
+		cerr << "ERROR: index to use should be i";
+		return false;
+	}
+
+	return true;
 }
 
 Node* NodeManager::GetNode(const Coord& aC)
@@ -106,12 +117,14 @@ Node* NodeManager::GetNode(const Coord& aC)
 	return vN;
 }
 
-Node* NodeManager::GetChildNode(const TableWalker& walker, const char* ref)
+Node* NodeManager::GetChildNode(const TableWalker& walker, const char* aRef, const int& aIdx)
 {
-	unsigned int index = walker.GetColumn(string(ref));
-	if (index != MAX_DESC_TABLE_COLUMNS)
+	unsigned int vCIdx = walker.GetColumn(string(aRef));
+	if (vCIdx != MAX_DESC_TABLE_COLUMNS)
 	{
-		Coord vC(walker.GetCurrentRow(), index);
+		int vRIdx = walker.GetCurrentRow() + aIdx;
+		assert(vRIdx >= 0);
+		Coord vC(walker.GetCurrentRow() + aIdx, vCIdx);
 		Node* vN = GetNode(vC);
 		return vN;
 	}
@@ -136,10 +149,11 @@ Node* NodeManager::BuildNum(const TableWalker& walker, const double& aNum)
 	return vN;
 }
 
-Node* NodeManager::BuildRef(const TableWalker& walker, Node* aN)
+Node* NodeManager::BuildRef(const TableWalker& walker, const char* aRef, const int& aIdx)
 {
 	Coord vC(walker.GetCurrentRow(), walker.GetCurrentCol());
-	Node* vNRef = new RefNode(vC, aN);
+	Node* vN = GetChildNode(walker, aRef, aIdx);
+	Node* vNRef = new RefNode(vC, vN);
 	Insert(vC, vNRef);
 	return vNRef;
 }
@@ -180,9 +194,21 @@ NodeManager::Eval(Node *aN)
  ** class TableWalker
  */
 TableWalker::TableWalker()
+	: myCurrentRow(0), myCurrentCol(0), myRows(0), myCols(0)
+{}
+
+
+TableWalker::TableWalker(	const vector<string>& aColNames
+						,	const vector<string>& aFlows)
+						:	myColumnNames	(aColNames)
+						,	myFlows			(aFlows)
+						,	myCols			(aColNames.size())
+						,	myCurrentCol	(0)
+						,	myCurrentRow	(0)
 {
-	myCurrentRow = 0;
-	myCurrentCol = 0;
+	myRows = aFlows.size() / myCols;
+	assert(aFlows.size() % myCols == 0);
+	assert(myCols < MAX_DESC_TABLE_COLUMNS);
 }
 
 unsigned int TableWalker::GetColumn(const string& aColName) const

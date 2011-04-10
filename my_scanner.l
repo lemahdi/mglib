@@ -32,9 +32,11 @@ EXP	([Ee][-+]?[0-9]+)
 "*" |
 "/" |
 "(" |
-")"		{ return yytext[0]; }
+")"	|
+"[" |
+"]"		{ return yytext[0]; }
 
-[a-zA-Z][a-zA-Z0-9]* { yylval->nval = manager.GetChildNode(walker, yytext); return token::NAME; }
+[a-zA-Z][a-zA-Z0-9]* { yylval->cval = strdup(yytext); return token::NAME; }
 
 [0-9]+"."[0-9]*{EXP}? |
 "."?[0-9]+{EXP}? { yylval->dval = atof(yytext); return token::NUMBER; }

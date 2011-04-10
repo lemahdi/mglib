@@ -40,6 +40,7 @@ class TableWalker
 {
 public:
 	TableWalker(void);
+	TableWalker(const std::vector<std::string>& aColNames, const std::vector<std::string>& aFlows);
 	virtual ~TableWalker(void) {}
 
 public:
@@ -47,21 +48,24 @@ public:
 	inline unsigned int				GetCurrentRow	(void) const { return myCurrentRow; }
 	inline unsigned int				GetCurrentCol	(void) const { return myCurrentCol; }
 	inline std::vector<std::string>	GetColumnNames	(void) const { return myColumnNames; }
+	inline unsigned int				GetRows			(void) const { return myRows; }
+	inline unsigned int				GetCols			(void) const { return myCols; }
 
-	inline unsigned int				IncCurrentRow	(void) { return ++myCurrentRow; }
-	inline unsigned int				IncCurrentCol	(void) { assert(myCurrentCol<MAX_DESC_TABLE_COLUMNS); return ++myCurrentCol; }
-	inline unsigned int				DecCurrentRow	(void) { return --myCurrentRow; }
-	inline unsigned int				DecCurrentCol	(void) { return --myCurrentCol; }
+	inline unsigned int				IncCurrentRow	(void) { assert(myCurrentRow<myRows); return ++myCurrentRow; }
+	inline unsigned int				IncCurrentCol	(void) { assert(myCurrentCol<myCols); ++myCurrentCol; myCurrentCol%=myCols; return myCurrentCol; }
+	inline unsigned int				DecCurrentRow	(void) { assert(myCurrentRow>=0); return --myCurrentRow; }
+	inline unsigned int				DecCurrentCol	(void) { assert(myCurrentCol>=0); return --myCurrentCol; }
 
 	unsigned int GetColumn(const std::string& aColName) const;
-
-	inline void SetColumnNames(const std::vector<std::string>& aColNames) { myColumnNames = aColNames; }
 
 private:
 	unsigned int myCurrentRow;
 	unsigned int myCurrentCol;
 
 	std::vector<std::string> myColumnNames;
+	std::vector<std::string> myFlows;
+	unsigned int myRows;
+	unsigned int myCols;
 };
 
 
@@ -127,14 +131,15 @@ public:
 	/* Accessing */
 public:
 	Node*			GetNode		(const Coord& aC);
-	Node*			GetChildNode(const TableWalker& walker, const char* ref);
+	Node*			GetChildNode(const TableWalker& walker, const char* aRef, const int& aIdx);
 	unsigned int	Hash		(const Coord& aC);
 	void			Insert		(const Coord& aC, Node* aN);
+	bool			CheckIndex	(const char* aIdx);
 
 	/* Building */
 	Node* BuildNode	(const TableWalker& walker, const NODE_TYPE& aNodeType, Node* aL = NULL, Node* aR = NULL);
 	Node* BuildNum	(const TableWalker& walker, const double& aNum);
-	Node* BuildRef	(const TableWalker& walker, Node* aN);
+	Node* BuildRef	(const TableWalker& walker, const char* aRef, const int& aIdx);
 
 	/* Evaluating */
 	double Eval(Node* aN);

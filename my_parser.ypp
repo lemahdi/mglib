@@ -20,11 +20,13 @@ using namespace std;
 %union {
 	Node* nval;
 	double dval;
+	char* cval;
+	int ival;
 }
 
 /* declare tokens */
-%token <nval> NAME
 %token <dval> NUMBER
+%token <cval> NAME
 %token EOL
 
 %left '+' '-'
@@ -32,6 +34,7 @@ using namespace std;
 %nonassoc '|' UMINUS
 
 %type <nval> exp
+%type <ival> index
 
 %start calclist
 
@@ -56,7 +59,12 @@ exp: exp '+' exp			{ $$ = manager.BuildNode(walker, ADD_NODE, $1, $3); }
 	| '(' exp ')'			{ $$ = $2; }
 	| '-' exp %prec UMINUS	{ $$ = manager.BuildNode(walker, NEG_NODE, NULL, $2); }
 	| NUMBER				{ $$ = manager.BuildNum(walker, $1); }
-	| NAME					{ $$ = manager.BuildRef(walker, $1); }
+	| NAME '[' index ']'	{ $$ = manager.BuildRef(walker, $1, $3); free($1); }
+;
+
+index: NAME					{ if (manager.CheckIndex($1)) $$ = 0; }
+	| index '+' NUMBER		{ $$ = (int)$3; }
+	| index '-' NUMBER		{ $$ = -(int)$3; }
 ;
 
 	// bison rules for the C++ parser
