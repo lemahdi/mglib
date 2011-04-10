@@ -7,11 +7,13 @@
 
 /* float exponent */
 EXP	([Ee][-+]?[0-9]+)
+IDENTIFIER ([a-zA-Z][a-zA-Z0-9]*)
+INT ([0-9]+)
 
 
 %%
 
-
+";" |
 "+" |
 "-" |
 "*" |
@@ -22,19 +24,12 @@ EXP	([Ee][-+]?[0-9]+)
 "[" |
 "]"		{ return yytext[0]; }
 
-"SQRT"	{ yylval.fn = B_sqrt; return FUNC; }
-"EXP"	{ yylval.fn = B_exp; return FUNC; }
-"LOG"	{ yylval.fn = B_log; return FUNC; }
-"IF"	{ yylval.fn = B_if; return FUNC; }
-"ABS"	{ yylval.fn = B_abs; return FUNC; }
-"DF"	{ yylval.fn = B_df; return FUNC; }
+[i]([+-]?[0-9]+)?	{ yylval.ix = level(yytext); return INDEX; }
 
-i([+-]?[0-9]+)?	{ yylval.i = strdup(yytext); return INDEX; }
+([0-9]+":"[0-9]+"::")?[0-9]+"$"[0-9]+ { yylval.r = regref(yytext); return NAME; }
 
-[a-zA-Z][a-zA-Z0-9]* { yylval.s = lookup(yytext); return NAME; }
-
-[0-9]+"."[0-9]*{EXP}? |
-"."?[0-9]+{EXP}? { yylval.d = atof(yytext); return NUMBER; }
+[0-9]+":"[0-9]+"::"[0-9]+"."[0-9]*{EXP}? |
+[0-9]+":"[0-9]+"::""."?[0-9]+{EXP}? { yylval.d = regnum(yytext); return NUMBER; }
 
 "//".*
 [ \t] /* ignore whitespace */

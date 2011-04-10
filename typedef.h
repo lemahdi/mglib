@@ -1,37 +1,63 @@
 /*
- * Declaration for a calculator
+ * Declaration for GP
  */
+#pragma once
+
+#pragma warning (disable : 4267)
+#pragma warning (disable : 4996)
+#pragma warning (disable : 4003)
+#pragma warning (disable : 4018)
+#pragma warning (disable : 4244)
+#pragma warning (disable : 4003)
+#pragma warning (disable : 4013)
+#pragma warning (disable : 4273)
 
 /* interface to the lexer */
 extern int yylineno; /* from lexer */
 void yyerror(char* s, ...);
 
-/* symbol table */
-struct symbol { /* a variable name */
-	char *name;
-	double value;
+
+int level(char *text);
+
+
+/* coordinates */
+enum coordtype {
+	T_num = 1,
+	T_ref
 };
 
-/* simple symtab of fixed size */
-#define NHASH 9997
-struct symbol symtab[NHASH];
+struct coord {
+	int row;
+	int col;
+	int index;
+};
 
-struct symbol *lookup(char *);
+struct coordnum {
+	int row;
+	int col;
+	int index;
+	double val;
+};
+
+struct coordref {
+	int row;
+	int col;
+	int index;
+	struct coord* ref;
+};
+
+struct coord *getcoord(char *text, enum coordtype ct);
+struct coord *regnum(char *text);
+struct coord *regref(char *text);
+struct coord *reg(char *text, enum coordtype);
+
 
 /* node types
  * M unary minus
- * F built in fucntion call
- * R cell
+ * K constants
+ * R cell reference
+ * I cell index
  */
-
-enum bifs { /* built-in functions */
-	B_sqrt = 1,
-	B_exp,
-	B_log,
-	B_if,
-	B_abs,
-	B_df
-};
 
 /* nodes in the abstract syntax tree */
 /* all have common initial nodetype */
@@ -42,34 +68,43 @@ struct ast {
 	struct ast *r;
 };
 
-struct fncall {		/* built-in function */
-	int nodetype;	/* type F */
-	struct ast *l;
-	enum bifs functype;
-};
-
-struct numval {
-	int nodetype; /* type K for constant */
+struct numval {		/* constant */
+	int nodetype;	/* type K */
 	double number;
 };
 
-struct cellref {
-	int nodetype;	/* type R */
-	char *i;
-	struct symbol *s;
+struct index {		/* index */
+	int nodetype;	/* type I */
+	struct ast *l;
+};
+
+struct cellref {	/* reference to another cell */
+	int nodetype;	/* R */
+	struct ast *l;
+};
+
+struct astref {		/* col::ast */
+	struct coord *c;		/* coordinates */
+	struct ast *a;
 };
 
 /* build an AST */
 struct ast *newast(int nodetype, struct ast *l, struct ast *r);
-struct ast *newfunc(int functype, struct ast *l);
-struct ast *newnum(double d);
-struct ast *newcellref(struct symbol *s, char *i);
+struct ast *newnum(struct coord* c);
+struct ast *newref(struct coord* c, int i);
+struct ast *newidx(struct ast *l);
 
 /* evaluate an AST */
-double eval(struct ast *);
+double eval(struct ast *a);
 
 /* delete and free an AST */
-void treefree(struct ast *);
+void treefree(struct ast *a);
+
+
+/* simple astreftab of fixed size */
+#define NHASH 9997
+struct astref astreftab[NHASH];
+
 
 /* interface to the lexer */
 extern int yylineo; /* from lexer */
