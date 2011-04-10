@@ -7,30 +7,30 @@ int main()
 {
 	SFileError::Instance()->Init();
 
-	/* Deal Description */
+	// Deal Description
 	vector<string> vColNames;
 	vColNames.push_back("Date");
 	vColNames.push_back("Spot");
 	vColNames.push_back("Strike");
 	vColNames.push_back("Payoff");
-	
+
 	vector<string> vFlows;
-	vFlows.push_back("2010");
+	vFlows.push_back("1");
 	vFlows.push_back("5");
 	vFlows.push_back("3");
-	vFlows.push_back("Spot[i]-Strike[i]");
-	vFlows.push_back("2011");
+	vFlows.push_back("EXP(-0.05*Date[i])*MAX(Spot[i]-Strike[i],0)");
+	vFlows.push_back("2");
 	vFlows.push_back("6");
 	vFlows.push_back("3");
-	vFlows.push_back("Spot[i-1]-Strike[i]");
-	vFlows.push_back("2012");
-	vFlows.push_back("4");
+	vFlows.push_back("EXP(-0.05*Date[i])*MAX(Spot[i+1]-Strike[i],0)");
+	vFlows.push_back("3");
 	vFlows.push_back("2");
-	vFlows.push_back("Spot[i-1]-Strike[i]");
-	vFlows.push_back("2013");
+	vFlows.push_back("3");
+	vFlows.push_back("EXP(-0.05*Date[i])*MAX(Spot[i-1]-Strike[i],0)");
+	vFlows.push_back("4");
 	vFlows.push_back("3");
 	vFlows.push_back("3");
-	vFlows.push_back("Spot[i-1]-Strike[i-1]+Payoff[i-1]");
+	vFlows.push_back("EXP(-0.05*Date[i])*MAX(Spot[i-1]-Strike[i],0)");
 
 	TableWalker walker(vColNames, vFlows);;
 	NodeManager manager;
@@ -66,6 +66,7 @@ int main()
 		}
 	}
 
+	SFuncBuilder::Release();
 	SFileError::Release();
 
 	char ch;

@@ -1,3 +1,6 @@
+#pragma once
+
+
 /* Some pre-declarations from the parser */
 #define yyconst const
 typedef size_t yy_size_t;
@@ -41,7 +44,12 @@ enum NODE_TYPE
 	ADD_NODE,
 	SUB_NODE,
 	MUL_NODE,
-	DIV_NODE
+	DIV_NODE,
+	ARG_NODE,
+	FUNC_NODE
 };
 
 
+/**/
+#define NameFuncMap		std::map<std::string,Func*>
+#define NameFuncPair	std::pair<std::string,Func*>

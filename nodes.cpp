@@ -1,4 +1,5 @@
 #include "nodes.h"
+#include "func.h"
 #include <algorithm>
 
 
@@ -27,30 +28,39 @@ void FileError::Init()
 Node::Node(void) : myNodeType(NODEF_NODE), myL(NULL), myR(NULL)
 {}
 
-Node::Node(const NODE_TYPE& aNodeType, const Coord& aCoord, Node* aL, Node* aR)
-	: myNodeType(aNodeType), myL(aL), myR(aR), myCoord(aCoord)
+Node::Node(const NODE_TYPE& aNodeType, const Coord& aC, Node* aL, Node* aR)
+	: myNodeType(aNodeType), myL(aL), myR(aR), myCoord(aC)
 {}
 
-Node::~Node(void)
+Node::~Node()
 {
 	if (myL) delete myL;
 	if (myR) delete myR;
 }
 
-NumNode::NumNode(const Coord& aCoord, const double& aValue)
-	: Node(NUM_NODE, aCoord, NULL, NULL)
-	, myValue(aValue)
+NumNode::NumNode(const Coord& aC, const double& aVal)
+	: Node(NUM_NODE, aC, NULL, NULL)
+	, myValue(aVal)
 {}
 
-RefNode::RefNode(const Coord& aCoord, Node* aL)
-	: Node(REF_NODE, aCoord, aL, NULL)
+RefNode::RefNode(const Coord& aC, Node* aN)
+	: Node(REF_NODE, aC, aN, NULL)
 {}
 
-RefNode::~RefNode(void)
+RefNode::~RefNode()
 {
 	// myL is already referenced in AllNodes
 	myL = NULL;
 }
+
+ArgNode::ArgNode(const Coord& aC, Node* aN, Node* aArgN)
+	: Node(ARG_NODE, aC, aN, aArgN)
+{}
+
+FuncNode::FuncNode(const Coord& aC, Func* aF, Node* aArgN)
+	: Node(FUNC_NODE, aC, aArgN, NULL)
+	, myFunc(aF)
+{}
 
 
 /* Implementation
@@ -112,8 +122,15 @@ bool NodeManager::CheckIndex(const char* aIdx)
 
 Node* NodeManager::GetNode(const Coord& aC)
 {
+	Node* vN = NULL;
 	unsigned int vHash = Hash(aC)%NHASH;
-	Node* vN = AllNodes[vHash]->second;
+
+	CoordNodeMap::iterator itMap = AllNodes.find(vHash);
+	if (itMap == AllNodes.end())
+		Insert(aC, vN);
+	else
+		vN = AllNodes[vHash]->second;
+
 	return vN;
 }
 
@@ -158,11 +175,27 @@ Node* NodeManager::BuildRef(const TableWalker& walker, const char* aRef, const i
 	return vNRef;
 }
 
+Node* NodeManager::BuildArg(const TableWalker &walker, Node *aN, Node *aArgN)
+{
+	Coord vC(walker.GetCurrentRow(), walker.GetCurrentCol());
+	Node* vArgN = new ArgNode(vC, aN, aArgN);
+	Insert(vC, vArgN);
+	return vArgN;
+}
+
+Node* NodeManager::BuildFunc(const TableWalker& walker, const char* aFuncName, Node* aArgN)
+{
+	Coord vC(walker.GetCurrentRow(), walker.GetCurrentCol());
+	Func* vF = SFuncBuilder::Instance()->GetFunc(string(aFuncName));
+	Node* vFuncN = new FuncNode(vC, vF, aArgN);
+	Insert(vC, vFuncN);
+	return vFuncN;
+}
 
 double
 NodeManager::Eval(Node *aN)
 {
-	double vVal;
+	double vVal = 0;
 
 	if (!aN) {
 		cerr << "ERROR" << endl;
@@ -175,6 +208,28 @@ NodeManager::Eval(Node *aN)
 
 		/* name reference */
 		case REF_NODE: vVal = Eval(aN->GetL()); break;
+
+		/* function argument */
+		case ARG_NODE:
+			vVal = Eval(aN->GetL());
+			((ArgNode*)aN)->SetValue(vVal);
+			if (aN->GetR()) Eval(aN->GetR());
+			break;
+
+		/* function */
+		case FUNC_NODE:
+			{
+			ArgNode* vArgN = (ArgNode*)(((FuncNode *)aN)->GetL());
+			Eval(vArgN);
+			vector<double> vArgVals;
+			while (vArgN != NULL)
+			{
+				vArgVals.push_back(vArgN->GetValue());
+				vArgN = (ArgNode*)(vArgN->GetR());
+			}
+			vVal = ((FuncNode *)aN)->GetFunc()->Eval(vArgVals);
+			break;
+			}
 
 		/* expressions */
 		case ADD_NODE: vVal = Eval(aN->GetL()) + Eval(aN->GetR()); break;

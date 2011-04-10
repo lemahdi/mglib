@@ -1,3 +1,5 @@
+#pragma once
+
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -10,6 +12,7 @@
 #endif
 
 #include "typedef.h"
+#include "func.h"
 #include "singleton.hpp"
 
 
@@ -76,7 +79,7 @@ class Node
 {
 public:
 	Node(void);
-	Node(const NODE_TYPE& aNodeType, const Coord& aCoord, Node* aL, Node* aR);
+	Node(const NODE_TYPE& aNodeType, const Coord& aC, Node* aL, Node* aR);
 	virtual ~Node(void);
 
 	inline NODE_TYPE	GetNodeType	(void) const { return myNodeType; }
@@ -97,7 +100,7 @@ protected:
 class NumNode : public Node
 {
 public:
-	NumNode(const Coord& aCoord, const double& aValue);
+	NumNode(const Coord& aC, const double& aVal);
 
 	inline double GetValue(void) const { return myValue; }
 
@@ -111,8 +114,37 @@ protected:
 class RefNode : public Node
 {
 public:
-	RefNode(const Coord& aCoord, Node* aL);
+	RefNode(const Coord& aC, Node* aN);
 	virtual ~RefNode(void);
+};
+
+/* class ArgNode
+ * specific to a function argument
+ */
+class ArgNode : public Node
+{
+public:
+	ArgNode(const Coord& aC, Node* aN, Node* aArgN);
+
+	inline double GetValue(void) const { return myValue; }
+	inline void SetValue(const double& vVal) { myValue = vVal; }
+
+private:
+	double myValue;
+};
+
+/* class FuncNode
+ * specific to a user defined function
+ */
+class FuncNode : public Node
+{
+public:
+	FuncNode(const Coord& aC, Func* aF, Node* aArgN);
+
+	inline Func* GetFunc(void) const { return myFunc; }
+
+private:
+	Func* myFunc;
 };
 
 
@@ -137,9 +169,11 @@ public:
 	bool			CheckIndex	(const char* aIdx);
 
 	/* Building */
-	Node* BuildNode	(const TableWalker& walker, const NODE_TYPE& aNodeType, Node* aL = NULL, Node* aR = NULL);
-	Node* BuildNum	(const TableWalker& walker, const double& aNum);
-	Node* BuildRef	(const TableWalker& walker, const char* aRef, const int& aIdx);
+	Node* BuildNode		(const TableWalker& walker, const NODE_TYPE& aNodeType, Node* aL = NULL, Node* aR = NULL);
+	Node* BuildNum		(const TableWalker& walker, const double& aNum);
+	Node* BuildRef		(const TableWalker& walker, const char* aRef, const int& aIdx);
+	Node* BuildArg		(const TableWalker& walker, Node* aN, Node* aArgN);
+	Node* BuildFunc		(const TableWalker& walker, const char* aRef,Node* aArgN);
 
 	/* Evaluating */
 	double Eval(Node* aN);

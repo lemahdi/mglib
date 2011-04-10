@@ -6,7 +6,7 @@ parser := my_parser.ypp
 scanner_out_c := lex.yy.cpp
 parser_out_h := $(basename $(parser)).tab.hpp
 parser_out_c := $(basename $(parser)).tab.cpp
-sources := run.cpp nodes.cpp
+sources := run.cpp nodes.cpp func.cpp
 
 $(OUTPUT_BINARY): $(sources) $(scanner_out_c) $(parser_out_c)
 	@echo $@

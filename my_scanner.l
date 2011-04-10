@@ -34,7 +34,8 @@ EXP	([Ee][-+]?[0-9]+)
 "(" |
 ")"	|
 "[" |
-"]"		{ return yytext[0]; }
+"]" |
+","		{ return yytext[0]; }
 
 [a-zA-Z][a-zA-Z0-9]* { yylval->cval = strdup(yytext); return token::NAME; }
 
