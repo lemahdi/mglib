@@ -11,11 +11,7 @@
 "*"	{ return MUL; }
 "/"	{ return DIV; }
 "|"	{ return ABS; }
-"("	{ return OP; }
-")"	{ return CP; }
-"//".*	{ return CO; }
 [0-9]+	{ yylval=atoi(yytext); return NUMBER; }
-0x[a-f0-9]+	{ yylval=strtol(yytext, NULL, 10); return NUMBER; }
 \n	{ return EOL; }
 [ \t]	{ /* ignore white spaces */ }
 .	{ printf("Mystery character %c\n", *yytext); }
