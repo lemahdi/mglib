@@ -1,21 +1,28 @@
-/* recognize tokens for the calculator and print them out */
+/* recognize tokens for the calculator */
+%option noyywrap nodefault yylineno
 %{
-  #include "typedef.h"
-  #include "parser.tab.h"
+#include "typedef.h"
+#include "parser.tab.h"
 %}
 
-%%
-
-"+"	{ return ADD; }
-"-"	{ return SUB; }
-"*"	{ return MUL; }
-"/"	{ return DIV; }
-"|"	{ return ABS; }
-[0-9]+	{ yylval=atoi(yytext); return NUMBER; }
-\n	{ return EOL; }
-[ \t]	{ /* ignore white spaces */ }
-.	{ printf("Mystery character %c\n", *yytext); }
+/* float exponent */
+EXP	([Ee][-+]?[0-9]+)
 
 %%
 
-int yywrap(void) { return 1; }
+"+" |
+"-" |
+"*" |
+"/" |
+"|" |
+"(" |
+")"		{ return yytext[0]; }
+[0-9]+"."[0-9]*{EXP}? |
+"."?[0-9]+{EXP}? { yylval.d = atof(yytext); return NUMBER; }
+
+\n		{ return EOL; }
+"//".*
+[ \t]	{ /* ignore withespace */ }
+.		{ yyerror("Mystery character %c\n", *yytext); }
+
+%%

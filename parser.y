@@ -1,42 +1,48 @@
-/* simplest version of calculator */
+/* calculator with AST */
+
 %{
 #include <stdio.h>
+#include <stdlib.h>
 #include "typedef.h"
 %}
 
+%union {
+	struct ast *a;
+	double d;
+}
+
 /* declare tokens */
-%token NUMBER
-%token ADD SUB MUL DIV ABS
+%token <d> NUMBER
 %token EOL
+
+%type <a> exp factor term
 
 %%
 
 calclist: /* nothing */
-    | calclist exp EOL { printf("= %d\n", $1); }
-    ;
-    
+	| calclist exp EOL {
+		printf("= %4.4g\n", eval($2));
+		treefree($2);
+		printf("> ");
+	}
+	
+	| calclist EOL { printf("> "); } /* blank line or a comment */
+	;
+	
 exp: factor
-    | exp ADD factor { $$ = $1 + $3; }
-    | exp SUB factor { $$ = $1 - $3; }
-    ;
-    
+	| exp '+' factor { $$ = newast('+', $1, $3); }
+	| exp '-' factor { $$ = newast('-', $1, $3); }
+	;
+	
 factor: term
-    | factor MUL term { $$ = $1 * $3; }
-    | factor DIV term { $$ = $1 / $3; }
-    ;
-    
-term: NUMBER
-    | ABS term { $$ = $2 >= 0 ? $2 : -$2; }
-    ;
-    
+	| factor '*' term { $$ = newast('*', $1, $3); }
+	| factor '/' term { $$ = newast('/', $1, $3); }
+	;
+	
+term: NUMBER { $$ = newnum($1); }
+	| '|' term { $$ = newast('|', $2, NULL); }
+	| '(' exp ')' { $$ = $2; }
+	| '-' term { $$ = newast('M', $2, NULL); }
+	;
+	
 %%
-
-main(int argc, char** argv)
-{
-  yyparse();
-}
-
-void yyerror(const char *s)
-{
-    fprintf(stderr, "error: %s\n", s);
-}

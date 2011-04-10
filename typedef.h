@@ -1,9 +1,29 @@
-#ifndef TYPEDEF_H_
-#define TYPEDEF_H_
+/*
+ * Declaration for a calculator
+ */
 
-extern int yylval;
-/*extern "C" { */int yylex(void);// }
-extern void yyerror(const char*);
+/* interface to the lexer */
+extern int yylineno; /* from lexer */
+void yyerror(char* s, ...);
 
-#endif
+/* nodes in the abstract syntax tree */
+struct ast {
+	int nodetype;
+	struct ast *l;
+	struct ast *r;
+};
 
+struct numval {
+	int nodetype; /* type K for constant */
+	double number;
+};
+
+/* build an AST */
+struct ast *newast(int nodetype, struct ast *l, struct ast *r);
+struct ast *newnum(double d);
+
+/* evaluate an AST */
+double eval(struct ast *);
+
+/* delete and free an ASR */
+void treefree(struct ast *);

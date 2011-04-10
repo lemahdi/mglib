@@ -1,7 +1,7 @@
 OUTPUT_BINARY = calculator
 CC = CC
 
-$(OUTPUT_BINARY): lex.yy.c parser.tab.c
+$(OUTPUT_BINARY): lex.yy.c parser.tab.c routines.c
 	@echo $@
 	$(CC) -o $@ $^ -L.. -lfl
 
