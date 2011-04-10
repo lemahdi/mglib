@@ -1,12 +1,11 @@
 #include "nodes.h"
 #include "my_parser.tab.hpp"
-#include "countedptr.hpp"
 
 using namespace std;
 
 int main()
 {
-	SFileError::Instance()->Init();
+	MG_SFileError::Instance()->Init();
 
 	// Deal Description
 	vector<string> vColNames;
@@ -33,8 +32,8 @@ int main()
 	vFlows.push_back("3");
 	vFlows.push_back("EXP(-0.05*Date[i])*MAX(Spot[i-1]-Strike[i],0)");
 
-	TableWalker walker(vColNames, vFlows);;
-	NodeManager manager;
+	MG_TableWalker walker(vColNames, vFlows);;
+	MG_NodeManager manager;
 	yy::my_parser parser(walker, manager);	// make a cpp calc parser
 
 	//cout << "> ";
@@ -52,13 +51,23 @@ int main()
 
 	for(unsigned int i=0; i<walker.GetRows(); i++)
 	{
-		Coord c(i,walker.GetCols()-1);
-		NodePtr n = manager.GetNode(c);
+		Coord c(i,(unsigned int)walker.GetCols()-1);
+		MG_Node* n = manager.GetNode(c);
 		cout << manager.Eval(n) << endl;
 	}
 
-	SFuncBuilder::Release();
-	SFileError::Release();
+	for(unsigned int i=0; i<walker.GetRows(); i++)
+	{
+		for(unsigned int j=0; j<walker.GetCols(); j++)
+		{
+			Coord c(i,j);
+			MG_Node* n = manager.GetNode(c);
+			delete n;
+		}
+	}
+
+	MG_SFuncBuilder::Release();
+	MG_SFileError::Release();
 
 	char ch;
 	cin >> ch;

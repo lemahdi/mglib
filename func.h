@@ -4,88 +4,81 @@
 #include <map>
 #include <vector>
 #include <string>
-#include <assert.h>
 
-#include "typedef.h"
 #include "singleton.hpp"
+#include "typedef.h"
 
 
-class Func
+class MG_Func
 {
 public:
-	Func(void) {}
-	virtual ~Func(void) {}
+	MG_Func(void);
+	~MG_Func(void);
 
 	virtual double Eval(const std::vector<double>& aArgs) = 0;
 };
 
-class MaxFunc : public Func
+class MG_MaxFunc : public MG_Func
 {
 public:
-	MaxFunc(void) {}
-	virtual ~MaxFunc(void) {}
+	MG_MaxFunc(void);
 
 	virtual double Eval(const std::vector<double>& aArgs);
 };
 
-class MinFunc : public Func
+class MG_MinFunc : public MG_Func
 {
 public:
-	MinFunc(void) : Func() {}
-	virtual ~MinFunc(void) {}
+	MG_MinFunc(void);
 
 	virtual double Eval(const std::vector<double>& aArgs);
 };
 
-class AbsFunc : public Func
+class MG_AbsFunc : public MG_Func
 {
 public:
-	AbsFunc(void) : Func() {}
-	virtual ~AbsFunc(void) {}
+	MG_AbsFunc(void);
 
 	virtual double Eval(const std::vector<double>& aArgs);
 };
 
-class ExpFunc : public Func
+class MG_ExpFunc : public MG_Func
 {
 public:
-	ExpFunc(void) : Func() {}
-	virtual ~ExpFunc(void) {}
+	MG_ExpFunc(void);
 
 	virtual double Eval(const std::vector<double>& aArgs);
 };
 
-class LogFunc : public Func
+class MG_LogFunc : public MG_Func
 {
 public:
-	LogFunc(void) : Func() {}
-	virtual ~LogFunc(void) {}
+	MG_LogFunc(void);
 
 	virtual double Eval(const std::vector<double>& aArgs);
 };
 
-class PowFunc : public Func
+class MG_LogPowFunc : public MG_Func
 {
 public:
-	PowFunc(void) : Func() {}
-	virtual ~PowFunc(void) {}
+	MG_LogPowFunc(void);
 
 	virtual double Eval(const std::vector<double>& aArgs);
 };
 
-class FuncBuilder
+class MG_FuncBuilder
 {
 	template<class T> friend class Singleton;
 
 private:
-	FuncBuilder(void);
+	MG_FuncBuilder(void);
 
 public:
-	~FuncBuilder(void) {}
+	~MG_FuncBuilder(void);
 
-	inline FuncPtr GetFunc(const std::string& aFuncName) { assert(myFuncs.find(aFuncName)==myFuncs.end()); return myFuncs[aFuncName]; }
+	MG_Func* GetFunc(const std::string& aFuncName);
 
 private:
 	NameFuncMap myFuncs;
 };
-typedef Singleton<FuncBuilder> SFuncBuilder;
+typedef Singleton<MG_FuncBuilder> MG_SFuncBuilder;

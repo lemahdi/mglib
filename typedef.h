@@ -21,19 +21,17 @@ void yy_delete_buffer (YY_BUFFER_STATE b  );
 #define Coord std::pair<unsigned int,unsigned int>
 
 /* Coord / Node */
-#define CoordNode std::pair<Coord,NodePtr>
-#define CoordNodePtr CountedPtr<CoordNode>
+#define CoordNode std::pair<Coord,MG_Node*>
 
 /* Map of CoordNode
  * Maximum of 9997 elements
  */
 #define NHASH 9997
-#define CoordNodeMap std::map<unsigned int,CoordNodePtr>
+#define CoordNodeMap std::map<unsigned int,CoordNode*>
 
 
 /* some useful definitions */
 #define MAX_DESC_TABLE_COLUMNS 9999
-#define MAX_DOUBLE 1.7976931348623158e+308
 
 
 /* enum for nodes types */
@@ -52,14 +50,6 @@ enum NODE_TYPE
 };
 
 
-/* useful shortcuts */
-#define NameFuncMap		std::map<std::string,FuncPtr>
-#define NameFuncPair	std::pair<std::string,FuncPtr>
-
-/* smart pointers */
-#include "countedptr.hpp"
-class Func;
-class Node;
-
-typedef CountedPtr<Func> FuncPtr;
-typedef CountedPtr<Node> NodePtr;
+/**/
+#define NameFuncMap		std::map<std::string,MG_Func*>
+#define NameFuncPair	std::pair<std::string,MG_Func*>

@@ -10,15 +10,21 @@
 #include <iostream>
 using namespace std;
 #include "nodes.h"
+
+#ifdef WIN32
+#pragma warning(push)
+  #pragma warning(disable:4065)
+  #pragma warning(disable:4267)
+#endif
 %}
 
-%parse-param { TableWalker &walker }
-%parse-param { NodeManager &manager }
-%lex-param { TableWalker &walker }
-%lex-param { NodeManager &manager }
+%parse-param { MG_TableWalker &walker }
+%parse-param { MG_NodeManager &manager }
+%lex-param { MG_TableWalker &walker }
+%lex-param { MG_NodeManager &manager }
 
 %union {
-	NodePtr nval;
+	MG_Node* nval;
 	double dval;
 	char* cval;
 	int ival;
@@ -42,7 +48,7 @@ using namespace std;
 %{
 extern int yylex(yy::my_parser::semantic_type *yylval,
 	yy::my_parser::location_type* yyloc,
-	TableWalker &walker, NodeManager &manager);
+	MG_TableWalker &walker, MG_NodeManager &manager);
 
 %}
 
@@ -84,7 +90,7 @@ calclist: /* nothing */
 	| calclist EOL { /* blank line or a comment */
 		cout << "> ";
 	}
-	;
+;
 	
 %%
 
@@ -95,3 +101,7 @@ namespace yy {
 		std::cerr << "error at " << loc << ": " << s << std::endl;
 	}
 }
+
+#ifdef WIN32
+#pragma warning(pop)
+#endif

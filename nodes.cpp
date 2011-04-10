@@ -1,17 +1,18 @@
 #include "nodes.h"
+#include "func.h"
 #include <algorithm>
 
 
 using namespace std;
 
 
-/* class FileError */
+/* class MG_FileError */
 #ifndef WIN32
 template<>
 #endif
-FileError* SFileError::myInstance = NULL;
+MG_FileError* MG_SFileError::myInstance = NULL;
 
-void FileError::Init()
+void MG_FileError::Init()
 {
 	myFile.open(ERROR_FILE);
 	streambuf *vCerr = myFile.rdbuf();
@@ -20,42 +21,54 @@ void FileError::Init()
 
 
 /* Implentation:
- ** class Node
- ** class NumNode
- ** class RefNode
+ ** class MG_Node
+ ** class MG_NumNode
+ ** class MG_RefNode
  */
-Node::Node(void) : myNodeType(NODEF_NODE), myL(NULL), myR(NULL)
+MG_Node::MG_Node(void) : myNodeType(NODEF_NODE), myL(NULL), myR(NULL)
 {}
 
-Node::Node(const NODE_TYPE& aNodeType, const Coord& aC, NodePtr aL, NodePtr aR)
+MG_Node::MG_Node(const NODE_TYPE& aNodeType, const Coord& aC, MG_Node* aL, MG_Node* aR)
 	: myNodeType(aNodeType), myL(aL), myR(aR), myCoord(aC)
 {}
 
-NumNode::NumNode(const Coord& aC, const double& aVal)
-	: Node(NUM_NODE, aC, NodePtr(NULL), NodePtr(NULL))
+MG_Node::~MG_Node()
+{
+	if (myL) delete myL;
+	if (myR) delete myR;
+}
+
+MG_NumNode::MG_NumNode(const Coord& aC, const double& aVal)
+	: MG_Node(NUM_NODE, aC, NULL, NULL)
 	, myValue(aVal)
 {}
 
-RefNode::RefNode(const Coord& aC, NodePtr aN)
-	: Node(REF_NODE, aC, aN, NodePtr(NULL))
+MG_RefNode::MG_RefNode(const Coord& aC, MG_Node* aN)
+	: MG_Node(REF_NODE, aC, aN, NULL)
 {}
 
-ArgNode::ArgNode(const Coord& aC, NodePtr aN, NodePtr aArgN)
-	: Node(ARG_NODE, aC, aN, aArgN)
+MG_RefNode::~MG_RefNode()
+{
+	// myL is already referenced in AllNodes
+	myL = NULL;
+}
+
+MG_ArgNode::MG_ArgNode(const Coord& aC, MG_Node* aN, MG_Node* aArgN)
+	: MG_Node(ARG_NODE, aC, aN, aArgN)
 {}
 
-FuncNode::FuncNode(const Coord& aC, FuncPtr aF, NodePtr aArgN)
-	: Node(FUNC_NODE, aC, aArgN, NodePtr(NULL))
+MG_FuncNode::MG_FuncNode(const Coord& aC, MG_Func* aF, MG_Node* aArgN)
+	: MG_Node(FUNC_NODE, aC, aArgN, NULL)
 	, myFunc(aF)
 {}
 
 
 /* Implementation
- ** class NodeManager
+ ** class MG_NodeManager
  */
 
 /* Accessing */
-unsigned int NodeManager::Hash(const Coord& aC)
+unsigned int MG_NodeManager::Hash(const Coord& aC)
 {
 	unsigned int vHash = 0;
 
@@ -66,23 +79,23 @@ unsigned int NodeManager::Hash(const Coord& aC)
 	return vHash;
 }
 
-void NodeManager::Insert(const Coord& aC, NodePtr aN)
+void MG_NodeManager::Insert(const Coord& aC, MG_Node* aN)
 {
 	unsigned int vHash = Hash(aC)%NHASH;
-	CoordNodePtr vCN = AllNodes[vHash];
+	CoordNode* vCN = AllNodes[vHash];
 
 	int vNCount = NHASH;
 	while (--vNCount >= 0) {
-		if (vCN.IsNull())
+		if (!vCN)
 		{
-			vCN = CoordNodePtr(new CoordNode());
+			vCN = new CoordNode();
 			AllNodes[vHash] = vCN;
 
 			vCN->first	= aC;
 			vCN->second	= aN;
 			return;
 		}
-		if (!vCN->second.IsNull() && vCN->first.first==aC.first && vCN->first.second==aC.second)
+		if (vCN->second && vCN->first.first==aC.first && vCN->first.second==aC.second)
 		{
 			vCN->second = aN;
 			return;
@@ -96,7 +109,7 @@ void NodeManager::Insert(const Coord& aC, NodePtr aN)
 	return;
 }
 
-bool NodeManager::CheckIndex(const char* aIdx)
+bool MG_NodeManager::CheckIndex(const char* aIdx)
 {
 	if (strcmp(aIdx, "i"))
 	{
@@ -107,9 +120,9 @@ bool NodeManager::CheckIndex(const char* aIdx)
 	return true;
 }
 
-NodePtr NodeManager::GetNode(const Coord& aC)
+MG_Node* MG_NodeManager::GetNode(const Coord& aC)
 {
-	NodePtr vN = NULL;
+	MG_Node* vN = NULL;
 	unsigned int vHash = Hash(aC)%NHASH;
 
 	CoordNodeMap::iterator itMap = AllNodes.find(vHash);
@@ -121,7 +134,7 @@ NodePtr NodeManager::GetNode(const Coord& aC)
 	return vN;
 }
 
-NodePtr NodeManager::GetChildNode(const TableWalker& walker, const char* aRef, const int& aIdx)
+MG_Node* MG_NodeManager::GetChildNode(const MG_TableWalker& walker, const char* aRef, const int& aIdx)
 {
 	unsigned int vCIdx = walker.GetColumn(string(aRef));
 	if (vCIdx != MAX_DESC_TABLE_COLUMNS)
@@ -129,69 +142,69 @@ NodePtr NodeManager::GetChildNode(const TableWalker& walker, const char* aRef, c
 		int vRIdx = walker.GetCurrentRow() + aIdx;
 		assert(vRIdx >= 0);
 		Coord vC(walker.GetCurrentRow() + aIdx, vCIdx);
-		NodePtr vN = GetNode(vC);
+		MG_Node* vN = GetNode(vC);
 		return vN;
 	}
 
-	return NodePtr(NULL);
+	return NULL;
 }
 
 /* Building */
-NodePtr NodeManager::BuildNode(const TableWalker& walker, const NODE_TYPE& aNodeType, NodePtr aL, NodePtr aR)
+MG_Node* MG_NodeManager::BuildNode(const MG_TableWalker& walker, const NODE_TYPE& aNodeType, MG_Node* aL, MG_Node* aR)
 {
 	Coord vC(walker.GetCurrentRow(), walker.GetCurrentCol());
-	NodePtr vN = NodePtr(new Node(aNodeType, vC, aL, aR));
+	MG_Node* vN = new MG_Node(aNodeType, vC, aL, aR);
 	Insert(vC, vN);
 	return vN;
 }
 
-NodePtr NodeManager::BuildNum(const TableWalker& walker, const double& aNum)
+MG_Node* MG_NodeManager::BuildNum(const MG_TableWalker& walker, const double& aNum)
 {
 	Coord vC(walker.GetCurrentRow(), walker.GetCurrentCol());
-	NodePtr vN = NodePtr(new NumNode(vC, aNum));
+	MG_Node* vN = new MG_NumNode(vC, aNum);
 	Insert(vC, vN);
 	return vN;
 }
 
-NodePtr NodeManager::BuildRef(const TableWalker& walker, const char* aRef, const int& aIdx)
+MG_Node* MG_NodeManager::BuildRef(const MG_TableWalker& walker, const char* aRef, const int& aIdx)
 {
 	Coord vC(walker.GetCurrentRow(), walker.GetCurrentCol());
-	NodePtr vN = GetChildNode(walker, aRef, aIdx);
-	NodePtr vNRef = NodePtr(new RefNode(vC, vN));
+	MG_Node* vN = GetChildNode(walker, aRef, aIdx);
+	MG_Node* vNRef = new MG_RefNode(vC, vN);
 	Insert(vC, vNRef);
 	return vNRef;
 }
 
-NodePtr NodeManager::BuildArg(const TableWalker &walker, NodePtr aN, NodePtr aArgN)
+MG_Node* MG_NodeManager::BuildArg(const MG_TableWalker &walker, MG_Node *aN, MG_Node *aArgN)
 {
 	Coord vC(walker.GetCurrentRow(), walker.GetCurrentCol());
-	NodePtr vArgN = NodePtr(new ArgNode(vC, aN, aArgN));
+	MG_Node* vArgN = new MG_ArgNode(vC, aN, aArgN);
 	Insert(vC, vArgN);
 	return vArgN;
 }
 
-NodePtr NodeManager::BuildFunc(const TableWalker& walker, const char* aFuncName, NodePtr aArgN)
+MG_Node* MG_NodeManager::BuildFunc(const MG_TableWalker& walker, const char* aFuncName, MG_Node* aArgN)
 {
 	Coord vC(walker.GetCurrentRow(), walker.GetCurrentCol());
-	FuncPtr vF = SFuncBuilder::Instance()->GetFunc(string(aFuncName));
-	NodePtr vFuncN = NodePtr(new FuncNode(vC, vF, aArgN));
+	MG_Func* vF = MG_SFuncBuilder::Instance()->GetFunc(string(aFuncName));
+	MG_Node* vFuncN = new MG_FuncNode(vC, vF, aArgN);
 	Insert(vC, vFuncN);
 	return vFuncN;
 }
 
 double
-NodeManager::Eval(NodePtr aN)
+MG_NodeManager::Eval(MG_Node *aN)
 {
 	double vVal = 0;
 
-	if (aN.IsNull()) {
+	if (!aN) {
 		cerr << "ERROR" << endl;
 		return 0;
 	}
 
 	switch(aN->GetNodeType()) {
 		/* constant */
-		case NUM_NODE: vVal = aN->GetValue(); break;
+		case NUM_NODE: vVal = ((MG_NumNode *)aN)->GetValue(); break;
 
 		/* name reference */
 		case REF_NODE: vVal = Eval(aN->GetL()); break;
@@ -199,22 +212,22 @@ NodeManager::Eval(NodePtr aN)
 		/* function argument */
 		case ARG_NODE:
 			vVal = Eval(aN->GetL());
-			aN->SetValue(vVal);
-			if (!aN->GetR().IsNull()) Eval(aN->GetR());
+			((MG_ArgNode*)aN)->SetValue(vVal);
+			if (aN->GetR()) Eval(aN->GetR());
 			break;
 
 		/* function */
 		case FUNC_NODE:
 			{
-			NodePtr vArgN = aN->GetL();
+			MG_ArgNode* vArgN = (MG_ArgNode*)(((MG_FuncNode *)aN)->GetL());
 			Eval(vArgN);
 			vector<double> vArgVals;
 			while (vArgN != NULL)
 			{
 				vArgVals.push_back(vArgN->GetValue());
-				vArgN = vArgN->GetR();
+				vArgN = (MG_ArgNode*)(vArgN->GetR());
 			}
-			vVal = aN->GetFunc()->Eval(vArgVals);
+			vVal = ((MG_FuncNode *)aN)->GetFunc()->Eval(vArgVals);
 			break;
 			}
 
@@ -233,27 +246,27 @@ NodeManager::Eval(NodePtr aN)
 
 
 /* Implementation
- ** class TableWalker
+ ** class MG_TableWalker
  */
-TableWalker::TableWalker()
+MG_TableWalker::MG_TableWalker()
 	: myCurrentRow(0), myCurrentCol(0), myRows(0), myCols(0)
 {}
 
 
-TableWalker::TableWalker(	const vector<string>& aColNames
-						,	const vector<string>& aFlows)
-						:	myColumnNames	(aColNames)
-						,	myFlows			(aFlows)
-						,	myCols			(aColNames.size())
-						,	myCurrentCol	(0)
-						,	myCurrentRow	(0)
+MG_TableWalker::MG_TableWalker	(	const vector<string>& aColNames
+								,	const vector<string>& aFlows)
+								:	myColumnNames	(aColNames)
+								,	myFlows			(aFlows)
+								,	myCols			(aColNames.size())
+								,	myCurrentCol	(0)
+								,	myCurrentRow	(0)
 {
 	myRows = aFlows.size() / myCols;
 	assert(aFlows.size() % myCols == 0);
 	assert(myCols < MAX_DESC_TABLE_COLUMNS);
 }
 
-unsigned int TableWalker::GetColumn(const string& aColName) const
+unsigned int MG_TableWalker::GetColumn(const string& aColName) const
 {
 	vector<string>::const_iterator it = find(myColumnNames.begin(), myColumnNames.end(), aColName);
 	if (it == myColumnNames.end())
