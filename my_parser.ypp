@@ -28,11 +28,13 @@ using namespace std;
 	double dval;
 	char* cval;
 	int ival;
+	long lval;
 }
 
 /* declare tokens */
 %token <dval> NUMBER
 %token <cval> NAME
+%token <lval> DATE
 %token EOL
 
 %left '+' '-'
@@ -68,6 +70,7 @@ exp: exp '+' exp			{ $$ = manager.BuildNode(walker, ADD_NODE, $1, $3); }
 	| NUMBER				{ $$ = manager.BuildNum(walker, $1); }
 	| NAME '[' index ']'	{ $$ = manager.BuildRef(walker, $1, $3); free($1); }
 	| NAME '(' arglist ')'	{ $$ = manager.BuildFunc(walker, $1, $3); free($1); }
+	| DATE					{ $$ = manager.BuildDate(walker, $1); }
 ;
 
 index: NAME					{ if (manager.CheckIndex($1)) $$ = 0; }
@@ -78,6 +81,7 @@ index: NAME					{ if (manager.CheckIndex($1)) $$ = 0; }
 arglist:					{ $$ = NULL; }
 	| exp					{ $$ = manager.BuildArg(walker, $1, NULL); }
 	| exp ',' arglist		{ $$ = manager.BuildArg(walker, $1, $3); }
+;
 
 	// bison rules for the C++ parser
 calclist: /* nothing */

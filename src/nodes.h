@@ -11,9 +11,9 @@
 #define isatty _isatty
 #endif
 
-#include "typedef.h"
-#include "func.h"
 #include "singleton.hpp"
+#include "func.h"
+#include "date.h"
 
 
 /* class MG_FileError
@@ -79,12 +79,16 @@ class MG_Node
 {
 public:
 	MG_Node(void);
-	MG_Node(const NODE_TYPE& aNodeType, const Coord& aC, MG_Node* aL, MG_Node* aR);
+	MG_Node	(	const NODE_TYPE& aNodeType
+			,	const Coord& aC
+			,	MG_Node* aL = NULL
+			,	MG_Node* aR = NULL);
 	virtual ~MG_Node(void);
 
-	inline NODE_TYPE	GetNodeType	(void) const { return myNodeType; }
-	inline MG_Node*		GetL		(void) const { return myL; }
-	inline MG_Node*		GetR		(void) const { return myR; }
+	inline NODE_TYPE		GetNodeType	(void) const { return myNodeType; }
+	inline Coord			GetCoord	(void) const { return myCoord; }
+	inline MG_Node*			GetL		(void) const { return myL; }
+	inline MG_Node*			GetR		(void) const { return myR; }
 
 protected:
 	NODE_TYPE		myNodeType;
@@ -108,14 +112,40 @@ protected:
 	double myValue;
 };
 
+/* class MG_DateNode
+ * specific to a double cell
+ */
+class MG_DateNode : public MG_Node
+{
+public:
+	MG_DateNode(const Coord& aC, const long& aJD);
+
+	inline MG_Date GetDate(void) const { return myDate; }
+
+protected:
+	MG_Date myDate;
+};
+
 /* class MG_RefNode
  * specific to a reference cell
  */
 class MG_RefNode : public MG_Node
 {
 public:
-	MG_RefNode(const Coord& aC, MG_Node* aN);
+	MG_RefNode	(	const Coord& aC
+				,	MG_Node* aN
+				,	const Coord& aCC
+				,	const NODE_DIRECTION& aD = NODIR_NODE);
 	virtual ~MG_RefNode(void);
+
+	inline Coord			GetChildCoord	(void) const { return myChildCoord; }
+	inline NODE_DIRECTION	GetDirection	(void) const { return myDirection; }
+
+	void Refresh(MG_Node* vN);
+
+private:
+	Coord			myChildCoord;
+	NODE_DIRECTION	myDirection;
 };
 
 /* class MG_ArgNode
@@ -139,12 +169,12 @@ private:
 class MG_FuncNode : public MG_Node
 {
 public:
-	MG_FuncNode(const Coord& aC, MG_Func* aF, MG_Node* aArgN);
+	MG_FuncNode(const Coord& aC, MG_FuncPtr aF, MG_Node* aArgN);
 
-	inline MG_Func* GetFunc(void) const { return myFunc; }
+	inline MG_FuncPtr GetFunc(void) const { return myFunc; }
 
 private:
-	MG_Func* myFunc;
+	MG_FuncPtr myFunc;
 };
 
 
@@ -158,27 +188,32 @@ class MG_NodeManager
 {
 public:
 	MG_NodeManager(void) {}
-	virtual ~MG_NodeManager(void) {}
+	virtual ~MG_NodeManager(void);
 
-	/* Accessing */
 public:
+	/* Accessing */
 	MG_Node*			GetNode		(const Coord& aC);
 	MG_Node*			GetChildNode(const MG_TableWalker& walker, const char* aRef, const int& aIdx);
 	unsigned int		Hash		(const Coord& aC);
 	void				Insert		(const Coord& aC, MG_Node* aN);
 	bool				CheckIndex	(const char* aIdx);
+	long				ToJulianDay	(const char* aDate);
 
 	/* Building */
 	MG_Node* BuildNode		(const MG_TableWalker& walker, const NODE_TYPE& aNodeType, MG_Node* aL = NULL, MG_Node* aR = NULL);
 	MG_Node* BuildNum		(const MG_TableWalker& walker, const double& aNum);
+	MG_Node* BuildDate		(const MG_TableWalker& walker, const long& aJD);
 	MG_Node* BuildRef		(const MG_TableWalker& walker, const char* aRef, const int& aIdx);
 	MG_Node* BuildArg		(const MG_TableWalker& walker, MG_Node* aN, MG_Node* aArgN);
 	MG_Node* BuildFunc		(const MG_TableWalker& walker, const char* aRef,MG_Node* aArgN);
 
 	/* Evaluating */
+	void PostProcess(void);
 	double Eval(MG_Node* aN);
 
 private:
 	/* Map of all nodes */
-	CoordNodeMap AllNodes;
+	CoordNodeMap				AllNodes;
+	/* Vector of ref  nodes */
+	std::vector<MG_RefNode*>	RefNodes;
 };

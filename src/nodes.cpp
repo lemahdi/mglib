@@ -28,7 +28,10 @@ void MG_FileError::Init()
 MG_Node::MG_Node(void) : myNodeType(NODEF_NODE), myL(NULL), myR(NULL)
 {}
 
-MG_Node::MG_Node(const NODE_TYPE& aNodeType, const Coord& aC, MG_Node* aL, MG_Node* aR)
+MG_Node::MG_Node(	const NODE_TYPE& aNodeType
+				,	const Coord& aC
+				,	MG_Node* aL
+				,	MG_Node* aR)
 	: myNodeType(aNodeType), myL(aL), myR(aR), myCoord(aC)
 {}
 
@@ -39,12 +42,19 @@ MG_Node::~MG_Node()
 }
 
 MG_NumNode::MG_NumNode(const Coord& aC, const double& aVal)
-	: MG_Node(NUM_NODE, aC, NULL, NULL)
+	: MG_Node(NUM_NODE, aC)
 	, myValue(aVal)
 {}
 
-MG_RefNode::MG_RefNode(const Coord& aC, MG_Node* aN)
-	: MG_Node(REF_NODE, aC, aN, NULL)
+MG_DateNode::MG_DateNode(const Coord& aC, const long& aJD)
+	: MG_Node(DATE_NODE, aC)
+	, myDate(aJD)
+{}
+
+MG_RefNode::MG_RefNode(const Coord& aC, MG_Node* aN, const Coord& aCC, const NODE_DIRECTION& aD)
+	: MG_Node(REF_NODE, aC, aN)
+	, myChildCoord	(aCC)
+	, myDirection	(aD)
 {}
 
 MG_RefNode::~MG_RefNode()
@@ -53,12 +63,17 @@ MG_RefNode::~MG_RefNode()
 	myL = NULL;
 }
 
+void MG_RefNode::Refresh(MG_Node* aN)
+{
+	myL = aN;
+}
+
 MG_ArgNode::MG_ArgNode(const Coord& aC, MG_Node* aN, MG_Node* aArgN)
 	: MG_Node(ARG_NODE, aC, aN, aArgN)
 {}
 
-MG_FuncNode::MG_FuncNode(const Coord& aC, MG_Func* aF, MG_Node* aArgN)
-	: MG_Node(FUNC_NODE, aC, aArgN, NULL)
+MG_FuncNode::MG_FuncNode(const Coord& aC, MG_FuncPtr aF, MG_Node* aArgN)
+	: MG_Node(FUNC_NODE, aC, aArgN)
 	, myFunc(aF)
 {}
 
@@ -66,6 +81,18 @@ MG_FuncNode::MG_FuncNode(const Coord& aC, MG_Func* aF, MG_Node* aArgN)
 /* Implementation
  ** class MG_NodeManager
  */
+
+/* Destructor */
+MG_NodeManager::~MG_NodeManager()
+{
+	CoordNodeMap::iterator itMap = AllNodes.begin();
+	while(itMap != AllNodes.end())
+	{
+		delete itMap->second->second;
+		delete itMap->second;
+		itMap++;
+	}
+}
 
 /* Accessing */
 unsigned int MG_NodeManager::Hash(const Coord& aC)
@@ -95,7 +122,7 @@ void MG_NodeManager::Insert(const Coord& aC, MG_Node* aN)
 			vCN->second	= aN;
 			return;
 		}
-		if (vCN->second && vCN->first.first==aC.first && vCN->first.second==aC.second)
+		if (vCN && vCN->first.first==aC.first && vCN->first.second==aC.second)
 		{
 			vCN->second = aN;
 			return;
@@ -105,7 +132,7 @@ void MG_NodeManager::Insert(const Coord& aC, MG_Node* aN)
 			vCN = AllNodes[0];
 	}
 
-	cerr << "ERROR: cannot insert node into parsing tree" << endl;
+	cerr << __FILE__ << "-" << __LINE__ << ": ERROR, cannot insert node into parsing tree." << endl;
 	return;
 }
 
@@ -113,11 +140,16 @@ bool MG_NodeManager::CheckIndex(const char* aIdx)
 {
 	if (strcmp(aIdx, "i"))
 	{
-		cerr << "ERROR: index to use should be i";
+		cerr << __FILE__ << "-" << __LINE__ << ": ERROR, index to use should be i." << endl;
 		return false;
 	}
 
 	return true;
+}
+
+long MG_NodeManager::ToJulianDay(const char* aDate)
+{
+	return MG_Date::ToJulianDay(aDate, '/', FR_DATE);
 }
 
 MG_Node* MG_NodeManager::GetNode(const Coord& aC)
@@ -166,12 +198,23 @@ MG_Node* MG_NodeManager::BuildNum(const MG_TableWalker& walker, const double& aN
 	return vN;
 }
 
+MG_Node* MG_NodeManager::BuildDate(const MG_TableWalker& walker, const long& aJD)
+{
+	Coord vC(walker.GetCurrentRow(), walker.GetCurrentCol());
+	MG_Node* vN = new MG_DateNode(vC, aJD);
+	Insert(vC, vN);
+	return vN;
+}
+
 MG_Node* MG_NodeManager::BuildRef(const MG_TableWalker& walker, const char* aRef, const int& aIdx)
 {
 	Coord vC(walker.GetCurrentRow(), walker.GetCurrentCol());
 	MG_Node* vN = GetChildNode(walker, aRef, aIdx);
-	MG_Node* vNRef = new MG_RefNode(vC, vN);
+	NODE_DIRECTION vD = (aIdx==0 ? NODIR_NODE : (aIdx<0 ? BACKWARD_NODE : FORWARD_NODE));
+	Coord vCC(walker.GetCurrentRow() + aIdx, walker.GetColumn(string(aRef)));
+	MG_Node* vNRef = new MG_RefNode(vC, vN, vCC, vD);
 	Insert(vC, vNRef);
+	RefNodes.push_back((MG_RefNode*)vNRef);
 	return vNRef;
 }
 
@@ -186,10 +229,28 @@ MG_Node* MG_NodeManager::BuildArg(const MG_TableWalker &walker, MG_Node *aN, MG_
 MG_Node* MG_NodeManager::BuildFunc(const MG_TableWalker& walker, const char* aFuncName, MG_Node* aArgN)
 {
 	Coord vC(walker.GetCurrentRow(), walker.GetCurrentCol());
-	MG_Func* vF = MG_SFuncBuilder::Instance()->GetFunc(string(aFuncName));
+	MG_FuncPtr vF = MG_SFuncBuilder::Instance()->GetFunc(string(aFuncName));
 	MG_Node* vFuncN = new MG_FuncNode(vC, vF, aArgN);
 	Insert(vC, vFuncN);
 	return vFuncN;
+}
+
+void
+MG_NodeManager::PostProcess()
+{
+	MG_RefNode* vRefN = NULL;
+	MG_Node* vN = NULL;
+	Coord vC;
+	for(unsigned int i=0; i<RefNodes.size(); i++)
+	{
+		vRefN = RefNodes[i];
+		if (vRefN->GetDirection()==FORWARD_NODE)
+		{
+			vC = vRefN->GetChildCoord();
+			vN = MG_NodeManager::GetNode(vC);
+			vRefN->Refresh(vN);
+		}
+	}
 }
 
 double
@@ -198,13 +259,14 @@ MG_NodeManager::Eval(MG_Node *aN)
 	double vVal = 0;
 
 	if (!aN) {
-		cerr << "ERROR" << endl;
+		cerr << __FILE__ << "-" << __LINE__ << ": ERROR, cannot evaluate null node." << endl;
 		return 0;
 	}
 
 	switch(aN->GetNodeType()) {
 		/* constant */
 		case NUM_NODE: vVal = ((MG_NumNode *)aN)->GetValue(); break;
+		case DATE_NODE: vVal = ((MG_DateNode *)aN)->GetDate().GetJulianDay(); break;
 
 		/* name reference */
 		case REF_NODE: vVal = Eval(aN->GetL()); break;

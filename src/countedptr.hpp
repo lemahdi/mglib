@@ -106,6 +106,7 @@ private:
 	}
 
 private:
-	mutable T* myPtr;
-	mutable long* myCount;
+	mutable T*		myPtr;
+	mutable long*	myCount;
 };
+

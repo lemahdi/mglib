@@ -6,8 +6,10 @@
 #include <string>
 
 #include "singleton.hpp"
+#include "countedptr.hpp"
 #include "typedef.h"
 
+#define MG_FuncPtr CountedPtr<MG_Func>
 
 class MG_Func
 {
@@ -58,10 +60,10 @@ public:
 	virtual double Eval(const std::vector<double>& aArgs);
 };
 
-class MG_LogPowFunc : public MG_Func
+class MG_PowFunc : public MG_Func
 {
 public:
-	MG_LogPowFunc(void);
+	MG_PowFunc(void);
 
 	virtual double Eval(const std::vector<double>& aArgs);
 };
@@ -71,12 +73,14 @@ class MG_FuncBuilder
 	template<class T> friend class Singleton;
 
 private:
-	MG_FuncBuilder(void);
+	MG_FuncBuilder(void) {}
 
 public:
-	~MG_FuncBuilder(void);
+	~MG_FuncBuilder(void) {}
 
-	MG_Func* GetFunc(const std::string& aFuncName);
+	void Init(void);
+
+	MG_FuncPtr GetFunc(const std::string& aFuncName);
 
 private:
 	NameFuncMap myFuncs;

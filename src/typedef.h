@@ -33,13 +33,26 @@ void yy_delete_buffer (YY_BUFFER_STATE b  );
 /* some useful definitions */
 #define MAX_DESC_TABLE_COLUMNS 9999
 
+#define NameFuncMap		std::map<std::string,MG_FuncPtr>
+#define NameFuncPair	std::pair<std::string,MG_FuncPtr>
+
+//#define MG_Date Date
+
+
+/* enum for node direction */
+enum NODE_DIRECTION {
+	BACKWARD_NODE,
+	NODIR_NODE,
+	FORWARD_NODE
+};
+
 
 /* enum for nodes types */
-enum NODE_TYPE
-{
+enum NODE_TYPE {
 	NODEF_NODE,
 	NUM_NODE,
 	NEG_NODE,
+	DATE_NODE,
 	REF_NODE,
 	ADD_NODE,
 	SUB_NODE,
@@ -50,6 +63,10 @@ enum NODE_TYPE
 };
 
 
-/**/
-#define NameFuncMap		std::map<std::string,MG_Func*>
-#define NameFuncPair	std::pair<std::string,MG_Func*>
+/* enum for date displaying form */
+enum DATE_DISPLAY {
+	ENG_DATE,		// 2010/12/25
+	FR_DATE,		// 25/12/2010
+	ENG_M3L_DATE,	// 2010-Dec-25
+	FR_M3L_DATE		// 25-Dec-2010
+};

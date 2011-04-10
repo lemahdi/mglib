@@ -48,10 +48,12 @@ EXP	([Ee][-+]?[0-9]+)
 "]" |
 ","		{ return yytext[0]; }
 
-[a-zA-Z][a-zA-Z0-9]* { yylval->cval = strdup(yytext); return token::NAME; }
+[a-zA-Z][a-zA-Z0-9]*							{ yylval->cval = strdup(yytext); return token::NAME; }
+
+[0-3][0-9]"/"[0-1][0-9]"/"[1-2][0-9][0-9][0-9]	{ yylval->lval = manager.ToJulianDay(yytext); return token::DATE; }
 
 [0-9]+"."[0-9]*{EXP}? |
-"."?[0-9]+{EXP}? { yylval->dval = atof(yytext); return token::NUMBER; }
+"."?[0-9]+{EXP}?								{ yylval->dval = atof(yytext); return token::NUMBER; }
 
 \n		{ yylloc->lines(1); return token::EOL; }
 
