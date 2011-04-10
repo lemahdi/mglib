@@ -75,7 +75,7 @@ int main()
 	char ch;
 	//cin >> ch;
 
-	MG_Date vDate(25,12,2010);
+	MG_Date vDate;//(25,12,2010);
 	cout << vDate.ToString(' ', ENG_M3L_DATE) << endl;
 
 	cin >> ch;

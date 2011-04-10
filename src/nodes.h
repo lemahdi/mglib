@@ -1,3 +1,16 @@
+/*
+ * Copyright			: 2010 by MG
+ * File					: nodes.h
+ * Version				: 0.1.11
+ * Last changed			: 12 DEC 2010
+ * Purpose				: MG_FileError is a singleton class for managing error displays
+ *						  MG_Node is a class for each information in the table
+ *						  MG_NodeManager is a class for building each node
+ *						  MG_TableWalker is a class for keeping the coordinates in the description table, like a compass
+ * Author				: MM Akkouh
+ * Notes				: 
+ */
+
 #pragma once
 
 #include <iostream>

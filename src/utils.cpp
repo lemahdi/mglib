@@ -13,7 +13,7 @@ namespace MG_utils
 		vector<char> vInts;
 		while(vTmp != 0)
 		{
-			vInts.push_back(vTmp%10 + '0');
+			vInts.push_back((const char)(vTmp%10) + '0');
 			vTmp /= 10;
 		}
 		size_t vSize = vInts.size();
@@ -36,12 +36,12 @@ namespace MG_utils
 	{
 		string vStr = aStr;
 		char vC;
-		unsigned int vWidth = 'A' - 'a';
+		unsigned int vWidth = (unsigned int)('A' - 'a');
 		for(size_t i=0; i<vStr.size(); i++)
 		{
 			vC = vStr[i];
 			if (vC >= 'a' && vC <= 'z')
-				vStr[i] = vC + vWidth;
+				vStr[i] = vC + (char)vWidth;
 		}
 		return vStr;
 	}

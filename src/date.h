@@ -23,7 +23,6 @@
 #pragma once
 
 #include <iostream>
-#include <time.h>
 #include <string>
 #include <map>
 
@@ -39,9 +38,6 @@ public:
 
 	MG_Date(const long& aJD);
 	MG_Date(const int& aY, const unsigned int& aM, const unsigned int& aD);
-#ifndef __CYGWIN__
-	MG_Date(const time_t& aSysTime);
-#endif
 	MG_Date(const std::string& aDate, const char& aSeparator, const DATE_DISPLAY& aDD);
 
 	/* Assignment operators */

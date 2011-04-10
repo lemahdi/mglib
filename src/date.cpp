@@ -23,7 +23,26 @@ using namespace MG_utils;
  */
 MG_Date::MG_Date() : myJulianDay(0L)
 {
-	MG_Date::JdToYmd(myJulianDay, &myYear, &myMonth, &myDay);
+#ifdef WIN32
+	time_t vSysTime;
+	time(&vSysTime);
+	struct tm vTm;
+	errno_t vErr = localtime(&vTm, &vSysTime);vErr;
+
+	myYear		= vTm.tm_year + 1900;
+	myMonth		= vTm.tm_mon + 1;
+	myDay		= vTm.tm_mday;
+#else
+	struct tm* vTm;
+	time_t vSysTime;
+	vTm = localtime(&vSysTime);
+
+	myYear		= vTm->tm_year + 1900;
+	myMonth		= vTm->tm_mon + 1;
+	myDay		= vTm->tm_mday;
+#endif
+
+	myJulianDay		= MG_Date::YmdToJd(myYear, myMonth, myDay);
 	Rebuild();
 }
 
@@ -50,33 +69,6 @@ MG_Date::MG_Date(	const int& aY, const unsigned int& aM, const unsigned int& aD)
 	myJulianDay = MG_Date::YmdToJd(myYear, myMonth, myDay);
 	Rebuild();
 }
-
-#ifndef __CYGWIN__
-/*
- * Constructor with C time_t struct
- */
-MG_Date::MG_Date(const time_t& aSysTime)
-{
-#ifdef WIN32
-	struct tm vTm;
-	errno_t vErr = localtime(&vTm, &aSysTime);
-
-	myYear		= vTm.tm_year + 1900;
-	myMonth		= vTm.tm_mon + 1;
-	myDay		= vTm.tm_mday;
-#else
-	struct tm* vTm;
-	vTm = localtime(&aSysTime);
-
-	myYear		= vTm->tm_year + 1900;
-	myMonth		= vTm->tm_mon + 1;
-	myDay		= vTm->tm_mday;
-#endif
-
-	myJulianDay		= MG_Date::YmdToJd(myYear, myMonth, myDay);
-	Rebuild();
-}
-#endif
 
 /*
  * Constructor from a julian day

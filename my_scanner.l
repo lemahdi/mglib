@@ -5,17 +5,23 @@
 #include <stdlib.h>
 
 #include "nodes.h"
+
+#pragma warning(push)
+#pragma warning(disable:4512)
+#pragma warning(disable:4267)
+#pragma warning(disable:4996)
+#pragma warning(disable:4003)
+#pragma warning(disable:4018)
+#pragma warning(disable:4244)
+#pragma warning(disable:4512)
+#pragma warning(disable:4127)
+#pragma warning(disable:4100)
+#pragma warning(disable:4505)
+
 #include "my_parser.tab.hpp"
 
 #ifdef WIN32
 #define strdup _strdup
-
-#pragma warning(push)
-  #pragma warning(disable:4267)
-  #pragma warning(disable:4996)
-  #pragma warning(disable:4003)
-  #pragma warning(disable:4018)
-  #pragma warning(disable:4244)
 #endif
 
 #define YY_DECL int yylex(yy::my_parser::semantic_type *yylval, \
