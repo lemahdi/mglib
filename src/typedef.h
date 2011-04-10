@@ -1,3 +1,14 @@
+/*
+ * Copyright			: 2010 by MG
+ * File					: typedef.h
+ * Version				: 0.1.3
+ * Last changed			: 11 JUL 2010
+ * Purpose				: useful definitions file
+ * Author				: MM Akkouh
+ * Notes				: 
+ */
+
+
 #pragma once
 
 
@@ -19,6 +30,8 @@ void yy_delete_buffer (YY_BUFFER_STATE b  );
  * The first element coordinates are (0,0).
  */
 #define Coord std::pair<unsigned int,unsigned int>
+#define PairCoord std::pair< Coord,Coord >
+#define MMCoord std::multimap< Coord,Coord >
 
 /* Coord / Node */
 #define CoordNode std::pair<Coord,MG_Node*>

@@ -1,7 +1,6 @@
 #include "nodes.h"
 #include "func.h"
 #include <algorithm>
-#include <list>
 
 
 using namespace std;
@@ -285,49 +284,45 @@ MG_NodeManager::PostProcess()
 {
 	MG_RefNode* vRefN = NULL;
 	MG_Node* vN = NULL;
-	Coord vC, vCC;
-	list<Coord> vReduceC;
-	list<Coord> vReduceCC;
+
+	Coord vParentC, vChildC;
+	PairCoord vParentChild;
+	vector< Coord > vParentV;
+	map< Coord,bool > vCheck;
+	MMCoord vPCMM;
 
 	for(unsigned int i=0; i<RefNodes.size(); i++)
 	{
 		vRefN = RefNodes[i];
-		vC = vRefN->GetCoord();
-		vCC = vRefN->GetChildCoord();
-		if (vRefN->GetDirection()==FORWARD_NODE || vCC.second>vC.second)
+		vParentC = vRefN->GetCoord();
+		vChildC = vRefN->GetChildCoord();
+		if (vRefN->GetDirection()==FORWARD_NODE || vChildC.second>vParentC.second)
 		{
-			vN = MG_NodeManager::GetNode(vCC);
+			vN = MG_NodeManager::GetNode(vChildC);
 			vRefN->Refresh(vN);
 		}
-		vReduceC.push_back(vC);
-		vReduceCC.push_back(vCC);
+
+		vParentChild = PairCoord(vParentC,vChildC);
+		vParentV.push_back(vParentC);
+		vCheck.insert(pair< Coord,bool >(vParentC,false));
+		vPCMM.insert(vParentChild);
 	}
 
-	/* Check circular reference */
-	vReduceC.sort(); vReduceC.unique();
-	vReduceCC.sort(); vReduceCC.unique();
-	list<Coord>::iterator itC = vReduceC.begin();
-	list<Coord>::iterator itCC;
-	while(itC != vReduceC.end())
+	for(unsigned int i=0; i<vParentV.size(); i++)
 	{
-		itCC = vReduceCC.begin();
-		while (itCC != vReduceCC.end())
-		{
-			if (itCC->first == itC->second)
-			{
-				itC->second = itCC->second;
-				break;
-			}
-			itCC++;
-		}
-		itC++;
+		map< Coord,bool > vCheckCopy(vCheck);
+		CheckCircularReference(vPCMM, vParentV[i], vCheckCopy);
 	}
-	itC = vReduceC.begin();
-	while(itC != vReduceC.end())
-	{
-		assert(itC->first != itC->second);
-		itC++;
-	}
+}
+
+void MG_NodeManager::CheckCircularReference(MMCoord& aPCMM, const Coord& vWalk, map< Coord,bool >& aCheck)
+{
+	assert(aCheck[vWalk] != true);
+	aCheck[vWalk] = true;
+	pair< MMCoord::iterator,MMCoord::iterator > vPMM = aPCMM.equal_range(vWalk);
+	MMCoord::iterator itMMC;
+	for(itMMC=vPMM.first; itMMC!=vPMM.second; ++itMMC)
+		CheckCircularReference(aPCMM, itMMC->second, aCheck);
 }
 
 double
@@ -381,6 +376,8 @@ MG_NodeManager::Eval(MG_Node *aN)
 			case EQ_OP: vVal = Eval(aN->GetL()) == Eval(aN->GetR()); break;
 			case GE_OP: vVal = Eval(aN->GetL()) >= Eval(aN->GetR()); break;
 			case LE_OP: vVal = Eval(aN->GetL()) <= Eval(aN->GetR()); break;
+
+			default: cout << "internal error: bad node " << aN->GetNodeType() << endl;
 			}
 			break;
 		}

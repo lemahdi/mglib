@@ -252,8 +252,13 @@ public:
 	MG_Node* BuildArg		(const MG_TableWalker& walker, MG_Node* aN, MG_Node* aArgN);
 	MG_Node* BuildFunc		(const MG_TableWalker& walker, const char* aRef,MG_Node* aArgN);
 
-	/* Evaluating */
+	/* Rebuilding References */
 	void PostProcess(void);
+private:
+	void CheckCircularReference(MMCoord& aPCMM, const Coord& vWalk, std::map< Coord,bool >& aCheck);
+
+public:
+	/* Evaluating */
 	double Eval(MG_Node* aN);
 
 private:
