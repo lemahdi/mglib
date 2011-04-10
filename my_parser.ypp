@@ -18,7 +18,7 @@ using namespace std;
 %lex-param { NodeManager &manager }
 
 %union {
-	Node* nval;
+	NodePtr nval;
 	double dval;
 	char* cval;
 	int ival;

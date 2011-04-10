@@ -11,9 +11,7 @@
 #define isatty _isatty
 #endif
 
-#include "typedef.h"
 #include "func.h"
-#include "singleton.hpp"
 
 
 /* class FileError
@@ -51,8 +49,8 @@ public:
 	inline unsigned int				GetCurrentRow	(void) const { return myCurrentRow; }
 	inline unsigned int				GetCurrentCol	(void) const { return myCurrentCol; }
 	inline std::vector<std::string>	GetColumnNames	(void) const { return myColumnNames; }
-	inline unsigned int				GetRows			(void) const { return myRows; }
-	inline unsigned int				GetCols			(void) const { return myCols; }
+	inline size_t					GetRows			(void) const { return myRows; }
+	inline size_t					GetCols			(void) const { return myCols; }
 
 	inline unsigned int				IncCurrentRow	(void) { assert(myCurrentRow<myRows); return ++myCurrentRow; }
 	inline unsigned int				IncCurrentCol	(void) { assert(myCurrentCol<myCols); ++myCurrentCol; myCurrentCol%=myCols; return myCurrentCol; }
@@ -67,8 +65,8 @@ private:
 
 	std::vector<std::string> myColumnNames;
 	std::vector<std::string> myFlows;
-	unsigned int myRows;
-	unsigned int myCols;
+	size_t myRows;
+	size_t myCols;
 };
 
 
@@ -79,19 +77,23 @@ class Node
 {
 public:
 	Node(void);
-	Node(const NODE_TYPE& aNodeType, const Coord& aC, Node* aL, Node* aR);
-	virtual ~Node(void);
+	Node(const NODE_TYPE& aNodeType, const Coord& aC, NodePtr aL, NodePtr aR);
+	virtual ~Node(void) {}
 
 	inline NODE_TYPE	GetNodeType	(void) const { return myNodeType; }
-	inline Node*		GetL		(void) const { return myL; }
-	inline Node*		GetR		(void) const { return myR; }
+	inline NodePtr		GetL		(void) const { return myL; }
+	inline NodePtr		GetR		(void) const { return myR; }
+
+	virtual double GetValue(void) const { return MAX_DOUBLE; }
+	virtual void SetValue(const double& ) {}
+	virtual FuncPtr GetFunc(void) const { return FuncPtr(NULL); }
 
 protected:
 	NODE_TYPE	myNodeType;
 	Coord		myCoord;
 
-	Node*		myL;
-	Node*		myR;
+	NodePtr		myL;
+	NodePtr		myR;
 };
 
 /* class NumNode
@@ -101,8 +103,9 @@ class NumNode : public Node
 {
 public:
 	NumNode(const Coord& aC, const double& aVal);
+	virtual ~NumNode(void) {}
 
-	inline double GetValue(void) const { return myValue; }
+	virtual double GetValue(void) const { return myValue; }
 
 protected:
 	double myValue;
@@ -114,8 +117,8 @@ protected:
 class RefNode : public Node
 {
 public:
-	RefNode(const Coord& aC, Node* aN);
-	virtual ~RefNode(void);
+	RefNode(const Coord& aC, NodePtr aN);
+	virtual ~RefNode(void) {}
 };
 
 /* class ArgNode
@@ -124,10 +127,11 @@ public:
 class ArgNode : public Node
 {
 public:
-	ArgNode(const Coord& aC, Node* aN, Node* aArgN);
+	ArgNode(const Coord& aC, NodePtr aN, NodePtr aArgN);
+	virtual ~ArgNode(void) {}
 
-	inline double GetValue(void) const { return myValue; }
-	inline void SetValue(const double& vVal) { myValue = vVal; }
+	virtual double GetValue(void) const { return myValue; }
+	virtual void SetValue(const double& vVal) { myValue = vVal; }
 
 private:
 	double myValue;
@@ -139,12 +143,12 @@ private:
 class FuncNode : public Node
 {
 public:
-	FuncNode(const Coord& aC, Func* aF, Node* aArgN);
+	FuncNode(const Coord& aC, FuncPtr aF, NodePtr aArgN);
 
-	inline Func* GetFunc(void) const { return myFunc; }
+	virtual FuncPtr GetFunc(void) const { return myFunc; }
 
 private:
-	Func* myFunc;
+	FuncPtr myFunc;
 };
 
 
@@ -162,21 +166,21 @@ public:
 
 	/* Accessing */
 public:
-	Node*			GetNode		(const Coord& aC);
-	Node*			GetChildNode(const TableWalker& walker, const char* aRef, const int& aIdx);
+	NodePtr			GetNode		(const Coord& aC);
+	NodePtr			GetChildNode(const TableWalker& walker, const char* aRef, const int& aIdx);
 	unsigned int	Hash		(const Coord& aC);
-	void			Insert		(const Coord& aC, Node* aN);
+	void			Insert		(const Coord& aC, NodePtr aN);
 	bool			CheckIndex	(const char* aIdx);
 
 	/* Building */
-	Node* BuildNode		(const TableWalker& walker, const NODE_TYPE& aNodeType, Node* aL = NULL, Node* aR = NULL);
-	Node* BuildNum		(const TableWalker& walker, const double& aNum);
-	Node* BuildRef		(const TableWalker& walker, const char* aRef, const int& aIdx);
-	Node* BuildArg		(const TableWalker& walker, Node* aN, Node* aArgN);
-	Node* BuildFunc		(const TableWalker& walker, const char* aRef,Node* aArgN);
+	NodePtr BuildNode		(const TableWalker& walker, const NODE_TYPE& aNodeType, NodePtr aL = NULL, NodePtr aR = NULL);
+	NodePtr BuildNum		(const TableWalker& walker, const double& aNum);
+	NodePtr BuildRef		(const TableWalker& walker, const char* aRef, const int& aIdx);
+	NodePtr BuildArg		(const TableWalker& walker, NodePtr aN, NodePtr aArgN);
+	NodePtr BuildFunc		(const TableWalker& walker, const char* aRef, NodePtr aArgN);
 
 	/* Evaluating */
-	double Eval(Node* aN);
+	double Eval(NodePtr aN);
 
 private:
 	/* Map of all nodes */

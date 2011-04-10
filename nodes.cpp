@@ -1,5 +1,4 @@
 #include "nodes.h"
-#include "func.h"
 #include <algorithm>
 
 
@@ -28,37 +27,25 @@ void FileError::Init()
 Node::Node(void) : myNodeType(NODEF_NODE), myL(NULL), myR(NULL)
 {}
 
-Node::Node(const NODE_TYPE& aNodeType, const Coord& aC, Node* aL, Node* aR)
+Node::Node(const NODE_TYPE& aNodeType, const Coord& aC, NodePtr aL, NodePtr aR)
 	: myNodeType(aNodeType), myL(aL), myR(aR), myCoord(aC)
 {}
 
-Node::~Node()
-{
-	if (myL) delete myL;
-	if (myR) delete myR;
-}
-
 NumNode::NumNode(const Coord& aC, const double& aVal)
-	: Node(NUM_NODE, aC, NULL, NULL)
+	: Node(NUM_NODE, aC, NodePtr(NULL), NodePtr(NULL))
 	, myValue(aVal)
 {}
 
-RefNode::RefNode(const Coord& aC, Node* aN)
-	: Node(REF_NODE, aC, aN, NULL)
+RefNode::RefNode(const Coord& aC, NodePtr aN)
+	: Node(REF_NODE, aC, aN, NodePtr(NULL))
 {}
 
-RefNode::~RefNode()
-{
-	// myL is already referenced in AllNodes
-	myL = NULL;
-}
-
-ArgNode::ArgNode(const Coord& aC, Node* aN, Node* aArgN)
+ArgNode::ArgNode(const Coord& aC, NodePtr aN, NodePtr aArgN)
 	: Node(ARG_NODE, aC, aN, aArgN)
 {}
 
-FuncNode::FuncNode(const Coord& aC, Func* aF, Node* aArgN)
-	: Node(FUNC_NODE, aC, aArgN, NULL)
+FuncNode::FuncNode(const Coord& aC, FuncPtr aF, NodePtr aArgN)
+	: Node(FUNC_NODE, aC, aArgN, NodePtr(NULL))
 	, myFunc(aF)
 {}
 
@@ -79,23 +66,23 @@ unsigned int NodeManager::Hash(const Coord& aC)
 	return vHash;
 }
 
-void NodeManager::Insert(const Coord& aC, Node* aN)
+void NodeManager::Insert(const Coord& aC, NodePtr aN)
 {
 	unsigned int vHash = Hash(aC)%NHASH;
-	CoordNode* vCN = AllNodes[vHash];
+	CoordNodePtr vCN = AllNodes[vHash];
 
 	int vNCount = NHASH;
 	while (--vNCount >= 0) {
-		if (!vCN)
+		if (vCN.IsNull())
 		{
-			vCN = new CoordNode();
+			vCN = CoordNodePtr(new CoordNode());
 			AllNodes[vHash] = vCN;
 
 			vCN->first	= aC;
 			vCN->second	= aN;
 			return;
 		}
-		if (vCN->second && vCN->first.first==aC.first && vCN->first.second==aC.second)
+		if (!vCN->second.IsNull() && vCN->first.first==aC.first && vCN->first.second==aC.second)
 		{
 			vCN->second = aN;
 			return;
@@ -120,9 +107,9 @@ bool NodeManager::CheckIndex(const char* aIdx)
 	return true;
 }
 
-Node* NodeManager::GetNode(const Coord& aC)
+NodePtr NodeManager::GetNode(const Coord& aC)
 {
-	Node* vN = NULL;
+	NodePtr vN = NULL;
 	unsigned int vHash = Hash(aC)%NHASH;
 
 	CoordNodeMap::iterator itMap = AllNodes.find(vHash);
@@ -134,7 +121,7 @@ Node* NodeManager::GetNode(const Coord& aC)
 	return vN;
 }
 
-Node* NodeManager::GetChildNode(const TableWalker& walker, const char* aRef, const int& aIdx)
+NodePtr NodeManager::GetChildNode(const TableWalker& walker, const char* aRef, const int& aIdx)
 {
 	unsigned int vCIdx = walker.GetColumn(string(aRef));
 	if (vCIdx != MAX_DESC_TABLE_COLUMNS)
@@ -142,69 +129,69 @@ Node* NodeManager::GetChildNode(const TableWalker& walker, const char* aRef, con
 		int vRIdx = walker.GetCurrentRow() + aIdx;
 		assert(vRIdx >= 0);
 		Coord vC(walker.GetCurrentRow() + aIdx, vCIdx);
-		Node* vN = GetNode(vC);
+		NodePtr vN = GetNode(vC);
 		return vN;
 	}
 
-	return NULL;
+	return NodePtr(NULL);
 }
 
 /* Building */
-Node* NodeManager::BuildNode(const TableWalker& walker, const NODE_TYPE& aNodeType, Node* aL, Node* aR)
+NodePtr NodeManager::BuildNode(const TableWalker& walker, const NODE_TYPE& aNodeType, NodePtr aL, NodePtr aR)
 {
 	Coord vC(walker.GetCurrentRow(), walker.GetCurrentCol());
-	Node* vN = new Node(aNodeType, vC, aL, aR);
+	NodePtr vN = NodePtr(new Node(aNodeType, vC, aL, aR));
 	Insert(vC, vN);
 	return vN;
 }
 
-Node* NodeManager::BuildNum(const TableWalker& walker, const double& aNum)
+NodePtr NodeManager::BuildNum(const TableWalker& walker, const double& aNum)
 {
 	Coord vC(walker.GetCurrentRow(), walker.GetCurrentCol());
-	Node* vN = new NumNode(vC, aNum);
+	NodePtr vN = NodePtr(new NumNode(vC, aNum));
 	Insert(vC, vN);
 	return vN;
 }
 
-Node* NodeManager::BuildRef(const TableWalker& walker, const char* aRef, const int& aIdx)
+NodePtr NodeManager::BuildRef(const TableWalker& walker, const char* aRef, const int& aIdx)
 {
 	Coord vC(walker.GetCurrentRow(), walker.GetCurrentCol());
-	Node* vN = GetChildNode(walker, aRef, aIdx);
-	Node* vNRef = new RefNode(vC, vN);
+	NodePtr vN = GetChildNode(walker, aRef, aIdx);
+	NodePtr vNRef = NodePtr(new RefNode(vC, vN));
 	Insert(vC, vNRef);
 	return vNRef;
 }
 
-Node* NodeManager::BuildArg(const TableWalker &walker, Node *aN, Node *aArgN)
+NodePtr NodeManager::BuildArg(const TableWalker &walker, NodePtr aN, NodePtr aArgN)
 {
 	Coord vC(walker.GetCurrentRow(), walker.GetCurrentCol());
-	Node* vArgN = new ArgNode(vC, aN, aArgN);
+	NodePtr vArgN = NodePtr(new ArgNode(vC, aN, aArgN));
 	Insert(vC, vArgN);
 	return vArgN;
 }
 
-Node* NodeManager::BuildFunc(const TableWalker& walker, const char* aFuncName, Node* aArgN)
+NodePtr NodeManager::BuildFunc(const TableWalker& walker, const char* aFuncName, NodePtr aArgN)
 {
 	Coord vC(walker.GetCurrentRow(), walker.GetCurrentCol());
-	Func* vF = SFuncBuilder::Instance()->GetFunc(string(aFuncName));
-	Node* vFuncN = new FuncNode(vC, vF, aArgN);
+	FuncPtr vF = SFuncBuilder::Instance()->GetFunc(string(aFuncName));
+	NodePtr vFuncN = NodePtr(new FuncNode(vC, vF, aArgN));
 	Insert(vC, vFuncN);
 	return vFuncN;
 }
 
 double
-NodeManager::Eval(Node *aN)
+NodeManager::Eval(NodePtr aN)
 {
 	double vVal = 0;
 
-	if (!aN) {
+	if (aN.IsNull()) {
 		cerr << "ERROR" << endl;
 		return 0;
 	}
 
 	switch(aN->GetNodeType()) {
 		/* constant */
-		case NUM_NODE: vVal = ((NumNode *)aN)->GetValue(); break;
+		case NUM_NODE: vVal = aN->GetValue(); break;
 
 		/* name reference */
 		case REF_NODE: vVal = Eval(aN->GetL()); break;
@@ -212,22 +199,22 @@ NodeManager::Eval(Node *aN)
 		/* function argument */
 		case ARG_NODE:
 			vVal = Eval(aN->GetL());
-			((ArgNode*)aN)->SetValue(vVal);
-			if (aN->GetR()) Eval(aN->GetR());
+			aN->SetValue(vVal);
+			if (!aN->GetR().IsNull()) Eval(aN->GetR());
 			break;
 
 		/* function */
 		case FUNC_NODE:
 			{
-			ArgNode* vArgN = (ArgNode*)(((FuncNode *)aN)->GetL());
+			NodePtr vArgN = aN->GetL();
 			Eval(vArgN);
 			vector<double> vArgVals;
 			while (vArgN != NULL)
 			{
 				vArgVals.push_back(vArgN->GetValue());
-				vArgN = (ArgNode*)(vArgN->GetR());
+				vArgN = vArgN->GetR();
 			}
-			vVal = ((FuncNode *)aN)->GetFunc()->Eval(vArgVals);
+			vVal = aN->GetFunc()->Eval(vArgVals);
 			break;
 			}
 
@@ -272,7 +259,7 @@ unsigned int TableWalker::GetColumn(const string& aColName) const
 	if (it == myColumnNames.end())
 		return MAX_DESC_TABLE_COLUMNS;
 
-	unsigned int index = it - myColumnNames.begin();
+	unsigned int index = (unsigned int)(it - myColumnNames.begin());
 	return index;
 }
 

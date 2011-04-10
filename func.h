@@ -4,16 +4,17 @@
 #include <map>
 #include <vector>
 #include <string>
+#include <assert.h>
 
-#include "singleton.hpp"
 #include "typedef.h"
+#include "singleton.hpp"
 
 
 class Func
 {
 public:
-	Func(void);
-	~Func(void);
+	Func(void) {}
+	virtual ~Func(void) {}
 
 	virtual double Eval(const std::vector<double>& aArgs) = 0;
 };
@@ -21,7 +22,8 @@ public:
 class MaxFunc : public Func
 {
 public:
-	MaxFunc(void);
+	MaxFunc(void) {}
+	virtual ~MaxFunc(void) {}
 
 	virtual double Eval(const std::vector<double>& aArgs);
 };
@@ -29,7 +31,8 @@ public:
 class MinFunc : public Func
 {
 public:
-	MinFunc(void);
+	MinFunc(void) : Func() {}
+	virtual ~MinFunc(void) {}
 
 	virtual double Eval(const std::vector<double>& aArgs);
 };
@@ -37,7 +40,8 @@ public:
 class AbsFunc : public Func
 {
 public:
-	AbsFunc(void);
+	AbsFunc(void) : Func() {}
+	virtual ~AbsFunc(void) {}
 
 	virtual double Eval(const std::vector<double>& aArgs);
 };
@@ -45,7 +49,8 @@ public:
 class ExpFunc : public Func
 {
 public:
-	ExpFunc(void);
+	ExpFunc(void) : Func() {}
+	virtual ~ExpFunc(void) {}
 
 	virtual double Eval(const std::vector<double>& aArgs);
 };
@@ -53,7 +58,8 @@ public:
 class LogFunc : public Func
 {
 public:
-	LogFunc(void);
+	LogFunc(void) : Func() {}
+	virtual ~LogFunc(void) {}
 
 	virtual double Eval(const std::vector<double>& aArgs);
 };
@@ -61,7 +67,8 @@ public:
 class PowFunc : public Func
 {
 public:
-	PowFunc(void);
+	PowFunc(void) : Func() {}
+	virtual ~PowFunc(void) {}
 
 	virtual double Eval(const std::vector<double>& aArgs);
 };
@@ -74,9 +81,9 @@ private:
 	FuncBuilder(void);
 
 public:
-	~FuncBuilder(void);
+	~FuncBuilder(void) {}
 
-	Func* GetFunc(const std::string& aFuncName);
+	inline FuncPtr GetFunc(const std::string& aFuncName) { assert(myFuncs.find(aFuncName)==myFuncs.end()); return myFuncs[aFuncName]; }
 
 private:
 	NameFuncMap myFuncs;

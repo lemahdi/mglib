@@ -1,5 +1,6 @@
 #include "nodes.h"
 #include "my_parser.tab.hpp"
+#include "countedptr.hpp"
 
 using namespace std;
 
@@ -52,18 +53,8 @@ int main()
 	for(unsigned int i=0; i<walker.GetRows(); i++)
 	{
 		Coord c(i,walker.GetCols()-1);
-		Node* n = manager.GetNode(c);
+		NodePtr n = manager.GetNode(c);
 		cout << manager.Eval(n) << endl;
-	}
-
-	for(unsigned int i=0; i<walker.GetRows(); i++)
-	{
-		for(unsigned int j=0; j<walker.GetCols(); j++)
-		{
-			Coord c(i,j);
-			Node* n = manager.GetNode(c);
-			delete n;
-		}
 	}
 
 	SFuncBuilder::Release();
