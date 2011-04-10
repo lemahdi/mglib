@@ -1,22 +1,23 @@
 OUTPUT_BINARY = calculator
-CC = CC
+CC = g++
 
-$(OUTPUT_BINARY): lex.yy.c parser.tab.c routines.c
+$(OUTPUT_BINARY): lex.yy.c cppcalc.tab.cc
 	@echo $@
 	$(CC) -o $@ $^ -L.. -lfl
 
-lex.yy.c: scanner.l parser.tab.c
+lex.yy.c: cppcalc.l cppcalc.tab.cc
 	@echo $@
 	flex $<
 	
-parser.tab.c: parser.y
+cppcalc.l: cppcalc-ctx.hh
+	
+cppcalc.tab.cc: cppcalc.yy
 	@echo $@
 	bison -d $<
 
 clean:
-	rm *.o
 
 lclean: clean
-	rm parser.tab.h
-	rm parser.tab.c
+	rm cppcalc.tab.hh
+	rm cppcalc.tab.cc
 	rm lex.yy.c
