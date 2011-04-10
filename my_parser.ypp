@@ -20,17 +20,18 @@ using namespace std;
 
 %}
 
-%parse-param { MG_TableWalker &walker }
-%parse-param { MG_NodeManager &manager }
-%lex-param { MG_TableWalker &walker }
-%lex-param { MG_NodeManager &manager }
+%parse-param { MG::MG_TableWalker &walker }
+%parse-param { MG::MG_NodeManager &manager }
+%lex-param { MG::MG_TableWalker &walker }
+%lex-param { MG::MG_NodeManager &manager }
 
 %union {
-	MG_Node* nval;
+	MG::MG_Node* nval;
 	double dval;
 	char* cval;
 	int ival;
 	long lval;
+	unsigned int uval;
 }
 
 /* declare tokens */
@@ -39,6 +40,7 @@ using namespace std;
 %token <lval> DATE
 %token EOL
 
+%nonassoc <uval> CMP
 %left '+' '-'
 %left '*' '/'
 %nonassoc '|' UMINUS
@@ -52,7 +54,7 @@ using namespace std;
 %{
 extern int yylex(yy::my_parser::semantic_type *yylval,
 	yy::my_parser::location_type* yyloc,
-	MG_TableWalker &walker, MG_NodeManager &manager);
+	MG::MG_TableWalker &walker, MG::MG_NodeManager &manager);
 
 %}
 
@@ -69,10 +71,11 @@ exp: exp '+' exp			{ $$ = manager.BuildNode(walker, ADD_NODE, $1, $3); }
 	| exp '/' exp			{ $$ = manager.BuildNode(walker, DIV_NODE, $1, $3); }
 	| '(' exp ')'			{ $$ = $2; }
 	| '-' exp %prec UMINUS	{ $$ = manager.BuildNode(walker, NEG_NODE, NULL, $2); }
+	| exp CMP exp			{ $$ = manager.BuildCmpNode(walker, CMP_NODE, $2, $1, $3); }
 	| NUMBER				{ $$ = manager.BuildNum(walker, $1); }
+	| DATE					{ $$ = manager.BuildDate(walker, $1); }
 	| NAME '[' index ']'	{ $$ = manager.BuildRef(walker, $1, $3); free($1); }
 	| NAME '(' arglist ')'	{ $$ = manager.BuildFunc(walker, $1, $3); free($1); }
-	| DATE					{ $$ = manager.BuildDate(walker, $1); }
 ;
 
 index: NAME					{ if (manager.CheckIndex($1)) $$ = 0; }

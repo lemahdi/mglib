@@ -15,6 +15,7 @@
 
 
 using namespace std;
+using namespace MG;
 using namespace MG_utils;
 
 

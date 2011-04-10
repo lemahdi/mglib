@@ -2,7 +2,9 @@
 #include "my_parser.tab.hpp"
 #include "date.h"
 
+
 using namespace std;
+using namespace MG;
 
 int main()
 {
@@ -23,7 +25,7 @@ int main()
 	vFlows.push_back("17/02/2011");
 	vFlows.push_back("17/05/2011");
 	vFlows.push_back("5");
-	vFlows.push_back("3");
+	vFlows.push_back("IF(3>2,3,10)");
 	vFlows.push_back("EXP(-0.05)*(EndDate[i]-ResetDate[i])*MAX(Spot[i]-Strike[i],0)");
 	vFlows.push_back("15/02/2012");
 	vFlows.push_back("17/02/2012");

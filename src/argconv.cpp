@@ -2,6 +2,7 @@
 
 
 using namespace std;
+using namespace MG;
 
 
 MG_ArgConv::MG_ArgConv(const std::string& aDesc, const ArgConvPair vPairs[], const size_t& aSize)

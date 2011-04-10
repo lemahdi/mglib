@@ -1,7 +1,25 @@
+/*
+ * Copyright			: 2010 by MG
+ * File					: countedptr.hpp
+ * Version				: 0.1.15
+ * Last changed			: 22 DEC 2010
+ * Purpose				: CountedPtr is an implementation of the smart pointer
+ *						design pattern
+ * Author				: MM Akkouh
+ * Notes				: 
+ */
+
+
 #pragma once
 
 
 #include <iostream>
+
+#include "typedef.h"
+
+
+MG_NAMESPACE_BEGIN
+
 
 template<class T>
 class CountedPtr;
@@ -12,6 +30,7 @@ public:
 	template<class T,class U>
 	static void CopyOperator(const CountedPtr<T>& aTo, const CountedPtr<U>& aFrom);
 };
+
 
 template<class T,class U>
 void CopyCountedPtr::CopyOperator(const CountedPtr<T>& aTo, const CountedPtr<U>& aFrom)
@@ -110,3 +129,5 @@ private:
 	mutable long*	myCount;
 };
 
+
+MG_NAMESPACE_END

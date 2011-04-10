@@ -7,6 +7,7 @@
 
 
 using namespace std;
+using namespace MG;
 
 
 MG_Func::MG_Func() {}
@@ -66,6 +67,14 @@ double MG_PowFunc::Eval(const vector<double>& aArgs)
 	return pow(aArgs[0],aArgs[1]);
 }
 
+MG_IfFunc::MG_IfFunc() : MG_Func() {}
+
+double MG_IfFunc::Eval(const vector<double>& aArgs)
+{
+	assert(aArgs.size() == 3);
+	return aArgs[0] ? aArgs[1] : aArgs[2];
+}
+
 #ifndef WIN32
 template <>
 #endif
@@ -79,6 +88,7 @@ void MG_FuncBuilder::Init()
 	myFuncs.insert(NameFuncPair("EXP",MG_FuncPtr(new MG_ExpFunc())));
 	myFuncs.insert(NameFuncPair("LOG",MG_FuncPtr(new MG_LogFunc())));
 	myFuncs.insert(NameFuncPair("POW",MG_FuncPtr(new MG_PowFunc())));
+	myFuncs.insert(NameFuncPair("IF",MG_FuncPtr(new MG_IfFunc())));
 }
 
 MG_FuncPtr MG_FuncBuilder::GetFunc(const std::string &aFuncName)

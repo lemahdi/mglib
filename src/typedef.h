@@ -33,6 +33,11 @@ void yy_delete_buffer (YY_BUFFER_STATE b  );
 /* some useful definitions */
 #define MAX_DESC_TABLE_COLUMNS 9999
 
+#define MEMORY_CONTROL_MODE
+
+#define MG_NAMESPACE_BEGIN namespace MG {
+#define MG_NAMESPACE_END }
+
 #define NameFuncMap		std::map<std::string,MG_FuncPtr>
 #define NameFuncPair	std::pair<std::string,MG_FuncPtr>
 
@@ -47,17 +52,30 @@ enum NODE_DIRECTION {
 };
 
 
+/* enum for comparison operator */
+enum COMPARISON_OP
+{
+	GT_OP,
+	LT_OP,
+	NE_OP,
+	EQ_OP,
+	GE_OP,
+	LE_OP
+};
+
+
 /* enum for nodes types */
 enum NODE_TYPE {
 	NODEF_NODE,
-	NUM_NODE,
-	NEG_NODE,
-	DATE_NODE,
-	REF_NODE,
 	ADD_NODE,
 	SUB_NODE,
 	MUL_NODE,
 	DIV_NODE,
+	NEG_NODE,
+	CMP_NODE,
+	NUM_NODE,
+	DATE_NODE,
+	REF_NODE,
 	ARG_NODE,
 	FUNC_NODE
 };

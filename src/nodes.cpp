@@ -1,9 +1,11 @@
 #include "nodes.h"
 #include "func.h"
 #include <algorithm>
+#include <list>
 
 
 using namespace std;
+using namespace MG;
 
 
 /* class MG_FileError */
@@ -25,21 +27,52 @@ void MG_FileError::Init()
  ** class MG_NumNode
  ** class MG_RefNode
  */
+#ifdef MEMORY_CONTROL_MODE
+int MG_Node::ourCounter = 0;
+#endif
+
 MG_Node::MG_Node(void) : myNodeType(NODEF_NODE), myL(NULL), myR(NULL)
-{}
+{
+#ifdef MEMORY_CONTROL_MODE
+	MG_Node::ourCounter++;
+#endif
+}
 
 MG_Node::MG_Node(	const NODE_TYPE& aNodeType
 				,	const Coord& aC
 				,	MG_Node* aL
 				,	MG_Node* aR)
 	: myNodeType(aNodeType), myL(aL), myR(aR), myCoord(aC)
-{}
+{
+#ifdef MEMORY_CONTROL_MODE
+	MG_Node::ourCounter++;
+#endif
+}
 
 MG_Node::~MG_Node()
 {
 	if (myL) delete myL;
 	if (myR) delete myR;
+	
+#ifdef MEMORY_CONTROL_MODE
+	MG_Node::ourCounter--;
+	cout << "Nodes remaining: " << MG_Node::ourCounter << endl;
+	if (MG_Node::ourCounter == 0)
+	{
+		char c;
+		cin >> c;
+	}
+#endif
 }
+
+MG_CmpNode::MG_CmpNode	(	const NODE_TYPE& aNodeType
+						,	const Coord& aC
+						,	const COMPARISON_OP& aCmpOp
+						,	MG_Node* aL
+						,	MG_Node* aR)
+						:	MG_Node(aNodeType, aC, aL, aR)
+						,	myOperator(aCmpOp)
+{}
 
 MG_NumNode::MG_NumNode(const Coord& aC, const double& aVal)
 	: MG_Node(NUM_NODE, aC)
@@ -190,6 +223,17 @@ MG_Node* MG_NodeManager::BuildNode(const MG_TableWalker& walker, const NODE_TYPE
 	return vN;
 }
 
+MG_Node* MG_NodeManager::BuildCmpNode	(	const MG_TableWalker& walker
+										,	const NODE_TYPE& aNodeType
+										,	const unsigned int& aCmpOp
+										,	MG_Node* aL, MG_Node* aR)
+{
+	Coord vC(walker.GetCurrentRow(), walker.GetCurrentCol());
+	MG_Node* vN = new MG_CmpNode(aNodeType, vC, (COMPARISON_OP)aCmpOp, aL, aR);
+	Insert(vC, vN);
+	return vN;
+}
+
 MG_Node* MG_NodeManager::BuildNum(const MG_TableWalker& walker, const double& aNum)
 {
 	Coord vC(walker.GetCurrentRow(), walker.GetCurrentCol());
@@ -212,6 +256,7 @@ MG_Node* MG_NodeManager::BuildRef(const MG_TableWalker& walker, const char* aRef
 	MG_Node* vN = GetChildNode(walker, aRef, aIdx);
 	NODE_DIRECTION vD = (aIdx==0 ? NODIR_NODE : (aIdx<0 ? BACKWARD_NODE : FORWARD_NODE));
 	Coord vCC(walker.GetCurrentRow() + aIdx, walker.GetColumn(string(aRef)));
+	assert(vC != vCC);
 	MG_Node* vNRef = new MG_RefNode(vC, vN, vCC, vD);
 	Insert(vC, vNRef);
 	RefNodes.push_back((MG_RefNode*)vNRef);
@@ -240,16 +285,48 @@ MG_NodeManager::PostProcess()
 {
 	MG_RefNode* vRefN = NULL;
 	MG_Node* vN = NULL;
-	Coord vC;
+	Coord vC, vCC;
+	list<Coord> vReduceC;
+	list<Coord> vReduceCC;
+
 	for(unsigned int i=0; i<RefNodes.size(); i++)
 	{
 		vRefN = RefNodes[i];
-		if (vRefN->GetDirection()==FORWARD_NODE)
+		vC = vRefN->GetCoord();
+		vCC = vRefN->GetChildCoord();
+		if (vRefN->GetDirection()==FORWARD_NODE || vCC.second>vC.second)
 		{
-			vC = vRefN->GetChildCoord();
-			vN = MG_NodeManager::GetNode(vC);
+			vN = MG_NodeManager::GetNode(vCC);
 			vRefN->Refresh(vN);
 		}
+		vReduceC.push_back(vC);
+		vReduceCC.push_back(vCC);
+	}
+
+	/* Check circular reference */
+	vReduceC.sort(); vReduceC.unique();
+	vReduceCC.sort(); vReduceCC.unique();
+	list<Coord>::iterator itC = vReduceC.begin();
+	list<Coord>::iterator itCC;
+	while(itC != vReduceC.end())
+	{
+		itCC = vReduceCC.begin();
+		while (itCC != vReduceCC.end())
+		{
+			if (itCC->first == itC->second)
+			{
+				itC->second = itCC->second;
+				break;
+			}
+			itCC++;
+		}
+		itC++;
+	}
+	itC = vReduceC.begin();
+	while(itC != vReduceC.end())
+	{
+		assert(itC->first != itC->second);
+		itC++;
 	}
 }
 
@@ -292,6 +369,21 @@ MG_NodeManager::Eval(MG_Node *aN)
 			vVal = ((MG_FuncNode *)aN)->GetFunc()->Eval(vArgVals);
 			break;
 			}
+
+		/* comparison */
+		case CMP_NODE:
+		{
+			switch(((MG_CmpNode*)aN)->GetOperator())
+			{
+			case GT_OP: vVal = Eval(aN->GetL()) > Eval(aN->GetR()); break;
+			case LT_OP: vVal = Eval(aN->GetL()) < Eval(aN->GetR()); break;
+			case NE_OP: vVal = Eval(aN->GetL()) != Eval(aN->GetR()); break;
+			case EQ_OP: vVal = Eval(aN->GetL()) == Eval(aN->GetR()); break;
+			case GE_OP: vVal = Eval(aN->GetL()) >= Eval(aN->GetR()); break;
+			case LE_OP: vVal = Eval(aN->GetL()) <= Eval(aN->GetR()); break;
+			}
+			break;
+		}
 
 		/* expressions */
 		case ADD_NODE: vVal = Eval(aN->GetL()) + Eval(aN->GetR()); break;

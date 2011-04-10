@@ -1,4 +1,17 @@
+/*
+ * Copyright			: 2010 by MG
+ * File					: func.h
+ * Version				: 0.1.14
+ * Last changed			: 21 DEC 2010
+ * Purpose				: MG_Func is a base class for creating defined functions
+ *						  MG_FuncBuilder is a singleton class for loading defined functions
+ * Author				: MM Akkouh
+ * Notes				: 
+ */
+
+
 #pragma once
+
 
 #include <iostream>
 #include <map>
@@ -10,6 +23,10 @@
 #include "typedef.h"
 
 #define MG_FuncPtr CountedPtr<MG_Func>
+
+
+MG_NAMESPACE_BEGIN
+
 
 class MG_Func
 {
@@ -68,6 +85,14 @@ public:
 	virtual double Eval(const std::vector<double>& aArgs);
 };
 
+class MG_IfFunc : public MG_Func
+{
+public:
+	MG_IfFunc(void);
+
+	virtual double Eval(const std::vector<double>& aArgs);
+};
+
 class MG_FuncBuilder
 {
 	template<class T> friend class Singleton;
@@ -86,3 +111,6 @@ private:
 	NameFuncMap myFuncs;
 };
 typedef Singleton<MG_FuncBuilder> MG_SFuncBuilder;
+
+
+MG_NAMESPACE_END

@@ -20,13 +20,19 @@
  *						much sense.
  */
 
+
 #pragma once
+
 
 #include <iostream>
 #include <string>
 #include <map>
 
 #include "typedef.h"
+
+
+MG_NAMESPACE_BEGIN
+
 
 class MG_Date
 {
@@ -126,3 +132,5 @@ public:
 
 };
 
+
+MG_NAMESPACE_END

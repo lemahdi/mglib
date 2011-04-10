@@ -4,6 +4,9 @@
 using namespace std;
 
 
+MG_NAMESPACE_BEGIN
+
+
 MG_ArgConv::ArgConvPair MonthsArgConv[] =
 {
 	MG_ArgConv::ArgConvPair("JAN",JAN),
@@ -22,3 +25,5 @@ MG_ArgConv::ArgConvPair MonthsArgConv[] =
 const MG_ArgConv		MonthsConvertor	= MG_ArgConv		("Months Three Letters", MonthsArgConv, NB_MONTHS_3L);
 const MG_ArgConvReverse	MonthsRevertor	= MG_ArgConvReverse	("Months Three Letters", MonthsArgConv, NB_MONTHS_3L);
 
+
+MG_NAMESPACE_END

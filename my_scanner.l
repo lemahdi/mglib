@@ -25,7 +25,7 @@
 #endif
 
 #define YY_DECL int yylex(yy::my_parser::semantic_type *yylval, \
-	yy::my_parser::location_type *yylloc, MG_TableWalker &walker, MG_NodeManager &manager)
+	yy::my_parser::location_type *yylloc, MG::MG_TableWalker &walker, MG::MG_NodeManager &manager)
 
 // make location include the current token
 #define YY_USER_ACTION yylloc->columns(yyleng);
@@ -53,6 +53,13 @@ EXP	([Ee][-+]?[0-9]+)
 "[" |
 "]" |
 ","		{ return yytext[0]; }
+
+">"		{ yylval->uval = GT_OP; return token::CMP; }
+"<"		{ yylval->uval = LT_OP; return token::CMP; }
+"!="	{ yylval->uval = NE_OP; return token::CMP; }
+"=="	{ yylval->uval = EQ_OP; return token::CMP; }
+">="	{ yylval->uval = GE_OP; return token::CMP; }
+"<="	{ yylval->uval = LE_OP; return token::CMP; }
 
 [a-zA-Z][a-zA-Z0-9]*							{ yylval->cval = strdup(yytext); return token::NAME; }
 

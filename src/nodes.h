@@ -11,7 +11,9 @@
  * Notes				: 
  */
 
+
 #pragma once
+
 
 #include <iostream>
 #include <fstream>
@@ -27,6 +29,9 @@
 #include "singleton.hpp"
 #include "func.h"
 #include "date.h"
+
+
+MG_NAMESPACE_BEGIN
 
 
 /* class MG_FileError
@@ -109,6 +114,29 @@ protected:
 
 	MG_Node*		myL;
 	MG_Node*		myR;
+
+#ifdef MEMORY_CONTROL_MODE
+public:
+	static int ourCounter;
+#endif
+};
+
+/* class MG_CmpNode
+ * specific to comparison
+ */
+class MG_CmpNode : public MG_Node
+{
+public:
+	MG_CmpNode	(	const NODE_TYPE& aNodeType
+				,	const Coord& aC
+				,	const COMPARISON_OP& aCmpOp
+				,	MG_Node* aL = NULL
+				,	MG_Node* aR = NULL);
+
+	inline COMPARISON_OP GetOperator(void) const { return myOperator; }
+
+protected:
+	COMPARISON_OP myOperator;
 };
 
 /* class MG_NumNode
@@ -214,6 +242,10 @@ public:
 
 	/* Building */
 	MG_Node* BuildNode		(const MG_TableWalker& walker, const NODE_TYPE& aNodeType, MG_Node* aL = NULL, MG_Node* aR = NULL);
+	MG_Node* BuildCmpNode	(	const MG_TableWalker& walker
+							,	const NODE_TYPE& aNodeType
+							,	const unsigned int& aCmpOp
+							,	MG_Node* aL = NULL, MG_Node* aR = NULL);
 	MG_Node* BuildNum		(const MG_TableWalker& walker, const double& aNum);
 	MG_Node* BuildDate		(const MG_TableWalker& walker, const long& aJD);
 	MG_Node* BuildRef		(const MG_TableWalker& walker, const char* aRef, const int& aIdx);
@@ -230,3 +262,6 @@ private:
 	/* Vector of ref  nodes */
 	std::vector<MG_RefNode*>	RefNodes;
 };
+
+
+MG_NAMESPACE_END
