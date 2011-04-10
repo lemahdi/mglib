@@ -1,172 +1,197 @@
 #include "nodes.h"
-#include <math.h>
+#include <algorithm>
+
 
 using namespace std;
 
-int dorsal::current_row = 0;
-int dorsal::current_col = 0;
-vector<string> dorsal::columns_names = vector<string>();
-int dummy = dorsal::init();
-int dorsal::init(void)
-{
-	for(unsigned int i=0; i<NHASH; i++)
-		coord_node_tab[i] = NULL;
 
-	return 0;
+/* class FileError */
+#ifndef WIN32
+template<>
+#endif
+FileError* SFileError::myInstance = NULL;
+
+void FileError::Init()
+{
+	myFile.open(ERROR_FILE);
+	streambuf *vCerr = myFile.rdbuf();
+	cerr.rdbuf(vCerr);
 }
 
 
-node::node(void) : nodetype(0), l(NULL), r(NULL)
+/* Implentation:
+ ** class Node
+ ** class NumNode
+ ** class RefNode
+ */
+Node::Node(void) : myNodeType(NODEF_NODE), myL(NULL), myR(NULL)
 {}
 
-node::node(coord& _c) : nodetype(0), l(NULL), r(NULL), c(_c)
+Node::Node(const NODE_TYPE& aNodeType, const Coord& aCoord, Node* aL, Node* aR)
+	: myNodeType(aNodeType), myL(aL), myR(aR), myCoord(aCoord)
 {}
 
-node::node(int _nodetype, node* _l, node* _r, coord& _c)
-	: nodetype(_nodetype), l(_l), r(_r), c(_c)
+Node::~Node(void)
+{
+	if (myL) delete myL;
+	if (myR) delete myR;
+}
+
+NumNode::NumNode(const Coord& aCoord, const double& aValue)
+	: Node(NUM_NODE, aCoord, NULL, NULL)
+	, myValue(aValue)
 {}
 
-node::~node(void)
-{
-	if (l) delete l;
-	if (r) delete r;
-}
+RefNode::RefNode(const Coord& aCoord, Node* aL)
+	: Node(REF_NODE, aCoord, aL, NULL)
+{}
 
-num_node::num_node(double _val, coord& _c)
-	: node(_c), val(_val)
+RefNode::~RefNode(void)
 {
-	nodetype = 'K';
-}
-
-ref_node::ref_node(node* _l, coord& _c)
-	: node(_c)
-{
-	nodetype = 'R';
-	l = _l;
-}
-
-ref_node::~ref_node(void)
-{
-	l = NULL; // l is already referenced by the coord_node_tab
+	// myL is already referenced in AllNodes
+	myL = NULL;
 }
 
 
-node* node_builder::build_node(int nodetype, node* l, node* r)
+/* Implementation
+ ** class NodeManager
+ */
+
+/* Accessing */
+unsigned int NodeManager::Hash(const Coord& aC)
 {
-	coord c(dorsal::current_row, dorsal::current_col);
-	node* n = new node(nodetype, l, r, c);
-	dorsal::insert(c, n);
-	return n;
+	unsigned int vHash = 0;
+
+	vHash = 1;
+	vHash = vHash*9 ^ aC.first;
+	vHash = vHash*9 ^ aC.second;
+
+	return vHash;
 }
 
-node* node_builder::build_num(double num)
+void NodeManager::Insert(const Coord& aC, Node* aN)
 {
-	coord c(dorsal::current_row, dorsal::current_col);
-	node* n = new num_node(num, c);
-	dorsal::insert(c, n);
-	return n;
-}
+	unsigned int vHash = Hash(aC)%NHASH;
+	CoordNode* vCN = AllNodes[vHash];
 
-node* node_builder::build_ref(node* n)
-{
-	coord c(dorsal::current_row, dorsal::current_col);
-	node* n_ref = new ref_node(n, c);
-	dorsal::insert(c, n_ref);
-	return n_ref;
-}
-
-
-double
-node_eval::eval(node *n)
-{
-	double v;
-
-	if (!n) {
-		cerr << "ERROR" << endl;
-		return 0;
-	}
-
-	switch(n->nodetype) {
-		/* constant */
-		case 'K': v = ((num_node *)n)->val; break;
-
-		/* name reference */
-		case 'R': v = eval(n->l); break;
-
-		/* expressions */
-		case '+': v = eval(n->l) + eval(n->r); break;
-		case '-': v = eval(n->l) - eval(n->r); break;
-		case '*': v = eval(n->l) * eval(n->r); break;
-		case '/': v = eval(n->l) / eval(n->r); break;
-		case '|': v = fabs(eval(n->l)); break;
-		case 'M': v = -eval(n->r); break;
-
-		default: cout << "internal error: bad node " << n->nodetype << endl;
-	}
-	return v;
-}
-
-
-unsigned int dorsal::hash(coord& c)
-{
-	unsigned int hash = 0;
-
-	hash = 1;
-	hash = hash*9 ^ c.first;
-	hash = hash*9 ^ c.second;
-
-	return hash;
-}
-
-void dorsal::insert(coord& c, node* n)
-{
-	unsigned int hash = dorsal::hash(c)%NHASH;
-	coord_node* cn = coord_node_tab[hash];
-
-	int scount = NHASH;
-	while (--scount >= 0) {
-		if (!cn)
+	int vNCount = NHASH;
+	while (--vNCount >= 0) {
+		if (!vCN)
 		{
-			cn = new coord_node();
-			coord_node_tab[hash] = cn;
+			vCN = new CoordNode();
+			AllNodes[vHash] = vCN;
 
-			cn->first = c;
-			cn->second = n;
+			vCN->first	= aC;
+			vCN->second	= aN;
 			return;
 		}
-		if (cn->second && cn->first.first==c.first && cn->first.second==c.second)
+		if (vCN->second && vCN->first.first==aC.first && vCN->first.second==aC.second)
 		{
-			cn->second = n;
+			vCN->second = aN;
 			return;
 		}
 
-		if (++cn >= *coord_node_tab+NHASH)
-			cn = *coord_node_tab;
+		if (vHash >= NHASH)
+			vCN = AllNodes[0];
 	}
 
 	cerr << "ERROR" << endl;
 	return;
 }
 
-node* dorsal::get(coord& c)
+Node* NodeManager::GetNode(const Coord& aC)
 {
-	unsigned int hash = dorsal::hash(c)%NHASH;
-	node* n = coord_node_tab[hash]->second;
-	return n;
+	unsigned int vHash = Hash(aC)%NHASH;
+	Node* vN = AllNodes[vHash]->second;
+	return vN;
 }
 
-node* dorsal::child_coord(char* s)
+Node* NodeManager::GetChildNode(const TableWalker& walker, const char* ref)
 {
-	for(unsigned int i=0; i<dorsal::columns_names.size(); i++)
+	unsigned int index = walker.GetColumn(string(ref));
+	if (index != MAX_DESC_TABLE_COLUMNS)
 	{
-		if (!strcmp(dorsal::columns_names[i].c_str(), s))
-		{
-			coord c(dorsal::current_row, i);
-			node* n = dorsal::get(c);
-			return n;
-		}
+		Coord vC(walker.GetCurrentRow(), index);
+		Node* vN = GetNode(vC);
+		return vN;
 	}
 
-	cerr << "ERROR" << endl;
 	return NULL;
 }
+
+/* Building */
+Node* NodeManager::BuildNode(const TableWalker& walker, const NODE_TYPE& aNodeType, Node* aL, Node* aR)
+{
+	Coord vC(walker.GetCurrentRow(), walker.GetCurrentCol());
+	Node* vN = new Node(aNodeType, vC, aL, aR);
+	Insert(vC, vN);
+	return vN;
+}
+
+Node* NodeManager::BuildNum(const TableWalker& walker, const double& aNum)
+{
+	Coord vC(walker.GetCurrentRow(), walker.GetCurrentCol());
+	Node* vN = new NumNode(vC, aNum);
+	Insert(vC, vN);
+	return vN;
+}
+
+Node* NodeManager::BuildRef(const TableWalker& walker, Node* aN)
+{
+	Coord vC(walker.GetCurrentRow(), walker.GetCurrentCol());
+	Node* vNRef = new RefNode(vC, aN);
+	Insert(vC, vNRef);
+	return vNRef;
+}
+
+
+double
+NodeManager::Eval(Node *aN)
+{
+	double vVal;
+
+	if (!aN) {
+		cerr << "ERROR" << endl;
+		return 0;
+	}
+
+	switch(aN->GetNodeType()) {
+		/* constant */
+		case NUM_NODE: vVal = ((NumNode *)aN)->GetValue(); break;
+
+		/* name reference */
+		case REF_NODE: vVal = Eval(aN->GetL()); break;
+
+		/* expressions */
+		case ADD_NODE: vVal = Eval(aN->GetL()) + Eval(aN->GetR()); break;
+		case SUB_NODE: vVal = Eval(aN->GetL()) - Eval(aN->GetR()); break;
+		case MUL_NODE: vVal = Eval(aN->GetL()) * Eval(aN->GetR()); break;
+		case DIV_NODE: vVal = Eval(aN->GetL()) / Eval(aN->GetR()); break;
+		case NEG_NODE: vVal = -Eval(aN->GetR()); break;
+
+		default: cout << "internal error: bad node " << aN->GetNodeType() << endl;
+	}
+
+	return vVal;
+}
+
+
+/* Implementation
+ ** class TableWalker
+ */
+TableWalker::TableWalker()
+{
+	myCurrentRow = 0;
+	myCurrentCol = 0;
+}
+
+unsigned int TableWalker::GetColumn(const string& aColName) const
+{
+	vector<string>::const_iterator it = find(myColumnNames.begin(), myColumnNames.end(), aColName);
+	if (it == myColumnNames.end())
+		return MAX_DESC_TABLE_COLUMNS;
+
+	unsigned int index = it - myColumnNames.begin();
+	return index;
+}
+

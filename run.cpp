@@ -5,10 +5,18 @@ using namespace std;
 
 int main()
 {
-	dorsal::columns_names.push_back("Date");
-	dorsal::columns_names.push_back("Spot");
-	dorsal::columns_names.push_back("Strike");
-	dorsal::columns_names.push_back("Spot-Strike");
+	SFileError::Instance()->Init();
+
+	TableWalker walker;
+	NodeManager manager;
+	yy::my_parser parser(walker, manager);	// make a cpp calc parser
+
+	vector<string> vColNames;
+	vColNames.push_back("Date");
+	vColNames.push_back("Spot");
+	vColNames.push_back("Strike");
+	vColNames.push_back("Payoff");
+	walker.SetColumnNames(vColNames);
 	
 	vector<string> flows;
 	flows.push_back("2123");
@@ -16,34 +24,32 @@ int main()
 	flows.push_back("3");
 	flows.push_back("Spot-Strike");
 
-	coord cd;
 	//cout << "> ";
-	yy::my_parser parser(cd);	// make a cpp calc parser
-
 	for(unsigned int i=0; i<flows.size(); i++)
 	{
-		yyconst char* text = flows[i].c_str();
+		const char* text = flows[i].c_str();
 		YY_BUFFER_STATE bp = yy_scan_string(text);
-		yy_switch_to_buffer(bp);
 		parser.parse();		// and run it
 		yy_flush_buffer(bp);
 		yy_delete_buffer(bp);
-		dorsal::current_col++;
+		walker.IncCurrentCol();
 	}
 
-	coord c(dorsal::current_row,dorsal::current_col-1);
-	node* n = dorsal::get(c);
-	cout << node_eval::eval(n) << endl;
+	Coord c(walker.GetCurrentRow(),walker.GetCurrentCol()-1);
+	Node* n = manager.GetNode(c);
+	cout << manager.Eval(n) << endl;
 
-	for(int i=0; i<=dorsal::current_row; i++)
+	for(unsigned int i=0; i<=walker.GetCurrentRow(); i++)
 	{
-		for(int j=0; j<dorsal::current_col; j++)
+		for(unsigned int j=0; j<walker.GetCurrentCol(); j++)
 		{
-			c = coord(i,j);
-			n = dorsal::get(c);
+			c = Coord(i,j);
+			n = manager.GetNode(c);
 			delete n;
 		}
 	}
+
+	SFileError::Release();
 
 	char ch;
 	cin >> ch;

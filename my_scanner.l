@@ -8,13 +8,12 @@
 #include "my_parser.tab.hpp"
 
 #define YY_DECL int yylex(yy::my_parser::semantic_type *yylval, \
-	yy::my_parser::location_type *yylloc, coord &cd)
+	yy::my_parser::location_type *yylloc, TableWalker &walker, NodeManager &manager)
 
 // make location include the current token
 #define YY_USER_ACTION yylloc->columns(yyleng);
 
 typedef yy::my_parser::token token;
-extern coord* child_coord(char *s); // defined in the parser
 %}
 
 /* float exponent */
@@ -32,12 +31,10 @@ EXP	([Ee][-+]?[0-9]+)
 "-" |
 "*" |
 "/" |
-"=" |
-"|" |
 "(" |
 ")"		{ return yytext[0]; }
 
-[a-zA-Z][a-zA-Z0-9]* { yylval->nval = dorsal::child_coord(yytext); return token::NAME; }
+[a-zA-Z][a-zA-Z0-9]* { yylval->nval = manager.GetChildNode(walker, yytext); return token::NAME; }
 
 [0-9]+"."[0-9]*{EXP}? |
 "."?[0-9]+{EXP}? { yylval->dval = atof(yytext); return token::NUMBER; }

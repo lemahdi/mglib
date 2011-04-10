@@ -1,90 +1,145 @@
 #include <iostream>
+#include <fstream>
 #include <vector>
 #include <string>
+#include <map>
+#include <assert.h>
 #ifdef WIN32
 #include <io.h>
 #define isatty _isatty
 #endif
 
-/* coordinates */
-#define coord std::pair<unsigned int,unsigned int>
+#include "typedef.h"
+#include "singleton.hpp"
 
-#define yyconst const
-typedef struct yy_buffer_state *YY_BUFFER_STATE;
-YY_BUFFER_STATE yy_scan_string (yyconst char *yy_str  );
-void yy_switch_to_buffer (YY_BUFFER_STATE new_buffer  );
-void yy_flush_buffer (YY_BUFFER_STATE b  );
-void yy_delete_buffer (YY_BUFFER_STATE b  );
 
-/* node types
- * M unary minus
- * K number
- * R reference
+/* class FileError
+ * keeping a trace of Lexer and Paser errors
  */
+class FileError
+{
+	template<class T> friend class Singleton;
 
-class node
+private:
+	FileError(void) {}
+
+public:
+	void Init(void);
+
+private:
+	std::ofstream myFile;
+};
+typedef Singleton<FileError> SFileError;
+
+
+/* Table Walker class
+ * Simple class providing current cell coordinates
+ * and table column names
+ */
+class TableWalker
 {
 public:
-	node(void);
-	node(coord& _c);
-	node(int _nodetype, node* _l, node* _r, coord& _c);
-	virtual ~node(void);
+	TableWalker(void);
+	virtual ~TableWalker(void) {}
 
-	int nodetype;
-	coord c;
+public:
+	/* accessors */
+	inline unsigned int				GetCurrentRow	(void) const { return myCurrentRow; }
+	inline unsigned int				GetCurrentCol	(void) const { return myCurrentCol; }
+	inline std::vector<std::string>	GetColumnNames	(void) const { return myColumnNames; }
 
-	node* l;
-	node* r;
+	inline unsigned int				IncCurrentRow	(void) { return ++myCurrentRow; }
+	inline unsigned int				IncCurrentCol	(void) { assert(myCurrentCol<MAX_DESC_TABLE_COLUMNS); return ++myCurrentCol; }
+	inline unsigned int				DecCurrentRow	(void) { return --myCurrentRow; }
+	inline unsigned int				DecCurrentCol	(void) { return --myCurrentCol; }
+
+	unsigned int GetColumn(const std::string& aColName) const;
+
+	inline void SetColumnNames(const std::vector<std::string>& aColNames) { myColumnNames = aColNames; }
+
+private:
+	unsigned int myCurrentRow;
+	unsigned int myCurrentCol;
+
+	std::vector<std::string> myColumnNames;
 };
 
-class num_node : public node
+
+/* class Node
+ * a syntaxic tree of all tokens
+ */
+class Node
 {
 public:
-	num_node(double _val, coord& _c);
-	double val;
+	Node(void);
+	Node(const NODE_TYPE& aNodeType, const Coord& aCoord, Node* aL, Node* aR);
+	virtual ~Node(void);
+
+	inline NODE_TYPE	GetNodeType	(void) const { return myNodeType; }
+	inline Node*		GetL		(void) const { return myL; }
+	inline Node*		GetR		(void) const { return myR; }
+
+protected:
+	NODE_TYPE	myNodeType;
+	Coord		myCoord;
+
+	Node*		myL;
+	Node*		myR;
 };
 
-class ref_node : public node
+/* class NumNode
+ * specific to a double cell
+ */
+class NumNode : public Node
 {
 public:
-	ref_node(node* l, coord& _c);
-	virtual ~ref_node(void);
+	NumNode(const Coord& aCoord, const double& aValue);
+
+	inline double GetValue(void) const { return myValue; }
+
+protected:
+	double myValue;
 };
 
-/* build a node */
-class node_builder
+/* class RefNode
+ * specific to a reference cell
+ */
+class RefNode : public Node
 {
 public:
-	static node* build_node(int nodetype, node* l = NULL, node* r = NULL);
-	static node* build_num(double num);
-	static node* build_ref(node* n);//récupère le node de coord c et le fait pointer par l
+	RefNode(const Coord& aCoord, Node* aL);
+	virtual ~RefNode(void);
 };
 
-/* evaluate a node */
-class node_eval
+
+/* A class for managing nodes
+ ** Initializing
+ ** Accessing
+ ** Building
+ ** Evaluating
+ */
+class NodeManager
 {
 public:
-	static double eval(node* );
-};
+	NodeManager(void) {}
+	virtual ~NodeManager(void) {}
 
-/* coord / node */
-#define coord_node std::pair<coord,node*>
-
-/* simple reference tab of fixed size */
-#define NHASH 9997
-static coord_node* coord_node_tab[NHASH];
-
-class dorsal
-{
+	/* Accessing */
 public:
-	static int dorsal::init(void);
-	static unsigned int hash(coord& );
-	static void insert(coord& cd, node* );
-	static node* get(coord& c);
-	static node* child_coord(char* s);
+	Node*			GetNode		(const Coord& aC);
+	Node*			GetChildNode(const TableWalker& walker, const char* ref);
+	unsigned int	Hash		(const Coord& aC);
+	void			Insert		(const Coord& aC, Node* aN);
 
-public:
-	static int current_row;
-	static int current_col;
-	static std::vector<std::string> columns_names;
+	/* Building */
+	Node* BuildNode	(const TableWalker& walker, const NODE_TYPE& aNodeType, Node* aL = NULL, Node* aR = NULL);
+	Node* BuildNum	(const TableWalker& walker, const double& aNum);
+	Node* BuildRef	(const TableWalker& walker, Node* aN);
+
+	/* Evaluating */
+	double Eval(Node* aN);
+
+private:
+	/* Map of all nodes */
+	CoordNodeMap AllNodes;
 };
