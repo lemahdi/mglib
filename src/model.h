@@ -19,11 +19,17 @@ MG_NAMESPACE_BEGIN
 
 
 /* Base class for models */
-class MG_Model
+class MG_Model : public MG_Object
 {
 public:
 	/* Constructors / Destructor */
 	MG_Model(void);
+	MG_Model(const MG_Model& aRight);
+	ASSIGN_OPERATOR(MG_Model)
+	CLONE_METHOD(MG_Model)
+	SWAP_DECL(MG_Model)
+	virtual ~MG_Model(void);
+
 	MG_Model(const MG_Date& aAsOf);
 
 private:
@@ -35,11 +41,18 @@ class MG_BSModel : public MG_Model
 {
 public:
 	MG_BSModel(void);
+	// self-generated copy-constructor is enough
+	ASSIGN_OPERATOR(MG_BSModel)
+	CLONE_METHOD(MG_BSModel)
+	SWAP_DECL(MG_BSModel)
+	virtual ~MG_BSModel(void);
+
 	MG_BSModel(const MG_Date& aAsOf, const double& aVol);
 
+public:
 	/* Functions */
-	double CallPrice(const double& aSpot, const double& aStrike, const double& aMaturity);
-	double PutPrice(const double& aSpot, const double& aStrike, const double& aMaturity);
+	double CallPrice(const double& aFwd, const double& aStrike, const double& aMaturity);
+	double PutPrice(const double& aFwd, const double& aStrike, const double& aMaturity);
 
 private:
 	double myVol;

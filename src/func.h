@@ -20,9 +20,6 @@
 
 #include "singleton.hpp"
 #include "countedptr.hpp"
-#include "typedef.h"
-
-#define MG_FuncPtr CountedPtr<MG_Func>
 
 
 MG_NAMESPACE_BEGIN
@@ -32,7 +29,7 @@ class MG_Func
 {
 public:
 	MG_Func(void);
-	~MG_Func(void);
+	virtual ~MG_Func(void);
 
 	virtual double Eval(const std::vector<double>& aArgs) = 0;
 };

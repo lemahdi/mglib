@@ -18,56 +18,69 @@
  *						will not result from insane day-month combinations like the 87th
  *						day of the 45th month, but the results will obviously not make
  *						much sense.
+ *						http://www.xmission.com/~tknarr/code/Date.html
  */
 
 
 #pragma once
 
 
-#include <iostream>
 #include <string>
 #include <map>
 
-#include "typedef.h"
+#include "object.h"
 
 
 MG_NAMESPACE_BEGIN
 
 
-class MG_Date
+class MG_Date : public MG_Object
 {
 public:
 	/* Constructors / Destructor */
     MG_Date(void);
-    MG_Date(const MG_Date& aFrom);
-	~MG_Date(void) {}
+    MG_Date(const MG_Date& aRight);
+	ASSIGN_OPERATOR(MG_Date)
+	CLONE_METHOD(MG_Date)
+	SWAP_DECL(MG_Date)
+	~MG_Date(void);
 
+public:
 	MG_Date(const long& aJD);
 	MG_Date(const int& aY, const unsigned int& aM, const unsigned int& aD);
 	MG_Date(const std::string& aDate, const char& aSeparator, const DATE_DISPLAY& aDD);
 
 	/* Assignment operators */
-    MG_Date& operator= (const MG_Date& aFrom);
-    MG_Date& operator+= (const long& vRight);
-    MG_Date& operator-= (const long& vRight);
+	MG_Date& operator+= (const long& aRight);
+	MG_Date& operator-= (const long& aRight);
+	MG_Date& operator+= (const MG_Date& aRight);
+	MG_Date& operator-= (const MG_Date& aRight);
 
 	/* Arithmetic operators */
-    long operator+ (const MG_Date& vRight);
-    long operator- (const MG_Date& vRight);
-    
+	/* Prefix */
 	MG_Date& operator++ (void);
-    MG_Date& operator-- (void);
+	MG_Date& operator-- (void);
+	/* Postfix */
+	MG_Date operator++ (int);
+	MG_Date operator-- (int);
 
 	/* logical operators */
-	bool operator==	(const MG_Date& vRight) const;
-	bool operator!=	(const MG_Date& vRight) const;
-	bool operator<	(const MG_Date& vRight) const;
-	bool operator<=	(const MG_Date& vRight) const;
-	bool operator>	(const MG_Date& vRight) const;
-	bool operator>=	(const MG_Date& vRight) const;
+	bool operator==	(const MG_Date& aRight) const;
+	bool operator!=	(const MG_Date& aRight) const;
+	bool operator<	(const MG_Date& aRight) const;
+	bool operator<=	(const MG_Date& aRight) const;
+	bool operator>	(const MG_Date& aRight) const;
+	bool operator>=	(const MG_Date& aRight) const;
 
 	/* Accessors */
-	inline long GetJulianDay(void) const { return myJulianDay; }
+	inline long			GetJulianDay	(void) const { return myJulianDay; }
+	inline unsigned int	GetDay			(void) const { return myDay; }
+	inline unsigned int	GetMonth		(void) const { return myMonth; }
+	inline int			GetYear			(void) const { return myYear; }
+	inline bool			IsLeapYear		(void) const { return myIsLeapYear; }
+	inline unsigned int	GetDayOfWeek	(void) const { return myDayOfWeek; }
+	inline unsigned int	GetDayOfWorkWeek(void) const { return myDayOfWorkWeek; }
+	inline unsigned int	GetDayOfYear	(void) const { return myDayOfYear; }
 
 	/* String function */
 	std::string ToString(const char& aSeparator, const DATE_DISPLAY& aDD = FR_DATE) const;
@@ -92,7 +105,7 @@ private:
 
 private:
 	/* static functions */
-    static void JdToYmd(const long& aJD, int* aY, unsigned int* aM, unsigned int* aD);
+    static void JdToYmd(const long& aJD, int& aY, unsigned int& aM, unsigned int& aD);
     static long YmdToJd(const int& aY, const unsigned int& aM, const unsigned int& aD);
 
     static bool IsLeapYear(const int& aY);
@@ -105,29 +118,29 @@ public:
 
 public:
 	/* friend functions */
-	friend MG_Date operator+ (const MG_Date& vLeft, const long& vRight)
+	friend MG_Date operator+ (MG_Date vLeft, const long& vRight)
 	{
-		long vJD = vLeft.myJulianDay + vRight;
-		MG_Date vDate(vJD);
-		return vDate;
+		return vLeft += vRight;
 	}
-	friend MG_Date operator+ (const long& vLeft, const MG_Date& vRight)
+	friend MG_Date operator+ (const long& vLeft, MG_Date vRight)
 	{
-		long vJD = vLeft + vRight.myJulianDay;
-		MG_Date vDate(vJD);
-		return vDate;
+		return vRight += vLeft;
 	}
-	friend MG_Date operator- (const MG_Date& vLeft, const long& vRight)
+	friend MG_Date operator+ (const MG_Date& vLeft, MG_Date vRight)
 	{
-		long vJD = vLeft.myJulianDay - vRight;
-		MG_Date vDate(vJD);
-		return vDate;
+		return vRight += vLeft;
 	}
-	friend MG_Date operator- (const long& vLeft, const MG_Date& vRight)
+	friend MG_Date operator- (MG_Date vLeft, const long& vRight)
 	{
-		long vJD = vLeft - vRight.myJulianDay;
-		MG_Date vDate(vJD);
-		return vDate;
+		return vLeft -= vRight;
+	}
+	friend MG_Date operator- (const long& vLeft, MG_Date vRight)
+	{
+		return vRight -= vLeft;
+	}
+	friend MG_Date operator- (const MG_Date& vLeft, MG_Date vRight)
+	{
+		return vRight -= vLeft;
 	}
 
 };

@@ -5,7 +5,8 @@
  * Last changed			: 25 DEC 2010
  * Purpose				: Specializations of MG_ArgConv  and MG_ArgConvReverse
  * Author				: MM Akkouh
- * Notes				: 
+ * Notes				: 3 letters months name
+ *						  3 letters currencies name
  */
 
 
@@ -38,6 +39,20 @@ enum MONTHS_3L
 
 extern const MG_ArgConv			MonthsConvertor;
 extern const MG_ArgConvReverse	MonthsRevertor;
+
+
+enum CURRENCY_NAME
+{
+	USD,
+	EUR,
+	JPY,
+	GBP,
+
+	NB_CURRENCIES
+};
+
+extern const MG_ArgConv			CurrenciesNameConvertor;
+extern const MG_ArgConvReverse	CurrenciesNameRevertor;
 
 
 MG_NAMESPACE_END

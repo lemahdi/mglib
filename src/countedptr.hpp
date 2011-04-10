@@ -109,9 +109,14 @@ public:
 		return myPtr!=aCPtr.myPtr;
 	}
 
-	bool IsNull(void)
+	/*bool IsNull(void)
 	{
 		return myPtr==NULL ? true : false;
+	}*/
+
+	bool operator() (void)
+	{
+		return myPtr ? true : false;
 	}
 
 private:

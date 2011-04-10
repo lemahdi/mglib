@@ -21,8 +21,41 @@ void yy_flush_buffer (YY_BUFFER_STATE b  );
 void yy_delete_buffer (YY_BUFFER_STATE b  );
 
 
+/* Some useful math constant definitions */
+#define PI						3.141592653589793
+#define ROOTTWO					1.4142135623730951
+#define ONEOVERROOTTWOPI		0.3989422804014327
+#define ONEOVERROOTPI			0.56418958354775628
+#define ROOTTWOPI				2.5066282746310002
+#define NORMALCUMULATIVEBOUND	7.
+
+
 /* Error file for Lexer and Parser */
 #define ERROR_FILE "error_log.txt"
+
+
+/* Some useful functions */
+#define ASSIGN_OPERATOR(CLASS)					\
+	CLASS& CLASS::operator= (CLASS aFrom)		\
+	{											\
+		Swap(aFrom);							\
+		return *this;							\
+	}
+
+#define FAKE_ASSIGN_OPERATOR(CLASS)									\
+	CLASS& CLASS::operator= (const CLASS& )							\
+	{																\
+		assert("Assignement operator not allowed for this class");	\
+	}
+
+#define CLONE_METHOD(CLASS) \
+	MG_Object* Clone(void) { return new CLASS(*this); }
+
+#define SWAP_DECL(CLASS)	\
+	void Swap(CLASS& aRight);
+
+#define MG_THROW(MSG)		\
+	throw MG_Exception(__FILE__, __LINE__, MSG);
 
 
 /* Coord is is a pair.
@@ -54,7 +87,13 @@ void yy_delete_buffer (YY_BUFFER_STATE b  );
 #define NameFuncMap		std::map<std::string,MG_FuncPtr>
 #define NameFuncPair	std::pair<std::string,MG_FuncPtr>
 
-//#define MG_Date Date
+
+/* CountedPtr definitions */
+#define MG_FuncPtr			CountedPtr<MG_Func>
+#define MG_RandomPtr		CountedPtr<MG_Random>
+#define MG_SamplerPtr		CountedPtr<MG_Sampler>
+#define MG_UnaryFuncPtr		CountedPtr<MG_UnaryFunc>
+#define MG_InterpolatorPtr	CountedPtr<MG_Interpolator>
 
 
 /* enum for node direction */
@@ -100,4 +139,10 @@ enum DATE_DISPLAY {
 	FR_DATE,		// 25/12/2010
 	ENG_M3L_DATE,	// 2010-Dec-25
 	FR_M3L_DATE		// 25-Dec-2010
+};
+
+
+/* enum for interpolation methdos */
+enum INTERPOL_METHOD {
+	LIN_INTERPOL			// linear interpol method
 };

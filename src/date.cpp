@@ -1,11 +1,10 @@
 #include "date.h"
 #include "argconvdef.h"
+#include "utils.h"
 
 #include <time.h>
 #include <assert.h>
 #include <sstream>
-
-#include "utils.h"
 
 
 #ifdef WIN32
@@ -22,7 +21,7 @@ using namespace MG_utils;
 /*
  * Default constructor
  */
-MG_Date::MG_Date() : myJulianDay(0L)
+MG_Date::MG_Date() : MG_Object(), myJulianDay(0L)
 {
 #ifdef WIN32
 	time_t vSysTime;
@@ -50,22 +49,35 @@ MG_Date::MG_Date() : myJulianDay(0L)
 /*
  * Copy constructor
  */
-MG_Date::MG_Date(	const MG_Date& aFrom)
-				:	myJulianDay		(aFrom.myJulianDay)
-				,	myYear			(aFrom.myYear)
-				,	myMonth			(aFrom.myMonth)
-				,	myDay			(aFrom.myDay)
-				,	myIsLeapYear	(aFrom.myIsLeapYear)
-				,	myDayOfWeek		(aFrom.myDayOfWeek)
-				,	myDayOfWorkWeek	(aFrom.myDayOfWorkWeek)
-				,	myDayOfYear		(aFrom.myDayOfYear)
+MG_Date::MG_Date(	const MG_Date& aRight)
+				:	MG_Object(aRight)
+				,	myJulianDay		(aRight.myJulianDay)
+				,	myYear			(aRight.myYear)
+				,	myMonth			(aRight.myMonth)
+				,	myDay			(aRight.myDay)
+				,	myIsLeapYear	(aRight.myIsLeapYear)
+				,	myDayOfWeek		(aRight.myDayOfWeek)
+				,	myDayOfWorkWeek	(aRight.myDayOfWorkWeek)
+				,	myDayOfYear		(aRight.myDayOfYear)
 {}
+
+void MG_Date::Swap(MG_Date& aRight)
+{
+	swap(myJulianDay,		aRight.myJulianDay);
+	swap(myDay,				aRight.myDay);
+	swap(myMonth,			aRight.myMonth);
+	swap(myYear,			aRight.myYear);
+	swap(myIsLeapYear,		aRight.myIsLeapYear);
+	swap(myDayOfWeek,		aRight.myDayOfWeek);
+	swap(myDayOfWorkWeek,	aRight.myDayOfWorkWeek);
+	swap(myDayOfYear,		aRight.myDayOfYear);
+}
 
 /*
  * Constructor YYYY MM DD
  */
 MG_Date::MG_Date(	const int& aY, const unsigned int& aM, const unsigned int& aD)
-				:	myYear(aY), myMonth(aM), myDay(aD)
+				:	MG_Object(), myYear(aY), myMonth(aM), myDay(aD)
 {
 	myJulianDay = MG_Date::YmdToJd(myYear, myMonth, myDay);
 	Rebuild();
@@ -75,16 +87,20 @@ MG_Date::MG_Date(	const int& aY, const unsigned int& aM, const unsigned int& aD)
  * Constructor from a julian day
  */
 MG_Date::MG_Date(	const long& aJD)
-				:	myJulianDay(aJD)
+				:	MG_Object()
+				,	myJulianDay(aJD)
 {
-	MG_Date::JdToYmd(myJulianDay, &myYear, &myMonth, &myDay);
+	MG_Date::JdToYmd(myJulianDay, myYear, myMonth, myDay);
 	Rebuild();
 }
 
 /*
  * Constructor by string DD/MM/YYYY or YYYY-DD-MM or YYYY MMM DD
  */
-MG_Date::MG_Date(const string& aDate, const char& aSeparator, const DATE_DISPLAY& aDD)
+MG_Date::MG_Date(	const string& aDate
+				,	const char& aSeparator
+				,	const DATE_DISPLAY& aDD)
+				:	MG_Object()
 {
 	if (aDate.find(aSeparator) == string::npos)
 	{
@@ -141,89 +157,96 @@ MG_Date::MG_Date(const string& aDate, const char& aSeparator, const DATE_DISPLAY
 	Rebuild();
 }
 
+MG_Date::~MG_Date()
+{}
+
 /*
  * Assignment operators
  */
-MG_Date& MG_Date::operator= (const MG_Date& aFrom)
+MG_Date& MG_Date::operator+= (const long& aRight)
 {
-	myJulianDay		= aFrom.myJulianDay;
-	myYear			= aFrom.myYear;
-	myMonth			= aFrom.myMonth;
-	myDay			= aFrom.myDay;
-	myIsLeapYear	= aFrom.myIsLeapYear;
-	myDayOfWeek		= aFrom.myDayOfWeek;
-	myDayOfWorkWeek	= aFrom.myDayOfWorkWeek;
-	myDayOfYear		= aFrom.myDayOfYear;
+	myJulianDay += aRight;
+	MG_Date::JdToYmd(myJulianDay, myYear, myMonth, myDay);
+	Rebuild();
 	return *this;
 }
-
-MG_Date& MG_Date::operator+= (const long& vRight)
+MG_Date& MG_Date::operator-= (const long& aRight)
 {
-	myJulianDay += vRight;
-	MG_Date vDate(myJulianDay);
-	*this = vDate;
+	myJulianDay -= aRight;
+	MG_Date::JdToYmd(myJulianDay, myYear, myMonth, myDay);
+	Rebuild();
 	return *this;
 }
-MG_Date& MG_Date::operator-= (const long& vRight)
+MG_Date& MG_Date::operator+= (const MG_Date& aRight)
 {
-	myJulianDay -= vRight;
-	MG_Date vDate(myJulianDay);
-	*this = vDate;
+	myJulianDay += aRight.myJulianDay;
+	MG_Date::JdToYmd(myJulianDay, myYear, myMonth, myDay);
+	Rebuild();
+	return *this;
+}
+MG_Date& MG_Date::operator-= (const MG_Date& aRight)
+{
+	myJulianDay -= aRight.myJulianDay;
+	MG_Date::JdToYmd(myJulianDay, myYear, myMonth, myDay);
+	Rebuild();
 	return *this;
 }
 
 /*
  * Arithmetic operators
  */
-long MG_Date::operator+ (const MG_Date& vRight)
-{
-	return myJulianDay + vRight.myJulianDay;
-}
-long MG_Date::operator- (const MG_Date& vRight)
-{
-	return myJulianDay - vRight.myJulianDay;
-}
-
 MG_Date& MG_Date::operator++ ()
 {
 	myJulianDay++;
-	MG_Date::JdToYmd(myJulianDay, &myYear, &myMonth, &myDay);
+	MG_Date::JdToYmd(myJulianDay, myYear, myMonth, myDay);
 	Rebuild();
 	return *this;
 }
 MG_Date& MG_Date::operator-- ()
 {
 	myJulianDay--;
-	MG_Date::JdToYmd(myJulianDay, &myYear, &myMonth, &myDay);
+	MG_Date::JdToYmd(myJulianDay, myYear, myMonth, myDay);
 	return *this;
+}
+MG_Date MG_Date::operator++ (int)
+{
+	MG_Date vOld(*this);
+	++*this;
+	return vOld;
+}
+MG_Date MG_Date::operator-- (int)
+{
+	MG_Date vOld(*this);
+	--*this;
+	return vOld;
 }
 
 /*
  * Logical operators
  */
-bool MG_Date::operator== (const MG_Date& vRight) const
+bool MG_Date::operator== (const MG_Date& aRight) const
 {
-	return myJulianDay == vRight.myJulianDay;
+	return myJulianDay == aRight.myJulianDay;
 }
-bool MG_Date::operator!= (const MG_Date& vRight) const
+bool MG_Date::operator!= (const MG_Date& aRight) const
 {
-	return myJulianDay != vRight.myJulianDay;
+	return myJulianDay != aRight.myJulianDay;
 }
-bool MG_Date::operator< (const MG_Date& vRight) const
+bool MG_Date::operator< (const MG_Date& aRight) const
 {
-	return myJulianDay < vRight.myJulianDay;
+	return myJulianDay < aRight.myJulianDay;
 }
-bool MG_Date::operator<= (const MG_Date& vRight) const
+bool MG_Date::operator<= (const MG_Date& aRight) const
 {
-	return myJulianDay <= vRight.myJulianDay;
+	return myJulianDay <= aRight.myJulianDay;
 }
-bool MG_Date::operator> (const MG_Date& vRight) const
+bool MG_Date::operator> (const MG_Date& aRight) const
 {
-	return myJulianDay > vRight.myJulianDay;
+	return myJulianDay > aRight.myJulianDay;
 }
-bool MG_Date::operator>= (const MG_Date& vRight) const
+bool MG_Date::operator>= (const MG_Date& aRight) const
 {
-	return myJulianDay >= vRight.myJulianDay;
+	return myJulianDay >= aRight.myJulianDay;
 }
 
 /*
@@ -295,7 +318,7 @@ std::string MG_Date::ToString() const
  * Static function
  * Retrieve the year, month and day from the julian day
  */
-void MG_Date::JdToYmd(const long& aJD, int *aY, unsigned int *aM, unsigned int *aD)
+void MG_Date::JdToYmd(const long& aJD, int& aY, unsigned int& aM, unsigned int& aD)
 {
     long t1, t2, yr, mo;
 
@@ -305,14 +328,14 @@ void MG_Date::JdToYmd(const long& aJD, int *aY, unsigned int *aM, unsigned int *
     yr = 4000L * ( t1 + 1L ) / 1461001L;
     t1 = t1 - 1461L * yr / 4L + 31L;
     mo = 80L * t1 / 2447L;
-    *aD = (int) ( t1 - 2447L * mo / 80L );
+    aD = (int) ( t1 - 2447L * mo / 80L );
     t1 = mo / 11L;
-    *aM = (int) ( mo + 2L - 12L * t1 );
-    *aY = (int) ( 100L * ( t2 - 49L ) + yr + t1 );
+    aM = (int) ( mo + 2L - 12L * t1 );
+    aY = (int) ( 100L * ( t2 - 49L ) + yr + t1 );
 
     // Correct for BC years
-    if ( *aY <= 0 )
-        *aY -= 1;
+    if (aY <= 0)
+        aY -= 1;
 
     return;
 }
