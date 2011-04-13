@@ -11,7 +11,7 @@ sub_dirs  := $(call module-subdirectories,$(local_dir))
 
 # Source, generated files and third libraries
 # ===========================================
-local_src    := $(call module-sources,$(sub_dirs))
+#local_src    := $(call module-sources,$(sub_dirs))
 
 third_libs   := 
 depend_libs  :=
@@ -45,7 +45,8 @@ $(out_parse_f1) $(out_parse_f2): $(parser_file)
 	@mv *.tab.* src
 	@mv *.hh src
 
-local_src += $(notdir $(out_scan_file)) $(notdir $(out_parse_f1))
+local_src    := $(call module-sources,$(sub_dirs))
+#local_src += $(notdir $(out_scan_file)) $(notdir $(out_parse_f1))
 
 #> Building the library
 $(eval $(call make-library,$(local_lib),$(local_src),$(depend_libs)))

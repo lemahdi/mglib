@@ -53,7 +53,7 @@ double MG_NewtonRaphsonSolver::Solve(const double& aInit, const double& aTarget,
 			continue;
 		}
 		vX1 = vX0 - myFunc->operator()(vX0) / vTmp;
-		vError = abs(myFunc->operator()(vX1) - aTarget);
+		vError = fabs(myFunc->operator()(vX1) - aTarget);
 		if (vError < myError)
 			return vX1;
 		if (vX1 < vA)

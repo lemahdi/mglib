@@ -1,6 +1,15 @@
 #include "nodes.h"
+#pragma warning(push)
+#pragma warning(disable:4512)
 #include "my_parser.tab.hpp"
+#pragma warning(pop)
 #include "date.h"
+#include "random.h"
+#include "normal.h"
+#include "calendar.h"
+#include "solver.h"
+#include "matrix.h"
+
 
 
 using namespace std;
@@ -10,6 +19,8 @@ int main()
 {
 	MG_SFileError::Instance()->Init();
 	MG_SFuncBuilder::Instance()->Init();
+	MG_SCdfNormal::Instance()->Init();
+	MG_RCalendar::Init();
 
 	// Deal Description
 	vector<string> vColNames;
@@ -79,15 +90,117 @@ int main()
 		cout << manager.Eval(n) << endl;
 	}
 
-	MG_SFuncBuilder::Release();
-	MG_SFileError::Release();
 
 	char ch;
-	//cin >> ch;
+	cin >> ch;
 
 	MG_Date vDate;//(25,12,2010);
 	cout << vDate.ToString(' ', ENG_M3L_DATE) << endl;
+	MG_Date *vFake = (MG_Date*)vDate.Clone();
+	delete vFake;
+
+	//MG_ParkMillerRand* vRand = new MG_ParkMillerRand();
+	//MG_RandomPtr vRandPtr(vRand);
+	//MG_BoxMullerSampler vSampler(100, vRandPtr);
+	//vector<double> vRandVars = vSampler.GenerateSample();
+	//double vN1, vN2;
+	//for(unsigned int i=0; i<100; i++)
+	//{
+	//	vN1 = vRandVars[i];
+	//	cout << vN1 << " ";
+	//	vN2 = MG_SCdfNormal::Instance()->CumulativeNormal(vN1);
+	//	vN2 = MG_SCdfNormal::Instance()->InverseNormal(vN2);
+	//	cout << vN2 << " : " << vN1-vN2 << endl;
+	//}
+
+	// GEB : debut test generateur normale
+	int nbSimul = 10;
+	int nbScenarK = 1001;
+	std::vector<double> PrixCalls, ScenraK, PrixBS;
+	PrixCalls.resize(nbScenarK,0.);
+	ScenraK.resize(nbScenarK,0.);
+	PrixBS.resize(nbScenarK,0.);
+	double Kmin = 0.;
+	double Kmax = 5.;
+	double PasK = (Kmax-Kmin)/(nbScenarK-1);
+	for (int j = 0; j < nbScenarK; j++) {
+		ScenraK[j] = Kmin + j*PasK;
+	}
+
+	MG_ParkMillerRand* vRand = new MG_ParkMillerRand();
+	MG_RandomPtr vRandPtr(vRand);
+	MG_SamplerPtr vSampler(new MG_BoxMullerSampler(1, vRandPtr));
+	//vSampler = MG_SamplerPtr(new MG_AntitheticSampler(1, vSampler));
+	std::vector<double> x, xanti;
+	double esp = 0.;
+	double Vol = 0.3;
+	double T = 1.;
+	double S, Santi, d1, d0;
+
+	for (int i = 0; i < nbSimul; i++) {
+		x = vSampler->GenerateSample();
+		xanti = vSampler->GetSampleAntithetic(x);
+		S = exp(-0.5*Vol*Vol*T + Vol*sqrt(T)*x[0]);
+		Santi = exp(-0.5*Vol*Vol*T + Vol*sqrt(T)*xanti[0]);
+		for (int j = 0; j < nbScenarK; j++) {
+			PrixCalls[j] += 0.5*max(S-ScenraK[j],0.)/nbSimul; 
+			PrixCalls[j] += 0.5*max(Santi-ScenraK[j],0.)/nbSimul; 
+		}
+		//esp += (0.5*x[0] + 0.5*xanti[0])/nbSimul;
+	}
+
+	for (int j = 0; j < nbScenarK; j++) {
+		d1 = -log(ScenraK[j]) + 0.5*Vol*Vol*T;
+		d1 /= Vol*sqrt(T);
+		d0 = d1 - Vol*sqrt(T);
+		PrixBS[j] = MG_SCdfNormal::Instance()->CumulativeNormal(d1) - ScenraK[j]*MG_SCdfNormal::Instance()->CumulativeNormal(d0);
+	}
+	
+	FILE* f = fopen("TestNormal.data","w");
+	if (f) {
+		for (int j = 0; j < nbScenarK; j++) {
+			fprintf(f,"%f/n",PrixCalls[j]); 
+		}
+	}
+	fclose(f);
+
+
+
+
+
+
+
+
+
+	MG_UnaryFuncPtr vFuncTestPtr(new MG_TestFunc);
+	MG_UnaryFuncPtr vFuncTestPrimePtr(new MG_TestFuncPrime);
+	MG_NewtonRaphsonSolver vSolver1(vFuncTestPtr, vFuncTestPrimePtr, 1e-10, 20);
+	double vRoot = vSolver1.Solve(0, 0, -1, 1);
+	cout << "Newton Raphson Solver Exp(x)-x²: " << vRoot << endl;
+	double vCheck = exp(vRoot) - vRoot*vRoot;
+	cout << "Solver checker: " << vCheck << endl;
+	cout << "Number of iterations: " << vSolver1.GetNbIter() << endl;
+	MG_BrentSolver vSolver2(vFuncTestPtr, 1e-10, 20);
+	vRoot = vSolver2.Solve(0, 0, -1, 1);
+	cout << "Brent Solver Exp(x)-x²: " << vRoot << endl;
+	vCheck = exp(vRoot) - vRoot*vRoot;
+	cout << "Solver checker: " << vCheck << endl;
+	cout << "Number of iterations: " << vSolver2.GetNbIter() << endl;
 
 	cin >> ch;
+
+	MG_Matrix vM1(3,4,2);
+	MG_Matrix vM2(3,4,-4);
+	MG_Matrix vM3 = vM1 + vM2;
+	vM1 += vM2;
+	vM2--;
+	--vM2;
+
+
+	MG_SFuncBuilder::Release();
+	MG_SFileError::Release();
+	MG_SCdfNormal::Release();
+	MG_RCalendar::Release();
+
 	return 0;
 }

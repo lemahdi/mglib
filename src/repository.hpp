@@ -48,13 +48,13 @@ public:
 
 	static void Release(void)
 	{
-		std::map<T,U*>::iterator itMap = myInstance.begin();
+		/*std::map<T,U*>::iterator itMap = myInstance.begin();
 		while (itMap != myInstance.end())
 		{
 			delete itMap->second;
 			itMap->second = NULL;
 			itMap++;
-		}
+		}*/return;
 	}
 
 private:

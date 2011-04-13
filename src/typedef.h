@@ -12,6 +12,9 @@
 #pragma once
 
 
+#include <iostream>
+
+
 /* Some pre-declarations from the parser */
 #define yyconst const
 typedef size_t yy_size_t;

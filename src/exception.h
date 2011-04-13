@@ -28,7 +28,7 @@ class MG_Exception : public std::exception
 
 public:
 	MG_Exception(void);
-	virtual ~MG_Exception(void) {}
+	virtual ~MG_Exception(void) throw() {}
 
 	MG_Exception(const std::string& aFile, const unsigned int& aLine, const std::string& aMsg);
 	

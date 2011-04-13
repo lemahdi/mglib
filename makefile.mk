@@ -203,7 +203,7 @@ LDFLAGS := -G
 #  LDFLAGS += -m64
 #endif
 LDFLAGS += $(addprefix -L, $(lib_dirs))
-LDFLAGS += -ldl -lm -lrt -lnsl -lsocket -lCstd -lCrun
+LDFLAGS += -ldl -lm -lrt -lnsl -lsocket -lCstd -lCrun -lfl
 LDFLAGS += $(addprefix -I, $(INCLUDE_DIR))
 
 
@@ -236,6 +236,7 @@ $(programs): $(archives)
 .PHONY: $(archives)
 $(archives): $(objects)
 	@echo $@
+	@$(MKDIR) $(LIBRARY_DIR)
 	@$(AR) $@ $^ > /dev/null
 
 

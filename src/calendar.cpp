@@ -13,6 +13,7 @@ using namespace MG;
 /*
  * Static initializations
  */
+template<>
 map<CURRENCY_NAME,MG_Calendar*> MG_RCalendar::myInstance = map<CURRENCY_NAME,MG_Calendar*>();
 
 map<CURRENCY_NAME,vector<unsigned int> > MG_Calendar::ourCalendars = map<CURRENCY_NAME,vector<unsigned int> >();

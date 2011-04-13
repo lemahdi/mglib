@@ -7,6 +7,7 @@ using namespace std;
 using namespace MG;
 
 
+template<>
 MG_CdfNormal* MG_SCdfNormal::myInstance = NULL;
 
 
