@@ -28,7 +28,7 @@
 #include <string>
 #include <map>
 
-#include "object.h"
+#include "mgnova/object.h"
 
 
 MG_NAMESPACE_BEGIN

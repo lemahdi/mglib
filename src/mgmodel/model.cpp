@@ -1,4 +1,4 @@
-#include "model.h"
+#include "mgmodel/model.h"
 
 
 using namespace std;

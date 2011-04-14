@@ -12,7 +12,7 @@
 #pragma once
 
 
-#include "typedef.h"
+#include "mgnova/typedef.h"
 
 #include <exception>
 #include <string>

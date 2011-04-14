@@ -26,9 +26,9 @@
 #define isatty _isatty
 #endif
 
-#include "singleton.hpp"
-#include "func.h"
-#include "date.h"
+#include "mgnova/patterns/singleton.hpp"
+#include "mginfra/func.h"
+#include "mgnova/date.h"
 
 
 MG_NAMESPACE_BEGIN

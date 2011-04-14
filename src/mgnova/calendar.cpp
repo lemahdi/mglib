@@ -1,5 +1,5 @@
-#include "calendar.h"
-#include "random.h"
+#include "mgnova/calendar.h"
+#include "mgnumerical/random.h"
 
 #include <algorithm>
 #include <math.h>

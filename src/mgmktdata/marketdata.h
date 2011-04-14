@@ -12,9 +12,9 @@
 #pragma once
 
 
-#include "date.h"
-#include "matrix.h"
-#include "interpolator.h"
+#include "mgnova/date.h"
+#include "mgnova/matrix.h"
+#include "mgmktdata/interpolator.h"
 
 
 MG_NAMESPACE_BEGIN

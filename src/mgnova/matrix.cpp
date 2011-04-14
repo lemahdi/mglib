@@ -1,4 +1,4 @@
-#include "matrix.h"
+#include "mgnova/matrix.h"
 
 
 using namespace std;

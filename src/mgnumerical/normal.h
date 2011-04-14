@@ -17,7 +17,7 @@
 #include <iostream>
 #include <vector>
 
-#include "singleton.hpp"
+#include "mgnova/patterns/singleton.hpp"
 
 
 MG_NAMESPACE_BEGIN

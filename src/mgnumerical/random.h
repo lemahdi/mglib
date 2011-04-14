@@ -14,7 +14,7 @@
 
 #include <vector>
 
-#include "object.h"
+#include "mgnova/object.h"
 
 
 MG_NAMESPACE_BEGIN

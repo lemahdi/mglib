@@ -12,9 +12,9 @@
 #pragma once
 
 
-#include "date.h"
-#include "argconvdef.h"
-#include "repository.hpp"
+#include "mgnova/date.h"
+#include "mgnova/argconvdef.h"
+#include "mgnova/patterns/repository.hpp"
 
 #include <vector>
 

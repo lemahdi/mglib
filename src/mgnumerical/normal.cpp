@@ -1,4 +1,4 @@
-#include "normal.h"
+#include "mgnumerical/normal.h"
 
 #include <math.h>
 

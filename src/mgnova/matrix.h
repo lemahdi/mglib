@@ -14,8 +14,8 @@
 
 #include <vector>
 
-#include "typedef.h"
-#include "object.h"
+#include "mgnova/typedef.h"
+#include "mgnova/object.h"
 
 
 MG_NAMESPACE_BEGIN

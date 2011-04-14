@@ -1,9 +1,9 @@
-#include "random.h"
+#include "mgnumerical/random.h"
 
 #include <assert.h>
 #include <math.h>
 
-#include "normal.h"
+#include "mgnumerical/normal.h"
 
 using namespace std;
 using namespace MG;
@@ -125,7 +125,7 @@ vector<double> MG_BoxMullerSampler::GenerateSample()
 {
 	vector<double> vSample;
 	vSample.resize(myDim);
-	double vSquared, vX, vY;
+	double /*vSquared,*/ vX/*, vY*/;
 	for(unsigned int i=0; i<myDim; i++)
 	{
 		//do

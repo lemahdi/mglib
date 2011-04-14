@@ -40,6 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+				AdditionalIncludeDirectories="../../src"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -102,6 +103,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalIncludeDirectories="../../src"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -142,25 +144,95 @@
 	</References>
 	<Files>
 		<Filter
-			Name="Source Files"
-			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
-			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
+			Name="patterns"
 			>
+			<File
+				RelativePath=".\patterns\countedptr.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\patterns\repository.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\patterns\singleton.hpp"
+				>
+			</File>
 		</Filter>
 		<Filter
-			Name="Header Files"
-			Filter="h;hpp;hxx;hm;inl;inc;xsd"
-			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
+			Name="utils"
 			>
+			<File
+				RelativePath=".\utils\utils.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\utils\utils.h"
+				>
+			</File>
 		</Filter>
 		<Filter
-			Name="Resource Files"
-			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
-			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
+			Name="funcs"
 			>
+			<File
+				RelativePath=".\funcs\infrafunc.h"
+				>
+			</File>
 		</Filter>
 		<File
-			RelativePath=".\ReadMe.txt"
+			RelativePath=".\argconv.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\argconv.h"
+			>
+		</File>
+		<File
+			RelativePath=".\argconvdef.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\argconvdef.h"
+			>
+		</File>
+		<File
+			RelativePath=".\calendar.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\calendar.h"
+			>
+		</File>
+		<File
+			RelativePath=".\date.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\date.h"
+			>
+		</File>
+		<File
+			RelativePath=".\exception.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\exception.h"
+			>
+		</File>
+		<File
+			RelativePath=".\matrix.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\matrix.h"
+			>
+		</File>
+		<File
+			RelativePath=".\object.h"
+			>
+		</File>
+		<File
+			RelativePath=".\typedef.h"
 			>
 		</File>
 	</Files>

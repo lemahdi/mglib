@@ -16,7 +16,7 @@
 #include <iostream>
 #include <map>
 
-#include "typedef.h"
+#include "mgnova/typedef.h"
 
 
 MG_NAMESPACE_BEGIN

@@ -14,8 +14,8 @@
 
 #include <iostream>
 
-#include "typedef.h"
-#include "matrix.h"
+#include "mgnova/typedef.h"
+#include "mgnova/matrix.h"
 
 
 MG_NAMESPACE_BEGIN

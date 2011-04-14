@@ -492,7 +492,7 @@ char *yytext;
 #line 5 "src/my_scanner.l"
 #include <stdlib.h>
 
-#include "nodes.h"
+#include "mginfra/nodes.h"
 
 #pragma warning(push)
 #pragma warning(disable:4512)
@@ -506,7 +506,7 @@ char *yytext;
 #pragma warning(disable:4100)
 #pragma warning(disable:4505)
 
-#include "my_parser.tab.hpp"
+#include "mginfra/my_parser.tab.hpp"
 
 #ifdef WIN32
 #define strdup _strdup
@@ -529,7 +529,9 @@ typedef yy::my_parser::token token;
  * down here because we want the user's section 1 to have been scanned first.
  * The user has a chance to override it with an option.
  */
+#ifndef WIN32
 #include <unistd.h>
+#endif
 #endif
 
 #ifndef YY_EXTRA_TYPE

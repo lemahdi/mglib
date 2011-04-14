@@ -18,8 +18,8 @@
 #include <vector>
 #include <string>
 
-#include "singleton.hpp"
-#include "countedptr.hpp"
+#include "mgnova/patterns/singleton.hpp"
+#include "mgnova/patterns/countedptr.hpp"
 
 
 MG_NAMESPACE_BEGIN

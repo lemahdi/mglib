@@ -12,9 +12,9 @@
 #pragma once
 
 
-#include "typedef.h"
-#include "infrafunc.h"
-#include "countedptr.hpp"
+#include "mgnova/typedef.h"
+#include "mgnova/funcs/infrafunc.h"
+#include "mgnova/patterns/countedptr.hpp"
 
 #include <assert.h>
 

@@ -38,7 +38,7 @@
 
 #include <iostream>
 using namespace std;
-#include "nodes.h"
+#include "mginfra/nodes.h"
 
 #pragma warning(push)
 #pragma warning(disable:4065)
@@ -53,7 +53,7 @@ using namespace std;
 #line 54 "my_parser.tab.cpp"
 
 
-#include "my_parser.tab.hpp"
+#include "mginfra/my_parser.tab.hpp"
 
 /* User implementation prologue.  */
 

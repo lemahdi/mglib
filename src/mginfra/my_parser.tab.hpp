@@ -39,7 +39,7 @@
 
 #include <string>
 #include <iostream>
-#include "stack.hh"
+#include "mginfra/stack.hh"
 
 
 namespace yy {
@@ -54,7 +54,7 @@ namespace yy {
 /* Line 34 of lalr1.cc  */
 #line 56 "my_parser.tab.hpp"
 
-#include "location.hh"
+#include "mginfra/location.hh"
 
 /* Enabling traces.  */
 #ifndef YYDEBUG

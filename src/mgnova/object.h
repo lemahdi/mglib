@@ -15,8 +15,8 @@
 #include <iostream>
 #include <assert.h>
 
-#include "typedef.h"
-#include "countedptr.hpp"
+#include "mgnova/typedef.h"
+#include "mgnova/patterns/countedptr.hpp"
 
 
 MG_NAMESPACE_BEGIN

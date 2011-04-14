@@ -1,6 +1,6 @@
-#include "date.h"
-#include "argconvdef.h"
-#include "utils.h"
+#include "mgnova/date.h"
+#include "mgnova/argconvdef.h"
+#include "mgnova/utils/utils.h"
 
 #include <time.h>
 #include <assert.h>

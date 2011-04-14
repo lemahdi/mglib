@@ -1,5 +1,5 @@
-#include "nodes.h"
-#include "func.h"
+#include "mginfra/nodes.h"
+#include "mginfra/func.h"
 #include <algorithm>
 
 
@@ -8,9 +8,7 @@ using namespace MG;
 
 
 /* class MG_FileError */
-#ifndef WIN32
 template<>
-#endif
 MG_FileError* MG_SFileError::myInstance = NULL;
 
 void MG_FileError::Init()

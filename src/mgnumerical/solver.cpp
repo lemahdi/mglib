@@ -1,5 +1,5 @@
-#include "solver.h"
-#include "exception.h"
+#include "mgnumerical/solver.h"
+#include "mgnova/exception.h"
 
 #include <math.h>
 
