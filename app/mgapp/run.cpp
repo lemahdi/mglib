@@ -1,15 +1,14 @@
-#include "nodes.h"
+#include "mginfra/nodes.h"
 #pragma warning(push)
 #pragma warning(disable:4512)
-#include "my_parser.tab.hpp"
+#include "mginfra/my_parser.tab.hpp"
 #pragma warning(pop)
-#include "date.h"
-#include "random.h"
-#include "normal.h"
-#include "calendar.h"
-#include "solver.h"
-#include "matrix.h"
-
+#include "mgnova/date.h"
+#include "mgnumerical/random.h"
+#include "mgnumerical/normal.h"
+#include "mgnova/calendar.h"
+#include "mgnumerical/solver.h"
+#include "mgnova/matrix.h"
 
 
 using namespace std;
@@ -155,8 +154,13 @@ int main()
 		d0 = d1 - Vol*sqrt(T);
 		PrixBS[j] = MG_SCdfNormal::Instance()->CumulativeNormal(d1) - ScenraK[j]*MG_SCdfNormal::Instance()->CumulativeNormal(d0);
 	}
-	
+
+#ifdef WIN32
+	FILE* f(NULL);
+	fopen_s(&f,"TestNormal.data","w");
+#else
 	FILE* f = fopen("TestNormal.data","w");
+#endif
 	if (f) {
 		for (int j = 0; j < nbScenarK; j++) {
 			fprintf(f,"%f/n",PrixCalls[j]); 
