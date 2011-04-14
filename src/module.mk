@@ -19,13 +19,13 @@ depend_libs  :=
 #depend_libs  := $(addsuffix .so,$(depend_libs))
 
 
-scanner_file  := $(local_dir)/my_scanner.l
-parser_file   := $(local_dir)/my_parser.ypp
-out_scan_file := $(local_dir)/lex.yy.cpp
+scanner_file  := $(local_dir)/mginfra/my_scanner.l
+parser_file   := $(local_dir)/mginfra/my_parser.ypp
+out_scan_file := $(local_dir)/mginfra/lex.yy.cpp
 out_parse_f1  := $(basename $(parser_file)).tab.cpp
 out_parse_f2  := $(basename $(parser_file)).tab.hpp
 out_file      := $(out_scan_file) $(out_parse_f1) $(out_parse_f2)
-out_file      += $(addprefix $(local_dir)/,position.hh location.hh stack.hh)
+out_file      += $(addprefix $(local_dir)/mginfra/,position.hh location.hh stack.hh)
 
 
 # Targets
@@ -42,8 +42,8 @@ $(out_scan_file): $(scanner_file)
 $(out_parse_f1) $(out_parse_f2): $(parser_file)
 	@echo $<
 	@bison -d $<
-	@mv *.tab.* src
-	@mv *.hh src
+	@mv *.tab.* src/mginfra
+	@mv *.hh src/mginfra
 
 local_src    := $(call module-sources,$(sub_dirs))
 #local_src += $(notdir $(out_scan_file)) $(notdir $(out_parse_f1))
