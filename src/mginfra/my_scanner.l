@@ -4,7 +4,7 @@
 %{
 #include <stdlib.h>
 
-#include "nodes.h"
+#include "mginfra/nodes.h"
 
 #pragma warning(push)
 #pragma warning(disable:4512)
@@ -18,7 +18,7 @@
 #pragma warning(disable:4100)
 #pragma warning(disable:4505)
 
-#include "my_parser.tab.hpp"
+#include "mginfra/my_parser.tab.hpp"
 
 #ifdef WIN32
 #define strdup _strdup

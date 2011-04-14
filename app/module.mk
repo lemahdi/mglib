@@ -27,8 +27,8 @@ depend_libs   :=
 $(eval $(call compile-rules))
 
 local_obj := $(call source-to-object,$(local_src))
-$(local_obj) : $(generated) $(objects)
+$(local_obj) : $(archives)
 
-$(programs): $(local_obj) $(depend_libs)
+$(programs): $(local_obj)
 	@echo $@
 	@$(CC) -o $@ $(CPPFLAGS) -L$(lib_dirs) $^

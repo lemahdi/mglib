@@ -11,7 +11,7 @@ sub_dirs  := $(call module-subdirectories,$(local_dir))
 
 # Source, generated files and third libraries
 # ===========================================
-#local_src    := $(call module-sources,$(sub_dirs))
+local_src    := $(call module-sources,$(sub_dirs))
 
 third_libs   := 
 depend_libs  :=
@@ -31,22 +31,22 @@ out_file      += $(addprefix $(local_dir)/mginfra/,position.hh location.hh stack
 # Targets
 # =======
 generated := $(out_scan_file) $(out_parse_f1) $(out_parse_f2)
-$(objects): $(generated)
 
 $(out_scan_file): $(scanner_file)
 	@echo $<
-	@flex $<
-	@sed 's/"lex.yy.c"/"lex.yy.cpp"/' lex.yy.c > $(out_scan_file)
-	@rm lex.yy.c
+	@$(FLEX) $<
+	@$(SED) 's/"lex.yy.c"/"lex.yy.cpp"/' lex.yy.c > $@.tmp
+	@$(SED) 's/\(#include <unistd.h>\)/#ifndef WIN32\n\1\n#endif/' $@.tmp > $@
+	@$(RM) lex.yy.c $@.tmp
 
 $(out_parse_f1) $(out_parse_f2): $(parser_file)
 	@echo $<
-	@bison -d $<
-	@mv *.tab.* src/mginfra
-	@mv *.hh src/mginfra
+	@$(BISON) $<
+	@$(MV) *.tab.* src/mginfra
+	@$(MV) *.hh src/mginfra
 
-local_src    := $(call module-sources,$(sub_dirs))
-#local_src += $(notdir $(out_scan_file)) $(notdir $(out_parse_f1))
+#local_src    := $(call module-sources,$(sub_dirs))
+local_src += $(out_scan_file) $(out_parse_f1)
 
 #> Building the library
 $(eval $(call make-library,$(local_lib),$(local_src),$(depend_libs)))

@@ -39,7 +39,7 @@
 
 #include <string>
 #include <iostream>
-#include "mginfra/stack.hh"
+#include "stack.hh"
 
 
 namespace yy {
@@ -54,7 +54,7 @@ namespace yy {
 /* Line 34 of lalr1.cc  */
 #line 56 "my_parser.tab.hpp"
 
-#include "mginfra/location.hh"
+#include "location.hh"
 
 /* Enabling traces.  */
 #ifndef YYDEBUG
@@ -109,7 +109,7 @@ namespace yy {
     {
 
 /* Line 34 of lalr1.cc  */
-#line 28 "src/my_parser.ypp"
+#line 28 "src/mginfra/my_parser.ypp"
 
 	MG::MG_Node* nval;
 	double dval;

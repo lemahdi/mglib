@@ -487,9 +487,9 @@ int yy_flex_debug = 0;
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
-#line 1 "src/my_scanner.l"
+#line 1 "src/mginfra/my_scanner.l"
 /* recognize tokens for the C++ calculator and print them out */
-#line 5 "src/my_scanner.l"
+#line 5 "src/mginfra/my_scanner.l"
 #include <stdlib.h>
 
 #include "mginfra/nodes.h"
@@ -704,7 +704,7 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
     
-#line 39 "src/my_scanner.l"
+#line 39 "src/mginfra/my_scanner.l"
 
 
 	// rules for C++-compatible scanner
@@ -797,95 +797,95 @@ do_action:	/* This label is used only to access EOF actions. */
 			goto yy_find_action;
 
 case 1:
-#line 48 "src/my_scanner.l"
+#line 48 "src/mginfra/my_scanner.l"
 case 2:
-#line 49 "src/my_scanner.l"
+#line 49 "src/mginfra/my_scanner.l"
 case 3:
-#line 50 "src/my_scanner.l"
+#line 50 "src/mginfra/my_scanner.l"
 case 4:
-#line 51 "src/my_scanner.l"
+#line 51 "src/mginfra/my_scanner.l"
 case 5:
-#line 52 "src/my_scanner.l"
+#line 52 "src/mginfra/my_scanner.l"
 case 6:
-#line 53 "src/my_scanner.l"
+#line 53 "src/mginfra/my_scanner.l"
 case 7:
-#line 54 "src/my_scanner.l"
+#line 54 "src/mginfra/my_scanner.l"
 case 8:
-#line 55 "src/my_scanner.l"
+#line 55 "src/mginfra/my_scanner.l"
 case 9:
 YY_RULE_SETUP
-#line 55 "src/my_scanner.l"
+#line 55 "src/mginfra/my_scanner.l"
 { return yytext[0]; }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 57 "src/my_scanner.l"
+#line 57 "src/mginfra/my_scanner.l"
 { yylval->uval = GT_OP; return token::CMP; }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 58 "src/my_scanner.l"
+#line 58 "src/mginfra/my_scanner.l"
 { yylval->uval = LT_OP; return token::CMP; }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 59 "src/my_scanner.l"
+#line 59 "src/mginfra/my_scanner.l"
 { yylval->uval = NE_OP; return token::CMP; }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 60 "src/my_scanner.l"
+#line 60 "src/mginfra/my_scanner.l"
 { yylval->uval = EQ_OP; return token::CMP; }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 61 "src/my_scanner.l"
+#line 61 "src/mginfra/my_scanner.l"
 { yylval->uval = GE_OP; return token::CMP; }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 62 "src/my_scanner.l"
+#line 62 "src/mginfra/my_scanner.l"
 { yylval->uval = LE_OP; return token::CMP; }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 64 "src/my_scanner.l"
+#line 64 "src/mginfra/my_scanner.l"
 { yylval->cval = strdup(yytext); return token::NAME; }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 66 "src/my_scanner.l"
+#line 66 "src/mginfra/my_scanner.l"
 { yylval->lval = manager.ToJulianDay(yytext); return token::DATE; }
 	YY_BREAK
 case 18:
-#line 69 "src/my_scanner.l"
+#line 69 "src/mginfra/my_scanner.l"
 case 19:
 YY_RULE_SETUP
-#line 69 "src/my_scanner.l"
+#line 69 "src/mginfra/my_scanner.l"
 { yylval->dval = atof(yytext); return token::NUMBER; }
 	YY_BREAK
 case 20:
 /* rule 20 can match eol */
 YY_RULE_SETUP
-#line 71 "src/my_scanner.l"
+#line 71 "src/mginfra/my_scanner.l"
 { yylloc->lines(1); return token::EOL; }
 	YY_BREAK
 /* skip over comments and whitespace */
 case 21:
-#line 75 "src/my_scanner.l"
+#line 75 "src/mginfra/my_scanner.l"
 case 22:
 YY_RULE_SETUP
-#line 75 "src/my_scanner.l"
+#line 75 "src/mginfra/my_scanner.l"
 { yylloc->step(); }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 77 "src/my_scanner.l"
+#line 77 "src/mginfra/my_scanner.l"
 { printf("Mystery character %c\n", *yytext); }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 79 "src/my_scanner.l"
+#line 79 "src/mginfra/my_scanner.l"
 ECHO;
 	YY_BREAK
 #line 890 "lex.yy.cpp"
@@ -1886,7 +1886,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 79 "src/my_scanner.l"
+#line 79 "src/mginfra/my_scanner.l"
 
 
 

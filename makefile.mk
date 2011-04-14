@@ -59,6 +59,8 @@ BINARY_DIR  := $(shell pwd)/$(bin_dirs)
 MV    := mv -f
 RM    := rm -f
 SED   := sed
+FLEX  := flex
+BISON := bison -d
 TEST  := test
 MKDIR := mkdir -p
 CC    := g++
@@ -203,7 +205,8 @@ LDFLAGS := -G
 #  LDFLAGS += -m64
 #endif
 LDFLAGS += $(addprefix -L, $(lib_dirs))
-LDFLAGS += -ldl -lm -lrt -lnsl -lsocket -lCstd -lCrun -lfl
+#LDFLAGS += -ldl -lm -lrt -lnsl -lsocket -lCstd -lCrun -lfl
+LDFLAGS += -lfl
 LDFLAGS += $(addprefix -I, $(INCLUDE_DIR))
 
 
@@ -239,6 +242,7 @@ $(archives): $(objects)
 	@$(MKDIR) $(LIBRARY_DIR)
 	@$(AR) $@ $^ > /dev/null
 
+$(objects): $(generated)
 
 #> Cleaning
 .PHONY: clean
