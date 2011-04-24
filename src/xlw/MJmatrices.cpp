@@ -19,6 +19,9 @@
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
 
+
+#pragma warning (disable : 4996)
+
 #include <xlw/MJmatrices.h>
 #include <algorithm>
 

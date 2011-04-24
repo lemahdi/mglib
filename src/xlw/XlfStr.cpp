@@ -21,6 +21,10 @@
 
 // $Id: XlfRef.cpp 395 2007-11-30 15:36:29Z ericehlers $
 
+
+#pragma warning (disable : 4996)
+
+
 #include <xlw/XlfStr.h>
 #include <xlw/XlfExcel.h>
 

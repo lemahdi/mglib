@@ -24,6 +24,10 @@
 
 // $Id: XlfExcel.cpp 474 2008-03-05 15:40:40Z ericehlers $
 
+
+#pragma warning (disable : 4996)
+
+
 #include <xlw/XlfExcel.h>
 #include <cstdio>
 #include <stdexcept>

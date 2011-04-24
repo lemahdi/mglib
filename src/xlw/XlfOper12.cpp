@@ -25,6 +25,10 @@
 
 // $Id: XlfOper12.cpp 383 2007-11-22 23:19:24Z ericehlers $
 
+
+#pragma warning (disable : 4996)
+
+
 #include <xlw/XlfOper12.h>
 #include <xlw/XlfException.h>
 #include <cassert>
