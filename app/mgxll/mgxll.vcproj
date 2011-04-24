@@ -205,6 +205,18 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="cache"
+			>
+			<File
+				RelativePath=".\cache\cached.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\cache\cached.h"
+				>
+			</File>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>

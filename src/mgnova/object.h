@@ -24,7 +24,7 @@ MG_NAMESPACE_BEGIN
 
 class MG_Object
 {
-protected:
+public:
 	MG_Object(void) {}
 	MG_Object(const MG_Object& /*aRight*/) {}
 	MG_Object& operator= (const MG_Object& /*aRight*/) {}

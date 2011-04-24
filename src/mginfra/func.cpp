@@ -75,9 +75,7 @@ double MG_IfFunc::Eval(const vector<double>& aArgs)
 	return aArgs[0] ? aArgs[1] : aArgs[2];
 }
 
-#ifndef WIN32
 template <>
-#endif
 MG_FuncBuilder* MG_SFuncBuilder::myInstance = NULL;
 
 void MG_FuncBuilder::Init()

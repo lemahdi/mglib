@@ -92,6 +92,7 @@ void yy_delete_buffer (YY_BUFFER_STATE b  );
 
 
 /* CountedPtr definitions */
+#define MG_ObjectPtr		CountedPtr<MG_Object>
 #define MG_FuncPtr			CountedPtr<MG_Func>
 #define MG_RandomPtr		CountedPtr<MG_Random>
 #define MG_SamplerPtr		CountedPtr<MG_Sampler>
