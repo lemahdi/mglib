@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8,00"
-	Name="mgmktdata"
-	ProjectGUID="{EB9FDB77-21BA-44A4-AE5A-27FFF8D60591}"
-	RootNamespace="mgmktdata"
+	Name="mgxll"
+	ProjectGUID="{BC4406A2-82D9-46E1-9432-EAABE9AEED88}"
+	RootNamespace="mgxll"
 	Keyword="Win32Proj"
 	>
 	<Platforms>
@@ -17,14 +17,16 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="../../lib/win/$(ProjectName)/$(ConfigurationName)"
+			OutputDirectory="../../bin/win/$(ProjectName)/$(ConfigurationName)"
 			IntermediateDirectory="../../../bin/win/$(ProjectName)/$(ConfigurationName)"
-			ConfigurationType="4"
+			ConfigurationType="2"
 			CharacterSet="1"
 			BuildLogFile="../../bin/win/$(ProjectName)/$(IntDir)/BuildLog.htm"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
+				Description="xlw generator"
+				CommandLine="xl_iface\xlwIfaceGen.exe cpp_iface\justatest.h xl_iface\xl_justatest.cpp &gt; xlw.log"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -41,8 +43,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../src"
-				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
+				AdditionalIncludeDirectories="../../app;../../src;../../app/mgxll/cpp_iface"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;MGXLL_EXPORTS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -64,11 +66,18 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLibrarianTool"
-				OutputFile="../../lib/win/$(ConfigurationName)/$(ProjectName).lib"
+				Name="VCLinkerTool"
+				OutputFile="../../bin/win/$(ConfigurationName)/$(ProjectName).xll"
+				LinkIncremental="2"
+				GenerateDebugInformation="true"
+				SubSystem="2"
+				TargetMachine="1"
 			/>
 			<Tool
 				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -80,20 +89,28 @@
 				Name="VCFxCopTool"
 			/>
 			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
+			/>
+			<Tool
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="../../lib/win/$(ProjectName)/$(ConfigurationName)"
+			OutputDirectory="../../bin/win/$(ProjectName)/$(ConfigurationName)"
 			IntermediateDirectory="../../../bin/win/$(ProjectName)/$(ConfigurationName)"
-			ConfigurationType="4"
+			ConfigurationType="2"
 			CharacterSet="1"
 			WholeProgramOptimization="1"
 			BuildLogFile="../../bin/win/$(ProjectName)/$(IntDir)/BuildLog.htm"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
+				Description="xlw generator"
+				CommandLine="xl_iface\xlwIfaceGen.exe cpp_iface\justatest.h xl_iface\xl_justatest.cpp &gt; xlw.log"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -109,8 +126,8 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="../../src"
-				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
+				AdditionalIncludeDirectories="../../app;../../src;../../app/mgxll/cpp_iface"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;MGXLL_EXPORTS"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
 				ObjectFile="../../bin/win/$(ProjectName)/$(IntDir)/"
@@ -130,11 +147,20 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLibrarianTool"
-				OutputFile="../../lib/win/$(ConfigurationName)/$(ProjectName).lib"
+				Name="VCLinkerTool"
+				OutputFile="../../bin/win/$(ConfigurationName)/$(ProjectName).xll"
+				LinkIncremental="1"
+				GenerateDebugInformation="true"
+				SubSystem="2"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				TargetMachine="1"
 			/>
 			<Tool
 				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -146,6 +172,12 @@
 				Name="VCFxCopTool"
 			/>
 			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
+			/>
+			<Tool
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
@@ -153,22 +185,26 @@
 	<References>
 	</References>
 	<Files>
-		<File
-			RelativePath=".\interpolator.cpp"
+		<Filter
+			Name="xl_iface"
 			>
-		</File>
-		<File
-			RelativePath=".\interpolator.h"
+			<File
+				RelativePath=".\xl_iface\xl_justatest.cpp"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="cpp_iface"
 			>
-		</File>
-		<File
-			RelativePath=".\marketdata.cpp"
-			>
-		</File>
-		<File
-			RelativePath=".\marketdata.h"
-			>
-		</File>
+			<File
+				RelativePath=".\cpp_iface\justatest.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\cpp_iface\justatest.h"
+				>
+			</File>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>
