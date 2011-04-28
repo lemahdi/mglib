@@ -67,7 +67,9 @@
 			<Tool
 				Name="VCLibrarianTool"
 				UseUnicodeResponseFiles="true"
+				AdditionalDependencies="xlcall32.lib"
 				OutputFile="../../lib/win/$(ConfigurationName)/$(ProjectName).lib"
+				AdditionalLibraryDirectories="../../lib/win"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -133,7 +135,9 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
+				AdditionalDependencies="xlcall32.lib"
 				OutputFile="../../lib/win/$(ConfigurationName)/$(ProjectName).lib"
+				AdditionalLibraryDirectories="../../lib/win"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -164,6 +168,66 @@
 			</File>
 			<File
 				RelativePath=".\clw\FileConverter.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="mgw"
+			>
+			<File
+				RelativePath=".\mgw\cpp_xloper.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\mgw\cpp_xloper.h"
+				>
+			</File>
+			<File
+				RelativePath=".\mgw\GetTime.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\mgw\TLS.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\mgw\TLS.h"
+				>
+			</File>
+			<File
+				RelativePath=".\mgw\xl_array.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\mgw\xl_array.h"
+				>
+			</File>
+			<File
+				RelativePath=".\mgw\xlcache.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\mgw\xlcache.h"
+				>
+			</File>
+			<File
+				RelativePath=".\mgw\XllStrings.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\mgw\xloper.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\mgw\xloper.h"
+				>
+			</File>
+			<File
+				RelativePath=".\mgw\xloper12.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\mgw\xloper12.h"
 				>
 			</File>
 		</Filter>

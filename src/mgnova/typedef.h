@@ -90,6 +90,8 @@ void yy_delete_buffer (YY_BUFFER_STATE b  );
 #define NameFuncMap		std::map<std::string,MG_FuncPtr>
 #define NameFuncPair	std::pair<std::string,MG_FuncPtr>
 
+#define CacheMap		std::map<std::string,std::pair<long,long> >
+
 
 /* CountedPtr definitions */
 #define MG_ObjectPtr		CountedPtr<MG_Object>

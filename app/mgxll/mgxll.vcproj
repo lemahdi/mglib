@@ -67,8 +67,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="xlcall32.lib"
 				OutputFile="../../bin/win/$(ConfigurationName)/$(ProjectName).xll"
 				LinkIncremental="2"
+				AdditionalLibraryDirectories="../../lib/win"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				TargetMachine="1"
@@ -148,8 +150,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="xlcall32.lib"
 				OutputFile="../../bin/win/$(ConfigurationName)/$(ProjectName).xll"
 				LinkIncremental="1"
+				AdditionalLibraryDirectories="../../lib/win"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
