@@ -25,4 +25,8 @@ extern std::string itoa(const int& vInteger);
 
 extern std::string ToUpper(const std::string& aStr);
 
+extern long FromXLDateToJulianDay(const double& aXLDate);
+
+extern double FromJulianDayToXLDate(const long& aJulianDay);
+
 }

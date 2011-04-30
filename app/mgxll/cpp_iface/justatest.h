@@ -8,13 +8,16 @@
 #include <xlw/ArgList.h>
 #include <xlw/Wrapper.h>
 
+#include "mgnova/date.h"
+
 
 using namespace xlw;
+using namespace MG;
 
 
 //<xlw:libraryname=MyTestLibrary
-short // just a test
-JustATest();
+MG_Date // just a test
+JustATest(const MG_Date& aDate);
 
 
 #endif

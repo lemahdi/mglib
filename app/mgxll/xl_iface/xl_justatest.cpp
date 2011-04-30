@@ -12,6 +12,8 @@
 #include <stdexcept>
 #include <xlw/XlOpenClose.h>
 #include <ctime>
+#include <mgnova/utils/utils.h>
+
 namespace {
 const char* LibraryName = "MyTestLibrary";
 };
@@ -33,7 +35,7 @@ namespace
 XLRegistration::Arg
 JustATestArgs[]=
 {
- { "","" } 
+{ "aDate","too lazy to comment this one ","XLF_OPER"}
 };
   XLRegistration::XLFunctionRegistrationHelper
 registerJustATest("xlJustATest",
@@ -41,7 +43,7 @@ registerJustATest("xlJustATest",
 " just a test ",
 LibraryName,
 JustATestArgs,
-0
+1
 ,false
 );
 }
@@ -52,16 +54,24 @@ extern "C"
 {
 LPXLFOPER EXCEL_EXPORT
 xlJustATest(
-)
+LPXLFOPER aDatea)
 {
 EXCEL_BEGIN;
 
 	if (XlfExcel::Instance().IsCalledByFuncWiz())
 		return XlfOper(true);
 
-short result(
-	JustATest());
-return XlfOper(result);
+XlfOper aDateb(
+	(aDatea));
+MG_Date aDate(
+	aDateb.AsMGDate("aDate"));
+
+MG_Date result(
+	JustATest(
+		aDate)
+	);
+double vXLDate = MG_utils::FromJulianDayToXLDate(result.GetJulianDay());
+return XlfOper(vXLDate);
 EXCEL_END
 }
 }

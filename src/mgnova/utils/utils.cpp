@@ -1,7 +1,9 @@
 #include "mgnova/utils/utils.h"
+#include "mgnova/date.h"
 
 
 using namespace std;
+using namespace MG;
 
 
 namespace MG_utils
@@ -44,5 +46,20 @@ namespace MG_utils
 				vStr[i] = vC + (char)vWidth;
 		}
 		return vStr;
+	}
+
+	/* converting an excel date to a julian day */
+	long FromXLDateToJulianDay(const double& aXLDate)
+	{
+		MG_Date vDate(1899, 12, 31);
+		vDate += int(aXLDate)-1;
+		return vDate.GetJulianDay();
+	}
+
+	/* converting a julian day to an excel date */
+	double FromJulianDayToXLDate(const long& aJulianDay)
+	{
+		MG_Date vDate1(1899, 12, 30), vDate2(aJulianDay);
+		return vDate2.GetJulianDay()-vDate1.GetJulianDay();
 	}
 }

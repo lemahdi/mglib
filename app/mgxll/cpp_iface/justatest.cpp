@@ -6,7 +6,7 @@ using namespace std;
 using namespace MG;
 
 
-short JustATest()
+MG_Date JustATest(const MG_Date& aDate)
 {
 	Coord vTop, vBottom;
 	MG_XL_Cached::GetCaller(vTop, vBottom);
@@ -14,5 +14,5 @@ short JustATest()
 	string vSheetName;
 	MG_XL_Cached::GetSheetNm(vSheetName);
 
-	return 5;
+	return aDate;
 }

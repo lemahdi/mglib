@@ -42,6 +42,8 @@
 #include <xlw/XlfOper.inl>
 #endif
 
+#include "mgnova/utils/utils.h"
+
 /*!
 This bit is currently unused by Microsoft Excel. We set it
 to indicate that the LPXLOPER (passed by Excel) holds some extra
@@ -334,6 +336,37 @@ xlw::XlfOper& xlw::XlfOper::Set(const MyArray& values)
     for (unsigned long i=0; i < values.size(); i++)
             tmp(i,0) = values[i];
     return Set(tmp);
+}
+
+/*!
+Attempts to convert the implict object to a date. If pxlret is not null
+the method won't throw and the Excel return code will be returned in this
+variable.
+
+\sa xlw::XlfOper::ConvertToMGDate.
+*/
+MG::MG_Date xlw::XlfOper::AsMGDate(int *pxlret) const
+{
+	double vXLDate;
+    int xlret = ConvertToDouble(vXLDate);
+    if (pxlret)
+        *pxlret=xlret;
+    else
+        ThrowOnError(xlret," conversion to date failed");
+	MG::MG_Date output = MG_utils::FromXLDateToJulianDay(vXLDate);
+    return output;
+}
+
+MG::MG_Date xlw::XlfOper::AsMGDate(const std::string& ErrorId, int *pxlret) const
+{
+	double vXLDate;
+    int xlret = ConvertToDouble(vXLDate);
+    if (pxlret)
+        *pxlret=xlret;
+    else
+        ThrowOnError(xlret,ErrorId + " conversion to date failed");
+	MG::MG_Date output = MG_utils::FromXLDateToJulianDay(vXLDate);
+    return output;
 }
 
 /*!

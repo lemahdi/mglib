@@ -27,6 +27,7 @@
 // $Id: XlfOper.h 538 2008-05-19 09:34:25Z ericehlers $
 
 #include <xlw/XlfOperImpl.h>
+#include "mgnova/date.h"
 
 #if defined(_MSC_VER)
 #pragma once
@@ -257,6 +258,11 @@ namespace xlw {
 
         //! Converts to a XlfRef.
         XlfRef AsRef(int *pxlret = 0) const;
+
+        //! Converts to a date.
+       MG::MG_Date AsMGDate(int *pxlret=0) const;
+        //! Converts to a date with error identifer.
+		MG::MG_Date AsMGDate(const std::string& ErrorId, int *pxlret=0) const;
         //@}
 
         //! \name Manage reference to underlying XLOPER
