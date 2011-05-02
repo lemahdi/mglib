@@ -34,7 +34,7 @@ void MG_XL_Cached::GetSheetNm(string& aSheetName)
 	XCHAR* vSheetName = vRetSheetname.ExtractXloper12()->val.str;
 	ostringstream vOSS;
 	while (*vSheetName != L'\0')
-		vOSS << use_facet<ctype<XCHAR> >(locale()).narrow(*vSheetName++, '?');
-	aSheetName = vOSS.str();
+		vOSS << use_facet<ctype<XCHAR> >(locale()).narrow(*vSheetName++, '*');
+	aSheetName.resize(vRetSheetname.ExtractXloper12()->val.mref.lpmref->count);
 }
 

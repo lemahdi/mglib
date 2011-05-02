@@ -82,6 +82,8 @@ void yy_delete_buffer (YY_BUFFER_STATE b  );
 /* some useful definitions */
 #define MAX_DESC_TABLE_COLUMNS 9999
 
+#define NON_PERSISTENT_XL_OBJECT -1
+
 #define MEMORY_CONTROL_MODE
 
 #define MG_NAMESPACE_BEGIN namespace MG {
@@ -90,16 +92,23 @@ void yy_delete_buffer (YY_BUFFER_STATE b  );
 #define NameFuncMap		std::map<std::string,MG_FuncPtr>
 #define NameFuncPair	std::pair<std::string,MG_FuncPtr>
 
-#define CacheMap		std::map<std::string,std::pair<long,long> >
+#define CoordXLObject	std::pair<Coord,MG_XLObjectPtr>
+#define CacheMap		std::multimap<std::string,CoordXLObject >
+#define UnCacheMap		std::map<size_t,MG_XLObjectPtr>
+
+
+/* XL names */
+#define MG_BSMODEL_XL_NAME "BSMOD"
 
 
 /* CountedPtr definitions */
-#define MG_ObjectPtr		CountedPtr<MG_Object>
-#define MG_FuncPtr			CountedPtr<MG_Func>
-#define MG_RandomPtr		CountedPtr<MG_Random>
-#define MG_SamplerPtr		CountedPtr<MG_Sampler>
-#define MG_UnaryFuncPtr		CountedPtr<MG_UnaryFunc>
-#define MG_InterpolatorPtr	CountedPtr<MG_Interpolator>
+#define MG_ObjectPtr		CountedPtr<MG::MG_Object>
+#define MG_XLObjectPtr		CountedPtr<MG::MG_XLObject>
+#define MG_FuncPtr			CountedPtr<MG::MG_Func>
+#define MG_RandomPtr		CountedPtr<MG::MG_Random>
+#define MG_SamplerPtr		CountedPtr<MG::MG_Sampler>
+#define MG_UnaryFuncPtr		CountedPtr<MG::MG_UnaryFunc>
+#define MG_InterpolatorPtr	CountedPtr<MG::MG_Interpolator>
 
 
 /* enum for node direction */

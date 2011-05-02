@@ -302,7 +302,7 @@ MG_NodeManager::PostProcess()
 
 		vParentChild = PairCoord(vParentC,vChildC);
 		vParentV.push_back(vParentC);
-		vCheck.insert(pair< Coord,bool >(vParentC,false));
+		vCheck.insert(make_pair(vParentC,false));
 		vPCMM.insert(vParentChild);
 	}
 

@@ -20,7 +20,7 @@
 			OutputDirectory="../../bin/win/$(ProjectName)/$(ConfigurationName)"
 			IntermediateDirectory="../../../bin/win/$(ProjectName)/$(ConfigurationName)"
 			ConfigurationType="2"
-			CharacterSet="1"
+			CharacterSet="0"
 			BuildLogFile="../../bin/win/$(ProjectName)/$(IntDir)/BuildLog.htm"
 			>
 			<Tool
@@ -206,18 +206,6 @@
 			</File>
 			<File
 				RelativePath=".\cpp_iface\justatest.h"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="cache"
-			>
-			<File
-				RelativePath=".\cache\cached.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\cache\cached.h"
 				>
 			</File>
 		</Filter>

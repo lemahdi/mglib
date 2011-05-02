@@ -28,6 +28,7 @@
 
 #include <xlw/XlfOperImpl.h>
 #include "mgnova/date.h"
+#include "mgnova/patterns/countedptr.hpp"
 
 #if defined(_MSC_VER)
 #pragma once
@@ -260,9 +261,14 @@ namespace xlw {
         XlfRef AsRef(int *pxlret = 0) const;
 
         //! Converts to a date.
-       MG::MG_Date AsMGDate(int *pxlret=0) const;
+        MG::MG_Date AsMGDate(int *pxlret=0) const;
         //! Converts to a date with error identifer.
 		MG::MG_Date AsMGDate(const std::string& ErrorId, int *pxlret=0) const;
+
+        //! Converts to an Excel object.
+        MG::MG_XLObjectPtr AsMGXLObject(int *pxlret=0) const;
+        //! Converts to an Excel object with error identifer.
+		MG::MG_XLObjectPtr AsMGXLObject(const std::string& ErrorId, int *pxlret=0) const;
         //@}
 
         //! \name Manage reference to underlying XLOPER

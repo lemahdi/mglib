@@ -43,6 +43,7 @@
 #endif
 
 #include "mgnova/utils/utils.h"
+#include "xlw/cache/cached.h"
 
 /*!
 This bit is currently unused by Microsoft Excel. We set it
@@ -352,7 +353,7 @@ MG::MG_Date xlw::XlfOper::AsMGDate(int *pxlret) const
     if (pxlret)
         *pxlret=xlret;
     else
-        ThrowOnError(xlret," conversion to date failed");
+        ThrowOnError(xlret," conversion to MG_Date failed");
 	MG::MG_Date output = MG_utils::FromXLDateToJulianDay(vXLDate);
     return output;
 }
@@ -364,9 +365,54 @@ MG::MG_Date xlw::XlfOper::AsMGDate(const std::string& ErrorId, int *pxlret) cons
     if (pxlret)
         *pxlret=xlret;
     else
-        ThrowOnError(xlret,ErrorId + " conversion to date failed");
+        ThrowOnError(xlret,ErrorId + " conversion to MG_Date failed");
 	MG::MG_Date output = MG_utils::FromXLDateToJulianDay(vXLDate);
     return output;
+}
+
+/*!
+Attempts to convert the implict object to an Excel object. If pxlret is not null
+the method won't throw and the Excel return code will be returned in this
+variable.
+
+\sa xlw::XlfOper::ConvertToMGXLObject.
+*/
+MG::MG_XLObjectPtr xlw::XlfOper::AsMGXLObject(int *pxlret) const
+{
+	char* vXLNameId;
+    int xlret = ConvertToString(vXLNameId);
+    if (pxlret)
+        *pxlret=xlret;
+    else
+        ThrowOnError(xlret," conversion to MG_XLObject failed");
+
+	std::string vXLNameIdStr(vXLNameId), vError;
+	//free(vXLNameId);
+	MG::MG_XLObjectPtr output;
+	if (MG::MG_SCache::Instance()->PersistentGet(vXLNameIdStr, output, vError))
+	    return output;
+
+	ThrowOnError(xlret," conversion to MG_XLObject failed: "+vError);
+	throw std::runtime_error("invalid object reference number: "+vError);
+}
+
+MG::MG_XLObjectPtr xlw::XlfOper::AsMGXLObject(const std::string& ErrorId, int *pxlret) const
+{
+	char* vXLNameId;
+    int xlret = ConvertToString(vXLNameId);
+    if (pxlret)
+        *pxlret=xlret;
+    else
+        ThrowOnError(xlret,ErrorId + " conversion to MG_XLObject failed");
+
+	std::string vXLNameIdStr(vXLNameId), vError;
+	//free(vXLNameId);
+	MG::MG_XLObjectPtr output;
+	if (MG::MG_SCache::Instance()->PersistentGet(vXLNameIdStr, output, vError))
+	    return output;
+
+	ThrowOnError(xlret,ErrorId + " conversion to MG_Date failed: "+vError);
+	throw std::runtime_error("invalid object reference number: "+vError);
 }
 
 /*!

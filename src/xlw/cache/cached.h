@@ -26,22 +26,22 @@ MG_NAMESPACE_BEGIN
 /* Cache */
 class MG_Cache
 {
+	template<class T> friend class Singleton;
 	FAKE_ASSIGN_OPERATOR(MG_Cache)
-public:
+private:
 	MG_Cache(void);
 	virtual ~MG_Cache(void);
 
 public:
-	MG_ObjectPtr GetFromCache(const size_t& aIndex) const;
-	size_t SetToCache(const MG_ObjectPtr& aObjPtr);
-	void SetToCache(const MG_ObjectPtr& aObjPtr, const size_t& aIndex);
+	bool PersistentInsert	(MG_XLObjectPtr& aXLObj, std::string& aRefObj, std::string& aError);
+	bool PersistentGet		(const std::string& aRefObj, MG_XLObjectPtr& aXLObj, std::string& aError);
 
 private:
-	std::vector<MG_ObjectPtr> myCache;
 	size_t myCounter;
 
 public:
-	static CacheMap ourGlobalCache;
+	static CacheMap		ourGlobalCache;
+	static UnCacheMap	ourGlobalUnCache;
 };
 typedef Singleton<MG_Cache> MG_SCache;
 

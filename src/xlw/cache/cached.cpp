@@ -1,0 +1,118 @@
+#include "xlw/cache/cached.h"
+#include "mgnova/exception.h"
+#include "xlw/mgw/xlcache.h"
+
+#include <sstream>
+#include <time.h>
+
+
+using namespace std;
+using namespace MG;
+
+
+/* Cache initialization */
+CacheMap MG_Cache::ourGlobalCache = CacheMap();
+UnCacheMap MG_Cache::ourGlobalUnCache = UnCacheMap();
+
+/* Singleton initializations */
+template<>
+MG_Cache* MG_SCache::myInstance = NULL;
+
+/* Constructors */
+MG_Cache::MG_Cache() : myCounter(0)
+{}
+
+MG_Cache::~MG_Cache()
+{}
+
+bool MG_Cache::PersistentInsert(MG_XLObjectPtr& aXLObj, string& aRefObj, string& aError)
+{
+	if (aXLObj->myXLName == "")
+	{
+		aError = "Object not able to be seen from Excel.";
+		return false;
+	}
+
+	string vSheetName;
+	MG_XL_Cached::GetSheetNm(vSheetName);
+	Coord vTopC, vBottomC;
+	MG_XL_Cached::GetCaller(vTopC, vBottomC);
+
+	try {
+		bool vFound(false);
+		pair< CacheMap::iterator,CacheMap::iterator > itMMap;
+		CacheMap::iterator itMap;
+		itMMap = ourGlobalCache.equal_range(vSheetName);
+		for(itMap=itMMap.first; itMap!=itMMap.second; ++itMap)
+		{
+			if (itMap->second.first == vTopC)
+			{
+				vFound = true;
+				break;
+			}
+		}
+
+		if (vFound)
+		{
+			aXLObj->myXLId = itMap->second.second->myXLId;
+			itMap->second.second->myXLId = NON_PERSISTENT_XL_OBJECT;
+			itMap->second.second = aXLObj;
+			ourGlobalUnCache[aXLObj->myXLId] = aXLObj;
+		}
+		else
+		{
+			ourGlobalUnCache.insert(make_pair(++myCounter, aXLObj));
+			aXLObj->myXLId = int(myCounter);
+			ourGlobalCache.insert(make_pair(vSheetName, CoordXLObject(vTopC,  aXLObj)));
+		}
+
+		aError = "";
+		
+		time_t time_t_T;
+		struct tm tm_T;
+		time(&time_t_T);
+#pragma warning (push)
+#pragma warning (disable : 4996)
+		tm_T = *localtime(&time_t_T);
+#pragma warning (pop)
+
+		ostringstream vOSS;
+		vOSS << aXLObj->myXLName << "_" << aXLObj->myXLId << "_" << tm_T.tm_hour << ":" << tm_T.tm_min << ":" << tm_T.tm_sec;
+		aRefObj = vOSS.str();
+
+		return true;
+	} catch (MG_Exception& vEx) {
+		aError = vEx.GetMessage();
+		aRefObj = "";
+		return false;
+	} catch (exception& vEx) {
+		aError = vEx.what();
+		aRefObj = "";
+		return false;
+	}
+}
+
+bool MG_Cache::PersistentGet(const string& aRefObj, MG_XLObjectPtr& aXLObj, string& aError)
+{
+	if (aRefObj == "")
+	{
+		aError = "Reference object is empty.";
+		return false;
+	}
+
+	size_t vPos = aRefObj.find_first_of("_");
+	string vRefObj = aRefObj.substr(vPos+1, string::npos);
+	vPos = vRefObj.find_first_of("_");
+	vRefObj = vRefObj.substr(0, vPos);
+	size_t vIndex = atoi(vRefObj.c_str());
+	UnCacheMap::iterator itMap = ourGlobalUnCache.find(vIndex);
+	if (itMap == ourGlobalUnCache.end())
+	{
+		aError = aRefObj + " not found.";
+		return false;
+	}
+	aXLObj = itMap->second;
+	aError = "";
+
+	return true;
+}

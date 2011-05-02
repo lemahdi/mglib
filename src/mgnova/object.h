@@ -33,6 +33,18 @@ public:
 
 };
 
+class MG_XLObject : public MG_Object
+{
+	friend class MG_Cache;
+
+public:
+	MG_XLObject(void) : myXLId(NON_PERSISTENT_XL_OBJECT) {}
+
+protected:
+	std::string	myXLName;
+	int			myXLId;
+};
+
 
 MG_NAMESPACE_END
 

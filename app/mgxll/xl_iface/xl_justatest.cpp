@@ -14,6 +14,8 @@
 #include <ctime>
 #include <mgnova/utils/utils.h>
 
+#include <xlw/cache/cached.h>
+
 namespace {
 const char* LibraryName = "MyTestLibrary";
 };
@@ -35,11 +37,11 @@ namespace
 XLRegistration::Arg
 JustATestArgs[]=
 {
-{ "aDate","too lazy to comment this one ","XLF_OPER"}
+{ "Date","too lazy to comment this one ","XLF_OPER"}
 };
   XLRegistration::XLFunctionRegistrationHelper
 registerJustATest("xlJustATest",
-"JustATest",
+"MG_JustATest",
 " just a test ",
 LibraryName,
 JustATestArgs,
@@ -54,24 +56,195 @@ extern "C"
 {
 LPXLFOPER EXCEL_EXPORT
 xlJustATest(
-LPXLFOPER aDatea)
+LPXLFOPER Datea)
 {
 EXCEL_BEGIN;
 
 	if (XlfExcel::Instance().IsCalledByFuncWiz())
 		return XlfOper(true);
 
-XlfOper aDateb(
-	(aDatea));
-MG_Date aDate(
-	aDateb.AsMGDate("aDate"));
+XlfOper Dateb(
+	(Datea));
+MG_Date Date(
+	Dateb.AsMGDate("Date"));
 
 MG_Date result(
 	JustATest(
-		aDate)
+		Date)
 	);
 double vXLDate = MG_utils::FromJulianDayToXLDate(result.GetJulianDay());
 return XlfOper(vXLDate);
+EXCEL_END
+}
+}
+
+
+
+//////////////////////////
+
+namespace
+{
+XLRegistration::Arg
+BSModelArgs[]=
+{
+{ "AsOf"," as of date ","XLF_OPER"},
+{ "Vol"," bs volatility ","B"}
+};
+  XLRegistration::XLFunctionRegistrationHelper
+registerBSModel("xlBSModel",
+"MG_BSModel",
+" just an object test ",
+LibraryName,
+BSModelArgs,
+2
+,false
+);
+}
+
+
+
+extern "C"
+{
+LPXLFOPER EXCEL_EXPORT
+xlBSModel(
+LPXLFOPER AsOfa,
+double Vol)
+{
+EXCEL_BEGIN;
+
+	if (XlfExcel::Instance().IsCalledByFuncWiz())
+		return XlfOper(true);
+
+XlfOper AsOfb(
+	(AsOfa));
+MG_Date AsOf(
+	AsOfb.AsMGDate("AsOf"));
+
+
+MG_XLObjectPtr result(
+	BSModel(
+		AsOf,
+		Vol)
+	);
+string vRefObj, vError;
+if (MG_SCache::Instance()->PersistentInsert(result, vRefObj, vError))
+  return XlfOper(vRefObj);
+else
+  return XlfOper(vError);
+EXCEL_END
+}
+}
+
+
+
+//////////////////////////
+
+namespace
+{
+XLRegistration::Arg
+CallArgs[]=
+{
+{ "Strike"," strike ","B"},
+{ "Maturity"," maturity ","B"},
+{ "Forward"," forward ","B"}
+};
+  XLRegistration::XLFunctionRegistrationHelper
+registerCall("xlCall",
+"MG_Call",
+" just an object test ",
+LibraryName,
+CallArgs,
+3
+,false
+);
+}
+
+
+
+extern "C"
+{
+LPXLFOPER EXCEL_EXPORT
+xlCall(
+double Strike,
+double Maturity,
+double Forward)
+{
+EXCEL_BEGIN;
+
+	if (XlfExcel::Instance().IsCalledByFuncWiz())
+		return XlfOper(true);
+
+
+
+
+MG_XLObjectPtr result(
+	Call(
+		Strike,
+		Maturity,
+		Forward)
+	);
+string vRefObj, vError;
+if (MG_SCache::Instance()->PersistentInsert(result, vRefObj, vError))
+  return XlfOper(vRefObj);
+else
+  return XlfOper(vError);
+EXCEL_END
+}
+}
+
+
+
+//////////////////////////
+
+namespace
+{
+XLRegistration::Arg
+PriceArgs[]=
+{
+{ "aSec"," security ","XLF_OPER"},
+{ "aMod"," model ","XLF_OPER"}
+};
+  XLRegistration::XLFunctionRegistrationHelper
+registerPrice("xlPrice",
+"MG_Price",
+" pricing ",
+LibraryName,
+PriceArgs,
+2
+,false
+);
+}
+
+
+
+extern "C"
+{
+LPXLFOPER EXCEL_EXPORT
+xlPrice(
+LPXLFOPER aSeca,
+LPXLFOPER aModa)
+{
+EXCEL_BEGIN;
+
+	if (XlfExcel::Instance().IsCalledByFuncWiz())
+		return XlfOper(true);
+
+XlfOper aSecb(
+	(aSeca));
+MG_XLObjectPtr aSec(
+	aSecb.AsMGXLObject("aSec"));
+
+XlfOper aModb(
+	(aModa));
+MG_XLObjectPtr aMod(
+	aModb.AsMGXLObject("aMod"));
+
+double result(
+	Price(
+		aSec,
+		aMod)
+	);
+return XlfOper(result);
 EXCEL_END
 }
 }
