@@ -203,14 +203,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\mgw\xlcache.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\mgw\xlcache.h"
-				>
-			</File>
-			<File
 				RelativePath=".\mgw\XllStrings.cpp"
 				>
 			</File>
@@ -240,6 +232,32 @@
 			</File>
 			<File
 				RelativePath=".\cache\cached.h"
+				>
+			</File>
+			<File
+				RelativePath=".\cache\xlcache.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\$(InputName)1.obj"
+						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\$(InputName)1.obj"
+						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\cache\xlcache.h"
 				>
 			</File>
 		</Filter>
