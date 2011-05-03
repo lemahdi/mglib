@@ -52,6 +52,7 @@ void CopyCountedPtr::CopyOperator(const CountedPtr<T>& aTo, const CountedPtr<U>&
 			delete aTo.myCount;
 			aTo.myCount = aFrom.myCount;
 			++*aTo.myCount;
+			aTo.myPtr = aFrom.myPtr;
 		}
 	}
 }

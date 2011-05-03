@@ -58,17 +58,4 @@ private:
 	double myVol;
 };
 
-class MG_Call : public MG_XLObject
-{
-public:
-	MG_Call(const double& aK, const double& aMat, const double& aFwd)
-		: myStrike(aK), myMaturity(aMat), myFwd(aFwd) { myXLName = "CALL"; }
-	virtual MG_Object* Clone(void) { return NULL; }
-
-public:
-	double myStrike;
-	double myMaturity;
-	double myFwd;
-};
-
 MG_NAMESPACE_END

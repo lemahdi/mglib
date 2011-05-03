@@ -26,7 +26,7 @@ MG_XLObjectPtr BSModel(const MG_Date& aAsOf, const double& aVol)
 
 MG_XLObjectPtr Call(const double& Strike, const double& Maturity, const double& Forward)
 {
-	return MG_XLObjectPtr(new MG_Call(100, 120, 0.5));
+	return MG_XLObjectPtr(new MG_Call(Strike, Maturity, Forward));
 }
 
 double Price(MG_XLObjectPtr& aSec, MG_XLObjectPtr& aMod)
