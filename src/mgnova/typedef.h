@@ -57,6 +57,9 @@ void yy_delete_buffer (YY_BUFFER_STATE b  );
 #define SWAP_DECL(CLASS)	\
 	void Swap(CLASS& aRight);
 
+#define COPY_CTOR_DECL(CLASS)	\
+	CLASS(const CLASS& aRight);
+
 #define MG_THROW(MSG)		\
 	throw MG_Exception(__FILE__, __LINE__, MSG);
 

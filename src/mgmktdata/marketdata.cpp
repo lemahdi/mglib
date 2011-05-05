@@ -17,9 +17,6 @@ void MG_MarketData::Swap(MG_MarketData &aRight)
 	myAsOf.Swap(aRight.myAsOf);
 }
 
-MG_MarketData::~MG_MarketData()
-{}
-
 MG_MarketData::MG_MarketData(	const MG_Date			& aAsOf
 							,	const INTERPOL_METHOD	& aInterpolMethod)
 							:	MG_XLObject()
@@ -29,7 +26,7 @@ MG_MarketData::MG_MarketData(	const MG_Date			& aAsOf
 }
 
 
-/* Zero Curve class */
+/* Zero Curve - Discount Factors class */
 MG_ZeroCurve::MG_ZeroCurve	(	const MG_ZeroCurve& aRight)
 							:	MG_MarketData(aRight)
 							,	myMaturities(aRight.myMaturities)
@@ -42,9 +39,6 @@ void MG_ZeroCurve::Swap(MG_ZeroCurve &aRight)
 	swap(myMaturities, aRight.myMaturities);
 	swap(myCurve, aRight.myCurve);
 }
-
-MG_ZeroCurve::~MG_ZeroCurve()
-{}
 
 MG_ZeroCurve::MG_ZeroCurve	(	const MG_Date			& aAsOf
 							,	const MG_ABSC			& aMaturities
@@ -61,15 +55,19 @@ double MG_ZeroCurve::ComputeValue(const double& aMaturity, const double& , const
 }
 
 
+/* Voaltility class */
+MG_VolatilityCurve::MG_VolatilityCurve	(	const MG_Date			& aAsOf
+										,	const INTERPOL_METHOD	& aInterpolMethod)
+										:	MG_MarketData(aAsOf, aInterpolMethod)
+{}
+
 /* IR Volatility class */
 MG_IRVolatilityCurve::MG_IRVolatilityCurve	(	const MG_IRVolatilityCurve& aRight)
-											:	MG_MarketData(aRight)
+											:	MG_VolatilityCurve(aRight)
 											,	myMaturities(aRight.myMaturities)
 											,	myTenors	(aRight.myTenors)
 											,	myCurve		(aRight.myCurve)
-{
-	myXLName = MG_IRVOL_XL_NAME;
-}
+{}
 
 void MG_IRVolatilityCurve::Swap(MG_IRVolatilityCurve &aRight)
 {
@@ -79,15 +77,12 @@ void MG_IRVolatilityCurve::Swap(MG_IRVolatilityCurve &aRight)
 	myCurve.Swap(aRight.myCurve);
 }
 
-MG_IRVolatilityCurve::~MG_IRVolatilityCurve()
-{}
-
 MG_IRVolatilityCurve::MG_IRVolatilityCurve	(	const MG_Date			& aAsOf
 											,	const MG_ABSC			& aMaturities
 											,	const MG_COOR			& aTenors
 											,	const MG_Matrix			& aCurve
 											,	const INTERPOL_METHOD	& aInterpolMethod)
-											:	MG_MarketData(aAsOf, aInterpolMethod)
+											:	MG_VolatilityCurve(aAsOf, aInterpolMethod)
 											,	myMaturities(aMaturities)
 											,	myTenors	(aTenors)
 											,	myCurve		(aCurve)

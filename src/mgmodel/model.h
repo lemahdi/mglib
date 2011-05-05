@@ -24,11 +24,12 @@ class MG_Model : public MG_XLObject
 public:
 	/* Constructors / Destructor */
 	MG_Model(void);
-	MG_Model(const MG_Model& aRight);
+	// self-generated copy-constructor is enough
+	virtual ~MG_Model(void);
+
 	ASSIGN_OPERATOR(MG_Model)
 	CLONE_METHOD(MG_Model)
 	SWAP_DECL(MG_Model)
-	virtual ~MG_Model(void);
 
 	MG_Model(const MG_Date& aAsOf);
 
@@ -42,10 +43,11 @@ class MG_BSModel : public MG_Model
 public:
 	MG_BSModel(void);
 	// self-generated copy-constructor is enough
+	virtual ~MG_BSModel(void);
+
 	ASSIGN_OPERATOR(MG_BSModel)
 	CLONE_METHOD(MG_BSModel)
 	SWAP_DECL(MG_BSModel)
-	virtual ~MG_BSModel(void);
 
 	MG_BSModel(const MG_Date& aAsOf, const double& aVol);
 

@@ -13,7 +13,6 @@
 
 
 #include "mgnova/date.h"
-//#include "mgnova/matrix.h"
 #include "mgmktdata/interpolator.h"
 #include "xlw/MJmatrices.h"
 
@@ -26,12 +25,10 @@ class MG_MarketData : public MG_XLObject
 {
 public:
 	/* Constructors / Destructor */
-	//MG_MarketData(void);
-	MG_MarketData(const MG_MarketData& aRight);
+	COPY_CTOR_DECL(MG_MarketData)
+
 	ASSIGN_OPERATOR(MG_MarketData)
-	//CLONE_METHOD(MG_MarketData)
 	SWAP_DECL(MG_MarketData)
-	virtual ~MG_MarketData(void);
 
 	MG_MarketData(const MG_Date& aAsOf, const INTERPOL_METHOD& aInterpolMethod = LIN_INTERPOL);
 
@@ -44,6 +41,7 @@ protected:
 };
 
 
+/* Zero Curve - Discount Factors Curve */
 class MG_ZeroCurve : public MG_MarketData
 {
 	typedef std::vector<double> MG_ABSC;
@@ -51,12 +49,11 @@ class MG_ZeroCurve : public MG_MarketData
 
 public:
 	/* Constructors / Destructor */
-	MG_ZeroCurve(void);
-	MG_ZeroCurve(const MG_ZeroCurve& aRight);
+	COPY_CTOR_DECL(MG_ZeroCurve)
+
 	ASSIGN_OPERATOR(MG_ZeroCurve)
 	CLONE_METHOD(MG_ZeroCurve)
 	SWAP_DECL(MG_ZeroCurve)
-	virtual ~MG_ZeroCurve(void);
 
 	MG_ZeroCurve(	const MG_Date			& aAsOf
 				,	const MG_ABSC			& aMaturities
@@ -72,20 +69,30 @@ private:
 };
 
 
-class MG_IRVolatilityCurve : public MG_MarketData
+/* Volatility Curve */
+class MG_VolatilityCurve : public MG_MarketData
 {
+protected:
 	typedef std::vector<double> MG_ABSC;
 	typedef std::vector<double> MG_COOR;
 	typedef xlw::MJMatrix		MG_Matrix;
 
 public:
 	/* Constructors / Destructor */
-	MG_IRVolatilityCurve(void);
-	MG_IRVolatilityCurve(const MG_IRVolatilityCurve& aRight);
+	MG_VolatilityCurve(const MG_Date& aAsOf, const INTERPOL_METHOD& aInterpolMethod = LIN_INTERPOL);
+
+};
+
+/* IR Volatility Curve */
+class MG_IRVolatilityCurve : public MG_VolatilityCurve
+{
+public:
+	/* Constructors / Destructor */
+	COPY_CTOR_DECL(MG_IRVolatilityCurve)
+
 	ASSIGN_OPERATOR(MG_IRVolatilityCurve)
 	CLONE_METHOD(MG_IRVolatilityCurve)
 	SWAP_DECL(MG_IRVolatilityCurve)
-	virtual ~MG_IRVolatilityCurve(void);
 
 	MG_IRVolatilityCurve(	const MG_Date			& aAsOf
 						,	const MG_ABSC			& aMaturities
@@ -101,7 +108,6 @@ private:
 	MG_COOR				myTenors;
 	MG_Matrix			myCurve;
 };
-
 
 
 MG_NAMESPACE_END

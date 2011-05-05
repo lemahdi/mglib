@@ -27,9 +27,7 @@ class MG_Exception : public std::exception
 	FAKE_ASSIGN_OPERATOR(MG_Exception)
 
 public:
-	MG_Exception(void);
-	virtual ~MG_Exception(void) throw() {}
-
+	/* Constructors / Destructor */
 	MG_Exception(const std::string& aFile, const unsigned int& aLine, const std::string& aMsg);
 	
 	inline std::string GetMessage(void) const { return myMsg; }

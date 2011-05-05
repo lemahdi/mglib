@@ -39,11 +39,12 @@ class MG_Date : public MG_Object
 public:
 	/* Constructors / Destructor */
     MG_Date(void);
-    MG_Date(const MG_Date& aRight);
+    COPY_CTOR_DECL(MG_Date)
+	~MG_Date(void);
+
 	ASSIGN_OPERATOR(MG_Date)
 	CLONE_METHOD(MG_Date)
 	SWAP_DECL(MG_Date)
-	~MG_Date(void);
 
 public:
 	MG_Date(const long& aJD);

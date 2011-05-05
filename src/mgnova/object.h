@@ -26,10 +26,11 @@ class MG_Object
 {
 public:
 	MG_Object(void) {}
-	MG_Object(const MG_Object& /*aRight*/) {}
-	MG_Object& operator= (const MG_Object& /*aRight*/) {}
-	virtual MG_Object* Clone(void) = 0;//{ return new MG_Object(*this); }
+	// self-generated copy-constructor is enough
 	virtual ~MG_Object(void) {}
+
+	MG_Object& operator= (const MG_Object& /*aRight*/) {}
+	virtual MG_Object* Clone(void) = 0;
 
 };
 
@@ -38,7 +39,11 @@ class MG_XLObject : public MG_Object
 	friend class MG_Cache;
 
 public:
-	MG_XLObject(void) : myXLId(NON_PERSISTENT_XL_OBJECT) {}
+	MG_XLObject(void);
+	COPY_CTOR_DECL(MG_XLObject)
+
+	ASSIGN_OPERATOR(MG_XLObject)
+	SWAP_DECL(MG_XLObject)
 
 protected:
 	std::string	myXLName;

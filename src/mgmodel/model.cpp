@@ -10,9 +10,6 @@ using namespace MG;
 MG_Model::MG_Model() : MG_XLObject(), myAsOf(MG_Date())
 {}
 
-MG_Model::MG_Model(const MG_Model &aRight) : MG_XLObject(), myAsOf(aRight.myAsOf)
-{}
-
 void MG_Model::Swap(MG_Model& aRight)
 {
 	myAsOf.Swap(aRight.myAsOf);

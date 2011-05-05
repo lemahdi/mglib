@@ -9,9 +9,6 @@ using namespace MG;
 /*
  * Constructors
  */
-MG_Exception::MG_Exception()
-{}
-
 MG_Exception::MG_Exception(const std::string& aFile, const unsigned int& aLine, const string& aMsg) : exception()
 {
 	stringstream vSS;
