@@ -253,3 +253,80 @@ EXCEL_END
 
 //////////////////////////
 
+namespace
+{
+XLRegistration::Arg
+VolatilityCurve_CreateArgs[]=
+{
+{ "aAsOf"," as of date ","XLF_OPER"},
+{ "aMaturities"," maturities ","XLF_OPER"},
+{ "aTenors"," tenors ","XLF_OPER"},
+{ "aVolatilities"," volatilities ","XLF_OPER"}
+};
+  XLRegistration::XLFunctionRegistrationHelper
+registerVolatilityCurve_Create("xlVolatilityCurve_Create",
+"MG_VolatilityCurve_Create",
+" Creating an IR volatility curve ",
+LibraryName,
+VolatilityCurve_CreateArgs,
+4
+,false
+);
+}
+
+
+
+extern "C"
+{
+LPXLFOPER EXCEL_EXPORT
+xlVolatilityCurve_Create(
+LPXLFOPER aAsOfa,
+LPXLFOPER aMaturitiesa,
+LPXLFOPER aTenorsa,
+LPXLFOPER aVolatilitiesa)
+{
+EXCEL_BEGIN;
+
+	if (XlfExcel::Instance().IsCalledByFuncWiz())
+		return XlfOper(true);
+
+XlfOper aAsOfb(
+	(aAsOfa));
+MG_Date aAsOf(
+	aAsOfb.AsMGDate("aAsOf"));
+
+XlfOper aMaturitiesb(
+	(aMaturitiesa));
+CellMatrix aMaturities(
+	aMaturitiesb.AsCellMatrix("aMaturities"));
+
+XlfOper aTenorsb(
+	(aTenorsa));
+CellMatrix aTenors(
+	aTenorsb.AsCellMatrix("aTenors"));
+
+XlfOper aVolatilitiesb(
+	(aVolatilitiesa));
+CellMatrix aVolatilities(
+	aVolatilitiesb.AsCellMatrix("aVolatilities"));
+
+MG_XLObjectPtr result(
+	VolatilityCurve_Create(
+		aAsOf,
+		aMaturities,
+		aTenors,
+		aVolatilities)
+	);
+string vRefObj, vError;
+if (MG_SCache::Instance()->PersistentInsert(result, vRefObj, vError))
+  return XlfOper(vRefObj);
+else
+  return XlfOper(vError);
+EXCEL_END
+}
+}
+
+
+
+//////////////////////////
+

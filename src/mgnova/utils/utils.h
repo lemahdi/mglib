@@ -17,6 +17,8 @@
 #include <string>
 #include <vector>
 
+#include "xlw/CellMatrix.h"
+
 
 namespace MG_utils
 {
@@ -28,5 +30,11 @@ extern std::string ToUpper(const std::string& aStr);
 extern long FromXLDateToJulianDay(const double& aXLDate);
 
 extern double FromJulianDayToXLDate(const long& aJulianDay);
+
+extern std::vector<double> DoublePtrAsVector(const double* aDbl, const size_t& aSize);
+
+extern std::vector<double> FromCellMatrixToVectorDouble(const xlw::CellMatrix& aCM, const size_t& aIndex, const bool& aIsRow = true);
+
+extern xlw::MJMatrix FromCellMatrixToMJMatrix(const xlw::CellMatrix& aCM);
 
 }

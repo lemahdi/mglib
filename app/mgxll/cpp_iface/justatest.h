@@ -39,4 +39,12 @@ Price(MG_XLObjectPtr& aSec // security
 	  , MG_XLObjectPtr& aMod // model
 	  );
 
+//<xlw:libraryname=MyTestLibrary
+MG_XLObjectPtr // Creating an IR volatility curve
+VolatilityCurve_Create(const MG_Date& aAsOf // as of date
+					   , const CellMatrix& aMaturities // maturities
+					   , const CellMatrix& aTenors // tenors
+					   , const CellMatrix& aVolatilities // volatilities
+					   );
+
 #endif

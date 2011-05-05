@@ -7,7 +7,7 @@ using namespace MG;
 
 /* Base Market Data class */
 MG_MarketData::MG_MarketData(	const MG_MarketData& aRight)
-							:	MG_Object(aRight)
+							:	MG_XLObject(aRight)
 							,	myAsOf			(aRight.myAsOf)
 							,	myInterpolator	(aRight.myInterpolator)
 {}
@@ -22,7 +22,7 @@ MG_MarketData::~MG_MarketData()
 
 MG_MarketData::MG_MarketData(	const MG_Date			& aAsOf
 							,	const INTERPOL_METHOD	& aInterpolMethod)
-							:	MG_Object()
+							:	MG_XLObject()
 							,	myAsOf(aAsOf)
 {
 	myInterpolator = MG_Interpolator::Builder(aInterpolMethod);
@@ -40,7 +40,7 @@ void MG_ZeroCurve::Swap(MG_ZeroCurve &aRight)
 {
 	MG_MarketData::Swap(aRight);
 	swap(myMaturities, aRight.myMaturities);
-	myCurve.Swap(aRight.myCurve);
+	swap(myCurve, aRight.myCurve);
 }
 
 MG_ZeroCurve::~MG_ZeroCurve()
@@ -48,7 +48,7 @@ MG_ZeroCurve::~MG_ZeroCurve()
 
 MG_ZeroCurve::MG_ZeroCurve	(	const MG_Date			& aAsOf
 							,	const MG_ABSC			& aMaturities
-							,	const MG_Matrix			& aCurve
+							,	const MG_Line			& aCurve
 							,	const INTERPOL_METHOD	& aInterpolMethod)
 							:	MG_MarketData(aAsOf, aInterpolMethod)
 							,	myMaturities(aMaturities)
@@ -57,8 +57,7 @@ MG_ZeroCurve::MG_ZeroCurve	(	const MG_Date			& aAsOf
 
 double MG_ZeroCurve::ComputeValue(const double& aMaturity, const double& , const double& )
 {
-	vector<double> vDummy;
-	return myInterpolator->Interpolate(myCurve, myMaturities, vDummy, aMaturity);
+	return myInterpolator->Interpolate(myCurve, myMaturities, aMaturity);
 }
 
 
@@ -68,7 +67,9 @@ MG_IRVolatilityCurve::MG_IRVolatilityCurve	(	const MG_IRVolatilityCurve& aRight)
 											,	myMaturities(aRight.myMaturities)
 											,	myTenors	(aRight.myTenors)
 											,	myCurve		(aRight.myCurve)
-{}
+{
+	myXLName = MG_IRVOL_XL_NAME;
+}
 
 void MG_IRVolatilityCurve::Swap(MG_IRVolatilityCurve &aRight)
 {
@@ -90,7 +91,9 @@ MG_IRVolatilityCurve::MG_IRVolatilityCurve	(	const MG_Date			& aAsOf
 											,	myMaturities(aMaturities)
 											,	myTenors	(aTenors)
 											,	myCurve		(aCurve)
-{}
+{
+	myXLName = MG_IRVOL_XL_NAME;
+}
 
 double MG_IRVolatilityCurve::ComputeValue(const double& aMaturity, const double& aTenor, const double& )
 {

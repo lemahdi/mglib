@@ -4,6 +4,7 @@
 
 using namespace std;
 using namespace MG;
+using namespace xlw;
 
 
 namespace MG_utils
@@ -61,5 +62,40 @@ namespace MG_utils
 	{
 		MG_Date vDate1(1899, 12, 30), vDate2(aJulianDay);
 		return vDate2.GetJulianDay()-vDate1.GetJulianDay();
+	}
+
+	/* converting a double* vector to std::vector */
+	vector<double> DoublePtrAsVector(const double* aDbl, const size_t& aSize)
+	{
+		vector<double> vRes(aSize);
+		for(size_t i=0; i<aSize; ++i)
+			vRes[i] = aDbl[i];
+		return vRes;
+	}
+
+	/* converting a CellMatrix to a std::vector */
+	vector<double> FromCellMatrixToVectorDouble(const CellMatrix& aCM, const size_t& aIndex, const bool& aIsRow)
+	{
+		size_t vSize = aIsRow ? aCM.RowsInStructure() : aCM.ColumnsInStructure();
+		vector<double> vRes(vSize);
+		if (aIsRow)
+		{
+			for(size_t i=0; i<vSize; ++i)
+				vRes[i] = aCM(i, aIndex).NumericValue();
+			return vRes;
+		}
+		for(size_t i=0; i<vSize; ++i)
+			vRes[i] = aCM(aIndex, i).NumericValue();
+		return vRes;
+	}
+
+	MJMatrix FromCellMatrixToMJMatrix(const CellMatrix& aCM)
+	{
+		size_t vRows(aCM.RowsInStructure()), vCols(aCM.ColumnsInStructure());
+		MJMatrix vMat(vRows, vCols);
+		for(size_t i=0; i<vRows; ++i)
+			for(size_t j=0; j<vCols; ++j)
+				vMat(i, j) = aCM(i, j).NumericValue();
+		return vMat;
 	}
 }

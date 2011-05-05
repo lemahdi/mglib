@@ -24,6 +24,10 @@
     it has been kept so that its interface is minimal to facilitate interchange
     with other matrix classes
 
+	update: 04 MAY 2011
+	author: Mohammed Mahdi Akkouh
+	Note  : adding swap function
+
 
   */
 #ifndef MJMATRICES_H
@@ -31,6 +35,7 @@
 
 
 #include <cstddef>
+#include "mgnova/typedef.h"
 
 using std::size_t;
 
@@ -46,6 +51,9 @@ namespace xlw {
         MJMatrix& operator=(const MJMatrix& original);
 
         ~MJMatrix();
+
+		/* swap function declaration, added */
+		SWAP_DECL(xlw::MJMatrix)
 
 
         inline size_t rows() const;

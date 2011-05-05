@@ -98,17 +98,19 @@ void yy_delete_buffer (YY_BUFFER_STATE b  );
 
 
 /* XL names */
-#define MG_BSMODEL_XL_NAME "BSMOD"
+#define MG_BSMODEL_XL_NAME	"BSMOD"
+#define MG_IRVOL_XL_NAME	"IRVOL"
 
 
 /* CountedPtr definitions */
-#define MG_ObjectPtr		CountedPtr<MG::MG_Object>
-#define MG_XLObjectPtr		CountedPtr<MG::MG_XLObject>
-#define MG_FuncPtr			CountedPtr<MG::MG_Func>
-#define MG_RandomPtr		CountedPtr<MG::MG_Random>
-#define MG_SamplerPtr		CountedPtr<MG::MG_Sampler>
-#define MG_UnaryFuncPtr		CountedPtr<MG::MG_UnaryFunc>
-#define MG_InterpolatorPtr	CountedPtr<MG::MG_Interpolator>
+#define MG_ObjectPtr					CountedPtr<MG::MG_Object>
+#define MG_XLObjectPtr					CountedPtr<MG::MG_XLObject>
+#define MG_FuncPtr						CountedPtr<MG::MG_Func>
+#define MG_RandomPtr					CountedPtr<MG::MG_Random>
+#define MG_SamplerPtr					CountedPtr<MG::MG_Sampler>
+#define MG_UnaryFuncPtr					CountedPtr<MG::MG_UnaryFunc>
+#define MG_IRVolatilityCurvePtr			CountedPtr<MG::MG_IRVolatilityCurve>
+#define MG_InterpolatorPtr				CountedPtr<MG::MG_Interpolator>
 
 
 /* enum for node direction */

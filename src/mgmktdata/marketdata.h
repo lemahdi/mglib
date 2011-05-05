@@ -13,15 +13,16 @@
 
 
 #include "mgnova/date.h"
-#include "mgnova/matrix.h"
+//#include "mgnova/matrix.h"
 #include "mgmktdata/interpolator.h"
+#include "xlw/MJmatrices.h"
 
 
 MG_NAMESPACE_BEGIN
 
 
 /* Base class for market datas */
-class MG_MarketData : public MG_Object
+class MG_MarketData : public MG_XLObject
 {
 public:
 	/* Constructors / Destructor */
@@ -46,6 +47,7 @@ protected:
 class MG_ZeroCurve : public MG_MarketData
 {
 	typedef std::vector<double> MG_ABSC;
+	typedef std::vector<double>	MG_Line;
 
 public:
 	/* Constructors / Destructor */
@@ -58,15 +60,15 @@ public:
 
 	MG_ZeroCurve(	const MG_Date			& aAsOf
 				,	const MG_ABSC			& aMaturities
-				,	const MG_Matrix			& aCurve
+				,	const MG_Line			& aCurve
 				,	const INTERPOL_METHOD	& aInterpolMethod = LIN_INTERPOL);
 
 public:
 	virtual double ComputeValue(const double& aMaturity = 0, const double& aY = 0, const double& aZ = 0);
 
 private:
-	MG_ABSC				myMaturities;
-	MG_Matrix			myCurve;
+	MG_ABSC			myMaturities;
+	MG_Line			myCurve;
 };
 
 
@@ -74,6 +76,7 @@ class MG_IRVolatilityCurve : public MG_MarketData
 {
 	typedef std::vector<double> MG_ABSC;
 	typedef std::vector<double> MG_COOR;
+	typedef xlw::MJMatrix		MG_Matrix;
 
 public:
 	/* Constructors / Destructor */

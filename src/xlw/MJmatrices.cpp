@@ -76,6 +76,8 @@ xlw::MJMatrix::MJMatrix(size_t Rows_, size_t Columns_)
                 :       Rows(Rows_),
                         Columns(Columns_)
 {
+	Start = NULL;
+	RowStarts = NULL;
     Create();
 }
 
@@ -121,4 +123,13 @@ xlw::MJMatrix::~MJMatrix()
         delete[] Start;
         delete[] RowStarts;
     }
+}
+
+
+void xlw::MJMatrix::Swap(xlw::MJMatrix& aRight)
+{
+	std::swap(Rows, aRight.Rows);
+	std::swap(Columns, aRight.Columns);
+	std::swap(RowStarts, aRight.RowStarts);
+	std::swap(Start, aRight.Start);
 }

@@ -1,6 +1,6 @@
 #include "xlw/cache/cached.h"
 #include "mgnova/exception.h"
-#include "xlw/mgw/xlcache.h"
+#include "xlw/cache/xlcache.h"
 
 #include <sstream>
 #include <time.h>
