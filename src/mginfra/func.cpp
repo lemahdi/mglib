@@ -76,7 +76,7 @@ double MG_IfFunc::Eval(const vector<double>& aArgs)
 }
 
 template <>
-MG_FuncBuilder* MG_SFuncBuilder::myInstance = NULL;
+MG_FuncBuilderPtr MG_SFuncBuilder::myInstance = MG_FuncBuilderPtr(NULL);
 
 void MG_FuncBuilder::Init()
 {

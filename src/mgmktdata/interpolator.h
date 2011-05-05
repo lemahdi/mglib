@@ -15,6 +15,8 @@
 #include <iostream>
 
 #include "mgnova/object.h"
+#include "mgnova/patterns/singleton.hpp"
+
 #include "xlw/MJmatrices.h"
 
 #include <vector>
@@ -65,6 +67,7 @@ public:
 								,	const double		& aX = 0
 								,	const double		& aY = 0);
 };
+typedef	Singleton<MG_LinearInterpolator> MG_SLinearInterpolator;
 
 
 MG_NAMESPACE_END

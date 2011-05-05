@@ -106,14 +106,19 @@ void yy_delete_buffer (YY_BUFFER_STATE b  );
 
 
 /* CountedPtr definitions */
+#define MG_CachePtr						CountedPtr<MG::MG_Cache>
+#define MG_FileErrorPtr					CountedPtr<MG::MG_FileError>
 #define MG_ObjectPtr					CountedPtr<MG::MG_Object>
 #define MG_XLObjectPtr					CountedPtr<MG::MG_XLObject>
 #define MG_FuncPtr						CountedPtr<MG::MG_Func>
+#define MG_FuncBuilderPtr				CountedPtr<MG::MG_FuncBuilder>
 #define MG_RandomPtr					CountedPtr<MG::MG_Random>
 #define MG_SamplerPtr					CountedPtr<MG::MG_Sampler>
+#define MG_CdfNormalPtr					CountedPtr<MG::MG_CdfNormal>
 #define MG_UnaryFuncPtr					CountedPtr<MG::MG_UnaryFunc>
 #define MG_IRVolatilityCurvePtr			CountedPtr<MG::MG_IRVolatilityCurve>
 #define MG_InterpolatorPtr				CountedPtr<MG::MG_Interpolator>
+#define MG_LinearInterpolatorPtr		CountedPtr<MG::MG_LinearInterpolator>
 
 
 /* enum for node direction */

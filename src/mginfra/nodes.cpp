@@ -1,5 +1,6 @@
 #include "mginfra/nodes.h"
 #include "mginfra/func.h"
+
 #include <algorithm>
 
 
@@ -9,7 +10,7 @@ using namespace MG;
 
 /* class MG_FileError */
 template<>
-MG_FileError* MG_SFileError::myInstance = NULL;
+MG_FileErrorPtr MG_SFileError::myInstance = MG_FileErrorPtr(NULL);
 
 void MG_FileError::Init()
 {

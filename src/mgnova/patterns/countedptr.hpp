@@ -77,6 +77,12 @@ public:
 		myPtr = aCPtr.myPtr;
 	}
 
+	template<class U>
+	CountedPtr(const CountedPtr<U>& aCPtr) : myPtr(NULL), myCount(new long(1))
+	{
+		CopyCountedPtr::CopyOperator(*this, aCPtr);
+	}
+
 	CountedPtr<T>& operator= (const CountedPtr<T>& aCPtr)
 	{
 		CopyCountedPtr::CopyOperator(*this, aCPtr);
@@ -118,6 +124,11 @@ public:
 	bool operator() (void)
 	{
 		return myPtr ? true : false;
+	}
+
+	bool operator! (void)
+	{
+		return myPtr ? false : true;
 	}
 
 private:

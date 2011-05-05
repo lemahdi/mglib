@@ -8,7 +8,7 @@ using namespace MG;
 
 
 template<>
-MG_CdfNormal* MG_SCdfNormal::myInstance = NULL;
+MG_CdfNormalPtr MG_SCdfNormal::myInstance = MG_CdfNormalPtr(NULL);
 
 
 void MG_CdfNormal::Init(void)

@@ -201,9 +201,6 @@ int main()
 	--vM2;
 
 
-	MG_SFuncBuilder::Release();
-	MG_SFileError::Release();
-	MG_SCdfNormal::Release();
 	MG_RCalendar::Release();
 
 	return 0;

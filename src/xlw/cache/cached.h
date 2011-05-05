@@ -27,9 +27,13 @@ MG_NAMESPACE_BEGIN
 class MG_Cache
 {
 	template<class T> friend class Singleton;
-	FAKE_ASSIGN_OPERATOR(MG_Cache)
+
 private:
+	FAKE_ASSIGN_OPERATOR(MG_Cache)
+
 	MG_Cache(void);
+
+public:
 	virtual ~MG_Cache(void);
 
 public:

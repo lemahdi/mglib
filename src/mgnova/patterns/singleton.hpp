@@ -16,6 +16,7 @@
 #include <iostream>
 
 #include "mgnova/typedef.h"
+#include "mgnova/patterns/countedptr.hpp"
 
 
 MG_NAMESPACE_BEGIN
@@ -28,22 +29,16 @@ private:
 	Singleton(void) {}
 
 public:
-	static T* Instance(void)
+	static CountedPtr< T > Instance(void)
 	{
 		if (!myInstance)
-			Singleton::myInstance = new T;
+			Singleton::myInstance = CountedPtr< T >(new T);
 
 		return Singleton::myInstance;
 	}
 
-	static void Release(void)
-	{
-		delete Singleton::myInstance;
-		Singleton::myInstance = NULL;
-	}
-
 private:
-	static T* myInstance;
+	static CountedPtr< T > myInstance;
 };
 
 

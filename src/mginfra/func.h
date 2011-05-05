@@ -98,8 +98,9 @@ private:
 	MG_FuncBuilder(void) {}
 
 public:
-	~MG_FuncBuilder(void) {}
+	virtual ~MG_FuncBuilder(void) {}
 
+public:
 	void Init(void);
 
 	MG_FuncPtr GetFunc(const std::string& aFuncName);

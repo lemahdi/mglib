@@ -13,7 +13,7 @@ MG_InterpolatorPtr MG_Interpolator::Builder(const INTERPOL_METHOD& aInterpolMeth
 	switch(aInterpolMethod)
 	{
 	case LIN_INTERPOL:
-		return MG_InterpolatorPtr(new MG_LinearInterpolator);
+		return MG_SLinearInterpolator::Instance();
 	default:
 		return MG_InterpolatorPtr(NULL);
 	}
@@ -21,6 +21,9 @@ MG_InterpolatorPtr MG_Interpolator::Builder(const INTERPOL_METHOD& aInterpolMeth
 
 
 /* Linear Interpolator class */
+template <>
+MG_LinearInterpolatorPtr MG_SLinearInterpolator::myInstance = MG_LinearInterpolatorPtr(NULL);
+
 double MG_LinearInterpolator::Interpolate	(	const MG_Line	& aLine
 											,	const MG_ABSC	& aAbscisses
 											,	const double	& aX)
