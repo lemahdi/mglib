@@ -256,6 +256,128 @@ EXCEL_END
 namespace
 {
 XLRegistration::Arg
+ZeroCurve_CreateArgs[]=
+{
+{ "aAsOf"," as of date ","XLF_OPER"},
+{ "aMaturities"," maturities ","XLF_OPER"},
+{ "aZeroRates"," volatilities ","XLF_OPER"}
+};
+  XLRegistration::XLFunctionRegistrationHelper
+registerZeroCurve_Create("xlZeroCurve_Create",
+"MG_ZeroCurve_Create",
+" Creating an zero curve ",
+LibraryName,
+ZeroCurve_CreateArgs,
+3
+,false
+);
+}
+
+
+
+extern "C"
+{
+LPXLFOPER EXCEL_EXPORT
+xlZeroCurve_Create(
+LPXLFOPER aAsOfa,
+LPXLFOPER aMaturitiesa,
+LPXLFOPER aZeroRatesa)
+{
+EXCEL_BEGIN;
+
+	if (XlfExcel::Instance().IsCalledByFuncWiz())
+		return XlfOper(true);
+
+XlfOper aAsOfb(
+	(aAsOfa));
+MG_Date aAsOf(
+	aAsOfb.AsMGDate("aAsOf"));
+
+XlfOper aMaturitiesb(
+	(aMaturitiesa));
+CellMatrix aMaturities(
+	aMaturitiesb.AsCellMatrix("aMaturities"));
+
+XlfOper aZeroRatesb(
+	(aZeroRatesa));
+CellMatrix aZeroRates(
+	aZeroRatesb.AsCellMatrix("aZeroRates"));
+
+MG_XLObjectPtr result(
+	ZeroCurve_Create(
+		aAsOf,
+		aMaturities,
+		aZeroRates)
+	);
+string vRefObj, vError;
+if (MG_SCache::Instance()->PersistentInsert(result, vRefObj, vError))
+  return XlfOper(vRefObj);
+else
+  return XlfOper(vError);
+EXCEL_END
+}
+}
+
+
+
+//////////////////////////
+
+namespace
+{
+XLRegistration::Arg
+ComputeZeroRateArgs[]=
+{
+{ "aZeroCurve"," zero curve ","XLF_OPER"},
+{ "aMaturity"," maturity ","B"}
+};
+  XLRegistration::XLFunctionRegistrationHelper
+registerComputeZeroRate("xlComputeZeroRate",
+"MG_ComputeZeroRate",
+" Interpolating a zero curve ",
+LibraryName,
+ComputeZeroRateArgs,
+2
+,false
+);
+}
+
+
+
+extern "C"
+{
+LPXLFOPER EXCEL_EXPORT
+xlComputeZeroRate(
+LPXLFOPER aZeroCurvea,
+double aMaturity)
+{
+EXCEL_BEGIN;
+
+	if (XlfExcel::Instance().IsCalledByFuncWiz())
+		return XlfOper(true);
+
+XlfOper aZeroCurveb(
+	(aZeroCurvea));
+MG_XLObjectPtr aZeroCurve(
+	aZeroCurveb.AsMGXLObject("aZeroCurve"));
+
+
+double result(
+	ComputeZeroRate(
+		aZeroCurve,
+		aMaturity)
+	);
+return XlfOper(result);
+EXCEL_END
+}
+}
+
+
+
+//////////////////////////
+
+namespace
+{
+XLRegistration::Arg
 VolatilityCurve_CreateArgs[]=
 {
 { "aAsOf"," as of date ","XLF_OPER"},
@@ -322,6 +444,63 @@ if (MG_SCache::Instance()->PersistentInsert(result, vRefObj, vError))
   return XlfOper(vRefObj);
 else
   return XlfOper(vError);
+EXCEL_END
+}
+}
+
+
+
+//////////////////////////
+
+namespace
+{
+XLRegistration::Arg
+ComputeVolatilityArgs[]=
+{
+{ "aVolCurve"," volatility curve ","XLF_OPER"},
+{ "aTenor"," tenor ","B"},
+{ "aMaturity"," maturity ","B"}
+};
+  XLRegistration::XLFunctionRegistrationHelper
+registerComputeVolatility("xlComputeVolatility",
+"MG_ComputeVolatility",
+" Interpolating an IR volatility curve ",
+LibraryName,
+ComputeVolatilityArgs,
+3
+,false
+);
+}
+
+
+
+extern "C"
+{
+LPXLFOPER EXCEL_EXPORT
+xlComputeVolatility(
+LPXLFOPER aVolCurvea,
+double aTenor,
+double aMaturity)
+{
+EXCEL_BEGIN;
+
+	if (XlfExcel::Instance().IsCalledByFuncWiz())
+		return XlfOper(true);
+
+XlfOper aVolCurveb(
+	(aVolCurvea));
+MG_XLObjectPtr aVolCurve(
+	aVolCurveb.AsMGXLObject("aVolCurve"));
+
+
+
+double result(
+	ComputeVolatility(
+		aVolCurve,
+		aTenor,
+		aMaturity)
+	);
+return XlfOper(result);
 EXCEL_END
 }
 }

@@ -47,11 +47,13 @@ MG_ZeroCurve::MG_ZeroCurve	(	const MG_Date			& aAsOf
 							:	MG_MarketData(aAsOf, aInterpolMethod)
 							,	myMaturities(aMaturities)
 							,	myCurve		(aCurve)
-{}
+{
+	myXLName = MG_ZERO_XL_NAME;
+}
 
 double MG_ZeroCurve::ComputeValue(const double& aMaturity, const double& , const double& )
 {
-	return myInterpolator->Interpolate(myCurve, myMaturities, aMaturity);
+	return myInterpolator->Interpolate(myCurve, 0, MG_Interpolator::ID_COL, myMaturities, aMaturity);
 }
 
 
@@ -90,8 +92,8 @@ MG_IRVolatilityCurve::MG_IRVolatilityCurve	(	const MG_Date			& aAsOf
 	myXLName = MG_IRVOL_XL_NAME;
 }
 
-double MG_IRVolatilityCurve::ComputeValue(const double& aMaturity, const double& aTenor, const double& )
+double MG_IRVolatilityCurve::ComputeValue(const double& aTenor, const double& aMaturity, const double& )
 {
-	return myInterpolator->Interpolate(myCurve, myMaturities, myTenors, aMaturity, aTenor);
+	return myInterpolator->Interpolate(myCurve, myTenors, myMaturities, aTenor, aMaturity);
 }
 

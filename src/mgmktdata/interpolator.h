@@ -28,14 +28,16 @@ MG_NAMESPACE_BEGIN
 /* Base class for interpolators */
 class MG_Interpolator : public MG_Object
 {
+public:
+	enum INTERPOL_DIM { ID_ROW, ID_COL };
 protected:
+	typedef xlw::MJMatrix		MG_Line;
 	typedef xlw::MJMatrix		MG_Curve;
-	typedef std::vector<double>	MG_Line;
 	typedef std::vector<double>	MG_ABSC;
 	typedef std::vector<double>	MG_ORD;
 
 public:
-	virtual double Interpolate	(	const MG_Line		& aLine
+	virtual double Interpolate	(	const MG_Line		& aLine, const size_t& aLineIndex, const INTERPOL_DIM& aLineDim
 								,	const MG_ABSC		& aAbscisses
 								,	const double		& aX = 0) = 0;
 	virtual double Interpolate	(	const MG_Curve		& aCurve
@@ -53,12 +55,14 @@ public:
 /* Linear interpolator */
 class MG_LinearInterpolator : public MG_Interpolator
 {
+	FAKE_ASSIGN_OPERATOR(MG_LinearInterpolator)
+
 public:
 	/* Constructors / Destructor */
 	CLONE_METHOD(MG_LinearInterpolator)
 
 public:
-	virtual double Interpolate	(	const MG_Line		& aLine
+	virtual double Interpolate	(	const MG_Line		& aLine, const size_t& aLineIndex, const INTERPOL_DIM& aLineDim
 								,	const MG_ABSC		& aAbscisses
 								,	const double		& aX = 0);
 	virtual double Interpolate	(	const MG_Curve		& aCurve

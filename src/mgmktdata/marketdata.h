@@ -45,7 +45,7 @@ protected:
 class MG_ZeroCurve : public MG_MarketData
 {
 	typedef std::vector<double> MG_ABSC;
-	typedef std::vector<double>	MG_Line;
+	typedef xlw::MJMatrix		MG_Line;
 
 public:
 	/* Constructors / Destructor */
@@ -101,7 +101,7 @@ public:
 						,	const INTERPOL_METHOD	& aInterpolMethod = LIN_INTERPOL);
 
 public:
-	virtual double ComputeValue(const double& aMaturity = 0, const double& aTenor = 0, const double& aZ = 0);
+	virtual double ComputeValue(const double& aTenor = 0, const double& aMaturity = 0, const double& aZ = 0);
 
 private:
 	MG_ABSC				myMaturities;

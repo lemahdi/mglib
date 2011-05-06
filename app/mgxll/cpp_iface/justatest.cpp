@@ -40,6 +40,33 @@ double Price(MG_XLObjectPtr& aSec, MG_XLObjectPtr& aMod)
 }
 
 MG_XLObjectPtr
+ZeroCurve_Create	(	const MG_Date	& aAsOf
+					,	const CellMatrix& aMaturities
+					,	const CellMatrix& aZeroRates)
+{
+	size_t vMatSize;
+	bool vIsMatRow(false), vIsTenorRow(true);
+
+	if (aMaturities.ColumnsInStructure()!=1 && aMaturities.RowsInStructure()!=1)
+		MG_THROW("Maturities should be a one row or column structure");
+	vMatSize = aMaturities.ColumnsInStructure() * aMaturities.RowsInStructure();
+	vIsMatRow = aMaturities.ColumnsInStructure() == 1;
+
+	if (aZeroRates.ColumnsInStructure()!=1 || aZeroRates.RowsInStructure()!=vMatSize)
+		MG_THROW("Zero vector size and Maturities size are not consistent");
+
+	vector<double> vMaturities = FromCellMatrixToVectorDouble(aMaturities, 0, vIsMatRow);
+	MJMatrix vZeroRates = FromCellMatrixToMJMatrix(aZeroRates);
+
+	return MG_XLObjectPtr(new MG_ZeroCurve(aAsOf, vMaturities, vZeroRates));
+}
+
+double ComputeZeroRate(MG_XLObjectPtr& aZeroCurve, const double& aMaturity)
+{
+	return dynamic_cast<MG_ZeroCurve*>(&*aZeroCurve)->ComputeValue(aMaturity);
+}
+
+MG_XLObjectPtr
 VolatilityCurve_Create	(	const MG_Date	& aAsOf
 						,	const CellMatrix& aMaturities
 						,	const CellMatrix& aTenors
@@ -67,4 +94,9 @@ VolatilityCurve_Create	(	const MG_Date	& aAsOf
 	MJMatrix vVols = FromCellMatrixToMJMatrix(aVolatilities);
 
 	return MG_XLObjectPtr(new MG_IRVolatilityCurve(aAsOf, vMaturities, vTenors, vVols));
+}
+
+double ComputeVolatility(MG_XLObjectPtr& aVolCurve, const double& aTenor, const double& aMaturity)
+{
+	return dynamic_cast<MG_IRVolatilityCurve*>(&*aVolCurve)->ComputeValue(aTenor, aMaturity);
 }
