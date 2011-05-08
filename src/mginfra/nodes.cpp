@@ -402,6 +402,14 @@ MG_TableWalker::MG_TableWalker()
 	: myCurrentRow(0), myCurrentCol(0), myRows(0), myCols(0)
 {}
 
+void MG_TableWalker::Swap(MG_TableWalker& aRight)
+{
+	myColumnNames.swap(aRight.myColumnNames);
+	myFlows.swap(aRight.myFlows);
+	swap(myCols, aRight.myCols);
+	swap(myCurrentCol, aRight.myCurrentCol);
+	swap(myCurrentRow, aRight.myCurrentRow);
+}
 
 MG_TableWalker::MG_TableWalker	(	const vector<string>& aColNames
 								,	const vector<string>& aFlows)

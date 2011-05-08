@@ -25,6 +25,8 @@ namespace MG_utils
 
 extern std::string itoa(const int& vInteger);
 
+extern std::string ftoa(const double& vDouble);
+
 extern std::string ToUpper(const std::string& aStr);
 
 extern long FromXLDateToJulianDay(const double& aXLDate);
@@ -36,5 +38,7 @@ extern std::vector<double> DoublePtrAsVector(const double* aDbl, const size_t& a
 extern std::vector<double> FromCellMatrixToVectorDouble(const xlw::CellMatrix& aCM, const size_t& aIndex, const bool& aIsRow = true);
 
 extern xlw::MJMatrix FromCellMatrixToMJMatrix(const xlw::CellMatrix& aCM);
+
+extern std::vector<std::string> FromCellMatrixToVectorStr(const xlw::CellMatrix& aCM, const std::vector<bool>& aIsDate);
 
 }

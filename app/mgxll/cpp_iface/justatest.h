@@ -67,4 +67,9 @@ ComputeVolatility(MG_XLObjectPtr& aVolCurve // volatility curve
 				  , const double& aMaturity // maturity
 				  );
 
+//<xlw:libraryname=MyTestLibrary
+MG_XLObjectPtr // Creating a generic security
+GenSec_Create(const CellMatrix& aDealDesc // deal description
+			  );
+
 #endif

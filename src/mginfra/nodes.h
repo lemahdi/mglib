@@ -64,6 +64,8 @@ public:
 	MG_TableWalker(const std::vector<std::string>& aColNames, const std::vector<std::string>& aFlows);
 	virtual ~MG_TableWalker(void) {}
 
+	SWAP_DECL(MG_TableWalker)
+
 public:
 	/* accessors */
 	inline unsigned int				GetCurrentRow	(void) const { return myCurrentRow; }

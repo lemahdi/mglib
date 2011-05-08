@@ -1,6 +1,8 @@
 #include "mgnova/utils/utils.h"
 #include "mgnova/date.h"
 
+#include <math.h>
+
 
 using namespace std;
 using namespace MG;
@@ -32,6 +34,24 @@ namespace MG_utils
 			vIntStr[i] = vInts[vSize-1+vNeg-i];
 
 		return vIntStr;
+	}
+
+	/* Transforming an integer to a string */
+	string ftoa(const double& vDouble)
+	{
+		string vRes = "0";
+		if (vDouble == 0.)
+			return vRes;
+
+		double vBaseInt;
+		double vMantisse = modf(vDouble, &vBaseInt);
+		vRes = itoa((int)vBaseInt);
+		if (vMantisse != 0.)
+		{
+			vRes += ".";
+			vRes += itoa((int)vMantisse);
+		}
+		return vRes;
 	}
 
 	/* Transforming a string to an all case upper string */
@@ -97,5 +117,39 @@ namespace MG_utils
 			for(size_t j=0; j<vCols; ++j)
 				vMat(i, j) = aCM(i, j).NumericValue();
 		return vMat;
+	}
+
+	vector<string> FromCellMatrixToVectorStr(const CellMatrix& aCM, const vector<bool>& aIsDate)
+	{
+		size_t vRows(aCM.RowsInStructure()), vCols(aCM.ColumnsInStructure());
+		vector<string> vVect(vRows*vCols);
+		CellValue vTmpCell;
+		double vTmpDbl;
+		MG_Date vTmpDate;
+		for(size_t i=0; i<vRows; ++i)
+		{
+			for(size_t j=0; j<vCols; ++j)
+			{
+				vTmpCell = aCM(i,j);
+				if (vTmpCell.IsAString())
+				{
+					vVect[j+i*vCols] = aCM(i,j);
+					continue;
+				}
+				if (vTmpCell.IsANumber())
+				{
+					vTmpDbl = aCM(i,j);
+					if (aIsDate[j])
+					{
+						vTmpDate = MG_Date(FromXLDateToJulianDay(vTmpDbl));
+						vVect[j+i*vCols] = vTmpDate.ToString('/');
+						continue;
+					}
+					vVect[j+i*vCols] = ftoa(vTmpDbl);
+					continue;
+				}
+			}
+		}
+		return vVect;
 	}
 }

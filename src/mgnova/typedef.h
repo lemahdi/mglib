@@ -104,6 +104,7 @@ void yy_delete_buffer (YY_BUFFER_STATE b  );
 #define MG_BSMODEL_XL_NAME	"BSMOD"
 #define MG_ZERO_XL_NAME		"ZERO"
 #define MG_IRVOL_XL_NAME	"IRVOL"
+#define MG_GENSEC_XL_NAME	"GENSEC"
 
 
 /* CountedPtr definitions */

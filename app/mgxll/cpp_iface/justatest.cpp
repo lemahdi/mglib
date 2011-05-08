@@ -4,6 +4,7 @@
 #include "mgnova/exception.h"
 #include "mgnova/utils/utils.h"
 #include "mgmktdata/marketdata.h"
+#include "mggenpricer/gensec/gensecurity.h"
 
 
 using namespace std;
@@ -99,4 +100,20 @@ VolatilityCurve_Create	(	const MG_Date	& aAsOf
 double ComputeVolatility(MG_XLObjectPtr& aVolCurve, const double& aTenor, const double& aMaturity)
 {
 	return dynamic_cast<MG_IRVolatilityCurve*>(&*aVolCurve)->ComputeValue(aTenor, aMaturity);
+}
+
+MG_XLObjectPtr GenSec_Create(const CellMatrix& aDealDesc)
+{
+	size_t vColsSize = aDealDesc.ColumnsInStructure();
+	vector<bool> vIsDate(vColsSize);
+	string vTmp, vDateStr("DATE");
+	for(size_t i=0; i<vColsSize; ++i)
+	{
+		vTmp = aDealDesc(0,i).StringValue();
+		vTmp = ToUpper(vTmp.substr(vTmp.size()-4));
+		vIsDate[i] = vTmp==vDateStr ? true : false;
+	}
+	
+	vector<string> vDealDesc = FromCellMatrixToVectorStr(aDealDesc, vIsDate);
+	return MG_XLObjectPtr(new MG_GenSecurity(vDealDesc, vColsSize));
 }

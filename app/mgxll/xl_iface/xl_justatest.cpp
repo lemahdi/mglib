@@ -509,3 +509,56 @@ EXCEL_END
 
 //////////////////////////
 
+namespace
+{
+XLRegistration::Arg
+GenSec_CreateArgs[]=
+{
+{ "aDealDesc"," deal description ","XLF_OPER"}
+};
+  XLRegistration::XLFunctionRegistrationHelper
+registerGenSec_Create("xlGenSec_Create",
+"MG_GenSec_Create",
+" Creating a generic security ",
+LibraryName,
+GenSec_CreateArgs,
+1
+,false
+);
+}
+
+
+
+extern "C"
+{
+LPXLFOPER EXCEL_EXPORT
+xlGenSec_Create(
+LPXLFOPER aDealDesca)
+{
+EXCEL_BEGIN;
+
+	if (XlfExcel::Instance().IsCalledByFuncWiz())
+		return XlfOper(true);
+
+XlfOper aDealDescb(
+	(aDealDesca));
+CellMatrix aDealDesc(
+	aDealDescb.AsCellMatrix("aDealDesc"));
+
+MG_XLObjectPtr result(
+	GenSec_Create(
+		aDealDesc)
+	);
+string vRefObj, vError;
+if (MG_SCache::Instance()->PersistentInsert(result, vRefObj, vError))
+  return XlfOper(vRefObj);
+else
+  return XlfOper(vError);
+EXCEL_END
+}
+}
+
+
+
+//////////////////////////
+
