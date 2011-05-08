@@ -32,9 +32,32 @@ void MG_XL_Cached::GetSheetNm(string& aSheetName)
 		MG_THROW("Cannot call Excel function xlSheetNm.");
 
 	XCHAR* vSheetName = vRetSheetname.ExtractXloper12()->val.str;
-	ostringstream vOSS;
-	while (*vSheetName != L'\0')
-		vOSS << use_facet<ctype<XCHAR> >(locale()).narrow(*vSheetName++, '*');
-	aSheetName.resize(vRetSheetname.ExtractXloper12()->val.mref.lpmref->count);
+	wstring vSN = wstring(vSheetName);
+	string vTmp(vSN.begin(), vSN.end());
+
+	// look for the beginning of the name
+	string::iterator vIt(vTmp.begin());
+	size_t vStart(0);
+	while (vIt != vTmp.end())
+	{
+		if (*vIt == '[')
+			break;
+		++vStart;
+		++vIt;
+	}
+
+	// looking for the ending of the name
+	size_t vNot = vTmp.find_first_of("]");
+	vIt = vTmp.end()-1;
+	size_t vEnd(0);
+	while (vIt != vTmp.begin()+vNot+1)
+	{
+		if (*vIt>='a'&&*vIt<='Z' || *vIt>='0'&&*vIt<='9')
+			break;
+		++vEnd;
+		--vIt;
+	}
+
+	aSheetName.assign(vTmp.begin()+vStart, vTmp.end()-vEnd);
 }
 
