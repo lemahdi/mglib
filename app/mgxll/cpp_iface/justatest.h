@@ -68,6 +68,22 @@ ComputeVolatility(MG_XLObjectPtr& aVolCurve // volatility curve
 				  );
 
 //<xlw:libraryname=MyTestLibrary
+MG_XLObjectPtr // Creating a Dividend Table for equities
+DividendsTable_Create(const MG_Date& aAsOf // as of date
+					 , const CellMatrix& aExDivDates // exdiv dates
+					 , const CellMatrix& aPaymentDates // dividends payment dates
+					 , const CellMatrix& aDividends // dividends
+					 , const MG_XLObjectPtr& aZC // zero curve
+					 );
+
+//<xlw:libraryname=MyTestLibrary
+double // Computing the discounted dividends between 2 dates
+ComputeDiscountedDivs(MG_XLObjectPtr& aDividends // dividends
+					  , const MG_Date& aFirstDate // first date of computation
+					  , const MG_Date& aLastDate  // last date of computation
+					  );
+
+//<xlw:libraryname=MyTestLibrary
 MG_XLObjectPtr // Creating a generic security
 GenSec_Create(const CellMatrix& aDealDesc // deal description
 			  );

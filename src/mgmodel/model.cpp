@@ -47,11 +47,13 @@ void MG_BSModel::Swap(MG_BSModel& aRight)
 
 double MG_BSModel::CallPrice(const double &aFwd, const double &aStrike, const double &aMaturity)
 {
-	return exp(-0.02 * aMaturity) * max(aFwd - aStrike, 0.);
+	double DF = exp(-0.03*aMaturity);
+	return VanillaPrice(aFwd, aStrike, aMaturity, DF, myVol, _call);
 }
 
 double MG_BSModel::PutPrice(const double &aFwd, const double &aStrike, const double &aMaturity)
-{aFwd, aStrike, aMaturity;
-	return 0;
+{	
+	double DF = exp(-0.03*aMaturity);
+	return VanillaPrice(aFwd, aStrike, aMaturity, DF, myVol, _put);
 }
 

@@ -154,6 +154,14 @@
 	</References>
 	<Files>
 		<File
+			RelativePath=".\closedformulas.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\closedformulas.h"
+			>
+		</File>
+		<File
 			RelativePath=".\normal.cpp"
 			>
 		</File>

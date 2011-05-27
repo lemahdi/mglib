@@ -106,6 +106,7 @@ namespace xlw {
 
         size_t RowsInStructure() const;
         size_t ColumnsInStructure() const;
+		size_t Size() const;
 
         void PushBottom(const CellMatrix& newRows);
 

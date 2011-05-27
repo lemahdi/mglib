@@ -35,25 +35,19 @@ public:
 template<class T,class U>
 void CopyCountedPtr::CopyOperator(const CountedPtr<T>& aTo, const CountedPtr<U>& aFrom)
 {
-	if (dynamic_cast<T*>(aFrom.myPtr))
+	if (aTo.myPtr == aFrom.myPtr)
+		return;
+
+	T* vTmp = dynamic_cast<T*>(aFrom.myPtr);
+	if (vTmp)
 	{
 		if (aTo.myPtr)
-		{
-			if (aTo.myPtr != aFrom.myPtr)
-			{
-				aTo.Release();
-				aTo.myCount = aFrom.myCount;
-				++*aTo.myCount;
-				aTo.myPtr = aFrom.myPtr;
-			}
-		}
+			aTo.Release();
 		else
-		{
 			delete aTo.myCount;
-			aTo.myCount = aFrom.myCount;
-			++*aTo.myCount;
-			aTo.myPtr = aFrom.myPtr;
-		}
+		aTo.myCount = aFrom.myCount;
+		++*aTo.myCount;
+		aTo.myPtr = vTmp;
 	}
 }
 
@@ -96,12 +90,28 @@ public:
 		return *this;
 	}
 
+	void Swap(CountedPtr<T>& aRight)
+	{
+		swap(myCount, aRight.myCount);
+		swap(myPtr, aRight.myPtr);
+	}
+
 	T* operator-> (void)
 	{
 		return myPtr;
 	}
 
+	T* operator-> (void) const
+	{
+		return myPtr;
+	}
+
 	T& operator* (void)
+	{
+		return *myPtr;
+	}
+
+	T& operator* (void) const
 	{
 		return *myPtr;
 	}

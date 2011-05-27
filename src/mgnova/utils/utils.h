@@ -19,6 +19,8 @@
 
 #include "xlw/CellMatrix.h"
 
+#include "mgnova/date.h"
+
 
 namespace MG_utils
 {
@@ -35,10 +37,12 @@ extern double FromJulianDayToXLDate(const long& aJulianDay);
 
 extern std::vector<double> DoublePtrAsVector(const double* aDbl, const size_t& aSize);
 
-extern std::vector<double> FromCellMatrixToVectorDouble(const xlw::CellMatrix& aCM, const size_t& aIndex, const bool& aIsRow = true);
+extern std::vector<double> FromCellMatrixToVectorDouble(const xlw::CellMatrix& aCM, const size_t& aIndex);
 
 extern xlw::MJMatrix FromCellMatrixToMJMatrix(const xlw::CellMatrix& aCM);
 
 extern std::vector<std::string> FromCellMatrixToVectorStr(const xlw::CellMatrix& aCM, const std::vector<bool>& aIsDate);
+
+extern std::vector<MG::MG_Date> FromCellMatrixToVectorDate(const xlw::CellMatrix& aCM, const size_t& aIndex);
 
 }

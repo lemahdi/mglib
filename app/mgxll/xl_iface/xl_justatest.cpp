@@ -512,6 +512,156 @@ EXCEL_END
 namespace
 {
 XLRegistration::Arg
+DividendsTable_CreateArgs[]=
+{
+{ "aAsOf"," as of date ","XLF_OPER"},
+{ "aExDivDates"," exdiv dates ","XLF_OPER"},
+{ "aPaymentDates"," dividends payment dates ","XLF_OPER"},
+{ "aDividends"," dividends ","XLF_OPER"},
+{ "aZC"," zero curve ","XLF_OPER"}
+};
+  XLRegistration::XLFunctionRegistrationHelper
+registerDividendsTable_Create("xlDividendsTable_Create",
+"MG_DividendsTable_Create",
+" Creating a Dividend Table for equities ",
+LibraryName,
+DividendsTable_CreateArgs,
+5
+,false
+);
+}
+
+
+
+extern "C"
+{
+LPXLFOPER EXCEL_EXPORT
+xlDividendsTable_Create(
+LPXLFOPER aAsOfa,
+LPXLFOPER aExDivDatesa,
+LPXLFOPER aPaymentDatesa,
+LPXLFOPER aDividendsa,
+LPXLFOPER aZCa)
+{
+EXCEL_BEGIN;
+
+	if (XlfExcel::Instance().IsCalledByFuncWiz())
+		return XlfOper(true);
+
+XlfOper aAsOfb(
+	(aAsOfa));
+MG_Date aAsOf(
+	aAsOfb.AsMGDate("aAsOf"));
+
+XlfOper aExDivDatesb(
+	(aExDivDatesa));
+CellMatrix aExDivDates(
+	aExDivDatesb.AsCellMatrix("aExDivDates"));
+
+XlfOper aPaymentDatesb(
+	(aPaymentDatesa));
+CellMatrix aPaymentDates(
+	aPaymentDatesb.AsCellMatrix("aPaymentDates"));
+
+XlfOper aDividendsb(
+	(aDividendsa));
+CellMatrix aDividends(
+	aDividendsb.AsCellMatrix("aDividends"));
+
+XlfOper aZCb(
+	(aZCa));
+MG_XLObjectPtr aZC(
+	aZCb.AsMGXLObject("aZC"));
+
+MG_XLObjectPtr result(
+	DividendsTable_Create(
+		aAsOf,
+		aExDivDates,
+		aPaymentDates,
+		aDividends,
+		aZC)
+	);
+string vRefObj, vError;
+if (MG_SCache::Instance()->PersistentInsert(result, vRefObj, vError))
+  return XlfOper(vRefObj);
+else
+  return XlfOper(vError);
+EXCEL_END
+}
+}
+
+
+
+//////////////////////////
+
+namespace
+{
+XLRegistration::Arg
+ComputeDiscountedDivsArgs[]=
+{
+{ "aDividends"," dividends ","XLF_OPER"},
+{ "aFirstDate"," first date of computation ","XLF_OPER"},
+{ "aLastDate"," last date of computation ","XLF_OPER"}
+};
+  XLRegistration::XLFunctionRegistrationHelper
+registerComputeDiscountedDivs("xlComputeDiscountedDivs",
+"MG_ComputeDiscountedDivs",
+" Computing the discounted dividends between 2 dates ",
+LibraryName,
+ComputeDiscountedDivsArgs,
+3
+,false
+);
+}
+
+
+
+extern "C"
+{
+LPXLFOPER EXCEL_EXPORT
+xlComputeDiscountedDivs(
+LPXLFOPER aDividendsa,
+LPXLFOPER aFirstDatea,
+LPXLFOPER aLastDatea)
+{
+EXCEL_BEGIN;
+
+	if (XlfExcel::Instance().IsCalledByFuncWiz())
+		return XlfOper(true);
+
+XlfOper aDividendsb(
+	(aDividendsa));
+MG_XLObjectPtr aDividends(
+	aDividendsb.AsMGXLObject("aDividends"));
+
+XlfOper aFirstDateb(
+	(aFirstDatea));
+MG_Date aFirstDate(
+	aFirstDateb.AsMGDate("aFirstDate"));
+
+XlfOper aLastDateb(
+	(aLastDatea));
+MG_Date aLastDate(
+	aLastDateb.AsMGDate("aLastDate"));
+
+double result(
+	ComputeDiscountedDivs(
+		aDividends,
+		aFirstDate,
+		aLastDate)
+	);
+return XlfOper(result);
+EXCEL_END
+}
+}
+
+
+
+//////////////////////////
+
+namespace
+{
+XLRegistration::Arg
 GenSec_CreateArgs[]=
 {
 { "aDealDesc"," deal description ","XLF_OPER"}

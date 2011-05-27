@@ -30,7 +30,7 @@ public:
 	ASSIGN_OPERATOR(MG_MarketData)
 	SWAP_DECL(MG_MarketData)
 
-	MG_MarketData(const MG_Date& aAsOf, const INTERPOL_METHOD& aInterpolMethod = LIN_INTERPOL);
+	MG_MarketData(const MG_Date& aAsOf, const INTERPOL_METHOD& aInterpolMethod = NONE_INTERPOL);
 
 public:
 	virtual double ComputeValue(const double& aX = 0, const double& aY = 0, const double& aZ = 0) = 0;
@@ -108,6 +108,38 @@ private:
 	MG_COOR				myTenors;
 	MG_Matrix			myCurve;
 };
+
+/* Dividends - Dividends Table*/
+class MG_DividendsTable : public MG_MarketData
+{
+	typedef std::vector<MG_Date>	MG_ABSC;
+	typedef std::vector<double>		MG_Line;
+
+public:
+	/* Constructors / Destructor */
+	COPY_CTOR_DECL(MG_DividendsTable)
+
+	ASSIGN_OPERATOR(MG_DividendsTable)
+	CLONE_METHOD(MG_DividendsTable)
+	SWAP_DECL(MG_DividendsTable)
+
+	MG_DividendsTable(	const MG_Date			& aAsOf
+					,	const MG_ABSC			& aExDivDates
+					,	const MG_ABSC			& aPaymentDates
+					,	const MG_Line			& aCurve
+					,	const MG_ZeroCurvePtr	& aZeroCurve);
+
+public:
+	virtual double ComputeValue(const double& aT1 = 0, const double& aT2 = 0, const double& aZ = 0);
+
+private:
+	MG_ABSC				myExDivDates;
+	MG_ABSC				myPaymentDates;
+	MG_Line				myCurve;
+	MG_ZeroCurvePtr		myZeroCurve;
+};
+
+
 
 
 MG_NAMESPACE_END

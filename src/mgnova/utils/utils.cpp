@@ -1,5 +1,6 @@
 #include "mgnova/utils/utils.h"
 #include "mgnova/date.h"
+#include "mgnova/exception.h"
 
 #include <math.h>
 
@@ -93,12 +94,16 @@ namespace MG_utils
 		return vRes;
 	}
 
-	/* converting a CellMatrix to a std::vector */
-	vector<double> FromCellMatrixToVectorDouble(const CellMatrix& aCM, const size_t& aIndex, const bool& aIsRow)
+	/* converting a CellMatrix to a std::vector<double> */
+	vector<double> FromCellMatrixToVectorDouble(const CellMatrix& aCM, const size_t& aIndex)
 	{
-		size_t vSize = aIsRow ? aCM.RowsInStructure() : aCM.ColumnsInStructure();
+		if (aCM.ColumnsInStructure()!=1 && aCM.RowsInStructure()!=1)
+			MG_THROW("CellMatrix should be a one row or column structure");
+		bool vIsRow = aCM.ColumnsInStructure() == 1;
+
+		size_t vSize = vIsRow ? aCM.RowsInStructure() : aCM.ColumnsInStructure();
 		vector<double> vRes(vSize);
-		if (aIsRow)
+		if (vIsRow)
 		{
 			for(size_t i=0; i<vSize; ++i)
 				vRes[i] = aCM(i, aIndex).NumericValue();
@@ -109,6 +114,7 @@ namespace MG_utils
 		return vRes;
 	}
 
+	/* converting a CellMatrix to a xlw::MJMatrix */
 	MJMatrix FromCellMatrixToMJMatrix(const CellMatrix& aCM)
 	{
 		size_t vRows(aCM.RowsInStructure()), vCols(aCM.ColumnsInStructure());
@@ -119,6 +125,7 @@ namespace MG_utils
 		return vMat;
 	}
 
+	/* converting a CellMatrix to a std::vector<string> */
 	vector<string> FromCellMatrixToVectorStr(const CellMatrix& aCM, const vector<bool>& aIsDate)
 	{
 		size_t vRows(aCM.RowsInStructure()), vCols(aCM.ColumnsInStructure());
@@ -151,5 +158,25 @@ namespace MG_utils
 			}
 		}
 		return vVect;
+	}
+
+	/* converting a CellMatrix to a std::vector<MG_Date> */
+	vector<MG_Date> FromCellMatrixToVectorDate(const CellMatrix& aCM, const size_t& aIndex)
+	{
+		if (aCM.ColumnsInStructure()!=1 && aCM.RowsInStructure()!=1)
+			MG_THROW("CellMatrix should be a one row or column structure");
+		bool vIsRow = aCM.ColumnsInStructure() == 1;
+
+		size_t vSize = vIsRow ? aCM.RowsInStructure() : aCM.ColumnsInStructure();
+		vector<MG_Date> vRes(vSize);
+		if (vIsRow)
+		{
+			for(size_t i=0; i<vSize; ++i)
+				vRes[i] = MG_Date(FromXLDateToJulianDay(aCM(i, aIndex).NumericValue()));
+			return vRes;
+		}
+		for(size_t i=0; i<vSize; ++i)
+			vRes[i] = MG_Date(FromXLDateToJulianDay(aCM(aIndex, i).NumericValue()));
+		return vRes;
 	}
 }

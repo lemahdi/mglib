@@ -303,6 +303,10 @@ size_t xlw::CellMatrix::ColumnsInStructure() const
 {
     return Columns;
 }
+size_t xlw::CellMatrix::Size() const
+{
+    return Rows*Columns;
+}
 
 xlw::CellMatrix xlw::MergeCellMatrices(const CellMatrix& Top, const CellMatrix& Bottom)
 {

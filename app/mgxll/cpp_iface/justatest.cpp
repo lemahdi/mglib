@@ -45,19 +45,11 @@ ZeroCurve_Create	(	const MG_Date	& aAsOf
 					,	const CellMatrix& aMaturities
 					,	const CellMatrix& aZeroRates)
 {
-	size_t vMatSize;
-	bool vIsMatRow(false), vIsTenorRow(true);
-
-	if (aMaturities.ColumnsInStructure()!=1 && aMaturities.RowsInStructure()!=1)
-		MG_THROW("Maturities should be a one row or column structure");
-	vMatSize = aMaturities.ColumnsInStructure() * aMaturities.RowsInStructure();
-	vIsMatRow = aMaturities.ColumnsInStructure() == 1;
-
-	if (aZeroRates.ColumnsInStructure()!=1 || aZeroRates.RowsInStructure()!=vMatSize)
+	if (aZeroRates.Size() != aMaturities.Size())
 		MG_THROW("Zero vector size and Maturities size are not consistent");
 
-	vector<double> vMaturities = FromCellMatrixToVectorDouble(aMaturities, 0, vIsMatRow);
-	MJMatrix vZeroRates = FromCellMatrixToMJMatrix(aZeroRates);
+	vector<double>	vMaturities	= FromCellMatrixToVectorDouble	(aMaturities, 0);
+	MJMatrix		vZeroRates	= FromCellMatrixToMJMatrix		(aZeroRates);
 
 	return MG_XLObjectPtr(new MG_ZeroCurve(aAsOf, vMaturities, vZeroRates));
 }
@@ -73,26 +65,12 @@ VolatilityCurve_Create	(	const MG_Date	& aAsOf
 						,	const CellMatrix& aTenors
 						,	const CellMatrix& aVolatilities)
 {
-	size_t vMatSize, vTenorSize;
-	bool vIsMatRow(false), vIsTenorRow(true);
-
-	if (aMaturities.ColumnsInStructure()!=1 && aMaturities.RowsInStructure()!=1)
-		MG_THROW("Maturities should be a one row or column structure");
-	vMatSize = aMaturities.ColumnsInStructure() * aMaturities.RowsInStructure();
-	vIsMatRow = aMaturities.ColumnsInStructure() == 1;
-
-	vTenorSize = aTenors.ColumnsInStructure() * aTenors.RowsInStructure();
-	if (aTenors.ColumnsInStructure()!=1 && aTenors.RowsInStructure()!=1)
-		MG_THROW("Tenors should be a one row or column structure");
-	vIsTenorRow = aTenors.ColumnsInStructure() == 1;
-
-	if (aVolatilities.ColumnsInStructure()!=vTenorSize || aVolatilities.RowsInStructure()!=vMatSize)
+	if (aVolatilities.Size() != aTenors.Size()*aMaturities.Size())
 		MG_THROW("Volatilities matrix size and (Maturities,Tenors) size are not consistent");
 
-	vector<double> vMaturities = FromCellMatrixToVectorDouble(aMaturities, 0, vIsMatRow);
-	vector<double> vTenors = FromCellMatrixToVectorDouble(aTenors, 0, vIsTenorRow);
-
-	MJMatrix vVols = FromCellMatrixToMJMatrix(aVolatilities);
+	vector<double>	vMaturities	= FromCellMatrixToVectorDouble	(aMaturities, 0);
+	vector<double>	vTenors		= FromCellMatrixToVectorDouble	(aTenors, 0);
+	MJMatrix		vVols		= FromCellMatrixToMJMatrix		(aVolatilities);
 
 	return MG_XLObjectPtr(new MG_IRVolatilityCurve(aAsOf, vMaturities, vTenors, vVols));
 }
@@ -100,6 +78,29 @@ VolatilityCurve_Create	(	const MG_Date	& aAsOf
 double ComputeVolatility(MG_XLObjectPtr& aVolCurve, const double& aTenor, const double& aMaturity)
 {
 	return dynamic_cast<MG_IRVolatilityCurve*>(&*aVolCurve)->ComputeValue(aTenor, aMaturity);
+}
+
+MG_XLObjectPtr
+DividendsTable_Create	(	const MG_Date		& aAsOf
+						,	const CellMatrix	& aExDivDates
+						,	const CellMatrix	& aPaymentDates
+						,	const CellMatrix	& aDividends
+						,	const MG_XLObjectPtr& aZC)
+{
+	if (aExDivDates.Size() != aExDivDates.Size())
+		MG_THROW("Ex dividends dates and payments days should be equal");
+
+	vector<MG_Date>	vExDivDates		= FromCellMatrixToVectorDate	(aExDivDates, 0);
+	vector<MG_Date>	vPaymentDates	= FromCellMatrixToVectorDate	(aPaymentDates, 0);
+	vector<double>	vDividends		= FromCellMatrixToVectorDouble	(aDividends, 0);
+
+	return MG_XLObjectPtr(new MG_DividendsTable(aAsOf, vExDivDates, vPaymentDates, vDividends, aZC));
+}
+
+double ComputeDiscountedDivs(MG_XLObjectPtr& aDividends, const MG_Date& aT1, const MG_Date& aT2)
+{
+	assert(aT1 <= aT2);
+	return dynamic_cast<MG_DividendsTable*>(&*aDividends)->ComputeValue(aT1.GetJulianDay(), aT2.GetJulianDay());
 }
 
 MG_XLObjectPtr GenSec_Create(const CellMatrix& aDealDesc)

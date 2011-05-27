@@ -31,6 +31,8 @@ void yy_delete_buffer (YY_BUFFER_STATE b  );
 #define ONEOVERROOTPI			0.56418958354775628
 #define ROOTTWOPI				2.5066282746310002
 #define NORMALCUMULATIVEBOUND	7.
+#define INFTY					1.e+20						
+#define	EPS						1.e-12						
 
 
 /* Error file for Lexer and Parser */
@@ -103,6 +105,7 @@ void yy_delete_buffer (YY_BUFFER_STATE b  );
 /* XL names */
 #define MG_BSMODEL_XL_NAME	"BSMOD"
 #define MG_ZERO_XL_NAME		"ZERO"
+#define MG_DIVS_XL_NAME		"DIVS"
 #define MG_IRVOL_XL_NAME	"IRVOL"
 #define MG_GENSEC_XL_NAME	"GENSEC"
 
@@ -118,6 +121,7 @@ void yy_delete_buffer (YY_BUFFER_STATE b  );
 #define MG_SamplerPtr					CountedPtr<MG::MG_Sampler>
 #define MG_CdfNormalPtr					CountedPtr<MG::MG_CdfNormal>
 #define MG_UnaryFuncPtr					CountedPtr<MG::MG_UnaryFunc>
+#define MG_ZeroCurvePtr					CountedPtr<MG::MG_ZeroCurve>
 #define MG_IRVolatilityCurvePtr			CountedPtr<MG::MG_IRVolatilityCurve>
 #define MG_InterpolatorPtr				CountedPtr<MG::MG_Interpolator>
 #define MG_LinearInterpolatorPtr		CountedPtr<MG::MG_LinearInterpolator>
@@ -171,5 +175,6 @@ enum DATE_DISPLAY {
 
 /* enum for interpolation methdos */
 enum INTERPOL_METHOD {
+	NONE_INTERPOL,			// no interpolation
 	LIN_INTERPOL			// linear interpol method
 };

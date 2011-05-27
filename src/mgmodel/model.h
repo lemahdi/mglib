@@ -13,7 +13,7 @@
 
 
 #include "mgnova/date.h"
-
+#include "mgnumerical/closedformulas.h"
 
 MG_NAMESPACE_BEGIN
 

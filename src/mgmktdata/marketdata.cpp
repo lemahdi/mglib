@@ -1,5 +1,7 @@
 #include "mgmktdata/marketdata.h"
 
+#include <math.h>
+
 
 using namespace std;
 using namespace MG;
@@ -22,7 +24,8 @@ MG_MarketData::MG_MarketData(	const MG_Date			& aAsOf
 							:	MG_XLObject()
 							,	myAsOf(aAsOf)
 {
-	myInterpolator = MG_Interpolator::Builder(aInterpolMethod);
+	if (aInterpolMethod != NONE_INTERPOL)
+		myInterpolator = MG_Interpolator::Builder(aInterpolMethod);
 }
 
 
@@ -53,11 +56,12 @@ MG_ZeroCurve::MG_ZeroCurve	(	const MG_Date			& aAsOf
 
 double MG_ZeroCurve::ComputeValue(const double& aMaturity, const double& , const double& )
 {
-	return myInterpolator->Interpolate(myCurve, 0, MG_Interpolator::ID_COL, myMaturities, aMaturity);
+	double vRate = myInterpolator->Interpolate(myCurve, 0, MG_Interpolator::ID_COL, myMaturities, aMaturity);
+	return exp(-vRate*aMaturity);
 }
 
 
-/* Voaltility class */
+/* Volatility class */
 MG_VolatilityCurve::MG_VolatilityCurve	(	const MG_Date			& aAsOf
 										,	const INTERPOL_METHOD	& aInterpolMethod)
 										:	MG_MarketData(aAsOf, aInterpolMethod)
@@ -97,3 +101,54 @@ double MG_IRVolatilityCurve::ComputeValue(const double& aTenor, const double& aM
 	return myInterpolator->Interpolate(myCurve, myTenors, myMaturities, aTenor, aMaturity);
 }
 
+
+/* Dividends Table class */
+MG_DividendsTable::MG_DividendsTable	(	const MG_DividendsTable& aRight)
+										:	MG_MarketData(aRight)
+										,	myExDivDates	(aRight.myExDivDates)
+										,	myPaymentDates	(aRight.myPaymentDates)
+										,	myCurve			(aRight.myCurve)
+{
+	myZeroCurve = MG_ZeroCurvePtr(new MG_ZeroCurve(*aRight.myZeroCurve));
+}
+
+void MG_DividendsTable::Swap(MG_DividendsTable &aRight)
+{
+	MG_MarketData::Swap(aRight);
+	swap(myExDivDates, aRight.myExDivDates);
+	swap(myPaymentDates, aRight.myPaymentDates);
+	swap(myCurve, aRight.myCurve);
+	myZeroCurve.Swap(aRight.myZeroCurve);
+}
+
+MG_DividendsTable::MG_DividendsTable(	const MG_Date			& aAsOf
+									,	const MG_ABSC			& aExDivDates
+									,	const MG_ABSC			& aPaymentDates
+									,	const MG_Line			& aCurve
+									,	const MG_ZeroCurvePtr	& aZeroCurve)
+									:	MG_MarketData(aAsOf)
+									,	myExDivDates(aExDivDates)
+									,	myPaymentDates(aPaymentDates)
+									,	myCurve		(aCurve)
+									,	myZeroCurve	(aZeroCurve)
+{
+	myXLName = MG_DIVS_XL_NAME;
+}
+
+double MG_DividendsTable::ComputeValue(const double& aT1, const double& aT2, const double& )
+{
+	if (aT1>myExDivDates.back().GetJulianDay() || aT2<myExDivDates.front().GetJulianDay())
+		return 0.;
+
+	double vRes(0.), vDivJul(0.);
+	for(size_t i=0; i<myExDivDates.size(); ++i)
+	{
+		vDivJul = myExDivDates[i].GetJulianDay();
+		if (vDivJul>=aT1 && vDivJul<=aT2)
+			vRes += myCurve[i] * myZeroCurve->ComputeValue((myPaymentDates[i].GetJulianDay()-myAsOf.GetJulianDay())/365.25);
+		if (vDivJul > aT2)
+			break;
+	}
+
+	return vRes;
+}

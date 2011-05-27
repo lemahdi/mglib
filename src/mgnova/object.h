@@ -32,6 +32,9 @@ public:
 	MG_Object& operator= (const MG_Object& /*aRight*/) {}
 	virtual MG_Object* Clone(void) = 0;
 
+private:
+	static bool Dummy(void);
+	static bool ourDummy;
 };
 
 class MG_XLObject : public MG_Object
