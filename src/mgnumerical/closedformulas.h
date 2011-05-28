@@ -13,16 +13,8 @@
 
 
 #include <iostream>
-#include <fstream>
-#include <vector>
-#include <string>
-#include <map>
-#include <assert.h>
-#ifdef WIN32
-#include <io.h>
-#endif
+
 #include "mgnova/typedef.h"
-#include "normal.h"
 
 
 MG_NAMESPACE_BEGIN

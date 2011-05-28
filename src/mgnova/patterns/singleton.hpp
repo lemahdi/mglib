@@ -29,7 +29,7 @@ private:
 	Singleton(void) {}
 
 public:
-	static CountedPtr< T > Instance(void)
+	inline static CountedPtr< T > Instance(void)
 	{
 		if (!myInstance)
 			Singleton::myInstance = CountedPtr< T >(new T);

@@ -13,77 +13,87 @@ MG_CdfNormalPtr MG_SCdfNormal::myInstance = MG_CdfNormalPtr(NULL);
 
 void MG_CdfNormal::Init(void)
 {
-	myGaussCst.myA.push_back(1.161110663653770e-002);
-	myGaussCst.myA.push_back(3.951404679838207e-001);
-	myGaussCst.myA.push_back(2.846603853776254e+001);
-	myGaussCst.myA.push_back(1.887426188426510e+002);
-	myGaussCst.myA.push_back(3.209377589138469e+003);
+	myGaussCst.myA.resize(5);
+	myGaussCst.myA[0] = 1.161110663653770e-002;
+	myGaussCst.myA[1] = 3.951404679838207e-001;
+	myGaussCst.myA[2] = 2.846603853776254e+001;
+	myGaussCst.myA[3] = 1.887426188426510e+002;
+	myGaussCst.myA[4] = 3.209377589138469e+003;
 
-	myGaussCst.myB.push_back(1.767766952966369e-001);
-	myGaussCst.myB.push_back(8.344316438579620e+000);
-	myGaussCst.myB.push_back(1.725514762600375e+002);
-	myGaussCst.myB.push_back(1.813893686502485e+003);
-	myGaussCst.myB.push_back(8.044716608901563e+003);
+	myGaussCst.myB.resize(5);
+	myGaussCst.myB[0] = 1.767766952966369e-001;
+	myGaussCst.myB[1] = 8.344316438579620e+000;
+	myGaussCst.myB[2] = 1.725514762600375e+002;
+	myGaussCst.myB[3] = 1.813893686502485e+003;
+	myGaussCst.myB[4] = 8.044716608901563e+003;
 
-	myGaussCst.myC.push_back(2.15311535474403846e-8);
-	myGaussCst.myC.push_back(5.64188496988670089e-1);
-	myGaussCst.myC.push_back(8.88314979438837594e00);
-	myGaussCst.myC.push_back(6.61191906371416295e01);
-	myGaussCst.myC.push_back(2.98635138197400131e02);
-	myGaussCst.myC.push_back(8.81952221241769090e02);
-	myGaussCst.myC.push_back(1.71204761263407058e03);
-	myGaussCst.myC.push_back(2.05107837782607147e03);
-	myGaussCst.myC.push_back(1.23033935479799725E03);
+	myGaussCst.myC.resize(9);
+	myGaussCst.myC[0] = 2.15311535474403846e-8;
+	myGaussCst.myC[1] = 5.64188496988670089e-1;
+	myGaussCst.myC[2] = 8.88314979438837594e00;
+	myGaussCst.myC[3] = 6.61191906371416295e01;
+	myGaussCst.myC[4] = 2.98635138197400131e02;
+	myGaussCst.myC[5] = 8.81952221241769090e02;
+	myGaussCst.myC[6] = 1.71204761263407058e03;
+	myGaussCst.myC[7] = 2.05107837782607147e03;
+	myGaussCst.myC[8] = 1.23033935479799725E03;
 
-	myGaussCst.myD.push_back(1.00000000000000000e00);
-	myGaussCst.myD.push_back(1.57449261107098347e01);
-	myGaussCst.myD.push_back(1.17693950891312499e02);
-	myGaussCst.myD.push_back(5.37181101862009858e02);
-	myGaussCst.myD.push_back(1.62138957456669019e03);
-	myGaussCst.myD.push_back(3.29079923573345963e03);
-	myGaussCst.myD.push_back(4.36261909014324716e03);
-	myGaussCst.myD.push_back(3.43936767414372164e03);
-	myGaussCst.myD.push_back(1.23033935480374942e03);
+	myGaussCst.myD.resize(9);
+	myGaussCst.myD[0] = 1.00000000000000000e00;
+	myGaussCst.myD[1] = 1.57449261107098347e01;
+	myGaussCst.myD[2] = 1.17693950891312499e02;
+	myGaussCst.myD[3] = 5.37181101862009858e02;
+	myGaussCst.myD[4] = 1.62138957456669019e03;
+	myGaussCst.myD[5] = 3.29079923573345963e03;
+	myGaussCst.myD[6] = 4.36261909014324716e03;
+	myGaussCst.myD[7] = 3.43936767414372164e03;
+	myGaussCst.myD[8] = 1.23033935480374942e03;
 
-	myGaussCst.myP.push_back(1.63153871373020978e-2);
-	myGaussCst.myP.push_back(3.05326634961232344e-1);
-	myGaussCst.myP.push_back(3.60344899949804439e-1);
-	myGaussCst.myP.push_back(1.25781726111229246e-1);
-	myGaussCst.myP.push_back(1.60837851487422766e-2);
-	myGaussCst.myP.push_back(6.58749161529837803e-4);
+	myGaussCst.myP.resize(6);
+	myGaussCst.myP[0] = 1.63153871373020978e-2;
+	myGaussCst.myP[1] = 3.05326634961232344e-1;
+	myGaussCst.myP[2] = 3.60344899949804439e-1;
+	myGaussCst.myP[3] = 1.25781726111229246e-1;
+	myGaussCst.myP[4] = 1.60837851487422766e-2;
+	myGaussCst.myP[5] = 6.58749161529837803e-4;
 
-	myGaussCst.myQ.push_back(1.00000000000000000e00);
-	myGaussCst.myQ.push_back(2.56852019228982242e00);
-	myGaussCst.myQ.push_back(1.87295284992346047e00);
-	myGaussCst.myQ.push_back(5.27905102951428412e-1);
-	myGaussCst.myQ.push_back(6.05183413124413191e-2);
-	myGaussCst.myQ.push_back(2.33520497626869185e-3);
+	myGaussCst.myQ.resize(6);
+	myGaussCst.myQ[0] = 1.00000000000000000e00;
+	myGaussCst.myQ[1] = 2.56852019228982242e00;
+	myGaussCst.myQ[2] = 1.87295284992346047e00;
+	myGaussCst.myQ[3] = 5.27905102951428412e-1;
+	myGaussCst.myQ[4] = 6.05183413124413191e-2;
+	myGaussCst.myQ[5] = 2.33520497626869185e-3;
 
 
-	myGaussCst.myInvA.push_back(-3.969683028665376e+01);
-	myGaussCst.myInvA.push_back(2.209460984245205e+02);
-	myGaussCst.myInvA.push_back(-2.759285104469687e+02);
-	myGaussCst.myInvA.push_back(1.383577518672690e+02);
-	myGaussCst.myInvA.push_back(-3.066479806614716e+01);
-	myGaussCst.myInvA.push_back(2.506628277459239e+00);
+	myGaussCst.myInvA.resize(6);
+	myGaussCst.myInvA[0] = -3.969683028665376e+01;
+	myGaussCst.myInvA[1] = 2.209460984245205e+02;
+	myGaussCst.myInvA[2] = -2.759285104469687e+02;
+	myGaussCst.myInvA[3] = 1.383577518672690e+02;
+	myGaussCst.myInvA[4] = -3.066479806614716e+01;
+	myGaussCst.myInvA[5] = 2.506628277459239e+00;
 
-	myGaussCst.myInvB.push_back(-5.447609879822406e+01);
-	myGaussCst.myInvB.push_back(1.615858368580409e+02);
-	myGaussCst.myInvB.push_back(-1.556989798598866e+02);
-	myGaussCst.myInvB.push_back(6.680131188771972e+01);
-	myGaussCst.myInvB.push_back(-1.328068155288572e+01);
+	myGaussCst.myInvB.resize(5);
+	myGaussCst.myInvB[0] = -5.447609879822406e+01;
+	myGaussCst.myInvB[1] = 1.615858368580409e+02;
+	myGaussCst.myInvB[2] = -1.556989798598866e+02;
+	myGaussCst.myInvB[3] = 6.680131188771972e+01;
+	myGaussCst.myInvB[4] = -1.328068155288572e+01;
 
-	myGaussCst.myInvC.push_back(-7.784894002430293e-03);
-	myGaussCst.myInvC.push_back(-3.223964580411365e-01);
-	myGaussCst.myInvC.push_back(-2.400758277161838e+00);
-	myGaussCst.myInvC.push_back(-2.549732539343734e+00);
-	myGaussCst.myInvC.push_back(4.374664141464968e+00);
-	myGaussCst.myInvC.push_back(2.938163982698783e+00);
+	myGaussCst.myInvC.resize(6);
+	myGaussCst.myInvC[0] = -7.784894002430293e-03;
+	myGaussCst.myInvC[1] = -3.223964580411365e-01;
+	myGaussCst.myInvC[2] = -2.400758277161838e+00;
+	myGaussCst.myInvC[3] = -2.549732539343734e+00;
+	myGaussCst.myInvC[4] = 4.374664141464968e+00;
+	myGaussCst.myInvC[5] = 2.938163982698783e+00;
 
-	myGaussCst.myInvD.push_back(7.784695709041462e-03);
-	myGaussCst.myInvD.push_back(3.224671290700398e-01);
-	myGaussCst.myInvD.push_back(2.445134137142996e+00);
-	myGaussCst.myInvD.push_back(3.754408661907416e+00);
+	myGaussCst.myInvD.resize(4);
+	myGaussCst.myInvD[0] = 7.784695709041462e-03;
+	myGaussCst.myInvD[1] = 3.224671290700398e-01;
+	myGaussCst.myInvD[2] = 2.445134137142996e+00;
+	myGaussCst.myInvD[3] = 3.754408661907416e+00;
 }
 
 /* Normal density function */

@@ -1,8 +1,7 @@
 #include "mgnumerical/closedformulas.h"
+#include "mgnumerical/normal.h"
 
 #include <math.h>
-
-using namespace MG;
 
 
 namespace MG
