@@ -55,4 +55,18 @@ extern const MG_ArgConv			CurrenciesNameConvertor;
 extern const MG_ArgConvReverse	CurrenciesNameRevertor;
 
 
+/* enum for interpolation methods */
+enum INTERPOL_METHOD {
+	NONE_INTERPOL,			// no interpolation
+	STEPUPLEFT_INTERPOL,	// step up left interpol method
+	STEPUPRIGHT_INTERPOL,	// step up right interpol method
+	LIN_INTERPOL,			// linear interpol method
+
+	NB_INTERPOL_METH
+};
+
+extern const MG_ArgConv			InterpolMethodConvertor;
+extern const MG_ArgConvReverse	InterpolMethodRevertor;
+
+
 MG_NAMESPACE_END

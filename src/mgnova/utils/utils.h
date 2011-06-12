@@ -7,6 +7,7 @@
  * Author				: MM Akkouh
  * Notes				: Functions
  *							- itoa: transform an integer to a string
+ *							- ftoa: transform a float to a string
  */
 
 
@@ -41,8 +42,10 @@ extern std::vector<double> FromCellMatrixToVectorDouble(const xlw::CellMatrix& a
 
 extern xlw::MJMatrix FromCellMatrixToMJMatrix(const xlw::CellMatrix& aCM);
 
-extern std::vector<std::string> FromCellMatrixToVectorStr(const xlw::CellMatrix& aCM, const std::vector<bool>& aIsDate);
+extern std::vector<std::string> FromCellMatrixToVectorStr(const xlw::CellMatrix& aCM, const std::vector<bool>& aIsDate = std::vector<bool>());
 
 extern std::vector<MG::MG_Date> FromCellMatrixToVectorDate(const xlw::CellMatrix& aCM, const size_t& aIndex);
+
+extern std::vector<int> FromCellMatrixToInterpolVector(const xlw::CellMatrix& aCM);
 
 }

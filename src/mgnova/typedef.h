@@ -30,6 +30,7 @@ void yy_delete_buffer (YY_BUFFER_STATE b  );
 #define ONEOVERROOTTWOPI		0.3989422804014327
 #define ONEOVERROOTPI			0.56418958354775628
 #define ROOTTWOPI				2.5066282746310002
+#define LOGROOTTWOPI			0.918938533204672
 #define NORMALCUMULATIVEBOUND	7.
 #define INFTY					1.e+20						
 #define	EPS						1.e-12						
@@ -173,8 +174,20 @@ enum DATE_DISPLAY {
 };
 
 
-/* enum for interpolation methdos */
-enum INTERPOL_METHOD {
-	NONE_INTERPOL,			// no interpolation
-	LIN_INTERPOL			// linear interpol method
+/* enum for dimensions */
+enum INTERPOL_DIM {
+	ID_ROW,
+	ID_COL
 };
+
+
+/* interpolation types */
+#define interpoltypeNone			0x00000000
+#define interpoltypeStepUpLeft		0x00000001
+#define interpoltypeStepUpRight		0x00000002
+#define interpoltypeLinear			0x00000003
+
+#define interpoltypeMask			0x0000000f
+
+#define maxBitInterpoltype			4
+#define maxInterpoltypesNb			8	// maximum interpolations that could be expressed using interpoltypeXXX

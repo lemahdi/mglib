@@ -3,6 +3,7 @@
 #include "mgmodel/model.h"
 #include "mgnova/exception.h"
 #include "mgnova/utils/utils.h"
+#include "mgnova/argconvdef.h"
 #include "mgmktdata/marketdata.h"
 #include "mggenpricer/gensec/gensecurity.h"
 
@@ -43,7 +44,8 @@ double Price(MG_XLObjectPtr& aSec, MG_XLObjectPtr& aMod)
 MG_XLObjectPtr
 ZeroCurve_Create	(	const MG_Date	& aAsOf
 					,	const CellMatrix& aMaturities
-					,	const CellMatrix& aZeroRates)
+					,	const CellMatrix& aZeroRates
+					,	const CellMatrix& aInterpolMeth)
 {
 	if (aZeroRates.Size() != aMaturities.Size())
 		MG_THROW("Zero vector size and Maturities size are not consistent");
@@ -51,7 +53,12 @@ ZeroCurve_Create	(	const MG_Date	& aAsOf
 	vector<double>	vMaturities	= FromCellMatrixToVectorDouble	(aMaturities, 0);
 	MJMatrix		vZeroRates	= FromCellMatrixToMJMatrix		(aZeroRates);
 
-	return MG_XLObjectPtr(new MG_ZeroCurve(aAsOf, vMaturities, vZeroRates));
+	vector<int> vInterpolMeths = vector<int>(1, LIN_INTERPOL);
+	if (!aInterpolMeth(0,0).IsEmpty())
+		vInterpolMeths = FromCellMatrixToInterpolVector(aInterpolMeth);
+	long vInterpolCode = MG_Interpolator::CreateInterpolTypes(vInterpolMeths);
+
+	return MG_XLObjectPtr(new MG_ZeroCurve(aAsOf, vMaturities, vZeroRates, vInterpolCode));
 }
 
 double ComputeZeroRate(MG_XLObjectPtr& aZeroCurve, const double& aMaturity)
@@ -63,7 +70,8 @@ MG_XLObjectPtr
 VolatilityCurve_Create	(	const MG_Date	& aAsOf
 						,	const CellMatrix& aMaturities
 						,	const CellMatrix& aTenors
-						,	const CellMatrix& aVolatilities)
+						,	const CellMatrix& aVolatilities
+						,	const CellMatrix& aInterpolMeths)
 {
 	if (aVolatilities.Size() != aTenors.Size()*aMaturities.Size())
 		MG_THROW("Volatilities matrix size and (Maturities,Tenors) size are not consistent");
@@ -72,7 +80,12 @@ VolatilityCurve_Create	(	const MG_Date	& aAsOf
 	vector<double>	vTenors		= FromCellMatrixToVectorDouble	(aTenors, 0);
 	MJMatrix		vVols		= FromCellMatrixToMJMatrix		(aVolatilities);
 
-	return MG_XLObjectPtr(new MG_IRVolatilityCurve(aAsOf, vMaturities, vTenors, vVols));
+	vector<int> vInterpolMeths = vector<int>(2, LIN_INTERPOL);
+	if (!aInterpolMeths(0,0).IsEmpty())
+		vInterpolMeths = FromCellMatrixToInterpolVector(aInterpolMeths);
+	long vInterpolCode = MG_Interpolator::CreateInterpolTypes(vInterpolMeths);
+
+	return MG_XLObjectPtr(new MG_IRVolatilityCurve(aAsOf, vMaturities, vTenors, vVols, vInterpolCode));
 }
 
 double ComputeVolatility(MG_XLObjectPtr& aVolCurve, const double& aTenor, const double& aMaturity)

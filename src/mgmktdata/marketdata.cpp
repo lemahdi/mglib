@@ -11,7 +11,6 @@ using namespace MG;
 MG_MarketData::MG_MarketData(	const MG_MarketData& aRight)
 							:	MG_XLObject(aRight)
 							,	myAsOf			(aRight.myAsOf)
-							,	myInterpolator	(aRight.myInterpolator)
 {}
 
 void MG_MarketData::Swap(MG_MarketData &aRight)
@@ -19,14 +18,10 @@ void MG_MarketData::Swap(MG_MarketData &aRight)
 	myAsOf.Swap(aRight.myAsOf);
 }
 
-MG_MarketData::MG_MarketData(	const MG_Date			& aAsOf
-							,	const INTERPOL_METHOD	& aInterpolMethod)
+MG_MarketData::MG_MarketData(	const MG_Date& aAsOf)
 							:	MG_XLObject()
-							,	myAsOf(aAsOf)
-{
-	if (aInterpolMethod != NONE_INTERPOL)
-		myInterpolator = MG_Interpolator::Builder(aInterpolMethod);
-}
+							,	myAsOf			(aAsOf)
+{}
 
 
 /* Zero Curve - Discount Factors class */
@@ -41,30 +36,33 @@ void MG_ZeroCurve::Swap(MG_ZeroCurve &aRight)
 	MG_MarketData::Swap(aRight);
 	swap(myMaturities, aRight.myMaturities);
 	swap(myCurve, aRight.myCurve);
+	swap(myInterpolFunc, aRight.myInterpolFunc);
 }
 
-MG_ZeroCurve::MG_ZeroCurve	(	const MG_Date			& aAsOf
-							,	const MG_ABSC			& aMaturities
-							,	const MG_Line			& aCurve
-							,	const INTERPOL_METHOD	& aInterpolMethod)
-							:	MG_MarketData(aAsOf, aInterpolMethod)
+MG_ZeroCurve::MG_ZeroCurve	(	const MG_Date	& aAsOf
+							,	const MG_ABSC	& aMaturities
+							,	const MG_Line	& aCurve
+							,	const int		& aInterpolTypes)
+							:	MG_MarketData(aAsOf)
 							,	myMaturities(aMaturities)
 							,	myCurve		(aCurve)
 {
-	myXLName = MG_ZERO_XL_NAME;
+	myXLName		= MG_ZERO_XL_NAME;
+
+	int vInterpolTypes(aInterpolTypes);
+	myInterpolFunc	= MG_Interpolator::GetInterpolatorFunction(vInterpolTypes);
 }
 
 double MG_ZeroCurve::ComputeValue(const double& aMaturity, const double& , const double& )
 {
-	double vRate = myInterpolator->Interpolate(myCurve, 0, MG_Interpolator::ID_COL, myMaturities, aMaturity);
+	double vRate = (*myInterpolFunc)(myCurve, 0, ID_COL, myMaturities, aMaturity);
 	return exp(-vRate*aMaturity);
 }
 
 
 /* Volatility class */
-MG_VolatilityCurve::MG_VolatilityCurve	(	const MG_Date			& aAsOf
-										,	const INTERPOL_METHOD	& aInterpolMethod)
-										:	MG_MarketData(aAsOf, aInterpolMethod)
+MG_VolatilityCurve::MG_VolatilityCurve	(	const MG_Date	& aAsOf)
+										:	MG_MarketData(aAsOf)
 {}
 
 /* IR Volatility class */
@@ -81,24 +79,30 @@ void MG_IRVolatilityCurve::Swap(MG_IRVolatilityCurve &aRight)
 	swap(myMaturities, aRight.myMaturities);
 	swap(myTenors, aRight.myTenors);
 	myCurve.Swap(aRight.myCurve);
+	swap(myMaturityInterpolFunc, aRight.myMaturityInterpolFunc);
+	swap(myTenorInterpolFunc, aRight.myTenorInterpolFunc);
 }
 
-MG_IRVolatilityCurve::MG_IRVolatilityCurve	(	const MG_Date			& aAsOf
-											,	const MG_ABSC			& aMaturities
-											,	const MG_COOR			& aTenors
-											,	const MG_Matrix			& aCurve
-											,	const INTERPOL_METHOD	& aInterpolMethod)
-											:	MG_VolatilityCurve(aAsOf, aInterpolMethod)
+MG_IRVolatilityCurve::MG_IRVolatilityCurve	(	const MG_Date	& aAsOf
+											,	const MG_ABSC	& aMaturities
+											,	const MG_ORD	& aTenors
+											,	const MG_Matrix	& aCurve
+											,	const int		& aInterpolTypes)
+											:	MG_VolatilityCurve(aAsOf)
 											,	myMaturities(aMaturities)
 											,	myTenors	(aTenors)
 											,	myCurve		(aCurve)
 {
 	myXLName = MG_IRVOL_XL_NAME;
+
+	int vInterpolTypes(aInterpolTypes);
+	myMaturityInterpolFunc	= MG_Interpolator::GetInterpolatorFunction(vInterpolTypes);
+	myTenorInterpolFunc		= MG_Interpolator::GetInterpolatorFunction(vInterpolTypes);
 }
 
 double MG_IRVolatilityCurve::ComputeValue(const double& aTenor, const double& aMaturity, const double& )
 {
-	return myInterpolator->Interpolate(myCurve, myTenors, myMaturities, aTenor, aMaturity);
+	return MG_Interpolator::Interpolate_Dim2(myCurve, myTenors, myMaturities, aTenor, aMaturity, myMaturityInterpolFunc, myTenorInterpolFunc);
 }
 
 
@@ -127,10 +131,10 @@ MG_DividendsTable::MG_DividendsTable(	const MG_Date			& aAsOf
 									,	const MG_Line			& aCurve
 									,	const MG_ZeroCurvePtr	& aZeroCurve)
 									:	MG_MarketData(aAsOf)
-									,	myExDivDates(aExDivDates)
-									,	myPaymentDates(aPaymentDates)
-									,	myCurve		(aCurve)
-									,	myZeroCurve	(aZeroCurve)
+									,	myExDivDates	(aExDivDates)
+									,	myPaymentDates	(aPaymentDates)
+									,	myCurve			(aCurve)
+									,	myZeroCurve		(aZeroCurve)
 {
 	myXLName = MG_DIVS_XL_NAME;
 }
@@ -151,4 +155,42 @@ double MG_DividendsTable::ComputeValue(const double& aT1, const double& aT2, con
 	}
 
 	return vRes;
+}
+
+/* Equity Volatility class */
+MG_EQVolatilityCurve::MG_EQVolatilityCurve	(	const MG_EQVolatilityCurve& aRight)
+											:	MG_VolatilityCurve(aRight)
+											,	myStrikes	(aRight.myStrikes)
+											,	myMaturities(aRight.myMaturities)
+											,	myCurve		(aRight.myCurve)
+{}
+
+void MG_EQVolatilityCurve::Swap(MG_EQVolatilityCurve &aRight)
+{
+	MG_MarketData::Swap(aRight);
+	swap(myStrikes, aRight.myStrikes);
+	swap(myMaturities, aRight.myMaturities);
+	myCurve.Swap(aRight.myCurve);
+}
+
+MG_EQVolatilityCurve::MG_EQVolatilityCurve	(	const MG_Date	& aAsOf
+											,	const MG_ABSC	& aStrikes
+											,	const MG_ORD	& aMaturities
+											,	const MG_Matrix	& aCurve
+											,	const int		& aInterpolTypes)
+											:	MG_VolatilityCurve(aAsOf)
+											,	myStrikes	(aStrikes)
+											,	myMaturities(aMaturities)
+											,	myCurve		(aCurve)
+{
+	myXLName = MG_IRVOL_XL_NAME;
+
+	int vInterpolTypes(aInterpolTypes);
+	myStrikeInterpolFunc	= MG_Interpolator::GetInterpolatorFunction(vInterpolTypes);
+	myMaturityInterpolFunc	= MG_Interpolator::GetInterpolatorFunction(vInterpolTypes);
+}
+
+double MG_EQVolatilityCurve::ComputeValue(const double& aStrike, const double& aMaturity, const double& )
+{
+	return MG_Interpolator::Interpolate_Dim2(myCurve, myStrikes, myMaturities, aStrike, aMaturity, myStrikeInterpolFunc, myMaturityInterpolFunc);
 }

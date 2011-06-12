@@ -44,6 +44,7 @@ MG_XLObjectPtr // Creating an zero curve
 ZeroCurve_Create(const MG_Date& aAsOf // as of date
 					   , const CellMatrix& aMaturities // maturities
 					   , const CellMatrix& aZeroRates // volatilities
+					   , const CellMatrix& aInterpolMeth // interpolation method (LINEAR by def.)
 					   );
 
 //<xlw:libraryname=MyTestLibrary
@@ -58,6 +59,7 @@ VolatilityCurve_Create(const MG_Date& aAsOf // as of date
 					   , const CellMatrix& aMaturities // maturities
 					   , const CellMatrix& aTenors // tenors
 					   , const CellMatrix& aVolatilities // volatilities
+					   , const CellMatrix& aInterpolMeths // interpolation methods (LINEAR by def.)
 					   );
 
 //<xlw:libraryname=MyTestLibrary

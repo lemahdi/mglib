@@ -1,7 +1,9 @@
 #include "mgnova/utils/utils.h"
 #include "mgnova/date.h"
 #include "mgnova/exception.h"
+#include "mgnova/argconvdef.h"
 
+#include <sstream>
 #include <math.h>
 
 
@@ -179,4 +181,22 @@ namespace MG_utils
 			vRes[i] = MG_Date(FromXLDateToJulianDay(aCM(aIndex, i).NumericValue()));
 		return vRes;
 	}
+
+	/* converting a CellMatrix of interpolation types to a sid::vector<int> */
+	vector<int> FromCellMatrixToInterpolVector(const CellMatrix& aCM)
+	{
+		if (aCM.Size() > maxInterpoltypesNb)
+		{
+			ostringstream vOs;
+			vOs << "Maximum number of interpolations is " << maxInterpoltypesNb << ", please advise.";
+			MG_THROW(vOs.str());
+		}
+		vector<string> vInterpolTypesStr = FromCellMatrixToVectorStr(aCM);
+		size_t vSize(vInterpolTypesStr.size());
+		vector<int> vInterpolTypesInt(vSize);
+		for(size_t i=0; i<vSize; ++i)
+			vInterpolTypesInt[i] = InterpolMethodConvertor[vInterpolTypesStr[i]];
+		return vInterpolTypesInt;
+	}
+
 }

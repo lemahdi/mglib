@@ -260,7 +260,8 @@ ZeroCurve_CreateArgs[]=
 {
 { "aAsOf"," as of date ","XLF_OPER"},
 { "aMaturities"," maturities ","XLF_OPER"},
-{ "aZeroRates"," volatilities ","XLF_OPER"}
+{ "aZeroRates"," volatilities ","XLF_OPER"},
+{ "aInterpolMeth"," interpolation method (LINEAR by def.) ","XLF_OPER"}
 };
   XLRegistration::XLFunctionRegistrationHelper
 registerZeroCurve_Create("xlZeroCurve_Create",
@@ -268,7 +269,7 @@ registerZeroCurve_Create("xlZeroCurve_Create",
 " Creating an zero curve ",
 LibraryName,
 ZeroCurve_CreateArgs,
-3
+4
 ,false
 );
 }
@@ -281,7 +282,8 @@ LPXLFOPER EXCEL_EXPORT
 xlZeroCurve_Create(
 LPXLFOPER aAsOfa,
 LPXLFOPER aMaturitiesa,
-LPXLFOPER aZeroRatesa)
+LPXLFOPER aZeroRatesa,
+LPXLFOPER aInterpolMetha)
 {
 EXCEL_BEGIN;
 
@@ -303,11 +305,17 @@ XlfOper aZeroRatesb(
 CellMatrix aZeroRates(
 	aZeroRatesb.AsCellMatrix("aZeroRates"));
 
+XlfOper aInterpolMethb(
+	(aInterpolMetha));
+CellMatrix aInterpolMeth(
+	aInterpolMethb.AsCellMatrix("aInterpolMeth"));
+
 MG_XLObjectPtr result(
 	ZeroCurve_Create(
 		aAsOf,
 		aMaturities,
-		aZeroRates)
+		aZeroRates,
+		aInterpolMeth)
 	);
 string vRefObj, vError;
 if (MG_SCache::Instance()->PersistentInsert(result, vRefObj, vError))
@@ -383,7 +391,8 @@ VolatilityCurve_CreateArgs[]=
 { "aAsOf"," as of date ","XLF_OPER"},
 { "aMaturities"," maturities ","XLF_OPER"},
 { "aTenors"," tenors ","XLF_OPER"},
-{ "aVolatilities"," volatilities ","XLF_OPER"}
+{ "aVolatilities"," volatilities ","XLF_OPER"},
+{ "aInterpolMeths"," interpolation methods (LINEAR by def.) ","XLF_OPER"}
 };
   XLRegistration::XLFunctionRegistrationHelper
 registerVolatilityCurve_Create("xlVolatilityCurve_Create",
@@ -391,7 +400,7 @@ registerVolatilityCurve_Create("xlVolatilityCurve_Create",
 " Creating an IR volatility curve ",
 LibraryName,
 VolatilityCurve_CreateArgs,
-4
+5
 ,false
 );
 }
@@ -405,7 +414,8 @@ xlVolatilityCurve_Create(
 LPXLFOPER aAsOfa,
 LPXLFOPER aMaturitiesa,
 LPXLFOPER aTenorsa,
-LPXLFOPER aVolatilitiesa)
+LPXLFOPER aVolatilitiesa,
+LPXLFOPER aInterpolMethsa)
 {
 EXCEL_BEGIN;
 
@@ -432,12 +442,18 @@ XlfOper aVolatilitiesb(
 CellMatrix aVolatilities(
 	aVolatilitiesb.AsCellMatrix("aVolatilities"));
 
+XlfOper aInterpolMethsb(
+	(aInterpolMethsa));
+CellMatrix aInterpolMeths(
+	aInterpolMethsb.AsCellMatrix("aInterpolMeths"));
+
 MG_XLObjectPtr result(
 	VolatilityCurve_Create(
 		aAsOf,
 		aMaturities,
 		aTenors,
-		aVolatilities)
+		aVolatilities,
+		aInterpolMeths)
 	);
 string vRefObj, vError;
 if (MG_SCache::Instance()->PersistentInsert(result, vRefObj, vError))

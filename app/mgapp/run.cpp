@@ -98,22 +98,21 @@ int main()
 	MG_Date *vFake = (MG_Date*)vDate.Clone();
 	delete vFake;
 
-	//MG_ParkMillerRand* vRand = new MG_ParkMillerRand();
-	//MG_RandomPtr vRandPtr(vRand);
-	//MG_BoxMullerSampler vSampler(100, vRandPtr);
-	//vector<double> vRandVars = vSampler.GenerateSample();
-	//double vN1, vN2;
-	//for(unsigned int i=0; i<100; i++)
-	//{
-	//	vN1 = vRandVars[i];
-	//	cout << vN1 << " ";
-	//	vN2 = MG_SCdfNormal::Instance()->CumulativeNormal(vN1);
-	//	vN2 = MG_SCdfNormal::Instance()->InverseNormal(vN2);
-	//	cout << vN2 << " : " << vN1-vN2 << endl;
-	//}
+	MG_ParkMillerRand* vRand = new MG_ParkMillerRand();
+	MG_RandomPtr vRandPtr(vRand);
+	MG_BoxMullerSampler vSampler(100, vRandPtr);
+	vector<double> vRandVars = vSampler.GenerateSample();
+	double vN1, vN2, vU1;//, vU2;
+	for(unsigned int i=0; i<100; i++)
+	{
+		vN1 = vRandVars[i];
+		vU1 = MG_SCdfNormal::Instance()->CumulativeNormal(vN1);
+		vN2 = MG_SCdfNormal::Instance()->InverseNormal(vU1);
+		cout << "CHECK " << vU1 << ":     " << vN1 << "     " << vN2 << "   ====   " << vN1-vN2 << endl;
+	}
 
 	// GEB : debut test generateur normale
-	int nbSimul = 10;
+	/*int nbSimul = 10;
 	int nbScenarK = 1001;
 	std::vector<double> PrixCalls, ScenraK, PrixBS;
 	PrixCalls.resize(nbScenarK,0.);
@@ -166,14 +165,7 @@ int main()
 			fprintf(f,"%f/n",PrixCalls[j]); 
 		}
 	}
-	fclose(f);
-
-
-
-
-
-
-
+	fclose(f);*/
 
 
 	MG_UnaryFuncPtr vFuncTestPtr(new MG_TestFunc);
