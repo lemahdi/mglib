@@ -5,6 +5,7 @@
 
 #include "mgnumerical/normal.h"
 
+
 using namespace std;
 using namespace MG;
 
@@ -133,9 +134,8 @@ vector<double> MG_BoxMullerSampler::GenerateSample()
 		//	vX = 2. * myRandGen->DrawUniform()-1;
 		//	vY = 2. * myRandGen->DrawUniform()-1;
 		//	vSquared = vX*vX + vY*vY;
-		//} while (vSquared >= 1.);
+		//} while (vSquared > 1.);
 		//vSample[i] = vX * sqrt(-2 * log(vSquared) / vSquared);
-		// GEB : test 
 		vX = myRandGen->DrawUniform();
 		vSample[i] = MG_SCdfNormal::Instance()->InverseNormal(vX);
 

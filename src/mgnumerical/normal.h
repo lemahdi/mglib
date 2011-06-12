@@ -40,6 +40,14 @@ class MG_CdfNormal
 		std::vector<double> myInvB;
 		std::vector<double> myInvC;
 		std::vector<double> myInvD;
+
+		// Constants for Marsaglia & al. algorithm, "MC Methods in Financial Engineering, Fig. 2.15, p. 70"
+		
+		std::vector<double> myV;
+
+		std::vector<double> myInvATmp;
+		std::vector<double> myInvBTmp;
+		std::vector<double> myInvCTmp;
 	};
 
 	
@@ -60,6 +68,11 @@ public:
 	// Normal inverse gauss function : Num Recipees
 	double InverseNormal(const double& aP) const;
 
+	// Marsaglia & al. algo 4 Normal function, from "Monte Carlo Methods in Financial Engineering", Fig. 2.15 pageb 70
+	//double CumulativeNormal_Tmp(const double& aX) const;
+
+	// Beasley-Springer-Moro algo 4 Inverse Normal function, from "Monte Carlo Methods in Financial Engineering", Fig. 2.13 pageb 68
+	//double InverseNormal_Tmp(const double& aU) const;
 
 private:
 	GaussCst myGaussCst;

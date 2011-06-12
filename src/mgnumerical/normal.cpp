@@ -1,6 +1,7 @@
 #include "mgnumerical/normal.h"
 
 #include <math.h>
+#include <assert.h>
 
 
 using namespace std;
@@ -94,6 +95,47 @@ void MG_CdfNormal::Init(void)
 	myGaussCst.myInvD[1] = 3.224671290700398e-01;
 	myGaussCst.myInvD[2] = 2.445134137142996e+00;
 	myGaussCst.myInvD[3] = 3.754408661907416e+00;
+
+
+	/*myGaussCst.myV.resize(15);
+	myGaussCst.myV[0] = 1.25331437315500;
+	myGaussCst.myV[1] = 0.6556795424187985;
+	myGaussCst.myV[2] = 0.4213692292880545;
+	myGaussCst.myV[3] = 0.3045902987101033;
+	myGaussCst.myV[4] = 0.2366523829135607;
+	myGaussCst.myV[5] = 0.1928081047153158;
+	myGaussCst.myV[6] = 0.1623776608968675;
+	myGaussCst.myV[7] = 0.1401041834530502;
+	myGaussCst.myV[8] = 0.1231319632579329;
+	myGaussCst.myV[9] = 0.1097872825783083;
+	myGaussCst.myV[10] = 0.09902859647173193;
+	myGaussCst.myV[11] = 0.09017567550106468;
+	myGaussCst.myV[12] = 0.08276628650136917;
+	myGaussCst.myV[13] = 0.0764757610162485;
+	myGaussCst.myV[14] = 0.07106958053885211;
+
+	myGaussCst.myInvATmp.resize(4);
+	myGaussCst.myInvATmp[0] = 2.50662823884;
+	myGaussCst.myInvATmp[1] = -18.61500062529;
+	myGaussCst.myInvATmp[2] = 41.39119773534;
+	myGaussCst.myInvATmp[3] = -25.44106049637;
+
+	myGaussCst.myInvBTmp.resize(4);
+	myGaussCst.myInvBTmp[0] = -8.47351093090;
+	myGaussCst.myInvBTmp[1] = 23.08336743743;
+	myGaussCst.myInvBTmp[2] = -21.06224101826;
+	myGaussCst.myInvBTmp[3] = 3.13082909833;
+
+	myGaussCst.myInvCTmp.resize(9);
+	myGaussCst.myInvCTmp[0] = 0.3374754822726147;
+	myGaussCst.myInvCTmp[1] = 0.9761690190917186;
+	myGaussCst.myInvCTmp[2] = 0.1607979714918209;
+	myGaussCst.myInvCTmp[3] = 0.0276438810333863;
+	myGaussCst.myInvCTmp[4] = 0.0038405729373609;
+	myGaussCst.myInvCTmp[5] = 0.0003951896511919;
+	myGaussCst.myInvCTmp[6] = 0.0000321767881768;
+	myGaussCst.myInvCTmp[7] = 0.0000002888167364;
+	myGaussCst.myInvCTmp[8] = 0.0000003960315187;*/
 }
 
 /* Normal density function */
@@ -232,4 +274,55 @@ double MG_CdfNormal::InverseNormal(const double& aP) const
 	vU = vU - vT/(1.+0.5*vU*vT);			// Halley's method
 
 	return (aP>0.5 ? -vU : vU);
-} 
+}
+
+/*double MG_CdfNormal::CumulativeNormal_Tmp(const double& aX) const
+{
+	double vAbsX = abs(aX);
+	if (vAbsX >= 15.)
+		return aX>0 ? 1. : 0.;
+
+	int vJ = int(min(vAbsX+0.5, 14.));
+	double vZ(vJ);
+	double vH(vAbsX-vZ);
+	double vA(myGaussCst.myV[vJ]);
+	double vB(vZ*vA-1);
+	double vQ(1.);
+	double vS(vA+vH*vB);
+	for(int i=2; i<=24-vJ; i+=2)
+	{
+		vA = (vA+vZ*vB)/i;
+		vB = (vB+vZ*vA)/(i+1);
+		vQ = vQ*vH*vH;
+		vS = vS+vQ*(vA+vH*vB);
+	}
+	double vY = vS*exp(-0.5*aX*aX-LOGROOTTWOPI);
+	if (aX > 0.) return 1.-vY;
+	return vY;
+}
+
+double MG_CdfNormal::InverseNormal_Tmp(const double& aU) const
+{
+	assert(aU>=0. && aU<=1.);
+
+	double vY(aU-0.5);
+	double vAbsY(abs(vY));
+	double vR, vX;
+	if (vAbsY < 0.42)
+	{
+		vR = vY*vY;
+		vX = vY * (((myGaussCst.myInvATmp[3]*vR + myGaussCst.myInvATmp[2])*vR + myGaussCst.myInvATmp[1])*vR + myGaussCst.myInvATmp[0]) /
+			((((myGaussCst.myInvBTmp[3]*vR + myGaussCst.myInvBTmp[2])*vR + myGaussCst.myInvBTmp[1])*vR + myGaussCst.myInvBTmp[0])*vR + 1);
+	}
+	else
+	{
+		vR = aU;
+		if (vY > 0.) vR = 1.-aU;
+		vR = log(-log(vR));
+		vX = myGaussCst.myInvCTmp[0] + vR*(myGaussCst.myInvCTmp[1] + vR*(myGaussCst.myInvCTmp[2] + vR*(myGaussCst.myInvCTmp[3] + vR*(myGaussCst.myInvCTmp[4] +
+			vR*(myGaussCst.myInvCTmp[5] + vR*(myGaussCst.myInvCTmp[6] + vR*(myGaussCst.myInvCTmp[7] + vR*myGaussCst.myInvCTmp[8])))))));
+		if (vY < 0.) vX = -vX;
+	}
+
+	return vX;
+}*/
