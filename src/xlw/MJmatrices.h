@@ -71,7 +71,7 @@ namespace xlw {
         inline const double& operator()(size_t i, size_t j) const;
         inline double& operator()(size_t i, size_t j);
 
-
+		MJMatrix Cholesky() const;
 
     private:
 

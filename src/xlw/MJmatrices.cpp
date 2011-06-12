@@ -24,6 +24,8 @@
 
 #include <xlw/MJmatrices.h>
 #include <algorithm>
+#include <assert.h>
+#include <math.h>
 
 xlw::MJMatrix&
 xlw::MJMatrix::resize(size_t rows, size_t columns)
@@ -132,4 +134,26 @@ void xlw::MJMatrix::Swap(xlw::MJMatrix& aRight)
 	std::swap(Columns, aRight.Columns);
 	std::swap(RowStarts, aRight.RowStarts);
 	std::swap(Start, aRight.Start);
+}
+
+
+xlw::MJMatrix xlw::MJMatrix::Cholesky() const
+{
+	assert(Columns == Rows);
+
+	double vTmp;
+	MJMatrix vTri(Rows, Columns);
+	for(size_t j=0; j<Rows; ++j)
+	{
+		for(size_t i=j; i<Rows; ++i)
+		{
+			vTmp = this->operator ()(i, j);
+			for(size_t k=0; k<j-1; ++k)
+			{
+				vTmp -= vTri(j, k)*vTri(i, k);
+			}
+			vTri(i, j) = vTmp / sqrt(vTmp); // could be sqrt(vTmp), but if useful when vTmp=0 when the input matrix is not symmetric definite positive
+		}
+	}
+	return vTri;
 }
