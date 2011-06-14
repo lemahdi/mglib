@@ -9,7 +9,9 @@
 
 using namespace std;
 using namespace MG;
+#ifndef __CYGWIN__
 using namespace xlw;
+#endif
 
 
 namespace MG_utils
@@ -96,6 +98,7 @@ namespace MG_utils
 		return vRes;
 	}
 
+#ifndef __CYGWIN__
 	/* converting a CellMatrix to a std::vector<double> */
 	vector<double> FromCellMatrixToVectorDouble(const CellMatrix& aCM, const size_t& aIndex)
 	{
@@ -198,5 +201,7 @@ namespace MG_utils
 			vInterpolTypesInt[i] = InterpolMethodConvertor[vInterpolTypesStr[i]];
 		return vInterpolTypesInt;
 	}
+#endif
 
 }
+

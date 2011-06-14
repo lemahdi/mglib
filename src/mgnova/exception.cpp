@@ -15,3 +15,8 @@ MG_Exception::MG_Exception(const std::string& aFile, const unsigned int& aLine, 
 	vSS << "File: " << aFile << ", Line: " << aLine << ", " << aMsg << endl;
 	myMsg = vSS.str();
 }
+
+#ifdef __CYGWIN__
+MG_Exception::~MG_Exception() throw()
+{}
+#endif

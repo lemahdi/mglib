@@ -77,7 +77,21 @@ bool MG_Cache::PersistentInsert(MG_XLObjectPtr& aXLObj, string& aRefObj, string&
 #pragma warning (pop)
 
 		ostringstream vOSS;
-		vOSS << aXLObj->myXLName << "_" << aXLObj->myXLId << "_" << tm_T.tm_hour << ":" << tm_T.tm_min << ":" << tm_T.tm_sec;
+		vOSS << aXLObj->myXLName << "_" << aXLObj->myXLId << "_";
+		if (tm_T.tm_hour < 10)
+			vOSS << "0" << tm_T.tm_hour;
+		else
+			vOSS << tm_T.tm_hour;
+		vOSS << ":";
+		if (tm_T.tm_min < 10)
+			vOSS << "0" << tm_T.tm_min;
+		else
+			vOSS << tm_T.tm_min;
+		vOSS << ":";
+		if (tm_T.tm_sec < 10)
+			vOSS << "0" << tm_T.tm_sec;
+		else
+			vOSS << tm_T.tm_sec;
 		aRefObj = vOSS.str();
 
 		return true;

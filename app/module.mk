@@ -5,7 +5,10 @@
 # Directories
 # ===========
 local_dir := $(APP)
+win_dirs  := mgxll
 sub_dirs  := $(call module-subdirectories,$(local_dir))
+sub_dirs  := $(shell echo $(sub_dirs) | awk -F"/" 'BEGIN { RS=" " } $$2!~"$(win_dirs)" { print $$0; }')
+
 
 
 # Source, generated files and third libraries

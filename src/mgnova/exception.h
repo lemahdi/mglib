@@ -29,7 +29,10 @@ class MG_Exception : public std::exception
 public:
 	/* Constructors / Destructor */
 	MG_Exception(const std::string& aFile, const unsigned int& aLine, const std::string& aMsg);
-	
+#ifndef __CYGWIN__
+	virtual ~MG_Exception(void) throw();
+#endif
+
 	inline std::string GetMessage(void) const { return myMsg; }
 
 private:

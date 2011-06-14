@@ -31,7 +31,8 @@ MG_Interpolator::GetInterpolatorFunction(int& aInterpolType)
 }
 
 /* Interpolator Code */
-long MG_Interpolator::CreateInterpolTypes(const std::vector<int>& aInterpolMeths)
+long
+MG_Interpolator::CreateInterpolTypes(const std::vector<int>& aInterpolMeths)
 {
 	long vCode(interpoltypeNone);
 	for(int i=int(aInterpolMeths.size()-1); i>=0; --i)

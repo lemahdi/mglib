@@ -18,7 +18,9 @@
 #include <string>
 #include <vector>
 
+#ifndef __CYGWIN__
 #include "xlw/CellMatrix.h"
+#endif
 
 #include "mgnova/date.h"
 
@@ -38,6 +40,7 @@ extern double FromJulianDayToXLDate(const long& aJulianDay);
 
 extern std::vector<double> DoublePtrAsVector(const double* aDbl, const size_t& aSize);
 
+#ifndef __CYGWIN__
 extern std::vector<double> FromCellMatrixToVectorDouble(const xlw::CellMatrix& aCM, const size_t& aIndex);
 
 extern xlw::MJMatrix FromCellMatrixToMJMatrix(const xlw::CellMatrix& aCM);
@@ -47,5 +50,6 @@ extern std::vector<std::string> FromCellMatrixToVectorStr(const xlw::CellMatrix&
 extern std::vector<MG::MG_Date> FromCellMatrixToVectorDate(const xlw::CellMatrix& aCM, const size_t& aIndex);
 
 extern std::vector<int> FromCellMatrixToInterpolVector(const xlw::CellMatrix& aCM);
+#endif
 
 }
