@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8,00"
+	Version="9,00"
 	Name="mgnova"
 	ProjectGUID="{20E51C46-9C2E-4553-9A93-2633B8ADE536}"
 	RootNamespace="mgnova"
 	Keyword="Win32Proj"
+	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform
@@ -51,7 +52,7 @@
 				ProgramDataBaseFileName="../../bin/win/$(ProjectName)/$(IntDir)/vc80.pdb"
 				XMLDocumentationFileName="../../bin/win/$(ProjectName)/$(IntDir)/"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="true"
+				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="4"
 			/>
 			<Tool
@@ -117,7 +118,7 @@
 				ProgramDataBaseFileName="../../bin/win/$(ProjectName)/$(IntDir)/vc80.pdb"
 				XMLDocumentationFileName="../../bin/win/$(ProjectName)/$(IntDir)/"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="true"
+				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="3"
 			/>
 			<Tool
