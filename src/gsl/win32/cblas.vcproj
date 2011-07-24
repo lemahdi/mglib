@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="cblas"
 	ProjectGUID="{5A3A2F64-12A8-4DA7-A98A-EE21464EF37C}"
 	Keyword="Win32Proj"
@@ -17,11 +17,12 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="lib\"
-			IntermediateDirectory="obj\$(configurationname)"
+			OutputDirectory="../../../lib/win/$(ProjectName)/$(ConfigurationName)"
+			IntermediateDirectory="../../../bin/win/$(ProjectName)/$(ConfigurationName)"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			CharacterSet="2"
+			BuildLogFile="$(IntDir)/BuildLog.htm"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -47,9 +48,11 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="0"
-				ProgramDataBaseFileName="$(OutDir)/cblas_d.pdb"
+				ObjectFile="$(IntDir)/"
+				ProgramDataBaseFileName="$(IntDir)/vc80.pdb"
+				XMLDocumentationFileName="$(IntDir)/"
 				WarningLevel="3"
-				DebugInformationFormat="3"
+				DebugInformationFormat="4"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -62,7 +65,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)/cblas_d.lib"
+				OutputFile="../../../lib/win/$(ConfigurationName)/$(ProjectName).lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -82,11 +85,12 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="lib\"
-			IntermediateDirectory="obj\$(configurationname)"
+			OutputDirectory="../../../lib/win/$(ProjectName)/$(ConfigurationName)"
+			IntermediateDirectory="../../../bin/win/$(ProjectName)/$(ConfigurationName)"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			CharacterSet="2"
+			BuildLogFile="$(IntDir)/BuildLog.htm"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -111,7 +115,9 @@
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
-				ProgramDataBaseFileName="$(OutDir)/cblas.pdb"
+				ObjectFile="$(IntDir)/"
+				ProgramDataBaseFileName="$(IntDir)/vc80.pdb"
+				XMLDocumentationFileName="$(IntDir)/"
 				WarningLevel="3"
 				DebugInformationFormat="3"
 			/>
@@ -126,7 +132,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)/cblas.lib"
+				OutputFile="../../../lib/win/$(ConfigurationName)/$(ProjectName).lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -146,11 +152,12 @@
 		</Configuration>
 		<Configuration
 			Name="Debug MT|Win32"
-			OutputDirectory="lib\"
-			IntermediateDirectory="obj\$(configurationname)"
+			OutputDirectory="../../../lib/win/$(ProjectName)/$(ConfigurationName)"
+			IntermediateDirectory="../../../bin/win/$(ProjectName)/$(ConfigurationName)"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			CharacterSet="2"
+			BuildLogFile="$(IntDir)/BuildLog.htm"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -176,9 +183,11 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
-				ProgramDataBaseFileName="$(OutDir)/cblas_mtd.pdb"
+				ObjectFile="$(IntDir)/"
+				ProgramDataBaseFileName="$(IntDir)/vc80.pdb"
+				XMLDocumentationFileName="$(IntDir)/"
 				WarningLevel="3"
-				DebugInformationFormat="3"
+				DebugInformationFormat="4"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -191,7 +200,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)/cblas_mtd.lib"
+				OutputFile="../../../lib/win/$(ConfigurationName)/$(ProjectName).lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -211,11 +220,12 @@
 		</Configuration>
 		<Configuration
 			Name="Release MT|Win32"
-			OutputDirectory="lib\"
-			IntermediateDirectory="obj\$(configurationname)"
+			OutputDirectory="../../../lib/win/$(ProjectName)/$(ConfigurationName)"
+			IntermediateDirectory="../../../bin/win/$(ProjectName)/$(ConfigurationName)"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			CharacterSet="2"
+			BuildLogFile="$(IntDir)/BuildLog.htm"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -240,7 +250,9 @@
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				RuntimeLibrary="0"
 				UsePrecompiledHeader="0"
-				ProgramDataBaseFileName="$(OutDir)/cblas_mt.pdb"
+				ObjectFile="$(IntDir)/"
+				ProgramDataBaseFileName="$(IntDir)/vc80.pdb"
+				XMLDocumentationFileName="$(IntDir)/"
 				WarningLevel="3"
 				DebugInformationFormat="3"
 			/>
@@ -255,7 +267,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)/cblas_mt.lib"
+				OutputFile="../../../lib/win/$(ConfigurationName)/$(ProjectName).lib"
 			/>
 			<Tool
 				Name="VCALinkTool"

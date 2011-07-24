@@ -19,10 +19,10 @@
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory="../../lib/win/$(ProjectName)/$(ConfigurationName)"
-			IntermediateDirectory="../../../bin/win/$(ProjectName)/$(ConfigurationName)"
+			IntermediateDirectory="../../bin/win/$(ProjectName)/$(ConfigurationName)"
 			ConfigurationType="4"
 			CharacterSet="0"
-			BuildLogFile="../../bin/win/$(ProjectName)/$(IntDir)/BuildLog.htm"
+			BuildLogFile="$(IntDir)/BuildLog.htm"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -49,9 +49,9 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="0"
-				ObjectFile="../../bin/win/$(ProjectName)/$(IntDir)/"
-				ProgramDataBaseFileName="../../bin/win/$(ProjectName)/$(IntDir)/vc80.pdb"
-				XMLDocumentationFileName="../../bin/win/$(ProjectName)/$(IntDir)/"
+				ObjectFile="$(IntDir)/"
+				ProgramDataBaseFileName="$(IntDir)/vc80.pdb"
+				XMLDocumentationFileName="$(IntDir)/"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="4"
@@ -91,11 +91,11 @@
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="../../lib/win/$(ProjectName)/$(ConfigurationName)"
-			IntermediateDirectory="../../../bin/win/$(ProjectName)/$(ConfigurationName)"
+			IntermediateDirectory="../../bin/win/$(ProjectName)/$(ConfigurationName)"
 			ConfigurationType="4"
 			CharacterSet="0"
 			WholeProgramOptimization="1"
-			BuildLogFile="../../bin/win/$(ProjectName)/$(IntDir)/BuildLog.htm"
+			BuildLogFile="$(IntDir)/BuildLog.htm"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -118,9 +118,9 @@
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
-				ObjectFile="../../bin/win/$(ProjectName)/$(IntDir)/"
-				ProgramDataBaseFileName="../../bin/win/$(ProjectName)/$(IntDir)/vc80.pdb"
-				XMLDocumentationFileName="../../bin/win/$(ProjectName)/$(IntDir)/"
+				ObjectFile="$(IntDir)/"
+				ProgramDataBaseFileName="$(IntDir)/vc80.pdb"
+				XMLDocumentationFileName="$(IntDir)/"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="3"
