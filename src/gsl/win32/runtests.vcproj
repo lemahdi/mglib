@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<VisualStudioProject
+	ProjectType="Visual C++"
+	Version="9.00"
+	Name="runtests"
+	ProjectGUID="{D01BE258-315D-415F-86FB-151B80CE1A69}"
+	RootNamespace="runtests"
+	Keyword="Win32Proj"
+	TargetFrameworkVersion="131072"
+	>
+	<Platforms>
+		<Platform
+			Name="Win32"
+		/>
+	</Platforms>
+	<ToolFiles>
+	</ToolFiles>
+	<Configurations>
+		<Configuration
+			Name="Debug|Win32"
+			OutputDirectory="bin\$(configurationname)"
+			IntermediateDirectory="obj\test_block\$(configurationname)"
+			ConfigurationType="10"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
+			CharacterSet="2"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+				CommandLine="echo block&#x0D;&#x0A;$(OutDir)\test_block&#x0D;&#x0A;echo bspline&#x0D;&#x0A;$(OutDir)\test_bspline&#x0D;&#x0A;echo cblas&#x0D;&#x0A;$(OutDir)\test_cblas&#x0D;&#x0A;echo cdf&#x0D;&#x0A;$(OutDir)\test_cdf&#x0D;&#x0A;echo cheb&#x0D;&#x0A;$(OutDir)\test_cheb&#x0D;&#x0A;echo combination&#x0D;&#x0A;$(OutDir)\test_combination&#x0D;&#x0A;echo complex&#x0D;&#x0A;$(OutDir)\test_complex&#x0D;&#x0A;echo const&#x0D;&#x0A;$(OutDir)\test_const&#x0D;&#x0A;echo deriv&#x0D;&#x0A;$(OutDir)\test_deriv&#x0D;&#x0A;echo dht&#x0D;&#x0A;$(OutDir)\test_dht&#x0D;&#x0A;echo diff&#x0D;&#x0A;$(OutDir)\test_diff&#x0D;&#x0A;echo eigen&#x0D;&#x0A;$(OutDir)\test_eigen&#x0D;&#x0A;echo err&#x0D;&#x0A;$(OutDir)\test_err&#x0D;&#x0A;echo fft&#x0D;&#x0A;$(OutDir)\test_fft&#x0D;&#x0A;echo fit&#x0D;&#x0A;$(OutDir)\test_fit&#x0D;&#x0A;echo histogram&#x0D;&#x0A;$(OutDir)\test_histogram&#x0D;&#x0A;echo ieee-utils&#x0D;&#x0A;$(OutDir)\test_ieee-utils&#x0D;&#x0A;echo integration&#x0D;&#x0A;$(OutDir)\test_integration&#x0D;&#x0A;echo interpolation&#x0D;&#x0A;$(OutDir)\test_interpolation&#x0D;&#x0A;echo linalg&#x0D;&#x0A;$(OutDir)\test_linalg&#x0D;&#x0A;echo matrix&#x0D;&#x0A;$(OutDir)\test_matrix&#x0D;&#x0A;echo min&#x0D;&#x0A;$(OutDir)\test_min&#x0D;&#x0A;echo monte&#x0D;&#x0A;$(OutDir)\test_monte&#x0D;&#x0A;echo multifit&#x0D;&#x0A;$(OutDir)\test_multifit&#x0D;&#x0A;echo multimin&#x0D;&#x0A;$(OutDir)\test_multimin&#x0D;&#x0A;echo multiroots&#x0D;&#x0A;$(OutDir)\test_multiroots&#x0D;&#x0A;echo ntuple&#x0D;&#x0A;$(OutDir)\test_ntuple&#x0D;&#x0A;echo ode-interval&#x0D;&#x0A;$(OutDir)\test_ode-initval&#x0D;&#x0A;echo permutation&#x0D;&#x0A;$(OutDir)\test_permutation&#x0D;&#x0A;echo poly&#x0D;&#x0A;$(OutDir)\test_poly&#x0D;&#x0A;echo qrng&#x0D;&#x0A;$(OutDir)\test_qrng&#x0D;&#x0A;echo randist&#x0D;&#x0A;$(OutDir)\test_randist&#x0D;&#x0A;echo rng&#x0D;&#x0A;$(OutDir)\test_rng&#x0D;&#x0A;echo roots&#x0D;&#x0A;$(OutDir)\test_roots&#x0D;&#x0A;echo siman&#x0D;&#x0A;$(OutDir)\test_siman&#x0D;&#x0A;echo sort&#x0D;&#x0A;$(OutDir)\test_sort&#x0D;&#x0A;echo specfunc&#x0D;&#x0A;$(OutDir)\test_specfunc&#x0D;&#x0A;echo statistics&#x0D;&#x0A;$(OutDir)\test_statistics&#x0D;&#x0A;echo sum&#x0D;&#x0A;$(OutDir)\test_sum&#x0D;&#x0A;echo vector&#x0D;&#x0A;$(OutDir)\test_vector&#x0D;&#x0A;echo wavelet&#x0D;&#x0A;$(OutDir)\test_wavelet&#x0D;&#x0A;&#x0D;&#x0A;&#x0D;&#x0A;&#x0D;&#x0A;"
+			/>
+		</Configuration>
+		<Configuration
+			Name="Release|Win32"
+			OutputDirectory="bin\$(configurationname)"
+			IntermediateDirectory="obj\test_block\$(configurationname)"
+			ConfigurationType="10"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
+			CharacterSet="2"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+				CommandLine="echo block&#x0D;&#x0A;$(OutDir)\test_block&#x0D;&#x0A;echo bspline&#x0D;&#x0A;$(OutDir)\test_bspline&#x0D;&#x0A;echo cblas&#x0D;&#x0A;$(OutDir)\test_cblas&#x0D;&#x0A;echo cdf&#x0D;&#x0A;$(OutDir)\test_cdf&#x0D;&#x0A;echo cheb&#x0D;&#x0A;$(OutDir)\test_cheb&#x0D;&#x0A;echo combination&#x0D;&#x0A;$(OutDir)\test_combination&#x0D;&#x0A;echo complex&#x0D;&#x0A;$(OutDir)\test_complex&#x0D;&#x0A;echo const&#x0D;&#x0A;$(OutDir)\test_const&#x0D;&#x0A;echo deriv&#x0D;&#x0A;$(OutDir)\test_deriv&#x0D;&#x0A;echo dht&#x0D;&#x0A;$(OutDir)\test_dht&#x0D;&#x0A;echo diff&#x0D;&#x0A;$(OutDir)\test_diff&#x0D;&#x0A;echo eigen&#x0D;&#x0A;$(OutDir)\test_eigen&#x0D;&#x0A;echo err&#x0D;&#x0A;$(OutDir)\test_err&#x0D;&#x0A;echo fft&#x0D;&#x0A;$(OutDir)\test_fft&#x0D;&#x0A;echo fit&#x0D;&#x0A;$(OutDir)\test_fit&#x0D;&#x0A;echo histogram&#x0D;&#x0A;$(OutDir)\test_histogram&#x0D;&#x0A;echo ieee-utils&#x0D;&#x0A;$(OutDir)\test_ieee-utils&#x0D;&#x0A;echo integration&#x0D;&#x0A;$(OutDir)\test_integration&#x0D;&#x0A;echo interpolation&#x0D;&#x0A;$(OutDir)\test_interpolation&#x0D;&#x0A;echo linalg&#x0D;&#x0A;$(OutDir)\test_linalg&#x0D;&#x0A;echo matrix&#x0D;&#x0A;$(OutDir)\test_matrix&#x0D;&#x0A;echo min&#x0D;&#x0A;$(OutDir)\test_min&#x0D;&#x0A;echo monte&#x0D;&#x0A;$(OutDir)\test_monte&#x0D;&#x0A;echo multifit&#x0D;&#x0A;$(OutDir)\test_multifit&#x0D;&#x0A;echo multimin&#x0D;&#x0A;$(OutDir)\test_multimin&#x0D;&#x0A;echo multiroots&#x0D;&#x0A;$(OutDir)\test_multiroots&#x0D;&#x0A;echo ntuple&#x0D;&#x0A;$(OutDir)\test_ntuple&#x0D;&#x0A;echo ode-interval&#x0D;&#x0A;$(OutDir)\test_ode-initval&#x0D;&#x0A;echo permutation&#x0D;&#x0A;$(OutDir)\test_permutation&#x0D;&#x0A;echo poly&#x0D;&#x0A;$(OutDir)\test_poly&#x0D;&#x0A;echo qrng&#x0D;&#x0A;$(OutDir)\test_qrng&#x0D;&#x0A;echo randist&#x0D;&#x0A;$(OutDir)\test_randist&#x0D;&#x0A;echo rng&#x0D;&#x0A;$(OutDir)\test_rng&#x0D;&#x0A;echo roots&#x0D;&#x0A;$(OutDir)\test_roots&#x0D;&#x0A;echo siman&#x0D;&#x0A;$(OutDir)\test_siman&#x0D;&#x0A;echo sort&#x0D;&#x0A;$(OutDir)\test_sort&#x0D;&#x0A;echo specfunc&#x0D;&#x0A;$(OutDir)\test_specfunc&#x0D;&#x0A;echo statistics&#x0D;&#x0A;$(OutDir)\test_statistics&#x0D;&#x0A;echo sum&#x0D;&#x0A;$(OutDir)\test_sum&#x0D;&#x0A;echo vector&#x0D;&#x0A;$(OutDir)\test_vector&#x0D;&#x0A;echo wavelet&#x0D;&#x0A;$(OutDir)\test_wavelet&#x0D;&#x0A;&#x0D;&#x0A;&#x0D;&#x0A;&#x0D;&#x0A;"
+			/>
+		</Configuration>
+	</Configurations>
+	<References>
+	</References>
+	<Files>
+		<Filter
+			Name="Source Files"
+			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
+			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
+			>
+		</Filter>
+		<Filter
+			Name="Header Files"
+			Filter="h;hpp;hxx;hm;inl;inc;xsd"
+			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
+			>
+		</Filter>
+		<Filter
+			Name="Resource Files"
+			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx"
+			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
+			>
+		</Filter>
+	</Files>
+</VisualStudioProject>

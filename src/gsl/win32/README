@@ -1,0 +1,27 @@
+This is a port of GSL 1.13 to Visual Studio C++ 2008 Express Edition
+
+I maintain this port because I had problems with the debug
+informations of the cygwin binaries distribution. .NET 2003 was
+unable to debug code linked against these cygwin libraries.
+
+Contact me if you need the library in other forms (at the moment,
+only static library with multithread DLL is provided)
+
+Settings you have to change when creating your own project :
+- additional include directory should point to gsl\include
+- additional library directory should point to gsl\lib
+- Code generation : use /MDd for Debug and /MD for Release
+- Debug config should link with "cblas_d.lib gsl_d.lib"
+- Release config should link with "cblas.lib gsl.lib"
+
+(If you need versions compiled with /MTd and /MT, use the source
+package and recompile the "Debug MT" and "Release MT" configurations)
+
+The binary distribution contains an example project to show how to
+use this library with Visual Studio 2008 Express Edition. Just load
+example\example.sln into visual studio, compile and run.
+
+Latest version could be found on : http://david.geldreich.free.fr/dev.html
+
+Author: David Geldreich (david.geldreich@free.fr)
+Date: 12/24/2009
