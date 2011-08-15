@@ -8,7 +8,16 @@
 #include "mgnumerical/normal.h"
 #include "mgnova/calendar.h"
 #include "mgnumerical/solver.h"
-#include "mgnova/matrix.h"
+#include "mgnova/wrapper/matrix.h"
+
+#include "gsl/gsl_rng.h"
+#include "gsl/gsl_qrng.h"
+#include "gsl/gsl_randist.h"
+#include "gsl/gsl_cdf.h"
+#include "gsl/gsl_interp.h"
+#include "gsl/gsl_nan.h"
+#include "gsl/gsl_sys.h"
+#include "gsl/gsl_vector.h"
 
 
 using namespace std;
@@ -192,6 +201,132 @@ int main()
 	vM2--;
 	--vM2;
 
+	// GSL Random Generator
+	{
+		gsl_rng* r = gsl_rng_alloc(gsl_rng_mt19937);
+		cout << "Mersenne Twister" <<endl;
+		size_t vCount = 100;
+		while (--vCount) cout << gsl_rng_get(r) << ":" << gsl_rng_uniform(r) << endl;
+
+		void* state = gsl_rng_state(r);
+		size_t n = gsl_rng_size(r);
+		FILE* stream = fopen("C:\\cygwin\\home\\Akkouh\\state.txt", "w");
+		fwrite(state, n, 1, stream);
+		fclose(stream);
+
+		const gsl_rng_type **t, **t0;
+		t0 = gsl_rng_types_setup();
+		cout << "Available Generators:" << endl;
+		for(t=t0; *t!=NULL; ++t)
+			cout << (*t)->name << endl;
+
+		gsl_rng_free(r);
+		cout << "GSL Random Generators" << endl;
+	}
+
+	cin >> ch;
+
+	// GSL Quasi Random Generator
+	{
+		gsl_qrng* qr = gsl_qrng_alloc(gsl_qrng_sobol, 2);
+		cout << "TAUS" <<endl;
+		size_t vCount = 100;
+		double x[2];
+		while (--vCount)
+		{
+			gsl_qrng_get(qr, x);
+			cout << x[0] << ":" << x[1] << endl;
+		}
+
+		void* state = gsl_qrng_state(qr);
+		size_t n = gsl_qrng_size(qr);
+		FILE* stream = fopen("C:\\cygwin\\home\\Akkouh\\state.txt", "w");
+		fwrite(state, n, 1, stream);
+		fclose(stream);
+
+		gsl_qrng_free(qr);
+		cout << "GSL Quasi Random Generators" << endl;
+	}
+
+	cin >> ch;
+
+	// Gaussian Distribution
+	{
+		gsl_rng* r = gsl_rng_alloc(gsl_rng_mt19937);
+		size_t vCount = 100;
+		double x, p, q;
+		while (--vCount)
+		{
+			cout << gsl_ran_ugaussian(r) << ":" << (x=gsl_ran_gaussian_ziggurat(r, 1));
+			cout << ":" << (p=gsl_cdf_ugaussian_P(x)) << ":" << (q=gsl_cdf_ugaussian_Q(x));
+			cout << ":" << gsl_cdf_ugaussian_Pinv(p) << ":" << gsl_cdf_ugaussian_Qinv(q) << endl;
+		}
+
+		gsl_rng_free(r);
+		cout << "GSL Gaussian Distribution" << endl;
+	}
+
+	cin >> ch;
+
+	// Interpolation Functions
+	{
+		double xa[5], ya[5];
+		xa[0]=0.;xa[1]=0.1;xa[2]=0.2;xa[3]=0.3;xa[4]=0.4;
+		ya[0]=1.;ya[1]=1.2;ya[2]=1.4;ya[3]=1.6;ya[4]=1.8;
+		cout << "Index: " << gsl_interp_bsearch(xa, 0.25, 0, 4) << endl;
+		// Accelerator Strategy
+		gsl_interp_accel* a = gsl_interp_accel_alloc();
+		cout << "Index by accelerator: " << gsl_interp_accel_find(a, xa, 4, 0.25) << endl;
+		gsl_interp_accel_reset(a);
+
+		//gsl_interp_linear, gsl_interp_polynomial, gsl_interp_cspline, gsl_interp_cspline_periodic, gsl_interp_akima, gsl_interp_akima_periodic
+		gsl_interp* i = gsl_interp_alloc(gsl_interp_linear, 5);
+		int vErr = gsl_interp_init(i, xa, ya, 5);
+		cout << gsl_interp_eval(i, xa, ya, 0.25, a) << endl;
+		double y[1];
+
+		vErr = gsl_interp_eval_e(i, xa, ya, 0.25, a, y);
+		if (vErr == GSL_EDOM) cout << "NAN" << endl; else cout << *y << endl;
+		vErr = gsl_interp_eval_e(i, xa, ya, 0.5, a, y);
+		if (vErr == GSL_EDOM) cout << "NAN" << endl; else cout << *y << endl;
+		
+		vErr = gsl_interp_eval_deriv_e(i, xa, ya, 0.25, a, y);
+		if (vErr == GSL_EDOM) cout << "NAN" << endl; else cout << *y << endl;
+		vErr = gsl_interp_eval_deriv_e(i, xa, ya, 0.5, a, y);
+		if (vErr == GSL_EDOM) cout << "NAN" << endl; else cout << *y << endl;
+		
+		vErr = gsl_interp_eval_deriv2_e(i, xa, ya, 0.25, a, y);
+		if (vErr == GSL_EDOM) cout << "NAN" << endl; else cout << *y << endl;
+		vErr = gsl_interp_eval_deriv2_e(i, xa, ya, 0.5, a, y);
+		if (vErr == GSL_EDOM) cout << "NAN" << endl; else cout << *y << endl;
+		
+		vErr = gsl_interp_eval_integ_e(i, xa, ya, 0., 1.8, a, y);
+		if (vErr == GSL_EDOM) cout << "NAN" << endl; else cout << *y << endl;
+		vErr = gsl_interp_eval_integ_e(i, xa, ya, 0., 1.8, a, y);
+		if (vErr == GSL_EDOM) cout << "NAN" << endl; else cout << *y << endl;
+
+		gsl_interp_accel_free(a);
+		gsl_interp_free(i);
+		cout << "GSL Interpolation" << endl;
+	}
+
+	cin >> ch;
+
+	{
+		size_t l(20);
+		gsl_vector* v = gsl_vector_alloc(l);
+
+		for(size_t i=0; i<l; ++i)
+			gsl_vector_set(v, i, i/10.);
+
+		for(size_t i=0; i<l; ++i)
+			cout << gsl_vector_get(v, i) << endl;
+
+		gsl_vector_free(v);
+		cout << "VECTOR" << endl;
+	}
+
+	cin >> ch;
 
 	MG_RCalendar::Release();
 

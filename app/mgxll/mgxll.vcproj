@@ -44,7 +44,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../app;../../src;../../app/mgxll/cpp_iface"
+				AdditionalIncludeDirectories="../../app;../../src;../../app/mgxll/cpp_iface;../../src/gsl/win32/include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;MGXLL_EXPORTS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -128,7 +128,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="../../app;../../src;../../app/mgxll/cpp_iface"
+				AdditionalIncludeDirectories="../../app;../../src;../../app/mgxll/cpp_iface;../../src/gsl/win32/include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;MGXLL_EXPORTS"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"

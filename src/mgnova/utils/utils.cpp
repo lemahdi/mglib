@@ -202,6 +202,57 @@ namespace MG_utils
 		return vInterpolTypesInt;
 	}
 #endif
+	
+	/* converting a CellMatrix to a MG_Vector */
+	MG_Vector FromCellMatrixToMGVectorDouble(const CellMatrix& aCM, const size_t& aIndex)
+	{
+		if (aCM.ColumnsInStructure()!=1 && aCM.RowsInStructure()!=1)
+			MG_THROW("CellMatrix should be a one row or column structure");
+		bool vIsRow = aCM.ColumnsInStructure() == 1;
+
+		size_t vSize = vIsRow ? aCM.RowsInStructure() : aCM.ColumnsInStructure();
+		MG_Vector vRes(vSize);
+		if (vIsRow)
+		{
+			for(size_t i=0; i<vSize; ++i)
+				vRes[i] = aCM(i, aIndex).NumericValue();
+			return vRes;
+		}
+		for(size_t i=0; i<vSize; ++i)
+			vRes[i] = aCM(aIndex, i).NumericValue();
+		return vRes;
+	}
+
+	/* converting a CellMatrix to a MG_Matrix */
+	MG_Matrix FromCellMatrixToMGMatrix(const CellMatrix& aCM)
+	{
+		size_t vRows(aCM.RowsInStructure()), vCols(aCM.ColumnsInStructure());
+		MG_Matrix vMat(vRows, vCols);
+		for(size_t i=0; i<vRows; ++i)
+			for(size_t j=0; j<vCols; ++j)
+				vMat(i, j) = aCM(i, j).NumericValue();
+		return vMat;
+	}
+
+	/* converting a CellMatrix to a MG_Vector */
+	MG_Vector FromCellMatrixToMGVectorDate(const CellMatrix& aCM, const size_t& aIndex)
+	{
+		if (aCM.ColumnsInStructure()!=1 && aCM.RowsInStructure()!=1)
+			MG_THROW("CellMatrix should be a one row or column structure");
+		bool vIsRow = aCM.ColumnsInStructure() == 1;
+
+		size_t vSize = vIsRow ? aCM.RowsInStructure() : aCM.ColumnsInStructure();
+		MG_Vector vRes(vSize);
+		if (vIsRow)
+		{
+			for(size_t i=0; i<vSize; ++i)
+				vRes[i] = FromXLDateToJulianDay(aCM(i, aIndex).NumericValue());
+			return vRes;
+		}
+		for(size_t i=0; i<vSize; ++i)
+			vRes[i] = FromXLDateToJulianDay(aCM(aIndex, i).NumericValue());
+		return vRes;
+	}
 
 }
 

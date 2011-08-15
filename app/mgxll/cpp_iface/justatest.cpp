@@ -50,8 +50,8 @@ ZeroCurve_Create	(	const MG_Date	& aAsOf
 	if (aZeroRates.Size() != aMaturities.Size())
 		MG_THROW("Zero vector size and Maturities size are not consistent");
 
-	vector<double>	vMaturities	= FromCellMatrixToVectorDouble	(aMaturities, 0);
-	MJMatrix		vZeroRates	= FromCellMatrixToMJMatrix		(aZeroRates);
+	MG_Vector	vMaturities	= FromCellMatrixToMGVectorDouble(aMaturities, 0);
+	MG_Matrix	vZeroRates	= FromCellMatrixToMGMatrix		(aZeroRates);
 
 	vector<int> vInterpolMeths = vector<int>(1, LIN_INTERPOL);
 	if (!aInterpolMeth(0,0).IsEmpty())
@@ -76,9 +76,9 @@ VolatilityCurve_Create	(	const MG_Date	& aAsOf
 	if (aVolatilities.Size() != aTenors.Size()*aMaturities.Size())
 		MG_THROW("Volatilities matrix size and (Maturities,Tenors) size are not consistent");
 
-	vector<double>	vMaturities	= FromCellMatrixToVectorDouble	(aMaturities, 0);
-	vector<double>	vTenors		= FromCellMatrixToVectorDouble	(aTenors, 0);
-	MJMatrix		vVols		= FromCellMatrixToMJMatrix		(aVolatilities);
+	MG_Vector vMaturities	= FromCellMatrixToMGVectorDouble(aMaturities, 0);
+	MG_Vector vTenors		= FromCellMatrixToMGVectorDouble(aTenors, 0);
+	MG_Matrix vVols			= FromCellMatrixToMGMatrix		(aVolatilities);
 
 	vector<int> vInterpolMeths = vector<int>(2, LIN_INTERPOL);
 	if (!aInterpolMeths(0,0).IsEmpty())
@@ -103,9 +103,9 @@ DividendsTable_Create	(	const MG_Date		& aAsOf
 	if (aExDivDates.Size() != aExDivDates.Size())
 		MG_THROW("Ex dividends dates and payments days should be equal");
 
-	vector<MG_Date>	vExDivDates		= FromCellMatrixToVectorDate	(aExDivDates, 0);
-	vector<MG_Date>	vPaymentDates	= FromCellMatrixToVectorDate	(aPaymentDates, 0);
-	vector<double>	vDividends		= FromCellMatrixToVectorDouble	(aDividends, 0);
+	MG_Vector vExDivDates	= FromCellMatrixToMGVectorDate	(aExDivDates, 0);
+	MG_Vector vPaymentDates	= FromCellMatrixToMGVectorDate	(aPaymentDates, 0);
+	MG_Vector vDividends	= FromCellMatrixToMGVectorDouble(aDividends, 0);
 
 	return MG_XLObjectPtr(new MG_DividendsTable(aAsOf, vExDivDates, vPaymentDates, vDividends, aZC));
 }

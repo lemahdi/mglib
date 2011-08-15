@@ -42,20 +42,20 @@ void yy_delete_buffer (YY_BUFFER_STATE b  );
 
 /* Some useful functions */
 #define ASSIGN_OPERATOR(CLASS)					\
-	CLASS& CLASS::operator= (CLASS aFrom)		\
+	inline CLASS& CLASS::operator= (CLASS aFrom)		\
 	{											\
 		Swap(aFrom);							\
 		return *this;							\
 	}
 
 #define FAKE_ASSIGN_OPERATOR(CLASS)									\
-	CLASS& CLASS::operator= (const CLASS& )							\
+	inline CLASS& CLASS::operator= (const CLASS& )							\
 	{																\
 		assert("Assignement operator not allowed for this class");	\
 	}
 
 #define CLONE_METHOD(CLASS) \
-	MG_Object* Clone(void) { return new CLASS(*this); }
+	inline MG_Object* Clone(void) { return new CLASS(*this); }
 
 #define SWAP_DECL(CLASS)	\
 	void Swap(CLASS& aRight);
@@ -65,6 +65,18 @@ void yy_delete_buffer (YY_BUFFER_STATE b  );
 
 #define MG_THROW(MSG)		\
 	throw MG_Exception(__FILE__, __LINE__, MSG);
+
+#define MG_FRIEND_ARITH_OP_LEFT(CLASS,OP,SCALAR)					\
+	friend CLASS operator OP (CLASS aLeft, const SCALAR& aRight)	\
+	{ return aLeft OP= aRight; }
+
+#define MG_FRIEND_ARITH_OP_RIGHT(CLASS,OP,SCALAR)					\
+	friend CLASS operator OP (const SCALAR& aLeft, CLASS aRight)	\
+	{ return aRight OP= aLeft; }
+
+#define MG_FRIEND_ARITH_OP(CLASS,OP)							\
+	friend CLASS operator OP (const CLASS& aLeft, CLASS aRight)	\
+	{ return aRight OP= aLeft; }
 
 
 /* Coord is is a pair.
@@ -174,18 +186,14 @@ enum DATE_DISPLAY {
 };
 
 
-/* enum for dimensions */
-enum INTERPOL_DIM {
-	ID_ROW,
-	ID_COL
-};
-
-
 /* interpolation types */
 #define interpoltypeNone			0x00000000
 #define interpoltypeStepUpLeft		0x00000001
 #define interpoltypeStepUpRight		0x00000002
 #define interpoltypeLinear			0x00000003
+#define interpoltypePolynomial		0x00000004
+#define interpoltypeCubicSpline		0x00000005
+#define interpoltypeConstant		0x00000006
 
 #define interpoltypeMask			0x0000000f
 

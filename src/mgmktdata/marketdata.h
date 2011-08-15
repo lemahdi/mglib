@@ -14,7 +14,9 @@
 
 #include "mgnova/date.h"
 #include "mgmktdata/interpolator.h"
-#include "xlw/MJmatrices.h"
+
+#include "gsl/gsl_interp.h"
+#include "gsl/gsl_spline.h"
 
 
 MG_NAMESPACE_BEGIN
@@ -24,14 +26,10 @@ MG_NAMESPACE_BEGIN
 class MG_MarketData : public MG_XLObject
 {
 protected:
-	typedef xlw::MJMatrix		MG_Line;
-	typedef xlw::MJMatrix		MG_Curve;
-	typedef xlw::MJMatrix		MG_Matrix;
-	typedef std::vector<double>	MG_ABSC;
-	typedef std::vector<double>	MG_ORD;
-
-	typedef double (*MG_InterpolLineFunc)	(const MG_Line&, const size_t&, const INTERPOL_DIM&, const MG_ABSC&, const double&);
-	typedef double (*MG_InterpolMatrixFunc)	(const MG_Curve&, const MG_ABSC&, const MG_ORD&, const double&, const double&, const int&);
+	typedef MG_Matrix MG_Line;
+	typedef MG_Matrix MG_Curve;
+	typedef MG_Vector MG_ABSC;
+	typedef MG_Vector MG_ORD;
 
 public:
 	/* Constructors / Destructor */
@@ -40,13 +38,16 @@ public:
 	ASSIGN_OPERATOR(MG_MarketData)
 	SWAP_DECL(MG_MarketData)
 
-	MG_MarketData(const MG_Date& aAsOf);
+	MG_MarketData(const MG_Date& aAsOf, const int& aInterpolTypes = 0);
+
+	virtual ~MG_MarketData(void);
 
 public:
 	virtual double ComputeValue(const double& aX = 0, const double& aY = 0, const double& aZ = 0) = 0;
 
 protected:
 	MG_Date		myAsOf;
+	const int	myInterpolTypes;
 };
 
 
@@ -66,6 +67,8 @@ public:
 				,	const MG_Line	& aCurve
 				,	const int		& aInterpolTypes);
 
+	virtual ~MG_ZeroCurve(void);
+
 public:
 	virtual double ComputeValue(const double& aMaturity = 0, const double& aY = 0, const double& aZ = 0);
 
@@ -73,7 +76,7 @@ private:
 	MG_ABSC				myMaturities;
 	MG_Line				myCurve;
 
-	MG_InterpolLineFunc	myInterpolFunc;
+	gsl_spline*			myInterpolator;
 };
 
 
@@ -82,8 +85,18 @@ class MG_VolatilityCurve : public MG_MarketData
 {
 public:
 	/* Constructors / Destructor */
-	MG_VolatilityCurve	(const MG_Date& aAsOf);
+	COPY_CTOR_DECL(MG_VolatilityCurve)
 
+	ASSIGN_OPERATOR(MG_VolatilityCurve)
+	SWAP_DECL(MG_VolatilityCurve)
+
+	MG_VolatilityCurve	(const MG_Date& aAsOf, const int& aInterpolTypes = 0);
+
+	virtual ~MG_VolatilityCurve(void);
+
+protected:
+	std::vector<gsl_spline*>	my1stInterps;
+	gsl_interp*					my2ndInterp;
 };
 
 /* IR Volatility Curve */
@@ -110,16 +123,15 @@ private:
 	MG_ABSC				myMaturities;
 	MG_ORD				myTenors;
 	MG_Matrix			myCurve;
+	MG_Matrix			myTransCurve;
 
-	MG_InterpolLineFunc	myMaturityInterpolFunc;
-	MG_InterpolLineFunc	myTenorInterpolFunc;
 };
 
 /* Dividends - Dividends Table*/
 class MG_DividendsTable : public MG_MarketData
 {
-	typedef std::vector<MG_Date>	MG_ABSC;
-	typedef std::vector<double>		MG_Line;
+	typedef MG_Vector MG_ABSC;
+	typedef MG_Vector MG_Line;
 
 public:
 	/* Constructors / Destructor */
@@ -169,9 +181,8 @@ private:
 	MG_ABSC				myStrikes;
 	MG_ORD				myMaturities;
 	MG_Matrix			myCurve;
+	MG_Matrix			myTransCurve;
 
-	MG_InterpolLineFunc	myStrikeInterpolFunc;
-	MG_InterpolLineFunc	myMaturityInterpolFunc;
 };
 
 

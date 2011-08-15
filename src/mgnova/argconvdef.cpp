@@ -43,6 +43,9 @@ MG_ArgConv::ArgConvPair InterpolMethodArgConv[] =
 	MG_ArgConv::ArgConvPair("STEPUPLEFT",STEPUPLEFT_INTERPOL),
 	MG_ArgConv::ArgConvPair("STEPUPRIGHT",STEPUPRIGHT_INTERPOL),
 	MG_ArgConv::ArgConvPair("LINEAR",LIN_INTERPOL),
+	MG_ArgConv::ArgConvPair("POLYNOMIAL",POLYNOM_INTERPOL),
+	MG_ArgConv::ArgConvPair("CUBICSPLINE",CUBICSPLINE_INTERPOL),
+	MG_ArgConv::ArgConvPair("CONSTANT",CONSTANT_INTERPOL),
 };
 const MG_ArgConv		InterpolMethodConvertor	= MG_ArgConv		("Interpolation Methods", InterpolMethodArgConv, NB_INTERPOL_METH);
 const MG_ArgConvReverse	InterpolMethodRevertor	= MG_ArgConvReverse	("Interpolation Methods", InterpolMethodArgConv, NB_INTERPOL_METH);

@@ -61,6 +61,9 @@ enum INTERPOL_METHOD {
 	STEPUPLEFT_INTERPOL,	// step up left interpol method
 	STEPUPRIGHT_INTERPOL,	// step up right interpol method
 	LIN_INTERPOL,			// linear interpol method
+	POLYNOM_INTERPOL,		// polynomial interpol method
+	CUBICSPLINE_INTERPOL,	// cubic spline interpol method
+	CONSTANT_INTERPOL,		// constant interpol method
 
 	NB_INTERPOL_METH
 };

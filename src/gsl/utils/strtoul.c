@@ -18,4 +18,4 @@ Cambridge, MA 02110-1301, USA.  */
 
 #define UNSIGNED        1
 
-#include <strtol.c>
+#include <utils/strtol.c>

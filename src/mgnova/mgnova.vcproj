@@ -42,7 +42,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../src"
+				AdditionalIncludeDirectories="../../src;../../src/gsl/win32/include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -110,7 +110,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="../../src"
+				AdditionalIncludeDirectories="../../src;../../src/gsl/win32/include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -190,6 +190,26 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="wrapper"
+			>
+			<File
+				RelativePath=".\wrapper\matrix.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\wrapper\matrix.h"
+				>
+			</File>
+			<File
+				RelativePath=".\wrapper\vector.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\wrapper\vector.h"
+				>
+			</File>
+		</Filter>
 		<File
 			RelativePath=".\argconv.cpp"
 			>
@@ -228,14 +248,6 @@
 		</File>
 		<File
 			RelativePath=".\exception.h"
-			>
-		</File>
-		<File
-			RelativePath=".\matrix.cpp"
-			>
-		</File>
-		<File
-			RelativePath=".\matrix.h"
 			>
 		</File>
 		<File

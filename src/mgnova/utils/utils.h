@@ -23,6 +23,8 @@
 #endif
 
 #include "mgnova/date.h"
+#include "mgnova/wrapper/vector.h"
+#include "mgnova/wrapper/matrix.h"
 
 
 namespace MG_utils
@@ -51,5 +53,11 @@ extern std::vector<MG::MG_Date> FromCellMatrixToVectorDate(const xlw::CellMatrix
 
 extern std::vector<int> FromCellMatrixToInterpolVector(const xlw::CellMatrix& aCM);
 #endif
+
+extern MG::MG_Vector FromCellMatrixToMGVectorDouble(const xlw::CellMatrix& aCM, const size_t& aIndex);
+
+extern MG::MG_Matrix FromCellMatrixToMGMatrix(const xlw::CellMatrix& aCM);
+
+extern MG::MG_Vector FromCellMatrixToMGVectorDate(const xlw::CellMatrix& aCM, const size_t& aIndex);
 
 }

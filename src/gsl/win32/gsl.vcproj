@@ -4442,6 +4442,34 @@
 			<Filter
 				Name="utils"
 				>
+				<File
+					RelativePath="..\utils\memcpy.c"
+					>
+				</File>
+				<File
+					RelativePath="..\utils\memmove.c"
+					>
+				</File>
+				<File
+					RelativePath="..\utils\placeholder.c"
+					>
+				</File>
+				<File
+					RelativePath="..\utils\strdup.c"
+					>
+				</File>
+				<File
+					RelativePath="..\utils\strtol.c"
+					>
+				</File>
+				<File
+					RelativePath="..\utils\strtoul.c"
+					>
+				</File>
+				<File
+					RelativePath="..\utils\system.h"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="vector"
@@ -4563,7 +4591,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\ode-initval2\control.c"
+					RelativePath="..\ode-initval2\control2.c"
 					>
 				</File>
 				<File
@@ -4642,10 +4670,6 @@
 					RelativePath="..\ode-initval2\step_utils.c"
 					>
 				</File>
-				<File
-					RelativePath="..\ode-initval2\test.c"
-					>
-				</File>
 			</Filter>
 			<Filter
 				Name="multiset"
@@ -4664,10 +4688,6 @@
 				</File>
 				<File
 					RelativePath="..\multiset\multiset.c"
-					>
-				</File>
-				<File
-					RelativePath="..\multiset\test.c"
 					>
 				</File>
 			</Filter>
