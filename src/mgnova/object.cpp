@@ -1,7 +1,7 @@
 #include "mgnova/object.h"
 
 #include "mginfra/func.h"
-#include "mgnumerical/normal.h"
+#include "mgnumerical/distributions.h"
 #include "mgnova/calendar.h"
 
 using namespace MG;
@@ -10,7 +10,6 @@ using namespace MG;
 bool MG_Object::Dummy()
 {
 	MG_SFuncBuilder::Instance()->Init();
-	MG_SCdfNormal::Instance()->Init();
 	//MG_RCalendar::Init();
 	return true;
 }

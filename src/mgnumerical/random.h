@@ -6,6 +6,8 @@
  * Purpose				: 
  * Author				: MM Akkouh
  * Notes				: 
+ *
+ * Updates				:  22 AUG 2011 by MM Akkouh - replacing old algorithms by GSL generators
  */
 
 
@@ -15,133 +17,79 @@
 #include <vector>
 
 #include "mgnova/object.h"
+#include "gsl/gsl_rng.h"
 
 
 MG_NAMESPACE_BEGIN
 
 
-/* Base class for random numbers */
 class MG_Random
 {
-public:
-	MG_Random(void);
-	MG_Random(const MG_Random& aRight);
-	virtual ~MG_Random(void) {}
-
-	/* Engines */
-	virtual double DrawUniform(void) = 0;
-	virtual void Reset(void) = 0;
-};
-
-
-/* Park Miller */
-class MG_ParkMillerRand : public MG_Random
-{
-private:
-	FAKE_ASSIGN_OPERATOR(MG_ParkMillerRand)
+	//Perf: TAUS, GFSR4, MT19937, RANLXS0, RANLXS1, MRG, RANLUX, RANLXD1, RANLXS2, CMRG, RANLUX389, RANLXD2
 
 public:
-	MG_ParkMillerRand(const long& aSeed = -156);
-	MG_ParkMillerRand(const MG_ParkMillerRand& aRight);
-	virtual ~MG_ParkMillerRand(void);
+	enum RAND_TYPE
+	{
+		BOROSH13,
+		CMRG, COVEYOU,
+		FISHMAN18, FISHMAN20, FISHMAN2X, 
+		GFSR4,
+		KNUTHRAN, KNUTHRAN2, KNUTHRAN2002,
+		LECUYER21,
+		MINSTD, MRG,
+		MT19937, MT19937_1999, MT19937_1998,
+		R250, RAN0, RAN1, RAN2, RAN3, RAND, RAND48,
+		RANDOM128_BSD, RANDOM128_GLIBC2, RANDOM128_LIBC5, 
+		RANDOM256_BSD, RANDOM256_GLIBC2, RANDOM256_LIBC5,
+		RANDOM32_BSD, RANDOM32_GLIBC2, RANDOM32_LIBC5,
+		RANDOM64_BSD, RANDOM64_GLIBC2, RANDOM64_LIBC5,
+		RANDOM8_BSD, RANDOM8_GLIBC2, RANDOM8_LIBC5, 
+		RANDOM_BSD, RANDOM_GLIBC2, RANDOM_LIBC5,
+		RANDU, RANF,
+		RANLUX, RANLUX389, RANLXD1, RANLXD2, RANLXS0, RANLXS1, RANLXS2, RANMAR, 
+		SLATEC,
+		TAUS, TAUS2, TAUS113, TRANSPUTER, TT800,
+		UNI, UNI32, 
+		VAX,
+		WATERMAN14,
+		ZUF
+	};
 
-	/* Support */
-	inline long Max(void) const { return ourM - 1; }
-	inline long Min(void) const { return 1; }
-
-	/* Engines */
-	virtual double DrawUniform(void);
-	virtual void Reset(void);
-
-private:
-	const long myInitialSeed;
-	long mySeed;
-
-	/* some constants */
-	static const long ourA;
-	static const long ourM;
-	static const long ourQ;
-	static const long ourR;
-
-};
-
-
-/* Base Sampler */
-class MG_Sampler
-{
-private:
-	FAKE_ASSIGN_OPERATOR(MG_Sampler)
+	static const gsl_rng_type* From_MGType_To_GSLType(const RAND_TYPE& aType);
 
 public:
-	MG_Sampler(const unsigned int& aDim, const MG_RandomPtr& aRG, const MG_SamplerPtr& aSampler = NULL);
-	virtual ~MG_Sampler(void);
+	/* Constructors / Destructor */
+	COPY_CTOR_DECL(MG_Random)
+
+	ASSIGN_OPERATOR(MG_Random)
+	SWAP_DECL(MG_Random)
+
+	MG_Random(const RAND_TYPE& aType);
+
+	virtual ~MG_Random(void);
 
 	/* Accessors */
-	inline MG_SamplerPtr GetComposition(void) const { return myComposition; }
-	inline MG_RandomPtr GetRandGen(void) const { return myRandGen; }
+	inline std::string		GetName		(void) const { std::string vName(gsl_rng_name(myGen)); return vName; }
+	inline size_t			GetMin		(void) const { return gsl_rng_min(myGen); }
+	inline size_t			GetMax		(void) const { return gsl_rng_max(myGen); }
+	inline const gsl_rng*	GetGenerator(void) const { return myGen; }
 
-	/* Engines */
-	virtual std::vector<double> GenerateSample(void) = 0;
-	virtual std::vector<double> GetSampleAntithetic(const std::vector<double>& aUniforms) = 0;
-	void Compose(const MG_SamplerPtr& aComp);
+	inline void				SetSeed		(const size_t& aSeed) { gsl_rng_set(myGen, aSeed); }
 
-	virtual void Reset(void) { myRandGen->Reset(); }
+	/* Support */
+	void ToString(FILE* aFile) const;
 
-protected:
-	const unsigned int	myDim;
-	MG_RandomPtr		myRandGen;
-	MG_SamplerPtr		myComposition;
-};
-
-/* Uniform Sampler */
-class MG_UniformSampler : public MG_Sampler
-{
-private:
-	FAKE_ASSIGN_OPERATOR(MG_UniformSampler)
-
-public:
-	MG_UniformSampler(const unsigned int& aDim, const MG_RandomPtr& aRG, const int& aMin = 0, const int& aMax = 1);
-	virtual ~MG_UniformSampler(void);
-
-	virtual std::vector<double> GenerateSample(void);
-	virtual std::vector<double> GetSampleAntithetic(const std::vector<double>& Sample);
+	/* Engine */
+	inline size_t Draw			(void)					{ return gsl_rng_get(myGen); }
+	inline size_t Draw			(const size_t& aMax)	{ return gsl_rng_uniform_int(myGen, aMax); }
+	inline double DrawUniform	(void)					{ return gsl_rng_uniform(myGen); }
+	inline double DrawUniformPos(void)					{ return gsl_rng_uniform_pos(myGen); }
+	inline size_t DrawUniformInt(const size_t& aMax)	{ return gsl_rng_uniform_int(myGen, aMax); }
 
 private:
-	int myMin;
-	int myMax;
+	gsl_rng* myGen;
 
 };
 
-/* Box Muller Sampler */
-class MG_BoxMullerSampler : public MG_Sampler
-{
-private:
-	FAKE_ASSIGN_OPERATOR(MG_BoxMullerSampler)
-
-public:
-	MG_BoxMullerSampler(const unsigned int& aDim, const MG_RandomPtr& aRG);
-	virtual ~MG_BoxMullerSampler(void);
-
-	virtual std::vector<double> GenerateSample(void);
-	virtual std::vector<double> GetSampleAntithetic(const std::vector<double>& Sample);
-
-};
-
-///* Antithetic Sampler */
-//class MG_AntitheticSampler : public MG_Sampler
-//{
-//private:
-//	FAKE_ASSIGN_OPERATOR(MG_AntitheticSampler)
-//
-//public:
-//	MG_AntitheticSampler(const unsigned int& aDim, const MG_SamplerPtr& aSampler);
-//	virtual ~MG_AntitheticSampler(void);
-//
-//	virtual std::vector<double> GenerateSample(void);
-//	
-//	virtual void Reset(void) { myComposition->GetRandGen()->Reset(); }
-//
-//};
-//
 
 MG_NAMESPACE_END

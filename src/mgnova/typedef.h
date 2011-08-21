@@ -120,7 +120,9 @@ void yy_delete_buffer (YY_BUFFER_STATE b  );
 #define MG_ZERO_XL_NAME		"ZERO"
 #define MG_DIVS_XL_NAME		"DIVS"
 #define MG_IRVOL_XL_NAME	"IRVOL"
+#define MG_EQVOL_XL_NAME	"EQVOL"
 #define MG_GENSEC_XL_NAME	"GENSEC"
+#define MG_NORDIST_XL_NAME	"NDIST"
 
 
 /* CountedPtr definitions */

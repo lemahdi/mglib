@@ -1,193 +1,109 @@
 #include "mgnumerical/random.h"
 
-#include <assert.h>
-#include <math.h>
-
-#include "mgnumerical/normal.h"
-
 
 using namespace std;
 using namespace MG;
 
 
-/* Base Random class */
-MG_Random::MG_Random()
-{}
+/* Random Class */
 
-
-/* Park Miller*/
-const long MG_ParkMillerRand::ourA = 16807;
-const long MG_ParkMillerRand::ourM = 2147483647;
-const long MG_ParkMillerRand::ourQ = 127773;
-const long MG_ParkMillerRand::ourR = 2836;
-
-MG_ParkMillerRand::MG_ParkMillerRand(const long& aSeed)
-	:	MG_Random()
-	,	myInitialSeed(aSeed), mySeed(aSeed)
+/*
+ * Perf: TAUS, GFSR4, MT19937, RANLXS0, RANLXS1, MRG, RANLUX, RANLXD1, RANLXS2, CMRG, RANLUX389, RANLXD2
+ */
+const gsl_rng_type* MG_Random::From_MGType_To_GSLType(const RAND_TYPE& aType)
 {
-	assert(myInitialSeed != 0);
-}
-
-MG_ParkMillerRand::MG_ParkMillerRand(	const MG_ParkMillerRand& aRight)
-									:	MG_Random()
-									,	myInitialSeed	(aRight.myInitialSeed)
-									,	mySeed			(aRight.mySeed)
-{}
-
-MG_ParkMillerRand::~MG_ParkMillerRand()
-{}
-
-double MG_ParkMillerRand::DrawUniform()
-{
-	long vK = mySeed / ourQ;
-	mySeed = ourA * (mySeed - vK * ourQ) - ourR * vK;
-	if (mySeed < 0)
-		mySeed += ourM;
-
-	return double(mySeed) / ourM;
-}
-
-void MG_ParkMillerRand::Reset()
-{
-	mySeed = myInitialSeed;
-}
-
-
-/* Base Sampler */
-MG_Sampler::MG_Sampler	(	const unsigned int& aDim, const MG_RandomPtr &aRG, const MG_SamplerPtr& aSampler)
-						:	myDim			(aDim)
-						,	myRandGen		(aRG)
-						,	myComposition	(aSampler)
-{}
-
-MG_Sampler::~MG_Sampler()
-{}
-
-void MG_Sampler::Compose(const MG_SamplerPtr& aComp)
-{
-	myComposition = aComp;
-}
-
-
-/* Ordinary Sampler */
-MG_UniformSampler::MG_UniformSampler(	const unsigned int		& aDim
-									,	const MG_RandomPtr		& aRG
-									,	const int				& aMin
-									,	const int				& aMax)
-									:	MG_Sampler(aDim, aRG)
-									,	myMin(aMin)
-									,	myMax(aMax)
-{
-	assert(myMin < myMax);
-}
-
-MG_UniformSampler::~MG_UniformSampler()
-{}
-
-vector<double> MG_UniformSampler::GenerateSample()
-{
-	vector<double> vSample;
-	vSample.resize(myDim);
-	if (myMin==0 && myMax==1)
+	switch(aType)
 	{
-		for(unsigned int i=0; i<myDim; i++)
-			vSample[i] = myRandGen->DrawUniform();
+	case BOROSH13			: return gsl_rng_borosh13; // Knuth
+	case COVEYOU			: return gsl_rng_coveyou; // Coveyou
+	case CMRG				: return gsl_rng_cmrg; // L'Ecuyer
+	case FISHMAN18			: return gsl_rng_fishman18; // Knuth
+	case FISHMAN20			: return gsl_rng_fishman20; // Knuth
+	case FISHMAN2X			: return gsl_rng_fishman2x;
+	case GFSR4				: return gsl_rng_gfsr4;
+	case KNUTHRAN			: return gsl_rng_knuthran;
+	case KNUTHRAN2			: return gsl_rng_knuthran2;
+	case KNUTHRAN2002		: return gsl_rng_knuthran2002;
+	case LECUYER21			: return gsl_rng_lecuyer21; // Knuth
+	case MINSTD				: return gsl_rng_minstd; // Park & Miller minimal standard algo
+	case MRG				: return gsl_rng_mrg; // L'Ecuyer, Blouin & Coutre
+	case MT19937			: return gsl_rng_mt19937; // Mersenne Twister, by Makoto Matsumoto & Takuji Nishimura 2002
+	case MT19937_1999		: return gsl_rng_mt19937_1999;
+	case MT19937_1998		: return gsl_rng_mt19937_1998;
+	case R250				: return gsl_rng_r250; // Kirkpatrick & Stoll
+	case RAN0				: return gsl_rng_ran0;
+	case RAN1				: return gsl_rng_ran1;
+	case RAN2				: return gsl_rng_ran2;
+	case RAN3				: return gsl_rng_ran3;
+	case RAND				: return gsl_rng_rand;
+	case RAND48				: return gsl_rng_rand48;
+	case RANDOM128_BSD		: return gsl_rng_random128_bsd;
+	case RANDOM128_GLIBC2	: return gsl_rng_random128_glibc2;
+	case RANDOM128_LIBC5	: return gsl_rng_random128_libc5;
+	case RANDOM256_BSD		: return gsl_rng_random256_bsd;
+	case RANDOM256_GLIBC2	: return gsl_rng_random256_glibc2;
+	case RANDOM256_LIBC5	: return gsl_rng_random256_libc5;
+	case RANDOM32_BSD		: return gsl_rng_random32_bsd;
+	case RANDOM32_GLIBC2	: return gsl_rng_random32_glibc2;
+	case RANDOM32_LIBC5		: return gsl_rng_random32_libc5;
+	case RANDOM64_BSD		: return gsl_rng_random64_bsd;
+	case RANDOM64_GLIBC2	: return gsl_rng_random64_glibc2;
+	case RANDOM64_LIBC5		: return gsl_rng_random64_libc5;
+	case RANDOM8_BSD		: return gsl_rng_random8_bsd;
+	case RANDOM8_GLIBC2		: return gsl_rng_random8_glibc2;
+	case RANDOM8_LIBC5		: return gsl_rng_random8_libc5;
+	case RANDOM_BSD			: return gsl_rng_random_bsd;
+	case RANDOM_GLIBC2		: return gsl_rng_random_glibc2;
+	case RANDOM_LIBC5		: return gsl_rng_random_libc5;
+	case RANDU				: return gsl_rng_randu;
+	case RANF				: return gsl_rng_ranf; // CRAY
+	case RANLUX				: return gsl_rng_ranlux;
+	case RANLUX389			: return gsl_rng_ranlux389;
+	case RANLXD1			: return gsl_rng_ranlxd1; // Lüscher algorithm, 48-bit, luxury level 1, more decorrelated
+	case RANLXD2			: return gsl_rng_ranlxd2; // Lüscher algorithm, 48-bit, luxury level 2, more decorrelated
+	case RANLXS0			: return gsl_rng_ranlxs0; // Lüscher algorithm, 24-bit
+	case RANLXS1			: return gsl_rng_ranlxs1; // Lüscher algorithm, 24-bit, luxury level 1, more decorrelated
+	case RANLXS2			: return gsl_rng_ranlxs2; // Lüscher algorithm, 24-bit, luxury level 2, more decorrelated
+	case RANMAR				: return gsl_rng_ranmar; // RANMAR, by Marsaglia, Zaman & Tsang
+	case SLATEC				: return gsl_rng_slatec;
+	case TAUS				: return gsl_rng_taus; // Tausworthe generator, by L'Ecuyer
+	case TAUS2				: return gsl_rng_taus2; // Tausworthe generator improved, by L'Ecuyer
+	case TAUS113			: return gsl_rng_taus113;
+	case TRANSPUTER			: return gsl_rng_transputer; // INMOS Transputer Development System
+	case TT800				: return gsl_rng_tt800;
+	case UNI				: return gsl_rng_uni;
+	case UNI32				: return gsl_rng_uni32;
+	case VAX				: return gsl_rng_vax; // VAX
+	case WATERMAN14			: return gsl_rng_waterman14; // Knuth
+	case ZUF				: return gsl_rng_zuf;
+	default					: return NULL;
 	}
-	else
-	{
-		for(unsigned int i=0; i<myDim; i++)
-			vSample[i] = (myRandGen->DrawUniform() * (myMax - myMin) + myMin) - myMin;
-	}
-	return vSample;
 }
 
-vector<double> MG_UniformSampler::GetSampleAntithetic(const vector<double>& aSample)
+MG_Random::MG_Random(const MG_Random &aRight)
 {
-	vector<double> vSample;
-	vSample.resize(myDim);
-
-	for(unsigned int i=0; i<myDim; i++)
-	{
-		vSample[i] = 1.-aSample[i];
-	}
-	return vSample;
+	myGen = gsl_rng_clone(aRight.myGen);
 }
 
-/* Box Muller Sampler */
-MG_BoxMullerSampler::MG_BoxMullerSampler(	const unsigned int& aDim
-										,	const MG_RandomPtr& aRG)
-										:	MG_Sampler(aDim, aRG)
-{}
-
-MG_BoxMullerSampler::~MG_BoxMullerSampler()
-{}
-
-vector<double> MG_BoxMullerSampler::GenerateSample()
+void MG_Random::Swap(MG_Random& aRight)
 {
-	vector<double> vSample;
-	vSample.resize(myDim);
-	double /*vSquared,*/ vX/*, vY*/;
-	for(unsigned int i=0; i<myDim; i++)
-	{
-		//do
-		//{
-		//	vX = 2. * myRandGen->DrawUniform()-1;
-		//	vY = 2. * myRandGen->DrawUniform()-1;
-		//	vSquared = vX*vX + vY*vY;
-		//} while (vSquared > 1.);
-		//vSample[i] = vX * sqrt(-2 * log(vSquared) / vSquared);
-		vX = myRandGen->DrawUniform();
-		vSample[i] = MG_SCdfNormal::Instance()->InverseNormal(vX);
-
-	}
-	return vSample;
+	swap(myGen, aRight.myGen);
 }
 
-vector<double> MG_BoxMullerSampler::GetSampleAntithetic(const vector<double>& aSample)
+MG_Random::MG_Random(const RAND_TYPE& aType)
 {
-	vector<double> vSample;
-	vSample.resize(myDim);
-
-	for(unsigned int i=0; i<myDim; i++)
-	{
-		vSample[i] = -aSample[i];
-	}
-	return vSample;
+	const gsl_rng_type* vGSLType = From_MGType_To_GSLType(aType);
+	myGen = gsl_rng_alloc(vGSLType);
 }
 
+MG_Random::~MG_Random(void)
+{
+	gsl_rng_free(myGen);
+}
 
-///* Antithetic Sampler */
-//MG_AntitheticSampler::MG_AntitheticSampler	(	const unsigned int& aDim
-//											,	const MG_SamplerPtr& aSampler)
-//											:	MG_Sampler(aDim, aSampler->GetRandGen(), aSampler)
-//{}
-//
-//MG_AntitheticSampler::~MG_AntitheticSampler()
-//{}
-//
-//vector<double> MG_AntitheticSampler::GenerateSample()
-//{
-//	//vector<double> vUniforms1, vUniforms2;
-//	//vUniforms1.resize(myDim/2);
-//	//vUniforms2.resize(myDim/2);
-//
-//	//vector<double> vUniforms = myComposition->GenerateMinUniformsForSample();
-//	//for(unsigned int i=0; i<myDim/2; i++)
-//	//{
-//	//	vU1 = myRandGen->DrawUniform();
-//	//	vU2 = 1. - vU1;
-//	//	vUniforms1[i] = vU1;
-//	//	vUniforms2[i] = vU2;
-//	//}
-//	//if (myDim%2 == 1)
-//	//{
-//	//	vU1 = myRandGen->DrawUniform();
-//	//	vUniforms1.push_back(vU1);
-//	//}
-//	vector<double> vSample1 = myComposition->GenerateSample();
-//	vector<double> vSample2 = myComposition->GetSampleAntithetic(vSample1);
-//	vSample1.insert(vSample1.end(), vSample2.begin(), vSample2.end());
-//
-//	return vSample1;
-//}
-//
+void MG_Random::ToString(FILE* aFile) const
+{
+	void* vState = gsl_rng_state(myGen);
+	size_t vSize = gsl_rng_size(myGen);
+	fwrite(vState, vSize, 1, aFile);
+}

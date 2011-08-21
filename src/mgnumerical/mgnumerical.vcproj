@@ -163,11 +163,11 @@
 			>
 		</File>
 		<File
-			RelativePath=".\normal.cpp"
+			RelativePath=".\distributions.cpp"
 			>
 		</File>
 		<File
-			RelativePath=".\normal.h"
+			RelativePath=".\distributions.h"
 			>
 		</File>
 		<File

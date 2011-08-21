@@ -1,5 +1,5 @@
 #include "mgnumerical/closedformulas.h"
-#include "mgnumerical/normal.h"
+#include "mgnumerical/distributions.h"
 
 #include <math.h>
 
@@ -38,18 +38,18 @@ namespace MG
 		{
 			case _call:
 			case _put:
-				return sens * DF * (Fwd * MG_SCdfNormal::Instance()->CumulativeNormal(sens * dd) 
-									- K * MG_SCdfNormal::Instance()->CumulativeNormal(sens * (dd - std)));
+				return sens * DF * (Fwd * MG_NormalDist::CdfFunc(sens * dd) 
+									- K * MG_NormalDist::CdfFunc(sens * (dd - std)));
 
 			case _straddle:
-				return Fwd * (2. * MG_SCdfNormal::Instance()->CumulativeNormal(dd) - 1.) 
-								- K * (2. * MG_SCdfNormal::Instance()->CumulativeNormal(dd - std) - 1.);
+				return Fwd * (2. * MG_NormalDist::CdfFunc(dd) - 1.) 
+								- K * (2. * MG_NormalDist::CdfFunc(dd - std) - 1.);
 
 			case _calldigit:
-				return DF*MG_SCdfNormal::Instance()->CumulativeNormal((dd - std));
+				return DF*MG_NormalDist::CdfFunc((dd - std));
 
 			case _putdigit:
-				return DF*(1. - MG_SCdfNormal::Instance()->CumulativeNormal((dd - std)));
+				return DF*(1. - MG_NormalDist::CdfFunc((dd - std)));
 
 			default:
 				return 0.;

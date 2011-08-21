@@ -23,13 +23,13 @@ CURRENCY_NAME MG_Calendar::ourDefaultCcy = EUR;
 void MG_Calendar::Init(void)
 {
 	unsigned int vNotBusinessDays = 30;
-	MG_RandomPtr vRand = MG_RandomPtr(new MG_ParkMillerRand());
-	MG_UniformSampler vSampler(vNotBusinessDays, vRand, 1, 366);
-	vector<double> vRandomUniforms;
+	MG_RandomPtr vRand = MG_RandomPtr(new MG_Random(MG_Random::TAUS));
+	vector<double> vRandomUniforms(vNotBusinessDays);
+	for(size_t i=0; i<vNotBusinessDays; ++i)
+		vRandomUniforms[i] = vRand->DrawUniformInt(366);
 	pair<CURRENCY_NAME,vector<unsigned int> > vPairs;
 	for(unsigned int i=0; i<NB_CURRENCIES; i++)
 	{
-		vRandomUniforms = vSampler.GenerateSample();
 		list<unsigned int> vRandomDaysL;
 		vRandomDaysL.resize(vNotBusinessDays);
 		transform(vRandomUniforms.begin(), vRandomUniforms.end(), vRandomDaysL.begin(), ::floorf);

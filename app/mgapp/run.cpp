@@ -5,7 +5,7 @@
 #pragma warning(pop)
 #include "mgnova/date.h"
 #include "mgnumerical/random.h"
-#include "mgnumerical/normal.h"
+#include "mgnumerical/distributions.h"
 #include "mgnova/calendar.h"
 #include "mgnumerical/solver.h"
 #include "mgnova/wrapper/matrix.h"
@@ -27,7 +27,6 @@ int main()
 {
 	MG_SFileError::Instance()->Init();
 	MG_SFuncBuilder::Instance()->Init();
-	MG_SCdfNormal::Instance()->Init();
 	MG_RCalendar::Init();
 
 	// Deal Description
@@ -98,7 +97,6 @@ int main()
 		cout << manager.Eval(n) << endl;
 	}
 
-
 	char ch;
 	cin >> ch;
 
@@ -107,7 +105,7 @@ int main()
 	MG_Date *vFake = (MG_Date*)vDate.Clone();
 	delete vFake;
 
-	MG_ParkMillerRand* vRand = new MG_ParkMillerRand();
+	/*MG_ParkMillerRand* vRand = new MG_ParkMillerRand();
 	MG_RandomPtr vRandPtr(vRand);
 	MG_BoxMullerSampler vSampler(100, vRandPtr);
 	vector<double> vRandVars = vSampler.GenerateSample();
@@ -118,7 +116,22 @@ int main()
 		vU1 = MG_SCdfNormal::Instance()->CumulativeNormal(vN1);
 		vN2 = MG_SCdfNormal::Instance()->InverseNormal(vU1);
 		cout << "CHECK " << vU1 << ":     " << vN1 << "     " << vN2 << "   ====   " << vN1-vN2 << endl;
+	}*/
+	{
+		MG_Random* vRand = new MG_Random(MG_Random::TAUS);
+		MG_RandomPtr vRandPtr(vRand);
+		MG_NormalDist vNDist(vRandPtr, MG_NormalDist::ZIGGURAT);
+		double vN1, vN2, vU1;//, vU2;
+		for(unsigned int i=0; i<100; i++)
+		{
+			vN1 = vNDist.Draw();
+			vU1 = vNDist.Cdf(vN1);
+			vN2 = vNDist.InvCdf(vU1);
+			cout << "CHECK " << vU1 << ":     " << vN1 << "     " << vN2 << "   ====   " << vN1-vN2 << endl;
+		}
 	}
+
+	cin >> ch;
 
 	// GEB : debut test generateur normale
 	/*int nbSimul = 10;
@@ -264,66 +277,6 @@ int main()
 
 		gsl_rng_free(r);
 		cout << "GSL Gaussian Distribution" << endl;
-	}
-
-	cin >> ch;
-
-	// Interpolation Functions
-	{
-		double xa[5], ya[5];
-		xa[0]=0.;xa[1]=0.1;xa[2]=0.2;xa[3]=0.3;xa[4]=0.4;
-		ya[0]=1.;ya[1]=1.2;ya[2]=1.4;ya[3]=1.6;ya[4]=1.8;
-		cout << "Index: " << gsl_interp_bsearch(xa, 0.25, 0, 4) << endl;
-		// Accelerator Strategy
-		gsl_interp_accel* a = gsl_interp_accel_alloc();
-		cout << "Index by accelerator: " << gsl_interp_accel_find(a, xa, 4, 0.25) << endl;
-		gsl_interp_accel_reset(a);
-
-		//gsl_interp_linear, gsl_interp_polynomial, gsl_interp_cspline, gsl_interp_cspline_periodic, gsl_interp_akima, gsl_interp_akima_periodic
-		gsl_interp* i = gsl_interp_alloc(gsl_interp_linear, 5);
-		int vErr = gsl_interp_init(i, xa, ya, 5);
-		cout << gsl_interp_eval(i, xa, ya, 0.25, a) << endl;
-		double y[1];
-
-		vErr = gsl_interp_eval_e(i, xa, ya, 0.25, a, y);
-		if (vErr == GSL_EDOM) cout << "NAN" << endl; else cout << *y << endl;
-		vErr = gsl_interp_eval_e(i, xa, ya, 0.5, a, y);
-		if (vErr == GSL_EDOM) cout << "NAN" << endl; else cout << *y << endl;
-		
-		vErr = gsl_interp_eval_deriv_e(i, xa, ya, 0.25, a, y);
-		if (vErr == GSL_EDOM) cout << "NAN" << endl; else cout << *y << endl;
-		vErr = gsl_interp_eval_deriv_e(i, xa, ya, 0.5, a, y);
-		if (vErr == GSL_EDOM) cout << "NAN" << endl; else cout << *y << endl;
-		
-		vErr = gsl_interp_eval_deriv2_e(i, xa, ya, 0.25, a, y);
-		if (vErr == GSL_EDOM) cout << "NAN" << endl; else cout << *y << endl;
-		vErr = gsl_interp_eval_deriv2_e(i, xa, ya, 0.5, a, y);
-		if (vErr == GSL_EDOM) cout << "NAN" << endl; else cout << *y << endl;
-		
-		vErr = gsl_interp_eval_integ_e(i, xa, ya, 0., 1.8, a, y);
-		if (vErr == GSL_EDOM) cout << "NAN" << endl; else cout << *y << endl;
-		vErr = gsl_interp_eval_integ_e(i, xa, ya, 0., 1.8, a, y);
-		if (vErr == GSL_EDOM) cout << "NAN" << endl; else cout << *y << endl;
-
-		gsl_interp_accel_free(a);
-		gsl_interp_free(i);
-		cout << "GSL Interpolation" << endl;
-	}
-
-	cin >> ch;
-
-	{
-		size_t l(20);
-		gsl_vector* v = gsl_vector_alloc(l);
-
-		for(size_t i=0; i<l; ++i)
-			gsl_vector_set(v, i, i/10.);
-
-		for(size_t i=0; i<l; ++i)
-			cout << gsl_vector_get(v, i) << endl;
-
-		gsl_vector_free(v);
-		cout << "VECTOR" << endl;
 	}
 
 	cin >> ch;
