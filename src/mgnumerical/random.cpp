@@ -5,8 +5,20 @@ using namespace std;
 using namespace MG;
 
 
-/* Random Class */
+/* Random Abstract Class */
+MG_AbstractRandom::MG_AbstractRandom(const MG_AbstractRandom& aRight) : myName(aRight.myName)
+{}
 
+void MG_AbstractRandom::Swap(MG_AbstractRandom &aRight)
+{
+	myName.swap(aRight.myName);
+}
+
+MG_AbstractRandom::MG_AbstractRandom(const string& aName) : myName(aName)
+{}
+
+
+/* Random Class */
 /*
  * Perf: TAUS, GFSR4, MT19937, RANLXS0, RANLXS1, MRG, RANLUX, RANLXD1, RANLXS2, CMRG, RANLUX389, RANLXD2
  */
@@ -80,20 +92,28 @@ const gsl_rng_type* MG_Random::From_MGType_To_GSLType(const RAND_TYPE& aType)
 	}
 }
 
-MG_Random::MG_Random(const MG_Random &aRight)
+MG_Random::MG_Random(	const MG_Random &aRight)
+					:	MG_AbstractRandom(aRight)
+					,	myInitialSeed(aRight.myInitialSeed)
 {
 	myGen = gsl_rng_clone(aRight.myGen);
 }
 
 void MG_Random::Swap(MG_Random& aRight)
 {
+	MG_AbstractRandom::Swap(aRight);
+	swap(myInitialSeed, aRight.myInitialSeed);
 	swap(myGen, aRight.myGen);
 }
 
-MG_Random::MG_Random(const RAND_TYPE& aType)
+MG_Random::MG_Random(const RAND_TYPE& aType) : MG_AbstractRandom()
 {
+	myXLName = MG_RND_XL_NAME;
+
 	const gsl_rng_type* vGSLType = From_MGType_To_GSLType(aType);
 	myGen = gsl_rng_alloc(vGSLType);
+	myInitialSeed = gsl_rng_get(myGen);
+	myName = string(gsl_rng_name(myGen));
 }
 
 MG_Random::~MG_Random(void)
@@ -101,9 +121,95 @@ MG_Random::~MG_Random(void)
 	gsl_rng_free(myGen);
 }
 
+void MG_Random::Reset(void)
+{
+	SetSeed(myInitialSeed);
+}
+
 void MG_Random::ToString(FILE* aFile) const
 {
 	void* vState = gsl_rng_state(myGen);
 	size_t vSize = gsl_rng_size(myGen);
 	fwrite(vState, vSize, 1, aFile);
+}
+
+void MG_Random::Draw(MG_Vector& aValues)
+{
+	for(size_t i=0; i<aValues.Size(); ++i)
+		aValues[i] = gsl_rng_uniform(myGen);
+}
+
+
+/* Quasi Random Class */
+/*
+ * Perf: 
+ */
+const gsl_qrng_type* MG_QuasiRandom::From_MGType_To_GSLType(const QUASIRAND_TYPE& aType)
+{
+	switch(aType)
+	{
+	case NIEDERREITER2: return gsl_qrng_niederreiter_2;
+	case SOBOL: return gsl_qrng_sobol;
+	case HALTON: return gsl_qrng_halton;
+	case REVERSEHALTON: return gsl_qrng_reversehalton;
+	default: return NULL;
+	}
+}
+
+MG_QuasiRandom::MG_QuasiRandom	(	const MG_QuasiRandom &aRight)
+								:	MG_AbstractRandom(aRight)
+								,	myValues(aRight.myValues)
+{
+	myGen = gsl_qrng_clone(aRight.myGen);
+}
+
+void MG_QuasiRandom::Swap(MG_QuasiRandom& aRight)
+{
+	MG_AbstractRandom::Swap(aRight);
+	swap(myGen, aRight.myGen);
+	myValues.Swap(aRight.myValues);
+}
+
+MG_QuasiRandom::MG_QuasiRandom	(	const QUASIRAND_TYPE& aType
+								,	const size_t& aDim)
+								:	MG_AbstractRandom()
+								,	myValues(aDim)
+{
+	myXLName = MG_QRND_XL_NAME;
+
+	const gsl_qrng_type* vGSLType = From_MGType_To_GSLType(aType);
+	myGen = gsl_qrng_alloc(vGSLType, aDim);
+	myName = string(gsl_qrng_name(myGen));
+}
+
+MG_QuasiRandom::~MG_QuasiRandom(void)
+{
+	gsl_qrng_free(myGen);
+}
+
+void MG_QuasiRandom::Reset(void)
+{
+	gsl_qrng_init(myGen);
+}
+
+void MG_QuasiRandom::ToString(FILE* aFile) const
+{
+	void* vState = gsl_qrng_state(myGen);
+	size_t vSize = gsl_qrng_size(myGen);
+	fwrite(vState, vSize, 1, aFile);
+}
+
+double MG_QuasiRandom::DrawUniform()
+{
+	size_t vIdx = gsl_qrng_get(myGen, myValues.GetPtr()->data);
+	return myValues[vIdx];
+}
+
+void MG_QuasiRandom::Draw(MG_Vector& aValues)
+{
+	Reset();
+	size_t vSize = GetSize();
+	for(size_t i=0; i<vSize; ++i)
+		gsl_qrng_get(myGen, myValues.GetPtr()->data);
+	aValues = myValues;
 }

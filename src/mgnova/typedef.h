@@ -117,11 +117,13 @@ void yy_delete_buffer (YY_BUFFER_STATE b  );
 
 /* XL names */
 #define MG_BSMODEL_XL_NAME	"BSMOD"
-#define MG_ZERO_XL_NAME		"ZERO"
-#define MG_DIVS_XL_NAME		"DIVS"
+#define MG_ZERO_XL_NAME		"ZEROC"
+#define MG_DIVS_XL_NAME		"DIVSC"
 #define MG_IRVOL_XL_NAME	"IRVOL"
 #define MG_EQVOL_XL_NAME	"EQVOL"
-#define MG_GENSEC_XL_NAME	"GENSEC"
+#define MG_GENSEC_XL_NAME	"GLSEC"
+#define MG_RND_XL_NAME		"RANDM"
+#define MG_QRND_XL_NAME		"QRAND"
 #define MG_NORDIST_XL_NAME	"NDIST"
 
 

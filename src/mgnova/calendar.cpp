@@ -23,7 +23,7 @@ CURRENCY_NAME MG_Calendar::ourDefaultCcy = EUR;
 void MG_Calendar::Init(void)
 {
 	unsigned int vNotBusinessDays = 30;
-	MG_RandomPtr vRand = MG_RandomPtr(new MG_Random(MG_Random::TAUS));
+	MG_RandomPtr vRand = MG_RandomPtr(new MG_Random(MT19937));
 	vector<double> vRandomUniforms(vNotBusinessDays);
 	for(size_t i=0; i<vNotBusinessDays; ++i)
 		vRandomUniforms[i] = vRand->DrawUniformInt(366);

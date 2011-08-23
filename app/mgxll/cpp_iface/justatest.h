@@ -90,4 +90,10 @@ MG_XLObjectPtr // Creating a generic security
 GenSec_Create(const CellMatrix& aDealDesc // deal description
 			  );
 
+//<xlw:libraryname=MyTestLibrary
+MG_XLObjectPtr // Creating a random generator
+RandGen_Create(const string& aType // generator type: TAUS, MT19937, ..
+			   , const int& aDim // generator dimension, for quasi random
+			  );
+
 #endif

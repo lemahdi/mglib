@@ -35,6 +35,7 @@ public:
 	virtual ~MG_ArgConv(void) {}
 
 	int operator[] (const std::string& vKey) const;
+	bool Exist(const std::string& vKey) const;
 
 private:
 	std::string			myDesc;
@@ -54,6 +55,7 @@ public:
 	virtual ~MG_ArgConvReverse(void) {}
 
 	std::string operator[] (const int& vKey) const;
+	bool Exist(const int& vKey) const;
 
 private:
 	std::string			myDesc;

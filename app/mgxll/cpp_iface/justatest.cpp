@@ -6,6 +6,7 @@
 #include "mgnova/argconvdef.h"
 #include "mgmktdata/marketdata.h"
 #include "mggenpricer/gensec/gensecurity.h"
+#include "mgnumerical/random.h"
 
 
 using namespace std;
@@ -130,4 +131,26 @@ MG_XLObjectPtr GenSec_Create(const CellMatrix& aDealDesc)
 	
 	vector<string> vDealDesc = FromCellMatrixToVectorStr(aDealDesc, vIsDate);
 	return MG_XLObjectPtr(new MG_GenSecurity(vDealDesc, vColsSize));
+}
+
+MG_XLObjectPtr RandGen_Create(const string& aType, const int& aDim)
+{
+	bool vIsRand	= RandGenConvertor.Exist(aType);
+	bool vIsQRand	= QuasiRandGenConvertor.Exist(aType);
+	MG_AbstractRandom* vRandGen(NULL);
+
+	if (vIsRand)
+	{
+		RAND_TYPE vType = (RAND_TYPE)RandGenConvertor[aType];
+		vRandGen = new MG_Random(vType);
+	}
+
+	if (vIsQRand)
+	{
+		QUASIRAND_TYPE vType = (QUASIRAND_TYPE)QuasiRandGenConvertor[aType];
+		vRandGen = new MG_QuasiRandom(vType, aDim);
+	}
+
+	MG_XLObjectPtr vObj(vRandGen);
+	return vObj;
 }

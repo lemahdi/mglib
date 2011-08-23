@@ -21,6 +21,14 @@ int MG_ArgConv::operator[] (const string& vKey) const
 	return itMap->second;
 }
 
+bool MG_ArgConv::Exist(const string& vKey) const
+{
+	ArgConvMap::const_iterator itMap = myMap.find(vKey);
+	if (itMap == myMap.end())
+		return false;
+	return true;
+}
+
 
 MG_ArgConvReverse::MG_ArgConvReverse(const std::string& aDesc, const ArgConvPair vPairs[], const size_t& aSize)
 	: myDesc(aDesc)
@@ -40,5 +48,13 @@ string MG_ArgConvReverse::operator[] (const int& vKey) const
 		//throw
 		return "";
 	return itMap->second;
+}
+
+bool MG_ArgConvReverse::Exist(const int& vKey) const
+{
+	ArgConvReverseMap::const_iterator itMap = myMap.find(vKey);
+	if (itMap == myMap.end())
+		return false;
+	return true;
 }
 

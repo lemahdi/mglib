@@ -17,44 +17,49 @@
 #include <vector>
 
 #include "mgnova/object.h"
+#include "mgnova/argconvdef.h"
+#include "mgnova/wrapper/vector.h"
 #include "gsl/gsl_rng.h"
+#include "gsl/gsl_qrng.h"
 
 
 MG_NAMESPACE_BEGIN
 
 
-class MG_Random
+class MG_AbstractRandom : public MG_XLObject
 {
-	//Perf: TAUS, GFSR4, MT19937, RANLXS0, RANLXS1, MRG, RANLUX, RANLXD1, RANLXS2, CMRG, RANLUX389, RANLXD2
 
 public:
-	enum RAND_TYPE
-	{
-		BOROSH13,
-		CMRG, COVEYOU,
-		FISHMAN18, FISHMAN20, FISHMAN2X, 
-		GFSR4,
-		KNUTHRAN, KNUTHRAN2, KNUTHRAN2002,
-		LECUYER21,
-		MINSTD, MRG,
-		MT19937, MT19937_1999, MT19937_1998,
-		R250, RAN0, RAN1, RAN2, RAN3, RAND, RAND48,
-		RANDOM128_BSD, RANDOM128_GLIBC2, RANDOM128_LIBC5, 
-		RANDOM256_BSD, RANDOM256_GLIBC2, RANDOM256_LIBC5,
-		RANDOM32_BSD, RANDOM32_GLIBC2, RANDOM32_LIBC5,
-		RANDOM64_BSD, RANDOM64_GLIBC2, RANDOM64_LIBC5,
-		RANDOM8_BSD, RANDOM8_GLIBC2, RANDOM8_LIBC5, 
-		RANDOM_BSD, RANDOM_GLIBC2, RANDOM_LIBC5,
-		RANDU, RANF,
-		RANLUX, RANLUX389, RANLXD1, RANLXD2, RANLXS0, RANLXS1, RANLXS2, RANMAR, 
-		SLATEC,
-		TAUS, TAUS2, TAUS113, TRANSPUTER, TT800,
-		UNI, UNI32, 
-		VAX,
-		WATERMAN14,
-		ZUF
-	};
+	/* Constructors / Destructor */
+	COPY_CTOR_DECL(MG_AbstractRandom)
 
+	ASSIGN_OPERATOR(MG_AbstractRandom)
+	SWAP_DECL(MG_AbstractRandom)
+
+	MG_AbstractRandom(const std::string& aName = "");
+
+	virtual ~MG_AbstractRandom(void) {}
+
+	/* Accessors */
+	inline std::string GetName(void) const { return myName; }
+
+	/* Support */
+	virtual void Reset		(void)				= 0;
+	virtual void ToString	(FILE* aFile) const	= 0;
+
+	/* Engine */
+	virtual double	DrawOne		(void)					= 0;
+	virtual double	DrawUniform	(void)					= 0;
+	virtual void	Draw		(MG_Vector& aValues)	= 0;
+
+protected:
+	std::string myName;
+};
+
+
+class MG_Random : public MG_AbstractRandom
+{
+	//Perf: TAUS, GFSR4, MT19937, RANLXS0, RANLXS1, MRG, RANLUX, RANLXD1, RANLXS2, CMRG, RANLUX389, RANLXD2
 	static const gsl_rng_type* From_MGType_To_GSLType(const RAND_TYPE& aType);
 
 public:
@@ -62,6 +67,7 @@ public:
 	COPY_CTOR_DECL(MG_Random)
 
 	ASSIGN_OPERATOR(MG_Random)
+	CLONE_METHOD(MG_Random)
 	SWAP_DECL(MG_Random)
 
 	MG_Random(const RAND_TYPE& aType);
@@ -69,25 +75,63 @@ public:
 	virtual ~MG_Random(void);
 
 	/* Accessors */
-	inline std::string		GetName		(void) const { std::string vName(gsl_rng_name(myGen)); return vName; }
 	inline size_t			GetMin		(void) const { return gsl_rng_min(myGen); }
 	inline size_t			GetMax		(void) const { return gsl_rng_max(myGen); }
 	inline const gsl_rng*	GetGenerator(void) const { return myGen; }
 
-	inline void				SetSeed		(const size_t& aSeed) { gsl_rng_set(myGen, aSeed); }
+	inline void				SetSeed		(const size_t& aSeed) { myInitialSeed = aSeed; gsl_rng_set(myGen, aSeed); }
 
 	/* Support */
+	void Reset(void);
 	void ToString(FILE* aFile) const;
 
 	/* Engine */
-	inline size_t Draw			(void)					{ return gsl_rng_get(myGen); }
-	inline size_t Draw			(const size_t& aMax)	{ return gsl_rng_uniform_int(myGen, aMax); }
-	inline double DrawUniform	(void)					{ return gsl_rng_uniform(myGen); }
-	inline double DrawUniformPos(void)					{ return gsl_rng_uniform_pos(myGen); }
-	inline size_t DrawUniformInt(const size_t& aMax)	{ return gsl_rng_uniform_int(myGen, aMax); }
+	double	DrawOne			(void)					{ return gsl_rng_get(myGen); }
+	size_t	DrawOne			(const size_t& aMax)	{ return gsl_rng_uniform_int(myGen, aMax); }
+	double	DrawUniform		(void)					{ return gsl_rng_uniform(myGen); }
+	double	DrawUniformPos	(void)					{ return gsl_rng_uniform_pos(myGen); }
+	size_t	DrawUniformInt	(const size_t& aMax)	{ return gsl_rng_uniform_int(myGen, aMax); }
+	void	Draw			(MG_Vector& aValues);
 
 private:
-	gsl_rng* myGen;
+	size_t		myInitialSeed;
+	gsl_rng*	myGen;
+
+};
+
+
+class MG_QuasiRandom : public MG_AbstractRandom
+{
+	static const gsl_qrng_type* From_MGType_To_GSLType(const QUASIRAND_TYPE& aType);
+
+public:
+	/* Constructors / Destructor */
+	COPY_CTOR_DECL(MG_QuasiRandom)
+
+	ASSIGN_OPERATOR(MG_QuasiRandom)
+	CLONE_METHOD(MG_QuasiRandom)
+	SWAP_DECL(MG_QuasiRandom)
+
+	MG_QuasiRandom(const QUASIRAND_TYPE& aType, const size_t& aDim);
+
+	virtual ~MG_QuasiRandom(void);
+
+	/* Accessors */
+	inline size_t			GetSize		(void) const { return gsl_qrng_size(myGen); }
+	inline const gsl_qrng*	GetGenerator(void) const { return myGen; }
+
+	/* Support */
+	void Reset(void);
+	void ToString(FILE* aFile) const;
+
+	/* Engine */
+	double	DrawOne		(void) { return DrawUniform(); }
+	double	DrawUniform	(void);
+	void	Draw		(MG_Vector& aValues);
+
+private:
+	gsl_qrng* myGen;
+	MG_Vector myValues;
 
 };
 

@@ -728,3 +728,62 @@ EXCEL_END
 
 //////////////////////////
 
+namespace
+{
+XLRegistration::Arg
+RandGen_CreateArgs[]=
+{
+{ "aType"," generator type: TAUS, MT19937, .. ","XLF_OPER"},
+{ "aDim"," generator dimension, for quasi random ","B"}
+};
+  XLRegistration::XLFunctionRegistrationHelper
+registerRandGen_Create("xlRandGen_Create",
+"MG_RandGen_Create",
+" Creating a random generator ",
+LibraryName,
+RandGen_CreateArgs,
+2
+,false
+);
+}
+
+
+
+extern "C"
+{
+LPXLFOPER EXCEL_EXPORT
+xlRandGen_Create(
+LPXLFOPER aTypea,
+double aDima)
+{
+EXCEL_BEGIN;
+
+	if (XlfExcel::Instance().IsCalledByFuncWiz())
+		return XlfOper(true);
+
+XlfOper aTypeb(
+	(aTypea));
+string aType(
+	aTypeb.AsString("aType"));
+
+int aDim(
+	static_cast<int>(aDima));
+
+MG_XLObjectPtr result(
+	RandGen_Create(
+		aType,
+		aDim)
+	);
+string vRefObj, vError;
+if (MG_SCache::Instance()->PersistentInsert(result, vRefObj, vError))
+  return XlfOper(vRefObj);
+else
+  return XlfOper(vError);
+EXCEL_END
+}
+}
+
+
+
+//////////////////////////
+

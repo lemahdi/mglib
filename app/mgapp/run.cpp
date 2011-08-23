@@ -100,35 +100,12 @@ int main()
 	char ch;
 	cin >> ch;
 
-	MG_Date vDate;//(25,12,2010);
-	cout << vDate.ToString(' ', ENG_M3L_DATE) << endl;
-	MG_Date *vFake = (MG_Date*)vDate.Clone();
-	delete vFake;
-
-	/*MG_ParkMillerRand* vRand = new MG_ParkMillerRand();
-	MG_RandomPtr vRandPtr(vRand);
-	MG_BoxMullerSampler vSampler(100, vRandPtr);
-	vector<double> vRandVars = vSampler.GenerateSample();
-	double vN1, vN2, vU1;//, vU2;
-	for(unsigned int i=0; i<100; i++)
 	{
-		vN1 = vRandVars[i];
-		vU1 = MG_SCdfNormal::Instance()->CumulativeNormal(vN1);
-		vN2 = MG_SCdfNormal::Instance()->InverseNormal(vU1);
-		cout << "CHECK " << vU1 << ":     " << vN1 << "     " << vN2 << "   ====   " << vN1-vN2 << endl;
-	}*/
-	{
-		MG_Random* vRand = new MG_Random(MG_Random::TAUS);
-		MG_RandomPtr vRandPtr(vRand);
-		MG_NormalDist vNDist(vRandPtr, MG_NormalDist::ZIGGURAT);
-		double vN1, vN2, vU1;//, vU2;
-		for(unsigned int i=0; i<100; i++)
-		{
-			vN1 = vNDist.Draw();
-			vU1 = vNDist.Cdf(vN1);
-			vN2 = vNDist.InvCdf(vU1);
-			cout << "CHECK " << vU1 << ":     " << vN1 << "     " << vN2 << "   ====   " << vN1-vN2 << endl;
-		}
+		cout << "DATE" << endl;
+		MG_Date vDate;//(25,12,2010);
+		cout << vDate.ToString(' ', ENG_M3L_DATE) << endl;
+		MG_Date *vFake = (MG_Date*)vDate.Clone();
+		delete vFake;
 	}
 
 	cin >> ch;
@@ -190,41 +167,47 @@ int main()
 	fclose(f);*/
 
 
-	MG_UnaryFuncPtr vFuncTestPtr(new MG_TestFunc);
-	MG_UnaryFuncPtr vFuncTestPrimePtr(new MG_TestFuncPrime);
-	MG_NewtonRaphsonSolver vSolver1(vFuncTestPtr, vFuncTestPrimePtr, 1e-10, 20);
-	double vRoot = vSolver1.Solve(0, 0, -1, 1);
-	cout << "Newton Raphson Solver Exp(x)-x²: " << vRoot << endl;
-	double vCheck = exp(vRoot) - vRoot*vRoot;
-	cout << "Solver checker: " << vCheck << endl;
-	cout << "Number of iterations: " << vSolver1.GetNbIter() << endl;
-	MG_BrentSolver vSolver2(vFuncTestPtr, 1e-10, 20);
-	vRoot = vSolver2.Solve(0, 0, -1, 1);
-	cout << "Brent Solver Exp(x)-x²: " << vRoot << endl;
-	vCheck = exp(vRoot) - vRoot*vRoot;
-	cout << "Solver checker: " << vCheck << endl;
-	cout << "Number of iterations: " << vSolver2.GetNbIter() << endl;
+	// Solver
+	{
+		cout << "SOLVER" << endl;
+		MG_UnaryFuncPtr vFuncTestPtr(new MG_TestFunc);
+		MG_UnaryFuncPtr vFuncTestPrimePtr(new MG_TestFuncPrime);
+		MG_NewtonRaphsonSolver vSolver1(vFuncTestPtr, vFuncTestPrimePtr, 1e-10, 20);
+		double vRoot = vSolver1.Solve(0, 0, -1, 1);
+		cout << "Newton Raphson Solver Exp(x)-x²: " << vRoot << endl;
+		double vCheck = exp(vRoot) - vRoot*vRoot;
+		cout << "Solver checker: " << vCheck << endl;
+		cout << "Number of iterations: " << vSolver1.GetNbIter() << endl;
+		MG_BrentSolver vSolver2(vFuncTestPtr, 1e-10, 20);
+		vRoot = vSolver2.Solve(0, 0, -1, 1);
+		cout << "Brent Solver Exp(x)-x²: " << vRoot << endl;
+		vCheck = exp(vRoot) - vRoot*vRoot;
+		cout << "Solver checker: " << vCheck << endl;
+		cout << "Number of iterations: " << vSolver2.GetNbIter() << endl;
+	}
 
 	cin >> ch;
 
-	MG_Matrix vM1(3,4,2);
-	MG_Matrix vM2(3,4,-4);
-	MG_Matrix vM3 = vM1 + vM2;
-	vM1 += vM2;
-	vM2--;
-	--vM2;
+	// Matrix
+	{
+		cout << "MATRIX" << endl;
+		MG_Matrix vM1(3,4,2);
+		MG_Matrix vM2(3,4,-4);
+		MG_Matrix vM3 = vM1 + vM2;
+		vM1 += vM2;
+		vM2--;
+		--vM2;
+	}
 
 	// GSL Random Generator
 	{
-		gsl_rng* r = gsl_rng_alloc(gsl_rng_mt19937);
-		cout << "Mersenne Twister" <<endl;
+		cout << "Mersenne Twister" << endl;
+		MG_Random vRand(MT19937);
 		size_t vCount = 100;
-		while (--vCount) cout << gsl_rng_get(r) << ":" << gsl_rng_uniform(r) << endl;
+		while (--vCount) cout << vRand.DrawOne() << ":" << vRand.DrawUniform() << endl;
 
-		void* state = gsl_rng_state(r);
-		size_t n = gsl_rng_size(r);
-		FILE* stream = fopen("C:\\cygwin\\home\\Akkouh\\state.txt", "w");
-		fwrite(state, n, 1, stream);
+		FILE* stream = fopen("C:\\cygwin\\home\\Akkouh\\random_state.txt", "w");
+		vRand.ToString(stream);
 		fclose(stream);
 
 		const gsl_rng_type **t, **t0;
@@ -233,7 +216,6 @@ int main()
 		for(t=t0; *t!=NULL; ++t)
 			cout << (*t)->name << endl;
 
-		gsl_rng_free(r);
 		cout << "GSL Random Generators" << endl;
 	}
 
@@ -241,23 +223,15 @@ int main()
 
 	// GSL Quasi Random Generator
 	{
-		gsl_qrng* qr = gsl_qrng_alloc(gsl_qrng_sobol, 2);
-		cout << "TAUS" <<endl;
+		cout << "SOBOL" << endl;
 		size_t vCount = 100;
-		double x[2];
-		while (--vCount)
-		{
-			gsl_qrng_get(qr, x);
-			cout << x[0] << ":" << x[1] << endl;
-		}
+		MG_QuasiRandom vRand(SOBOL, 1);
+		while (--vCount) cout << vRand.DrawOne() << ":" << vRand.DrawUniform() << endl;
 
-		void* state = gsl_qrng_state(qr);
-		size_t n = gsl_qrng_size(qr);
-		FILE* stream = fopen("C:\\cygwin\\home\\Akkouh\\state.txt", "w");
-		fwrite(state, n, 1, stream);
+		FILE* stream = fopen("C:\\cygwin\\home\\Akkouh\\quasirandom_state.txt", "w");
+		vRand.ToString(stream);
 		fclose(stream);
 
-		gsl_qrng_free(qr);
 		cout << "GSL Quasi Random Generators" << endl;
 	}
 
@@ -265,17 +239,18 @@ int main()
 
 	// Gaussian Distribution
 	{
-		gsl_rng* r = gsl_rng_alloc(gsl_rng_mt19937);
+		cout << "GAUSSIAN DISTRIBUTION" << endl;
+		MG_RandomPtr vRand(new MG_Random(MT19937));
+		MG_NormalDist vDist(vRand, MG_NormalDist::ZIGGURAT);
 		size_t vCount = 100;
-		double x, p, q;
+		double x, p, inv_p;
 		while (--vCount)
 		{
-			cout << gsl_ran_ugaussian(r) << ":" << (x=gsl_ran_gaussian_ziggurat(r, 1));
-			cout << ":" << (p=gsl_cdf_ugaussian_P(x)) << ":" << (q=gsl_cdf_ugaussian_Q(x));
-			cout << ":" << gsl_cdf_ugaussian_Pinv(p) << ":" << gsl_cdf_ugaussian_Qinv(q) << endl;
+			x=vDist.Draw();
+			p=vDist.Cdf(x);
+			inv_p = vDist.InvCdf(p);
+			cout << x << ":" << p << ":" << inv_p << ":" << x-inv_p << endl;
 		}
-
-		gsl_rng_free(r);
 		cout << "GSL Gaussian Distribution" << endl;
 	}
 
