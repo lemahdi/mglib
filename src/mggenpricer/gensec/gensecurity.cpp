@@ -15,6 +15,7 @@ using namespace MG;
 
 void MG_GenSecurity::Swap(MG_GenSecurity& aRight)
 {
+	MG_XLObject::Swap(aRight);
 	myHeader.swap(aRight.myHeader);
 	myDealDesc.swap(aRight.myDealDesc);
 	swap(myRows, aRight.myRows);

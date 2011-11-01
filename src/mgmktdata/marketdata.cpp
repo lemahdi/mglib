@@ -16,6 +16,7 @@ MG_MarketData::MG_MarketData(	const MG_MarketData& aRight)
 
 void MG_MarketData::Swap(MG_MarketData &aRight)
 {
+	MG_XLObject::Swap(aRight);
 	myAsOf.Swap(aRight.myAsOf);
 	swap(const_cast<int&>(myInterpolTypes), const_cast<int&>(aRight.myInterpolTypes));
 }
@@ -118,7 +119,7 @@ MG_IRVolatilityCurve::MG_IRVolatilityCurve	(	const MG_IRVolatilityCurve& aRight)
 
 void MG_IRVolatilityCurve::Swap(MG_IRVolatilityCurve &aRight)
 {
-	MG_MarketData::Swap(aRight);
+	MG_VolatilityCurve::Swap(aRight);
 	myMaturities.Swap(aRight.myMaturities);
 	myTenors.Swap(aRight.myTenors);
 	myCurve.Swap(aRight.myCurve);
@@ -213,7 +214,7 @@ MG_EQVolatilityCurve::MG_EQVolatilityCurve	(	const MG_EQVolatilityCurve& aRight)
 
 void MG_EQVolatilityCurve::Swap(MG_EQVolatilityCurve &aRight)
 {
-	MG_MarketData::Swap(aRight);
+	MG_VolatilityCurve::Swap(aRight);
 	myStrikes.Swap(aRight.myStrikes);
 	myMaturities.Swap(aRight.myMaturities);
 	myCurve.Swap(aRight.myCurve);

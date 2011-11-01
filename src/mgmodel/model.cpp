@@ -12,6 +12,7 @@ MG_Model::MG_Model() : MG_XLObject(), myAsOf(MG_Date())
 
 void MG_Model::Swap(MG_Model& aRight)
 {
+	MG_XLObject::Swap(aRight);
 	myAsOf.Swap(aRight.myAsOf);
 }
 

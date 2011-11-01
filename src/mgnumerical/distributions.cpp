@@ -13,6 +13,7 @@ MG_RandDist::MG_RandDist(const MG_RandDist& aRight) : MG_XLObject(aRight)
 
 void MG_RandDist::Swap(MG_RandDist& aRight)
 {
+	MG_XLObject::Swap(aRight);
 	myRandGen.Swap(aRight.myRandGen);
 }
 
@@ -32,6 +33,7 @@ MG_NormalDist::MG_NormalDist(	const MG_NormalDist& aRight)
 
 void MG_NormalDist::Swap(MG_NormalDist& aRight)
 {
+	MG_RandDist::Swap(aRight);
 	swap(myMeth, aRight.myMeth);
 	swap(mySigma, aRight.mySigma);
 	swap(myFunc, aRight.myFunc);
