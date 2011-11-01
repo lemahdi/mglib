@@ -174,8 +174,8 @@ int main()
 		{
 		private:
 			double F_Func(const double& aX) { return exp(aX) - aX*aX; }
-			double Df_Func(const double& aX) { return aX*exp(aX) - 2*aX; }
-			void FDf_Func(const double& aX, double& aF, double& aDf) { aF = F_Func(aX); aDf = Df_Func(aX); }
+			double Df_Func(const double& aX) { return exp(aX) - 2*aX; }
+			void FDf_Func(const double& aX, double& aF, double& aDf) { aF=F_Func(aX); aDf=Df_Func(aX); }
 		};
 		MG_FunctionPtr vFunc(new MG_TestFunc);
 		MG_FDfSolver vSolver(MG_FDfSolver::NEWTON, 1., 0., 1e-3, 100);
