@@ -23,7 +23,7 @@ struct MG_UnaryFunc : public std::unary_function<double,double>
 {
 	virtual double operator() (const double& aArg) = 0;
 };
-
+/*
 struct MG_TestFunc : public MG_UnaryFunc
 {
 	virtual double operator() (const double& aArg) { return exp(aArg)-aArg*aArg; }
@@ -31,7 +31,7 @@ struct MG_TestFunc : public MG_UnaryFunc
 struct MG_TestFuncPrime : public MG_UnaryFunc
 {
 	virtual double operator() (const double& aArg) { return exp(aArg)-2*aArg; }
-};
+};*/
 
 
 MG_NAMESPACE_END

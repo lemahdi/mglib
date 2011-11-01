@@ -26,6 +26,22 @@ template<typename T, class U>
 class Repository
 {
 private:
+	struct CleanMap
+	{
+		std::map<T,U*> myMap;
+		std::map<T,U*>& Map(void) { return myMap; }
+		~CleanMap(void)
+		{
+			std::map<T,U*>::iterator itMap = myMap.begin();
+			while (itMap != myMap.end())
+			{
+				delete itMap->second;
+				itMap->second = NULL;
+				++itMap;
+			}
+		}
+	};
+
 	Repository(void) {}
 
 public:
@@ -36,30 +52,21 @@ public:
 
 	static U* Instance(T aKey)
 	{
-		if (myInstance.find(aKey) == myInstance.end())
+		if (myInstance.Map().find(aKey) == myInstance.Map().end())
 		{
 			U* vSingle = new U(aKey);
 			std::pair<T,U*> vPair(aKey, vSingle);
-			Repository::myInstance.insert(vPair);
+			Repository::myInstance.Map().insert(vPair);
 		}
 
-		return Repository::myInstance[aKey];
-	}
-
-	static void Release(void)
-	{
-		/*std::map<T,U*>::iterator itMap = myInstance.begin();
-		while (itMap != myInstance.end())
-		{
-			delete itMap->second;
-			itMap->second = NULL;
-			itMap++;
-		}*/return;
+		return Repository::myInstance.Map()[aKey];
 	}
 
 private:
-	static std::map<T,U*> myInstance;
-};
+	static CleanMap myInstance;
 
+};
+template<typename T, class U>
+typename Repository<T,U>::CleanMap Repository<T,U>::myInstance = Repository<T,U>::CleanMap();
 
 MG_NAMESPACE_END
