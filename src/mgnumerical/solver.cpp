@@ -1,7 +1,7 @@
 #include "mgnumerical/solver.h"
-#include "mgnova/exception.h"
 
-#include <math.h>
+#include "gsl/gsl_errno.h"
+#include "mgnova/exception.h"
 
 
 using namespace std;
@@ -9,179 +9,206 @@ using namespace MG;
 
 
 /*
- * Constructor for base class
+ * Solver Base Class
  */
-MG_Solver::MG_Solver(	const MG_UnaryFuncPtr	& aFunc
-					,	const double			& aError
-					,	const double			& aTolerance
-					,	const unsigned int		& aMaxIter)
-					:	myFunc(aFunc), myError(aError), myTolerance(aTolerance), myMaxIter(aMaxIter), myNbIter(0)
-{
-	assert(aError > 0);
-}
-
-
-/* Newton Raphson
- * Constructor for Newton Raphson solving method
- */
-MG_NewtonRaphsonSolver::MG_NewtonRaphsonSolver	(	const MG_UnaryFuncPtr	& aFunc
-												,	const MG_UnaryFuncPtr	& aFuncPrime
-												,	const double			& aError
-												,	const double			& aTolerance
-												,	const unsigned int		& aMaxIter)
-												:	MG_Solver(aFunc, aError, aTolerance, aMaxIter)
-												,	myFuncPrime(aFuncPrime)
+MG_Solver::MG_Solver(	const MG_Solver& aRight)
+					:	MG_XLObject(aRight)
+					,	myName(aRight.myName), myFunc(NULL)
+					,	myStatus(aRight.myStatus)
+					,	myEpsAbs(aRight.myEpsAbs), myEpsRel(aRight.myEpsRel)
+					,	myMaxIter(aRight.myMaxIter), myNbIter(aRight.myNbIter)
 {}
 
-/*
- * Solving algorithm
- */
-double MG_NewtonRaphsonSolver::Solve(const double& aInit, const double& aTarget, const double& aMin, const double& aMax)
+void MG_Solver::Swap(MG_Solver& aRight)
 {
-	assert(aMin<aMax && aInit>=aMin && aInit<=aMax);
-	double vX0(aInit), vX1, vError, vA(aMin), vB(aMax), vTmp;
-	unsigned int vNbTouched = 0;
+	MG_XLObject::Swap(aRight);
+	swap(myName, aRight.myName);
+	myFunc->Swap(*aRight.myFunc);
+	swap(myStatus, aRight.myStatus);
+	swap(myEpsAbs, aRight.myEpsAbs);
+	swap(myEpsRel, aRight.myEpsRel);
+	swap(myMaxIter, aRight.myMaxIter);
+	swap(myNbIter, aRight.myNbIter);
+}
+
+MG_Solver::MG_Solver(	const double& aEpsAbs
+					,	const double& aEpsRel
+					,	const size_t& aMaxIter
+					,	const string& aName)
+					:	MG_XLObject()
+					,	myEpsAbs(aEpsAbs), myEpsRel(aEpsRel)
+					,	myMaxIter(aMaxIter), myNbIter(0)
+					,	myName(aName), myFunc(NULL), myStatus(GSL_EOF)
+{}
+
+MG_Solver::~MG_Solver()
+{}
+
+
+/*
+ * 0 Order Solver Class
+ */
+const gsl_root_fsolver_type* MG_FSolver::From_MGType_To_GSLType(const FSOLVER_TYPE& aType)
+{
+	switch(aType)
+	{
+	case BISECTION:
+		return gsl_root_fsolver_bisection;
+		
+	case FALSEPOS:
+		return gsl_root_fsolver_falsepos;
+		
+	case BRENT:
+		return gsl_root_fsolver_brent;
+
+	default: return NULL;
+	}
+}
+
+MG_FSolver::MG_FSolver	(	const MG_FSolver& aRight)
+						:	MG_Solver(aRight)
+						,	mySolver(NULL)
+						,	myMin(aRight.myMin), myMax(aRight.myMax)
+{}
+
+void MG_FSolver::Swap(MG_FSolver& aRight)
+{
+	MG_Solver::Swap(aRight);
+	swap(mySolver, aRight.mySolver);
+	swap(myMin, aRight.myMin);
+	swap(myMax, aRight.myMax);
+}
+
+MG_FSolver::MG_FSolver	(	const FSOLVER_TYPE& aType
+						,	const double& aMin
+						,	const double& aMax
+						,	const double& aEpsAbs
+						,	const double& aEpsRel
+						,	const size_t& aMaxIter)
+						:	MG_Solver(aEpsAbs, aEpsRel, aMaxIter)
+						,	mySolver(NULL)
+						,	myMin(aMin), myMax(aMax)
+{
+	myXLName = MG_FSOLVER_XL_NAME;
+
+	const gsl_root_fsolver_type* vType = From_MGType_To_GSLType(aType);
+	if (vType)
+	{
+		mySolver = gsl_root_fsolver_alloc(vType);
+		myName = gsl_root_fsolver_name(mySolver);
+	}
+}
+
+MG_FSolver::~MG_FSolver()
+{
+	 gsl_root_fsolver_free(mySolver);
+}
+
+void MG_FSolver::Load(const MG_FunctionPtr& aFunc)
+{
+	myFunc = aFunc;
+	gsl_root_fsolver_set(mySolver, dynamic_cast<MG_FFunction*>(&*myFunc)->GetFunc(), myMin, myMax);
+}
+
+double MG_FSolver::Solve()
+{
 	myNbIter = 0;
-	while (myNbIter != myMaxIter)
+	double vRoot, vLowX, vHighX;
+	do
 	{
-		vTmp = myFuncPrime->operator()(vX0);
-		if (vTmp == 0)
-		{
-			vX0 = vX0 + (vB-vA)/10; // just a trick to move to a non optimal point
-			vTmp = myFuncPrime->operator()(vX0);
-			myNbIter++;
-			continue;
-		}
-		vX1 = vX0 - myFunc->operator()(vX0) / vTmp;
-		vError = fabs(myFunc->operator()(vX1) - aTarget);
-		if (vError < myError)
-			return vX1;
-		if (vX1 < vA)
-		{
-			vX0 = vA;
-			vNbTouched++;
-		}
-		else if (vX1 > vB)
-		{
-			vX0 = vB;
-			vNbTouched++;
-		}
-		else
-			vX0 = vX1;
-		if (vNbTouched > 2)
-			MG_THROW("MG_NewtonRaphsonSolver::Solve, solver cannot find the root.");
-		myNbIter++;
-	}
-	MG_THROW("MG_NewtonRaphsonSolver::Solve, solver cannot find the root.");
+		++myNbIter;
+		myStatus = gsl_root_fsolver_iterate(mySolver);
+		if (myStatus==GSL_EBADFUNC || myStatus==GSL_EZERODIV)
+			MG_THROW("Error while iterating in solver.");
+
+		vRoot		= gsl_root_fsolver_root(mySolver);
+		vLowX		= gsl_root_fsolver_x_lower(mySolver);
+		vHighX		= gsl_root_fsolver_x_upper(mySolver);
+		myStatus	= gsl_root_test_interval(vLowX, vHighX, myEpsAbs, myEpsRel);
+	} while (myStatus==GSL_CONTINUE && myNbIter<myMaxIter);
+
+	return vRoot;
 }
 
 
-/* Brent
- * Constructor for Brent solving method
+/*
+ * 1st Order Solver Class
  */
-MG_BrentSolver::MG_BrentSolver	(	const MG_UnaryFuncPtr	& aFunc
-								,	const double			& aEps
-								,	const double			& aError
-								,	const double			& aTolerance
-								,	const unsigned int		& aMaxIter)
-								:	MG_Solver(aFunc, aError, aTolerance, aMaxIter)
-								,	myEpsilon(aEps), myBest(0.)
+const gsl_root_fdfsolver_type* MG_FDfSolver::From_MGType_To_GSLType(const FDFSOLVER_TYPE& aType)
+{
+	switch(aType)
+	{
+	case NEWTON:
+		return gsl_root_fdfsolver_newton;
+		
+	case SECANT:
+		return gsl_root_fdfsolver_secant;
+		
+	case STEFFENSON:
+		return gsl_root_fdfsolver_steffenson;
+
+	default: return NULL;
+	}
+}
+
+MG_FDfSolver::MG_FDfSolver	(	const MG_FDfSolver& aRight)
+							:	MG_Solver(aRight)
+							,	mySolver(NULL)
+							,	myGuess(aRight.myGuess)
 {}
 
-/*
- * Solving algorithm
- */
-double MG_BrentSolver::Solve(const double& , const double& aTarget, const double& aMin, const double& aMax)
+void MG_FDfSolver::Swap(MG_FDfSolver& aRight)
 {
-	assert(aMin<aMax);
+	MG_Solver::Swap(aRight);
+	swap(mySolver, aRight.mySolver);
+	swap(myGuess, aRight.myGuess);
+}
 
-	double vA(aMin), vB(aMax), vC(aMax), vD(0.), vE(0.);
-	double vMin1, vMin2;
-	double vFA = myFunc->operator()(vA);
-	double vFB = myFunc->operator()(vB);
-	double vFC, vP, vQ, vR, vS, vXm, vTolerance;
+MG_FDfSolver::MG_FDfSolver	(	const FDFSOLVER_TYPE& aType
+							,	const double& aGuess
+							,	const double& aEpsAbs
+							,	const double& aEpsRel
+							,	const size_t& aMaxIter)
+							:	MG_Solver(aEpsAbs, aEpsRel, aMaxIter)
+							,	mySolver(NULL)
+							,	myGuess	(aGuess)
+{
+	myXLName = MG_FDFSOLVER_XL_NAME;
 
-	if (fabs(vFA-aTarget) < myTolerance)
-		return vA;
-
-	if (fabs(vFB-aTarget) < myTolerance)
-		return vB;
-
-	if (vFA*vFB >= 0.)
+	const gsl_root_fdfsolver_type* vType = From_MGType_To_GSLType(aType);
+	if (vType)
 	{
-		myBest = fabs(vFA)>fabs(vFB) ? vB : vA;
-		MG_THROW("MG_BrentSolver::Solve, solver cannot find the root.");
+		mySolver = gsl_root_fdfsolver_alloc(vType);
+		myName = gsl_root_fdfsolver_name(mySolver);
 	}
+}
 
-	vFC = vFB;
-	for(myNbIter=0; myNbIter<myMaxIter; myNbIter++)
+MG_FDfSolver::~MG_FDfSolver()
+{
+	gsl_root_fdfsolver_free(mySolver);
+}
+
+void MG_FDfSolver::Load(const MG_FunctionPtr& aFunc)
+{
+	myFunc = aFunc;
+	gsl_root_fdfsolver_set(mySolver, dynamic_cast<MG_FDfFunction*>(&*myFunc)->GetFunc(), myGuess);
+}
+
+double MG_FDfSolver::Solve()
+{
+	myNbIter = 0;
+	double vRoot(myGuess), vPrevious;
+	do
 	{
-		if (vFB*vFC > 0.)
-		{
-			vC	= vA;
-			vFC	= vFA;
-			vE	= vD = vB-vA;
-		}
-		if (fabs(vFC) < fabs(vFB))
-		{
-			vA	= vB;
-			vB	= vC;
-			vC	= vA;
-			vFA	= vFB;
-			vFB	= vFC;
-			vFC	= vFA;
-		}
-		vTolerance = 2.*myEpsilon*fabs(vB) + 0.5*myTolerance;
-		vXm = 0.5*(vC-vB);
-		if (fabs(vXm)<=vTolerance || vFB==0.)
-			return vB;
-		if (fabs(vE)>=vTolerance && fabs(vFA)>fabs(vFB))
-		{
-			vS = vFB/vFA;
-			if (vA == vC)
-			{
-				vP = 2.*vXm*vS;
-				vQ = 1. - vS;
-			}
-			else
-			{
-				vQ = vFA/vFC;
-				vR = vFB/vFC;
-				vP = vS*(2.*vXm*vQ*(vQ-vR) - (vB-vA)*(vR-1.));
-				vQ = (vQ - 1.)*(vR - 1.)*(vS - 1.);
-			}
-			if (vP > 0.)
-				vQ = -vQ;
-			vP = fabs(vP);
-			vMin1 = 3.0*vXm*vQ - fabs(vTolerance*vQ);
-			vMin2 = fabs(vE*vQ);
-			if (2.*vP < min(vMin1, vMin2))
-			{
-				vE = vD;
-				vD = vP/vQ;
-			}
-			else
-			{
-				vD = vXm;
-				vE = vD;
-			}
-		}
-		else
-		{
-			vD = vXm;
-			vE = vD;
-		}
-		vA	= vB;
-		vFA	= vFB;
-		if (fabs(vD) > vTolerance)
-			vB += vD;
-		else
-			vB += vTolerance>=0. ? fabs(vXm) : -fabs(vXm);
-		vFB = myFunc->operator()(vB) - aTarget;
+		++myNbIter;
+		myStatus = gsl_root_fdfsolver_iterate(mySolver);
+		if (myStatus==GSL_EBADFUNC || myStatus==GSL_EZERODIV)
+			MG_THROW("Error while iterating in solver.");
 
-		if (fabs(vFB) < myTolerance)
-			return vB;
-	}
+		vPrevious	= vRoot;
+		vRoot		= gsl_root_fdfsolver_root(mySolver);
+		myStatus	= gsl_root_test_delta(vRoot, vPrevious, myEpsAbs, myEpsRel);
+	} while (myStatus==GSL_CONTINUE && myNbIter<myMaxIter);
 
-	MG_THROW("MG_BrentSolver::Solve, solver cannot find the root.");
+	return vRoot;
 }

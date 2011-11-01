@@ -194,6 +194,14 @@
 			Name="wrapper"
 			>
 			<File
+				RelativePath=".\wrapper\function.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\wrapper\function.h"
+				>
+			</File>
+			<File
 				RelativePath=".\wrapper\matrix.cpp"
 				>
 			</File>

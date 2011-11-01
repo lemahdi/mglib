@@ -170,20 +170,18 @@ int main()
 	// Solver
 	{
 		cout << "SOLVER" << endl;
-		MG_UnaryFuncPtr vFuncTestPtr(new MG_TestFunc);
-		MG_UnaryFuncPtr vFuncTestPrimePtr(new MG_TestFuncPrime);
-		MG_NewtonRaphsonSolver vSolver1(vFuncTestPtr, vFuncTestPrimePtr, 1e-10, 20);
-		double vRoot = vSolver1.Solve(0, 0, -1, 1);
-		cout << "Newton Raphson Solver Exp(x)-x²: " << vRoot << endl;
-		double vCheck = exp(vRoot) - vRoot*vRoot;
-		cout << "Solver checker: " << vCheck << endl;
-		cout << "Number of iterations: " << vSolver1.GetNbIter() << endl;
-		MG_BrentSolver vSolver2(vFuncTestPtr, 1e-10, 20);
-		vRoot = vSolver2.Solve(0, 0, -1, 1);
-		cout << "Brent Solver Exp(x)-x²: " << vRoot << endl;
-		vCheck = exp(vRoot) - vRoot*vRoot;
-		cout << "Solver checker: " << vCheck << endl;
-		cout << "Number of iterations: " << vSolver2.GetNbIter() << endl;
+		class MG_TestFunc : public MG_FDfFunction
+		{
+		private:
+			double F_Func(const double& aX) { return exp(aX) - aX*aX; }
+			double Df_Func(const double& aX) { return aX*exp(aX) - 2*aX; }
+			void FDf_Func(const double& aX, double& aF, double& aDf) { aF = F_Func(aX); aDf = Df_Func(aX); }
+		};
+		MG_FunctionPtr vFunc(new MG_TestFunc);
+		MG_FDfSolver vSolver(MG_FDfSolver::NEWTON, 1., 0., 1e-3, 100);
+		vSolver.Load(vFunc);
+		double vSol = vSolver.Solve();
+		cout << "Newton Solver Exp(x)-x²: " << vSol << endl;
 	}
 
 	cin >> ch;
@@ -206,7 +204,8 @@ int main()
 		size_t vCount = 100;
 		while (--vCount) cout << vRand.DrawOne() << ":" << vRand.DrawUniform() << endl;
 
-		FILE* stream = fopen("C:\\cygwin\\home\\Akkouh\\random_state.txt", "w");
+		FILE* stream(NULL);
+		errno_t vErr = fopen_s(&stream, "C:\\cygwin\\home\\Akkouh\\random_state.txt", "w");
 		vRand.ToString(stream);
 		fclose(stream);
 
@@ -228,7 +227,8 @@ int main()
 		MG_QuasiRandom vRand(SOBOL, 1);
 		while (--vCount) cout << vRand.DrawOne() << ":" << vRand.DrawUniform() << endl;
 
-		FILE* stream = fopen("C:\\cygwin\\home\\Akkouh\\quasirandom_state.txt", "w");
+		FILE* stream(NULL);
+		errno_t vErr = fopen_s(&stream, "C:\\cygwin\\home\\Akkouh\\quasirandom_state.txt", "w");
 		vRand.ToString(stream);
 		fclose(stream);
 
@@ -255,8 +255,6 @@ int main()
 	}
 
 	cin >> ch;
-
-	MG_RCalendar::Release();
 
 	return 0;
 }

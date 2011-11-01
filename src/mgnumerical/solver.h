@@ -5,7 +5,7 @@
  * Last changed			: 13 MAR 2011
  * Purpose				: MG_Solver is a base class for solver methods
  * Author				: MM Akkouh
- * Notes				: Newton Raphson, ..
+ * Notes				: Solver class, ..
  */
 
 
@@ -13,96 +13,114 @@
 
 
 #include "mgnova/typedef.h"
-#include "mgnova/funcs/infrafunc.h"
-#include "mgnova/patterns/countedptr.hpp"
-
-#include <assert.h>
-
-
-#define MY_MAX_ITER		100
-#define MY_ERROR		1e-6
-#define MY_TOLERANCE	1e-10
-#define MY_EPSILON		3e-8
+#include "mgnova/object.h"
+#include "mgnova/wrapper/function.h"
+#include "gsl/gsl_roots.h"
 
 
 MG_NAMESPACE_BEGIN
 
 
-class MG_Solver
+/* Solver Base Class */
+class MG_Solver : public MG_XLObject
 {
-private:
-	FAKE_ASSIGN_OPERATOR(MG_Solver)
-
 public:
-	MG_Solver	(	const MG_UnaryFuncPtr	& aFunc
-				,	const double			& aError		= MY_ERROR
-				,	const double			& aTolerance	= MY_TOLERANCE
-				,	const unsigned int		& aMaxIter		= MY_MAX_ITER);
-	virtual ~MG_Solver(void) {}
+	/* Constructors / Destructor */
+	COPY_CTOR_DECL(MG_Solver)
 
-public:
-	inline unsigned int GetNbIter(void) const { return myNbIter; }
+	ASSIGN_OPERATOR(MG_Solver)
+	SWAP_DECL(MG_Solver)
 
-	virtual double Solve(const double& aInit, const double& aTarget, const double& aMin, const double& aMax) = 0;
+	MG_Solver(const double& aEpsAbs, const double& aEpsRel, const size_t& aMaxIter, const std::string& aName = "");
+
+	virtual ~MG_Solver(void);
+
+	/* State */
+	virtual void Load(const MG_FunctionPtr& aFunc) = 0;
+	inline int		GetStatus(void) const { return myStatus; }
+	inline size_t	GetNbIter(void) const { return myNbIter; }
+
+	/* Engine */
+	virtual double Solve(void) = 0;
 
 protected:
-	MG_UnaryFuncPtr		myFunc;
-	const double		myError;
-	const double		myTolerance;
-	const unsigned int	myMaxIter;
-	unsigned int		myNbIter;
+	std::string		myName;
+	MG_FunctionPtr	myFunc;
+
+	int				myStatus;
+	double			myEpsAbs;
+	double			myEpsRel;
+	size_t			myMaxIter;
+	size_t			myNbIter;
+
 };
 
 
-class MG_NewtonRaphsonSolver : public MG_Solver
+/* 0 Order Solver Class */
+class MG_FSolver : public MG_Solver
 {
+	enum FSOLVER_TYPE { BISECTION, FALSEPOS, BRENT };
+	static const gsl_root_fsolver_type* From_MGType_To_GSLType(const FSOLVER_TYPE& aType);
+
+	/* Constructors / Destructor */
+	COPY_CTOR_DECL(MG_FSolver)
+
+	ASSIGN_OPERATOR(MG_FSolver)
+	CLONE_METHOD(MG_FSolver)
+	SWAP_DECL(MG_FSolver)
+
+	MG_FSolver(const FSOLVER_TYPE& aType, const double& aMin, const double& aMax, const double& aEpsAbs, const double& aEpsRel, const size_t& aMaxIter);
+
+	virtual ~MG_FSolver(void);
+
+	/* State */
+	inline void SetBounds	(const double& aMin, const double& aMax) { myMin = aMin; myMax = aMax; }
+	inline void SetEpsilons	(const double& aEpsAbs, const double& aEpsRel) { myEpsAbs = aEpsAbs; myEpsRel = aEpsRel; }
+	inline void SetMaxIter	(const size_t& aMaxIter) { myMaxIter = aMaxIter; }
+	void Load(const MG_FunctionPtr& aFunc);
+
+	/* Engine */
+	double Solve(void);
+
 private:
-	FAKE_ASSIGN_OPERATOR(MG_NewtonRaphsonSolver)
+	gsl_root_fsolver* mySolver;
+	double myMin;
+	double myMax;
 
-public:
-	MG_NewtonRaphsonSolver	(	const MG_UnaryFuncPtr	& aFunc
-							,	const MG_UnaryFuncPtr	& aFuncPrime
-							,	const double			& aError		= MY_ERROR
-							,	const double			& aTolerance	= MY_TOLERANCE
-							,	const unsigned int		& aMaxIter		= MY_MAX_ITER);
-	virtual ~MG_NewtonRaphsonSolver(void) {}
-
-public:
-	virtual double Solve(const double& aInit, const double& aTarget, const double& aMin, const double& aMax);
-
-private:
-	MG_UnaryFuncPtr		myFuncPrime;
 };
 
 
-class MG_BrentSolver : public MG_Solver
+/* 1st Order Solver Class */
+class MG_FDfSolver : public MG_Solver
 {
-private:
-	FAKE_ASSIGN_OPERATOR(MG_BrentSolver)
-
 public:
-	MG_BrentSolver	(	const MG_UnaryFuncPtr	& aFunc
-					,	const double			& aEps			= MY_EPSILON
-					,	const double			& aError		= MY_ERROR
-					,	const double			& aTolerance	= MY_TOLERANCE
-					,	const unsigned int		& aMaxIter		= MY_MAX_ITER);
-	virtual ~MG_BrentSolver(void) {}
+	enum FDFSOLVER_TYPE { NEWTON, SECANT, STEFFENSON };
+	static const gsl_root_fdfsolver_type* From_MGType_To_GSLType(const FDFSOLVER_TYPE& aType);
 
-public:
-	inline double GetBest(void) const { return myBest; }
+	/* Constructors / Destructor */
+	COPY_CTOR_DECL(MG_FDfSolver)
 
-	virtual double Solve(const double& aInit, const double& aTarget, const double& aMin, const double& aMax);
+	ASSIGN_OPERATOR(MG_FDfSolver)
+	CLONE_METHOD(MG_FDfSolver)
+	SWAP_DECL(MG_FDfSolver)
+
+	MG_FDfSolver(const FDFSOLVER_TYPE& aType, const double& aGuess, const double& aEpsAbs, const double& aEpsRel, const size_t& aMaxIter);
+
+	virtual ~MG_FDfSolver(void);
+
+	/* State */
+	inline void SetGuess(const double& aGuess) { myGuess = aGuess; }
+	void Load(const MG_FunctionPtr& aFunc);
+
+	/* Engine */
+	double Solve(void);
 
 private:
-	double myBest;
-	double myEpsilon;
+	gsl_root_fdfsolver* mySolver;
+	double myGuess;
+
 };
 
 
 MG_NAMESPACE_END
 
-
-#undef MY_MAX_ITER
-#undef MY_ERROR
-#undef MY_TOLERANCE
-#undef MY_EPSILON
