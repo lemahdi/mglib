@@ -59,6 +59,7 @@ protected:
 /* 0 Order Solver Class */
 class MG_FSolver : public MG_Solver
 {
+public:
 	enum FSOLVER_TYPE { BISECTION, FALSEPOS, BRENT };
 	static const gsl_root_fsolver_type* From_MGType_To_GSLType(const FSOLVER_TYPE& aType);
 

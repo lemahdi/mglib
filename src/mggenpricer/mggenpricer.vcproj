@@ -169,6 +169,42 @@
 		<Filter
 			Name="genmod"
 			>
+			<File
+				RelativePath=".\genmod\hw1f.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\genmod\hw1f.h"
+				>
+			</File>
+			<File
+				RelativePath=".\genmod\irpricingmodel.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\genmod\irpricingmodel.h"
+				>
+			</File>
+			<File
+				RelativePath=".\genmod\pricingmodel.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\genmod\pricingmodel.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="genparam"
+			>
+			<File
+				RelativePath=".\genparam\modelparam.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\genparam\modelparam.h"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>

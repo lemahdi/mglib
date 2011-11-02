@@ -125,8 +125,9 @@ void yy_delete_buffer (YY_BUFFER_STATE b  );
 #define MG_RND_XL_NAME			"RANDM"
 #define MG_QRND_XL_NAME			"QRAND"
 #define MG_NORDIST_XL_NAME		"NDIST"
-#define MG_FSOLVER_XL_NAME		"FSOLV"
-#define MG_FDFSOLVER_XL_NAME	"DFSLV"
+#define MG_FSOLVER_XL_NAME		"FSOLV"//should define a grammar for functions
+#define MG_FDFSOLVER_XL_NAME	"DFSLV"//should define a grammar for functions
+#define MG_HW1FMODEL_XL_NAME	"HW1FM"
 
 
 /* CountedPtr definitions */

@@ -131,4 +131,15 @@ const MG_ArgConv		QuasiRandGenConvertor	= MG_ArgConv		("Quasi Random Generator T
 const MG_ArgConvReverse	QuasiRandGenRevertor	= MG_ArgConvReverse	("Quasi Random Generator Types", QuasiRandGenArgConv, NB_QUASIRAND_TYPE);
 
 
+MG_ArgConv::ArgConvPair ModelParamGenArgConv[] =
+{
+	MG_ArgConv::ArgConvPair("VOLATILITY",VOLATILITY),
+	MG_ArgConv::ArgConvPair("MEANREVERSION",MEANREVERSION),
+	MG_ArgConv::ArgConvPair("CORRELATION",CORRELATION),
+	MG_ArgConv::ArgConvPair("VOLVOL",VOLVOL),
+};
+const MG_ArgConv		ModelParamGenConvertor	= MG_ArgConv		("Pricing Model Parameter Types", ModelParamGenArgConv, NB_MODELPARAM_TYPE);
+const MG_ArgConvReverse	ModelParamGenRevertor	= MG_ArgConvReverse	("Pricing Model Parameter Types", ModelParamGenArgConv, NB_MODELPARAM_TYPE);
+
+
 MG_NAMESPACE_END

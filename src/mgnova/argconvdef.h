@@ -121,4 +121,19 @@ extern const MG_ArgConv			QuasiRandGenConvertor;
 extern const MG_ArgConvReverse	QuasiRandGenRevertor;
 
 
+/* enum for quasi random generator types */
+enum MODELPARAM_TYPE
+{
+	VOLATILITY,
+	MEANREVERSION,
+	CORRELATION,
+	VOLVOL,
+
+	NB_MODELPARAM_TYPE
+};
+
+extern const MG_ArgConv			ModleParamGenConvertor;
+extern const MG_ArgConvReverse	ModleParamGenRevertor;
+
+
 MG_NAMESPACE_END
