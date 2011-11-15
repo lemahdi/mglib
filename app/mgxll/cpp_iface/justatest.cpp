@@ -32,7 +32,7 @@ MG_XLObjectPtr Robot(const MG_Date& aAsOf, CellMatrix& aMktData)
 	string vDesc;
 	vector<MG_MarketDataPtr> vMDVect(vSize);
 	for(size_t i=0; i<vSize; ++i)
-		vMDVect[i] = MG_MarketDataPtr(dynamic_cast<MG_MarketData*>(aMktData(i, 0).MGObjectValue()->Clone()));
+		vMDVect[i] = MG_MarketDataPtr(aMktData(i, 0).MGObjectValue()->Clone());
 
 	return MG_XLObjectPtr(new MG_Robot(aAsOf, vMDVect));
 }

@@ -60,6 +60,8 @@ public:
 		Release();
 	}
 	CountedPtr(T* aPtr) : myPtr(aPtr), myCount(new long(1)) {}
+	template<class U>
+	CountedPtr(U* aPtr) : myPtr(dynamic_cast<T*>(aPtr)), myCount(new long(1)) {}
 
 	CountedPtr(const CountedPtr<T>& aCPtr)
 	{
