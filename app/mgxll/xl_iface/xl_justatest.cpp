@@ -85,10 +85,71 @@ EXCEL_END
 namespace
 {
 XLRegistration::Arg
+RobotArgs[]=
+{
+{ "AsOf"," as of date ","XLF_OPER"},
+{ "aMktData"," market data robot ","XLF_OPER"}
+};
+  XLRegistration::XLFunctionRegistrationHelper
+registerRobot("xlRobot",
+"MG_Robot",
+" Market data robot ",
+LibraryName,
+RobotArgs,
+2
+,false
+);
+}
+
+
+
+extern "C"
+{
+LPXLFOPER EXCEL_EXPORT
+xlRobot(
+LPXLFOPER AsOfa,
+LPXLFOPER aMktDataa)
+{
+EXCEL_BEGIN;
+
+	if (XlfExcel::Instance().IsCalledByFuncWiz())
+		return XlfOper(true);
+
+XlfOper AsOfb(
+	(AsOfa));
+MG_Date AsOf(
+	AsOfb.AsMGDate("AsOf"));
+
+XlfOper aMktDatab(
+	(aMktDataa));
+CellMatrix aMktData(
+	aMktDatab.AsCellMatrix("aMktData"));
+
+MG_XLObjectPtr result(
+	Robot(
+		AsOf,
+		aMktData)
+	);
+string vRefObj, vError;
+if (MG_SCache::Instance()->PersistentInsert(result, vRefObj, vError))
+  return XlfOper(vRefObj);
+else
+  return XlfOper(vError);
+EXCEL_END
+}
+}
+
+
+
+//////////////////////////
+
+namespace
+{
+XLRegistration::Arg
 BSModelArgs[]=
 {
 { "AsOf"," as of date ","XLF_OPER"},
-{ "Vol"," bs volatility ","B"}
+{ "aRobot"," market data robot ","XLF_OPER"}
 };
   XLRegistration::XLFunctionRegistrationHelper
 registerBSModel("xlBSModel",
@@ -108,7 +169,7 @@ extern "C"
 LPXLFOPER EXCEL_EXPORT
 xlBSModel(
 LPXLFOPER AsOfa,
-double Vol)
+LPXLFOPER aRobota)
 {
 EXCEL_BEGIN;
 
@@ -120,11 +181,15 @@ XlfOper AsOfb(
 MG_Date AsOf(
 	AsOfb.AsMGDate("AsOf"));
 
+XlfOper aRobotb(
+	(aRobota));
+MG_XLObjectPtr aRobot(
+	aRobotb.AsMGXLObject("aRobot"));
 
 MG_XLObjectPtr result(
 	BSModel(
 		AsOf,
-		Vol)
+		aRobot)
 	);
 string vRefObj, vError;
 if (MG_SCache::Instance()->PersistentInsert(result, vRefObj, vError))
@@ -261,6 +326,8 @@ ZeroCurve_CreateArgs[]=
 { "aAsOf"," as of date ","XLF_OPER"},
 { "aMaturities"," maturities ","XLF_OPER"},
 { "aZeroRates"," volatilities ","XLF_OPER"},
+{ "aCcy"," currency ","XLF_OPER"},
+{ "aUnderIndex"," underlying index ","XLF_OPER"},
 { "aInterpolMeth"," interpolation method (LINEAR by def.) ","XLF_OPER"}
 };
   XLRegistration::XLFunctionRegistrationHelper
@@ -269,7 +336,7 @@ registerZeroCurve_Create("xlZeroCurve_Create",
 " Creating an zero curve ",
 LibraryName,
 ZeroCurve_CreateArgs,
-4
+6
 ,false
 );
 }
@@ -283,6 +350,8 @@ xlZeroCurve_Create(
 LPXLFOPER aAsOfa,
 LPXLFOPER aMaturitiesa,
 LPXLFOPER aZeroRatesa,
+LPXLFOPER aCcya,
+LPXLFOPER aUnderIndexa,
 LPXLFOPER aInterpolMetha)
 {
 EXCEL_BEGIN;
@@ -305,6 +374,16 @@ XlfOper aZeroRatesb(
 CellMatrix aZeroRates(
 	aZeroRatesb.AsCellMatrix("aZeroRates"));
 
+XlfOper aCcyb(
+	(aCcya));
+string aCcy(
+	aCcyb.AsString("aCcy"));
+
+XlfOper aUnderIndexb(
+	(aUnderIndexa));
+string aUnderIndex(
+	aUnderIndexb.AsString("aUnderIndex"));
+
 XlfOper aInterpolMethb(
 	(aInterpolMetha));
 CellMatrix aInterpolMeth(
@@ -315,6 +394,8 @@ MG_XLObjectPtr result(
 		aAsOf,
 		aMaturities,
 		aZeroRates,
+		aCcy,
+		aUnderIndex,
 		aInterpolMeth)
 	);
 string vRefObj, vError;
@@ -392,6 +473,8 @@ VolatilityCurve_CreateArgs[]=
 { "aMaturities"," maturities ","XLF_OPER"},
 { "aTenors"," tenors ","XLF_OPER"},
 { "aVolatilities"," volatilities ","XLF_OPER"},
+{ "aCcy"," currency ","XLF_OPER"},
+{ "aUnderIndex"," underlying index ","XLF_OPER"},
 { "aInterpolMeths"," interpolation methods (LINEAR by def.) ","XLF_OPER"}
 };
   XLRegistration::XLFunctionRegistrationHelper
@@ -400,7 +483,7 @@ registerVolatilityCurve_Create("xlVolatilityCurve_Create",
 " Creating an IR volatility curve ",
 LibraryName,
 VolatilityCurve_CreateArgs,
-5
+7
 ,false
 );
 }
@@ -415,6 +498,8 @@ LPXLFOPER aAsOfa,
 LPXLFOPER aMaturitiesa,
 LPXLFOPER aTenorsa,
 LPXLFOPER aVolatilitiesa,
+LPXLFOPER aCcya,
+LPXLFOPER aUnderIndexa,
 LPXLFOPER aInterpolMethsa)
 {
 EXCEL_BEGIN;
@@ -442,6 +527,16 @@ XlfOper aVolatilitiesb(
 CellMatrix aVolatilities(
 	aVolatilitiesb.AsCellMatrix("aVolatilities"));
 
+XlfOper aCcyb(
+	(aCcya));
+string aCcy(
+	aCcyb.AsString("aCcy"));
+
+XlfOper aUnderIndexb(
+	(aUnderIndexa));
+string aUnderIndex(
+	aUnderIndexb.AsString("aUnderIndex"));
+
 XlfOper aInterpolMethsb(
 	(aInterpolMethsa));
 CellMatrix aInterpolMeths(
@@ -453,6 +548,8 @@ MG_XLObjectPtr result(
 		aMaturities,
 		aTenors,
 		aVolatilities,
+		aCcy,
+		aUnderIndex,
 		aInterpolMeths)
 	);
 string vRefObj, vError;
@@ -534,6 +631,8 @@ DividendsTable_CreateArgs[]=
 { "aExDivDates"," exdiv dates ","XLF_OPER"},
 { "aPaymentDates"," dividends payment dates ","XLF_OPER"},
 { "aDividends"," dividends ","XLF_OPER"},
+{ "aCcy"," currency ","XLF_OPER"},
+{ "aUnderIndex"," underlying index ","XLF_OPER"},
 { "aZC"," zero curve ","XLF_OPER"}
 };
   XLRegistration::XLFunctionRegistrationHelper
@@ -542,7 +641,7 @@ registerDividendsTable_Create("xlDividendsTable_Create",
 " Creating a Dividend Table for equities ",
 LibraryName,
 DividendsTable_CreateArgs,
-5
+7
 ,false
 );
 }
@@ -557,6 +656,8 @@ LPXLFOPER aAsOfa,
 LPXLFOPER aExDivDatesa,
 LPXLFOPER aPaymentDatesa,
 LPXLFOPER aDividendsa,
+LPXLFOPER aCcya,
+LPXLFOPER aUnderIndexa,
 LPXLFOPER aZCa)
 {
 EXCEL_BEGIN;
@@ -584,6 +685,16 @@ XlfOper aDividendsb(
 CellMatrix aDividends(
 	aDividendsb.AsCellMatrix("aDividends"));
 
+XlfOper aCcyb(
+	(aCcya));
+string aCcy(
+	aCcyb.AsString("aCcy"));
+
+XlfOper aUnderIndexb(
+	(aUnderIndexa));
+string aUnderIndex(
+	aUnderIndexb.AsString("aUnderIndex"));
+
 XlfOper aZCb(
 	(aZCa));
 MG_XLObjectPtr aZC(
@@ -595,6 +706,8 @@ MG_XLObjectPtr result(
 		aExDivDates,
 		aPaymentDates,
 		aDividends,
+		aCcy,
+		aUnderIndex,
 		aZC)
 	);
 string vRefObj, vError;

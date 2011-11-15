@@ -15,13 +15,33 @@
 #include <iostream>
 
 #include "mgnova/typedef.h"
+#include "gsl/gsl_nan.h"
+#include "gsl/gsl_sys.h"
 
 
 MG_NAMESPACE_BEGIN
 
-enum eOPTION {_call,_put,_calldigit,_putdigit,_straddle};
 
-extern double VanillaPrice(double Fwd, double K, double T, double DF, double Vol, eOPTION TypeOp);
+/* Useful class for closed formulas */
+class MG_ClosedFormulas
+{
+public:
+	enum CF_NAME
+	{
+		CALL,
+		PUT,
+		CALL_DIGIT,
+		PUT_DIGIT,
+		STRADDLE
+	};
+
+	template<CF_NAME>
+	static double VanillaPrice(const double& aF, const double& aK, const double& aT, const double& aDf, const double& aVol);
+	/*{
+		return GSL_NAN;
+	}*/
+};
+typedef MG_ClosedFormulas MG_CF;
 
 
 MG_NAMESPACE_END

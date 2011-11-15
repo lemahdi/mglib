@@ -37,8 +37,9 @@ public:
 	virtual ~MG_Cache(void);
 
 public:
-	bool PersistentInsert	(MG_XLObjectPtr& aXLObj, std::string& aRefObj, std::string& aError);
-	bool PersistentGet		(const std::string& aRefObj, MG_XLObjectPtr& aXLObj, std::string& aError);
+	bool PersistentInsert		(MG_XLObjectPtr& aXLObj, std::string& aRefObj, std::string& aError);
+	bool PersistentGet			(const std::string& aRefObj, MG_XLObjectPtr& aXLObj, std::string& aError);
+	bool IsMGObjectDescriptor	(const std::string& aDescriptor);
 
 private:
 	size_t myCounter;

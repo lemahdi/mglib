@@ -36,6 +36,7 @@
 #include <xlw/CellMatrix.h>
 #include <algorithm>
 #include <xlw/macros.h>
+#include <xlw/cache/cached.h>
 // Stop header precompilation
 #ifdef _MSC_VER
 #pragma hdrstop
@@ -353,7 +354,20 @@ int xlw::XlfOperImpl12::ConvertToCellMatrix(const XlfOper &xlfOper, CellMatrix& 
         for(unsigned long k=0; k<len; ++k)
             tmp[k]= static_cast<char>(((*xlfOper.lpxloper12_).val.str)[k+1]);
 
-        tmpCell(0,0) = tmp;
+	    std::string vDesc(tmp.begin(), tmp.end());
+	    bool vIsMGObj = MG::MG_SCache::Instance()->IsMGObjectDescriptor(vDesc);
+	    if (vIsMGObj)
+	    {
+		    std::string vErr;
+		    MG::MG_XLObjectPtr vObj(NULL);
+		    MG::MG_SCache::Instance()->PersistentGet(vDesc, vObj, vErr);
+		    if (vObj == NULL)
+			    tmpCell(0,0) = vObj;
+		    else
+			    tmpCell(0,0) = vErr;
+	    }
+	    else
+		    tmpCell(0,0) = tmp;
 
         output = tmpCell;
 
@@ -388,7 +402,20 @@ int xlw::XlfOperImpl12::ConvertToCellMatrix(const XlfOper &xlfOper, CellMatrix& 
                             tmp[k]=
                             ((*xlfOper.lpxloper12_).val.array.lparray[i*columns+j].val.str)[k+1];
 
-                          result(i,j) = tmp;
+						  std::string vDesc(tmp.begin(), tmp.end());
+						  bool vIsMGObj = MG::MG_SCache::Instance()->IsMGObjectDescriptor(vDesc);
+						  if (vIsMGObj)
+						  {
+							  std::string vErr;
+							  MG::MG_XLObjectPtr vObj(NULL);
+							  MG::MG_SCache::Instance()->PersistentGet(vDesc, vObj, vErr);
+							  if (vObj == NULL)
+								  result(i,j) = vObj;
+							  else
+								  result(i,j) = vErr;
+						  }
+						  else
+	                          result(i,j) = tmp;
                     }
 
                     else

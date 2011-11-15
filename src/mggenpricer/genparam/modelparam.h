@@ -13,6 +13,7 @@
 
 
 #include "mgnova/object.h"
+#include "mgnova/argconvdef.h"
 
 
 MG_NAMESPACE_BEGIN

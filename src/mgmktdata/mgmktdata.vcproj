@@ -170,6 +170,14 @@
 			RelativePath=".\marketdata.h"
 			>
 		</File>
+		<File
+			RelativePath=".\robot.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\robot.h"
+			>
+		</File>
 	</Files>
 	<Globals>
 	</Globals>

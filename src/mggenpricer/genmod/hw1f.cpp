@@ -16,7 +16,7 @@ void MG_HW1F::Swap(MG_HW1F& aRight)
 	MG_IRPricingModel::Swap(aRight);
 }
 
-MG_HW1F::MG_HW1F() : MG_PricingModel()
+MG_HW1F::MG_HW1F() : MG_IRPricingModel()
 {
 	myXLName = MG_HW1FMODEL_XL_NAME;
 }

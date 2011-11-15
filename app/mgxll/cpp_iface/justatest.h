@@ -21,9 +21,15 @@ MG_Date // just a test
 JustATest(const MG_Date& Date);
 
 //<xlw:libraryname=MyTestLibrary
+MG_XLObjectPtr // Market data robot
+Robot(const MG_Date& AsOf // as of date
+		, CellMatrix& aMktData // market data robot
+		);
+
+//<xlw:libraryname=MyTestLibrary
 MG_XLObjectPtr // just an object test
 BSModel(const MG_Date& AsOf // as of date
-		, const double& Vol // bs volatility
+		, MG_XLObjectPtr& aRobot // market data robot
 		);
 
 //<xlw:libraryname=MyTestLibrary
@@ -44,6 +50,8 @@ MG_XLObjectPtr // Creating an zero curve
 ZeroCurve_Create(const MG_Date& aAsOf // as of date
 					   , const CellMatrix& aMaturities // maturities
 					   , const CellMatrix& aZeroRates // volatilities
+					   , const string& aCcy // currency
+					   , const string& aUnderIndex // underlying index
 					   , const CellMatrix& aInterpolMeth // interpolation method (LINEAR by def.)
 					   );
 
@@ -59,6 +67,8 @@ VolatilityCurve_Create(const MG_Date& aAsOf // as of date
 					   , const CellMatrix& aMaturities // maturities
 					   , const CellMatrix& aTenors // tenors
 					   , const CellMatrix& aVolatilities // volatilities
+					   , const string& aCcy // currency
+					   , const string& aUnderIndex // underlying index
 					   , const CellMatrix& aInterpolMeths // interpolation methods (LINEAR by def.)
 					   );
 
@@ -75,6 +85,8 @@ DividendsTable_Create(const MG_Date& aAsOf // as of date
 					 , const CellMatrix& aExDivDates // exdiv dates
 					 , const CellMatrix& aPaymentDates // dividends payment dates
 					 , const CellMatrix& aDividends // dividends
+					 , const string& aCcy // currency
+					 , const string& aUnderIndex // underlying index
 					 , const MG_XLObjectPtr& aZC // zero curve
 					 );
 

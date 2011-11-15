@@ -63,6 +63,11 @@ bool xlw::CellValue::IsEmpty() const
     return Type == empty;
 }
 
+bool xlw::CellValue::IsMGObject() const
+{
+    return Type == mgobject;
+}
+
 
 xlw::CellValue::operator std::string() const
 {
@@ -99,6 +104,13 @@ xlw::CellValue::operator unsigned long() const
     return static_cast<unsigned long>(ValueAsNumeric);
 }
 
+xlw::CellValue::operator MG::MG_XLObjectPtr() const
+{
+    if (Type != mgobject)
+        throw("non MG Object cell asked to be a MG Object");
+    return ValueAsMGObject;
+}
+
 void xlw::CellValue::clear()
 {
     Type = empty;
@@ -111,36 +123,42 @@ void xlw::CellValue::clear()
 
 
 xlw::CellValue::CellValue(const std::string& value) : Type(xlw::CellValue::string),
-ValueAsString(value), ValueAsWstring(L""), ValueAsNumeric(0.0), ValueAsBool(false), ValueAsErrorCode(0)
+ValueAsString(value), ValueAsWstring(L""), ValueAsNumeric(0.0), ValueAsBool(false), ValueAsErrorCode(0),
+ValueAsMGObject(NULL)
 {
 
 }
 
 xlw::CellValue::CellValue(const std::wstring& value) : Type(xlw::CellValue::wstring),
-ValueAsString(""), ValueAsWstring(value), ValueAsNumeric(0.0), ValueAsBool(false), ValueAsErrorCode(0)
+ValueAsString(""), ValueAsWstring(value), ValueAsNumeric(0.0), ValueAsBool(false), ValueAsErrorCode(0),
+ValueAsMGObject(NULL)
 {
 
 }
 
 xlw::CellValue::CellValue(const char* value) : Type(xlw::CellValue::string),
-ValueAsString(value), ValueAsWstring(L""), ValueAsNumeric(0.0), ValueAsBool(false), ValueAsErrorCode(0)
+ValueAsString(value), ValueAsWstring(L""), ValueAsNumeric(0.0), ValueAsBool(false), ValueAsErrorCode(0),
+ValueAsMGObject(NULL)
 {
 
 }
 xlw::CellValue::CellValue(double Number): Type(xlw::CellValue::number),
-ValueAsString(""), ValueAsWstring(L""), ValueAsNumeric(Number), ValueAsBool(false), ValueAsErrorCode(0)
+ValueAsString(""), ValueAsWstring(L""), ValueAsNumeric(Number), ValueAsBool(false), ValueAsErrorCode(0),
+ValueAsMGObject(NULL)
 {
 
 }
 
 xlw::CellValue::CellValue(int i): Type(xlw::CellValue::number),
-ValueAsString(""), ValueAsWstring(L""), ValueAsNumeric(i), ValueAsBool(false), ValueAsErrorCode(0)
+ValueAsString(""), ValueAsWstring(L""), ValueAsNumeric(i), ValueAsBool(false), ValueAsErrorCode(0),
+ValueAsMGObject(NULL)
 {
 
 }
 
 xlw::CellValue::CellValue(unsigned long Code, bool Error): Type(error),
-ValueAsString(""), ValueAsWstring(L""), ValueAsNumeric(Code), ValueAsBool(false), ValueAsErrorCode(Code)
+ValueAsString(""), ValueAsWstring(L""), ValueAsNumeric(Code), ValueAsBool(false), ValueAsErrorCode(Code),
+ValueAsMGObject(NULL)
 {
     if (!Error)
         Type = number;
@@ -148,12 +166,20 @@ ValueAsString(""), ValueAsWstring(L""), ValueAsNumeric(Code), ValueAsBool(false)
 
 xlw::CellValue::CellValue(bool TrueFalse)
  : Type(xlw::CellValue::boolean),
-ValueAsString(""), ValueAsWstring(L""), ValueAsNumeric(0.0), ValueAsBool(TrueFalse), ValueAsErrorCode(0)
+ValueAsString(""), ValueAsWstring(L""), ValueAsNumeric(0.0), ValueAsBool(TrueFalse), ValueAsErrorCode(0),
+ValueAsMGObject(NULL)
+{
+}
+
+xlw::CellValue::CellValue(const MG::MG_XLObjectPtr& obj): Type(xlw::CellValue::mgobject),
+ValueAsString(""), ValueAsWstring(L""), ValueAsNumeric(0.0), ValueAsBool(false), ValueAsErrorCode(0),
+ValueAsMGObject(obj)
 {
 }
 
 xlw::CellValue::CellValue(): Type(xlw::CellValue::empty),
-ValueAsString(""), ValueAsWstring(L""), ValueAsNumeric(0.0), ValueAsBool(false), ValueAsErrorCode(0)
+ValueAsString(""), ValueAsWstring(L""), ValueAsNumeric(0.0), ValueAsBool(false), ValueAsErrorCode(0),
+ValueAsMGObject(NULL)
 {
 }
 
@@ -198,6 +224,14 @@ unsigned long xlw::CellValue::ErrorValue() const
         throw("non error cell asked to be an error");
 
     return ValueAsErrorCode;
+}
+
+MG::MG_XLObjectPtr xlw::CellValue::MGObjectValue() const
+{
+    if (Type != mgobject)
+        throw("non MG Object cell asked to be a MG Object");
+
+    return ValueAsMGObject;
 }
 
 std::string xlw::CellValue::StringValueLowerCase() const
@@ -276,6 +310,11 @@ xlw::CellMatrix::CellMatrix(unsigned long i)
 xlw::CellMatrix::CellMatrix(int i): Cells(1), Rows(1), Columns(1)
 {
     Cells[0].push_back(CellValue(static_cast<double>(i)));
+}
+
+xlw::CellMatrix::CellMatrix(const MG::MG_XLObjectPtr& obj): Cells(1), Rows(1), Columns(1)
+{
+    Cells[0].push_back(CellValue(obj));
 }
 
 xlw::CellMatrix::CellMatrix(size_t rows, size_t columns)

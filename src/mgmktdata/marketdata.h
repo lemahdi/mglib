@@ -38,16 +38,40 @@ public:
 	ASSIGN_OPERATOR(MG_MarketData)
 	SWAP_DECL(MG_MarketData)
 
-	MG_MarketData(const MG_Date& aAsOf, const int& aInterpolTypes = 0);
+	MG_MarketData	(	const MG_Date		& aAsOf
+					,	const std::string	& aType
+					,	const std::string	& aCcy
+					,	const std::string	& aUnderIndex
+					,	const int			& aInterpolTypes = 0);
 
 	virtual ~MG_MarketData(void);
 
 public:
 	virtual double ComputeValue(const double& aX = 0, const double& aY = 0, const double& aZ = 0) = 0;
 
+	inline std::string GetType		(void) const { return myType; }
+	inline std::string GetCurrency	(void) const { return myCurrency; }
+	inline std::string GetUnderIndex(void) const { return myUnderIndex; }
+
 protected:
 	MG_Date		myAsOf;
 	const int	myInterpolTypes;
+
+	std::string	myType;
+	std::string	myCurrency;
+	std::string	myUnderIndex;
+};
+
+
+/* Empty Market Data - Useful for Robot */
+class MG_EmptyMD : public MG_MarketData
+{
+public:
+	CLONE_METHOD(MG_EmptyMD)
+
+	MG_EmptyMD(const std::string& aType, const std::string& aCcy, const std::string& aUnderIndex);
+
+	double ComputeValue(const double& aX = 0, const double& aY = 0, const double& aZ = 0);
 };
 
 
@@ -62,10 +86,12 @@ public:
 	CLONE_METHOD(MG_ZeroCurve)
 	SWAP_DECL(MG_ZeroCurve)
 
-	MG_ZeroCurve(	const MG_Date	& aAsOf
-				,	const MG_ABSC	& aMaturities
-				,	const MG_Line	& aCurve
-				,	const int		& aInterpolTypes);
+	MG_ZeroCurve(	const MG_Date		& aAsOf
+				,	const MG_ABSC		& aMaturities
+				,	const MG_Line		& aCurve
+				,	const std::string	& aCcy
+				,	const std::string	& aUnderIndex
+				,	const int			& aInterpolTypes);
 
 	virtual ~MG_ZeroCurve(void);
 
@@ -90,7 +116,11 @@ public:
 	ASSIGN_OPERATOR(MG_VolatilityCurve)
 	SWAP_DECL(MG_VolatilityCurve)
 
-	MG_VolatilityCurve	(const MG_Date& aAsOf, const int& aInterpolTypes = 0);
+	MG_VolatilityCurve	(	const MG_Date		& aAsOf
+						,	const std::string	& aType
+						,	const std::string	& aCcy
+						,	const std::string	& aUnderIndex
+						,	const int			& aInterpolTypes = 0);
 
 	virtual ~MG_VolatilityCurve(void);
 
@@ -110,11 +140,13 @@ public:
 	CLONE_METHOD(MG_IRVolatilityCurve)
 	SWAP_DECL(MG_IRVolatilityCurve)
 
-	MG_IRVolatilityCurve(	const MG_Date	& aAsOf
-						,	const MG_ABSC	& aMaturities
-						,	const MG_ORD	& aTenors
-						,	const MG_Matrix	& aCurve
-						,	const int		& aInterpolTypes);
+	MG_IRVolatilityCurve(	const MG_Date		& aAsOf
+						,	const MG_ABSC		& aMaturities
+						,	const MG_ORD		& aTenors
+						,	const MG_Matrix		& aCurve
+						,	const std::string	& aCcy
+						,	const std::string	& aUnderIndex
+						,	const int			& aInterpolTypes);
 
 public:
 	virtual double ComputeValue(const double& aTenor = 0, const double& aMaturity = 0, const double& aZ = 0);
@@ -145,6 +177,8 @@ public:
 					,	const MG_ABSC			& aExDivDates
 					,	const MG_ABSC			& aPaymentDates
 					,	const MG_Line			& aCurve
+					,	const std::string		& aCcy
+					,	const std::string		& aUnderIndex
 					,	const MG_ZeroCurvePtr	& aZeroCurve);
 
 public:
@@ -168,11 +202,13 @@ public:
 	CLONE_METHOD(MG_EQVolatilityCurve)
 	SWAP_DECL(MG_EQVolatilityCurve)
 
-	MG_EQVolatilityCurve(	const MG_Date	& aAsOf
-						,	const MG_ABSC	& aStrikes
-						,	const MG_ORD	& aMaturities
-						,	const MG_Matrix	& aCurve
-						,	const int		& aInterpolTypes = interpoltypeLinear);
+	MG_EQVolatilityCurve(	const MG_Date		& aAsOf
+						,	const MG_ABSC		& aStrikes
+						,	const MG_ORD		& aMaturities
+						,	const MG_Matrix		& aCurve
+						,	const std::string	& aCcy
+						,	const std::string	& aUnderIndex
+						,	const int			& aInterpolTypes = interpoltypeLinear);
 
 public:
 	virtual double ComputeValue(const double& aStrike = 0, const double& aMaturity = 0, const double& aZ = 0);
@@ -184,7 +220,6 @@ private:
 	MG_Matrix			myTransCurve;
 
 };
-
 
 
 MG_NAMESPACE_END

@@ -28,6 +28,9 @@
 #include <vector>
 #include <xlw/MyContainers.h>
 
+#include "mgnova/object.h"
+#include "mgnova/typedef.h"
+
 namespace xlw {
 
     class CellValue
@@ -41,6 +44,7 @@ namespace xlw {
         bool IsXlfOper() const;
         bool IsError() const;
         bool IsEmpty() const;
+		bool IsMGObject() const;
 
         CellValue(const std::string&);
         CellValue(const std::wstring&);
@@ -49,6 +53,7 @@ namespace xlw {
         CellValue(bool TrueFalse);
         CellValue(const char* values);
         CellValue(int i);
+		CellValue(const MG::MG_XLObjectPtr& obj);
 
         CellValue();
 
@@ -58,13 +63,14 @@ namespace xlw {
         double NumericValue() const;
         bool BooleanValue() const;
         unsigned long ErrorValue() const;
+		MG::MG_XLObjectPtr MGObjectValue() const;
 
         std::string StringValueLowerCase() const;
         std::wstring WstringValueLowerCase() const;
 
         enum ValueType
         {
-            string, wstring, number, boolean, xlfoper, error, empty
+            string, wstring, number, boolean, xlfoper, error, empty, mgobject
         };
 
         operator std::string() const;
@@ -72,6 +78,7 @@ namespace xlw {
         operator bool() const;
         operator double() const;
         operator unsigned long() const;
+		operator MG::MG_XLObjectPtr() const;
 
         void clear();
 
@@ -83,6 +90,7 @@ namespace xlw {
         double ValueAsNumeric;
         bool ValueAsBool;
         unsigned long ValueAsErrorCode;
+		MG::MG_XLObjectPtr ValueAsMGObject;
 
     };
 
@@ -100,6 +108,7 @@ namespace xlw {
         CellMatrix(const MyMatrix& data);
         CellMatrix(unsigned long i);
         CellMatrix(int i);
+		CellMatrix(const MG::MG_XLObjectPtr& obj);
 
         const CellValue& operator()(size_t i, size_t j) const;
         CellValue& operator()(size_t i, size_t j);

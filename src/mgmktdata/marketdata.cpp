@@ -7,10 +7,19 @@ using namespace std;
 using namespace MG;
 
 
+#define MG_ZERO_TYPE	"ZERO"
+#define MG_IRVOL_TYPE	"IRVOL"
+#define MG_EQVOL_TYPE	"EQVOL"
+#define MG_DIV_TYPE		"DIV"
+
+
 /* Base Market Data class */
 MG_MarketData::MG_MarketData(	const MG_MarketData& aRight)
 							:	MG_XLObject(aRight)
 							,	myAsOf			(aRight.myAsOf)
+							,	myType			(aRight.myType)
+							,	myCurrency		(aRight.myCurrency)
+							,	myUnderIndex	(aRight.myUnderIndex)
 							,	myInterpolTypes	(aRight.myInterpolTypes)
 {}
 
@@ -18,18 +27,40 @@ void MG_MarketData::Swap(MG_MarketData &aRight)
 {
 	MG_XLObject::Swap(aRight);
 	myAsOf.Swap(aRight.myAsOf);
+	myType.swap(aRight.myType);
+	myCurrency.swap(aRight.myCurrency);
+	myUnderIndex.swap(aRight.myUnderIndex);
 	swap(const_cast<int&>(myInterpolTypes), const_cast<int&>(aRight.myInterpolTypes));
 }
 
 MG_MarketData::MG_MarketData(	const MG_Date	& aAsOf
+							,	const string	& aType
+							,	const string	& aCcy
+							,	const string	& aUnderIndex
 							,	const int		& aInterpolTypes)
 							:	MG_XLObject()
 							,	myAsOf			(aAsOf)
+							,	myType			(aType)
+							,	myCurrency		(aCcy)
+							,	myUnderIndex	(aUnderIndex)
 							,	myInterpolTypes	(aInterpolTypes)
 {}
 
 MG_MarketData::~MG_MarketData()
 {}
+
+
+/* Empty Market Data */
+MG_EmptyMD::MG_EmptyMD	(	const string& aType
+						,	const string& aCcy
+						,	const string& aUnderIndex)
+						:	MG_MarketData(MG_Date(), aType, aCcy, aUnderIndex)
+{}
+
+double MG_EmptyMD::ComputeValue(const double& , const double& , const double& )
+{
+	return 0.;
+}
 
 
 /* Zero Curve - Discount Factors class */
@@ -53,8 +84,10 @@ void MG_ZeroCurve::Swap(MG_ZeroCurve &aRight)
 MG_ZeroCurve::MG_ZeroCurve	(	const MG_Date	& aAsOf
 							,	const MG_ABSC	& aMaturities
 							,	const MG_Line	& aCurve
+							,	const string	& aCcy
+							,	const string	& aUnderIndex
 							,	const int		& aInterpolTypes)
-							:	MG_MarketData	(aAsOf, aInterpolTypes)
+							:	MG_MarketData	(aAsOf, MG_ZERO_TYPE, aCcy, aUnderIndex, aInterpolTypes)
 							,	myMaturities	(aMaturities)
 							,	myCurve			(aCurve)
 {
@@ -91,8 +124,11 @@ void MG_VolatilityCurve::Swap(MG_VolatilityCurve &aRight)
 }
 
 MG_VolatilityCurve::MG_VolatilityCurve	(	const MG_Date	& aAsOf
+										,	const string	& aType
+										,	const string	& aCcy
+										,	const string	& aUnderIndex
 										,	const int		& aInterpolTypes)
-										:	MG_MarketData(aAsOf, aInterpolTypes)
+										:	MG_MarketData(aAsOf, aType, aCcy, aUnderIndex, aInterpolTypes)
 										,	my2ndInterp(NULL)
 {}
 
@@ -130,8 +166,10 @@ MG_IRVolatilityCurve::MG_IRVolatilityCurve	(	const MG_Date	& aAsOf
 											,	const MG_ABSC	& aMaturities
 											,	const MG_ORD	& aTenors
 											,	const MG_Matrix	& aCurve
+											,	const string	& aCcy
+											,	const string	& aUnderIndex
 											,	const int		& aInterpolTypes)
-											:	MG_VolatilityCurve	(aAsOf, aInterpolTypes)
+											:	MG_VolatilityCurve	(aAsOf, MG_IRVOL_TYPE, aCcy, aUnderIndex, aInterpolTypes)
 											,	myMaturities		(aMaturities)
 											,	myTenors			(aTenors)
 											,	myCurve				(aCurve)
@@ -174,8 +212,10 @@ MG_DividendsTable::MG_DividendsTable(	const MG_Date			& aAsOf
 									,	const MG_ABSC			& aExDivDates
 									,	const MG_ABSC			& aPaymentDates
 									,	const MG_Line			& aCurve
+									,	const string			& aCcy
+									,	const string			& aUnderIndex
 									,	const MG_ZeroCurvePtr	& aZeroCurve)
-									:	MG_MarketData(aAsOf)
+									:	MG_MarketData(aAsOf, MG_DIV_TYPE, aCcy, aUnderIndex)
 									,	myExDivDates	(aExDivDates)
 									,	myPaymentDates	(aPaymentDates)
 									,	myCurve			(aCurve)
@@ -225,8 +265,10 @@ MG_EQVolatilityCurve::MG_EQVolatilityCurve	(	const MG_Date	& aAsOf
 											,	const MG_ABSC	& aStrikes
 											,	const MG_ORD	& aMaturities
 											,	const MG_Matrix	& aCurve
+											,	const string	& aCcy
+											,	const string	& aUnderIndex
 											,	const int		& aInterpolTypes)
-											:	MG_VolatilityCurve(aAsOf, aInterpolTypes)
+											:	MG_VolatilityCurve(aAsOf, MG_EQVOL_TYPE, aCcy, aUnderIndex, aInterpolTypes)
 											,	myStrikes	(aStrikes)
 											,	myMaturities(aMaturities)
 											,	myCurve		(aCurve)

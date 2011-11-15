@@ -4,58 +4,80 @@
 #include <math.h>
 
 
-namespace MG
+using namespace std;
+using namespace MG;
+
+
+template<>
+double MG_ClosedFormulas::VanillaPrice<MG_CF::CALL>(	const double& aF
+													,	const double& aK
+													,	const double& aT
+													,	const double& aDf
+													,	const double& aVol)
 {
-	inline int sensOpt(eOPTION opt)
-	{
-		switch(opt)
-		{
-			case _call:
-			case _calldigit:
-				return 1;
+	double vStd = aVol * sqrt(aT);
+	double vDD = vStd<K_EPS || fabs(aK)<K_EPS || aF/aK<0. ? aF<aK ? -K_INFTY : K_INFTY : log(aF/aK)/vStd+0.5*vStd;
 
-			case _put:
-			case _putdigit:
-				return -1;
-
-			case _straddle:
-				return 1;
-
-			default:
-				return 0;
-		}
-	}
-
-	double VanillaPrice(double Fwd, double K, double T, double DF, double Vol, eOPTION TypeOp)
-	{
-		double std	= Vol * sqrt(T);
-
-		double dd	= std < EPS || fabs(K) < EPS || Fwd / K < 0. ? Fwd < K ? -INFTY : INFTY : log(Fwd / K) / std + 0.5 * std;
-		
-		double sens	= sensOpt(TypeOp);
-
-		switch(TypeOp)
-		{
-			case _call:
-			case _put:
-				return sens * DF * (Fwd * MG_NormalDist::CdfFunc(sens * dd) 
-									- K * MG_NormalDist::CdfFunc(sens * (dd - std)));
-
-			case _straddle:
-				return Fwd * (2. * MG_NormalDist::CdfFunc(dd) - 1.) 
-								- K * (2. * MG_NormalDist::CdfFunc(dd - std) - 1.);
-
-			case _calldigit:
-				return DF*MG_NormalDist::CdfFunc((dd - std));
-
-			case _putdigit:
-				return DF*(1. - MG_NormalDist::CdfFunc((dd - std)));
-
-			default:
-				return 0.;
-		}
-
-	}
-
-
+	return aDf*(aF*MG_NormalDist::CdfFunc(vDD) - aK*MG_NormalDist::CdfFunc(vDD-vStd));
 }
+
+template<>
+double MG_ClosedFormulas::VanillaPrice<MG_CF::PUT>	(	const double& aF
+													,	const double& aK
+													,	const double& aT
+													,	const double& aDf
+													,	const double& aVol)
+{
+	double vStd = aVol * sqrt(aT);
+	double vDD = vStd<K_EPS || fabs(aK)<K_EPS || aF/aK<0. ? aF<aK ? -K_INFTY : K_INFTY : log(aF/aK)/vStd+0.5*vStd;
+
+	return aDf*(aK*MG_NormalDist::CdfFunc(vStd-vDD) - aF*MG_NormalDist::CdfFunc(-vDD));
+}
+
+
+template<>
+double MG_ClosedFormulas::VanillaPrice<MG_CF::STRADDLE>(	const double& aF
+														,	const double& aK
+														,	const double& aT
+														,	const double& aDf
+														,	const double& aVol)
+{
+	double vStd = aVol * sqrt(aT);
+	double vDD = vStd<K_EPS || fabs(aK)<K_EPS || aF/aK<0. ? aF<aK ? -K_INFTY : K_INFTY : log(aF/aK)/vStd+0.5*vStd;
+
+	return aF*(2.*MG_NormalDist::CdfFunc(vDD)-1.) - aK*(2.*MG_NormalDist::CdfFunc(vDD-vStd)-1.);
+}
+
+
+template<>
+double MG_ClosedFormulas::VanillaPrice<MG_CF::CALL_DIGIT>	(	const double& aF
+															,	const double& aK
+															,	const double& aT
+															,	const double& aDf
+															,	const double& aVol)
+{
+	double vStd = aVol * sqrt(aT);
+	double vDD = vStd<K_EPS || fabs(aK)<K_EPS || aF/aK<0. ? aF<aK ? -K_INFTY : K_INFTY : log(aF/aK)/vStd+0.5*vStd;
+
+	return aDf*MG_NormalDist::CdfFunc((vDD-vStd));
+}
+
+template<>
+double MG_ClosedFormulas::VanillaPrice<MG_CF::PUT_DIGIT>(	const double& aF
+														,	const double& aK
+														,	const double& aT
+														,	const double& aDf
+														,	const double& aVol)
+{
+	double vStd = aVol * sqrt(aT);
+	double vDD = vStd<K_EPS || fabs(aK)<K_EPS || aF/aK<0. ? aF<aK ? -K_INFTY : K_INFTY : log(aF/aK)/vStd+0.5*vStd;
+
+	return aDf*(1. - MG_NormalDist::CdfFunc((vDD-vStd)));
+}
+/*
+template<> double MG_ClosedFormulas::VanillaPrice<MG_CF::CALL>(const double& , const double& , const double& aT, const double& , const double& );
+template<> double MG_ClosedFormulas::VanillaPrice<MG_CF::PUT>(const double& , const double& , const double& aT, const double& , const double& );
+template<> double MG_ClosedFormulas::VanillaPrice<MG_CF::STRADDLE>(const double& , const double& , const double& aT, const double& , const double& );
+template<> double MG_ClosedFormulas::VanillaPrice<MG_CF::CALL_DIGIT>(const double& , const double& , const double& aT, const double& , const double& );
+template<> double MG_ClosedFormulas::VanillaPrice<MG_CF::PUT_DIGIT>(const double& , const double& , const double& aT, const double& , const double& );
+*/

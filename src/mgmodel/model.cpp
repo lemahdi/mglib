@@ -24,15 +24,39 @@ MG_Model::~MG_Model()
 {}
 
 
-/* Black & Scholes Model class */
-MG_BSModel::MG_BSModel() : MG_Model(), myVol(0)
+/* Discount Factor Model class */
+MG_DfModel::MG_DfModel	(	const MG_Date &aAsOf)
+						:	MG_Model(aAsOf)
+						,	myZC(NULL)
 {
-	myXLName = MG_BSMODEL_XL_NAME;
+	myXLName = MG_DFMODEL_XL_NAME;
 }
 
-MG_BSModel::MG_BSModel	(	const MG_Date &aAsOf, const double &aVol)
+MG_DfModel::~MG_DfModel()
+{}
+
+void MG_DfModel::Swap(MG_DfModel& aRight)
+{
+	MG_Model::Swap(aRight);
+	myZC.Swap(aRight.myZC);
+}
+
+void MG_DfModel::Register(MG_RobotPtr& aRbt)
+{
+	myZC = aRbt->GetMktData("ZERO", "EUR", "EURIB");
+}
+
+double MG_DfModel::DiscountFactor(const double& aMaturity)
+{
+	return myZC->ComputeValue(aMaturity);
+}
+
+
+/* Black & Scholes Model class */
+MG_BSModel::MG_BSModel	(	const MG_Date &aAsOf)
 						:	MG_Model(aAsOf)
-						,	myVol(aVol)
+						,	myZC	(NULL)
+						,	myAtmVol(NULL)
 {
 	myXLName = MG_BSMODEL_XL_NAME;
 }
@@ -43,18 +67,27 @@ MG_BSModel::~MG_BSModel()
 void MG_BSModel::Swap(MG_BSModel& aRight)
 {
 	MG_Model::Swap(aRight);
-	swap(myVol, aRight.myVol);
+	myZC.Swap(aRight.myZC);
+	myAtmVol.Swap(aRight.myAtmVol);
 }
 
-double MG_BSModel::CallPrice(const double &aFwd, const double &aStrike, const double &aMaturity)
+void MG_BSModel::Register(MG_RobotPtr& aRbt)
 {
-	double DF = exp(-0.03*aMaturity);
-	return VanillaPrice(aFwd, aStrike, aMaturity, DF, myVol, _call);
+	myZC = aRbt->GetMktData("ZERO", "EUR", "EURIB");
+	myAtmVol = aRbt->GetMktData("IRVOL", "EUR", "EURIB");
 }
 
-double MG_BSModel::PutPrice(const double &aFwd, const double &aStrike, const double &aMaturity)
+double MG_BSModel::CallPrice(const double &aFwd, const double &aTenorStrike, const double &aMaturity)
+{
+	double vDf = myZC->ComputeValue(aMaturity);
+	double vVol = myAtmVol->ComputeValue(aTenorStrike, aMaturity);
+	return MG_CF::VanillaPrice<MG_CF::CALL>(aFwd, aTenorStrike, aMaturity, vDf, vVol);
+}
+
+double MG_BSModel::PutPrice(const double &aFwd, const double &aTenorStrike, const double &aMaturity)
 {	
-	double DF = exp(-0.03*aMaturity);
-	return VanillaPrice(aFwd, aStrike, aMaturity, DF, myVol, _put);
+	double DF = myZC->ComputeValue(aMaturity);
+	double vVol = myAtmVol->ComputeValue(aTenorStrike, aMaturity);
+	return MG_CF::VanillaPrice<MG_CF::PUT>(aFwd, aTenorStrike, aMaturity, DF, vVol);
 }
 

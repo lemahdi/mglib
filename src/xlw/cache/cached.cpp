@@ -130,3 +130,32 @@ bool MG_Cache::PersistentGet(const string& aRefObj, MG_XLObjectPtr& aXLObj, stri
 
 	return true;
 }
+
+bool MG_Cache::IsMGObjectDescriptor(const string &aDescriptor)
+{
+	if (aDescriptor.size() == 14)
+		return false;
+
+	if (aDescriptor.at(5) != '_')
+		return false;
+
+	size_t v1stUnderScore = aDescriptor.find_first_of("_");
+	size_t vOffset = aDescriptor.substr(v1stUnderScore+1).find_first_of("_")+1;
+
+	if (aDescriptor.at(5+vOffset) != '_')
+		return false;
+
+	if (aDescriptor.at(8+vOffset) != ':')
+		return false;
+
+	if (aDescriptor.at(11+vOffset) != ':')
+		return false;
+
+	string vErr;
+	MG_XLObjectPtr vObj(NULL);
+	PersistentGet(aDescriptor, vObj, vErr);
+	if (vErr!="" || !vObj)
+		return false;
+
+	return true;
+}

@@ -41,10 +41,7 @@ void CopyCountedPtr::CopyOperator(const CountedPtr<T>& aTo, const CountedPtr<U>&
 	T* vTmp = dynamic_cast<T*>(aFrom.myPtr);
 	if (vTmp)
 	{
-		if (aTo.myPtr)
-			aTo.Release();
-		else
-			delete aTo.myCount;
+		aTo.Release();
 		aTo.myCount = aFrom.myCount;
 		++*aTo.myCount;
 		aTo.myPtr = vTmp;
@@ -144,7 +141,7 @@ public:
 private:
 	void Release(void) const
 	{
-		if (--*myCount == 0)
+		if (myCount && --*myCount==0)
 		{
 			delete myCount;
 			delete myPtr;

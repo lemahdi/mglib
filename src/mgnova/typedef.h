@@ -25,15 +25,15 @@ void yy_delete_buffer (YY_BUFFER_STATE b  );
 
 
 /* Some useful math constant definitions */
-#define PI						3.141592653589793
-#define ROOTTWO					1.4142135623730951
-#define ONEOVERROOTTWOPI		0.3989422804014327
-#define ONEOVERROOTPI			0.56418958354775628
-#define ROOTTWOPI				2.5066282746310002
-#define LOGROOTTWOPI			0.918938533204672
-#define NORMALCUMULATIVEBOUND	7.
-#define INFTY					1.e+20						
-#define	EPS						1.e-12						
+#define K_PI						3.141592653589793
+#define K_ROOTTWO					1.4142135623730951
+#define K_ONEOVERROOTTWOPI			0.3989422804014327
+#define K_ONEOVERROOTPI				0.56418958354775628
+#define K_ROOTTWOPI					2.5066282746310002
+#define K_LOGROOTTWOPI				0.918938533204672
+#define K_NORMALCUMULATIVEBOUND		7.
+#define K_INFTY						1.e+20
+#define	K_EPS						1.e-12
 
 
 /* Error file for Lexer and Parser */
@@ -116,7 +116,9 @@ void yy_delete_buffer (YY_BUFFER_STATE b  );
 
 
 /* XL names */
+#define MG_DFMODEL_XL_NAME		"DFMOD"
 #define MG_BSMODEL_XL_NAME		"BSMOD"
+#define MG_ROBOT_XL_NAME		"ROBOT"
 #define MG_ZERO_XL_NAME			"ZEROC"
 #define MG_DIVS_XL_NAME			"DIVSC"
 #define MG_IRVOL_XL_NAME		"IRVOL"
@@ -141,7 +143,10 @@ void yy_delete_buffer (YY_BUFFER_STATE b  );
 #define MG_SamplerPtr					CountedPtr<MG::MG_Sampler>
 #define MG_CdfNormalPtr					CountedPtr<MG::MG_CdfNormal>
 #define MG_UnaryFuncPtr					CountedPtr<MG::MG_UnaryFunc>
+#define MG_RobotPtr						CountedPtr<MG::MG_Robot>
+#define MG_MarketDataPtr				CountedPtr<MG::MG_MarketData>
 #define MG_ZeroCurvePtr					CountedPtr<MG::MG_ZeroCurve>
+#define MG_VolatilityCurvePtr			CountedPtr<MG::MG_VolatilityCurve>
 #define MG_IRVolatilityCurvePtr			CountedPtr<MG::MG_IRVolatilityCurve>
 #define MG_InterpolatorPtr				CountedPtr<MG::MG_Interpolator>
 #define MG_LinearInterpolatorPtr		CountedPtr<MG::MG_LinearInterpolator>

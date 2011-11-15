@@ -25,9 +25,24 @@ MG_Date JustATest(const MG_Date& aDate)
 	return aDate;
 }
 
-MG_XLObjectPtr BSModel(const MG_Date& aAsOf, const double& aVol)
+MG_XLObjectPtr Robot(const MG_Date& aAsOf, CellMatrix& aMktData)
 {
-	return MG_XLObjectPtr(new MG_BSModel(aAsOf, aVol));
+	MG_MarketDataPtr vMktData(NULL);
+	size_t vSize = aMktData.RowsInStructure();
+	string vDesc;
+	vector<MG_MarketDataPtr> vMDVect(vSize);
+	for(size_t i=0; i<vSize; ++i)
+		vMDVect[i] = MG_MarketDataPtr(dynamic_cast<MG_MarketData*>(aMktData(i, 0).MGObjectValue()->Clone()));
+
+	return MG_XLObjectPtr(new MG_Robot(aAsOf, vMDVect));
+}
+
+MG_XLObjectPtr BSModel(const MG_Date& aAsOf, MG_XLObjectPtr& aRobot)
+{
+	MG_BSModel* vMod = new MG_BSModel(aAsOf);
+	MG_RobotPtr vRbt(aRobot);
+	vMod->Register(vRbt);
+	return MG_XLObjectPtr(vMod);
 }
 
 
@@ -46,6 +61,8 @@ MG_XLObjectPtr
 ZeroCurve_Create	(	const MG_Date	& aAsOf
 					,	const CellMatrix& aMaturities
 					,	const CellMatrix& aZeroRates
+					,	const string& aCcy
+					,	const string& aUnderIndex
 					,	const CellMatrix& aInterpolMeth)
 {
 	if (aZeroRates.Size() != aMaturities.Size())
@@ -59,7 +76,7 @@ ZeroCurve_Create	(	const MG_Date	& aAsOf
 		vInterpolMeths = FromCellMatrixToInterpolVector(aInterpolMeth);
 	long vInterpolCode = MG_Interpolator::CreateInterpolTypes(vInterpolMeths);
 
-	return MG_XLObjectPtr(new MG_ZeroCurve(aAsOf, vMaturities, vZeroRates, vInterpolCode));
+	return MG_XLObjectPtr(new MG_ZeroCurve(aAsOf, vMaturities, vZeroRates, aCcy, aUnderIndex, vInterpolCode));
 }
 
 double ComputeZeroRate(MG_XLObjectPtr& aZeroCurve, const double& aMaturity)
@@ -72,6 +89,8 @@ VolatilityCurve_Create	(	const MG_Date	& aAsOf
 						,	const CellMatrix& aMaturities
 						,	const CellMatrix& aTenors
 						,	const CellMatrix& aVolatilities
+						,	const string& aCcy
+						,	const string& aUnderIndex
 						,	const CellMatrix& aInterpolMeths)
 {
 	if (aVolatilities.Size() != aTenors.Size()*aMaturities.Size())
@@ -86,7 +105,7 @@ VolatilityCurve_Create	(	const MG_Date	& aAsOf
 		vInterpolMeths = FromCellMatrixToInterpolVector(aInterpolMeths);
 	long vInterpolCode = MG_Interpolator::CreateInterpolTypes(vInterpolMeths);
 
-	return MG_XLObjectPtr(new MG_IRVolatilityCurve(aAsOf, vMaturities, vTenors, vVols, vInterpolCode));
+	return MG_XLObjectPtr(new MG_IRVolatilityCurve(aAsOf, vMaturities, vTenors, vVols, aCcy, aUnderIndex, vInterpolCode));
 }
 
 double ComputeVolatility(MG_XLObjectPtr& aVolCurve, const double& aTenor, const double& aMaturity)
@@ -99,6 +118,8 @@ DividendsTable_Create	(	const MG_Date		& aAsOf
 						,	const CellMatrix	& aExDivDates
 						,	const CellMatrix	& aPaymentDates
 						,	const CellMatrix	& aDividends
+						,	const string		& aCcy
+						,	const string		& aUnderIndex
 						,	const MG_XLObjectPtr& aZC)
 {
 	if (aExDivDates.Size() != aExDivDates.Size())
@@ -108,7 +129,7 @@ DividendsTable_Create	(	const MG_Date		& aAsOf
 	MG_Vector vPaymentDates	= FromCellMatrixToMGVectorDate	(aPaymentDates, 0);
 	MG_Vector vDividends	= FromCellMatrixToMGVectorDouble(aDividends, 0);
 
-	return MG_XLObjectPtr(new MG_DividendsTable(aAsOf, vExDivDates, vPaymentDates, vDividends, aZC));
+	return MG_XLObjectPtr(new MG_DividendsTable(aAsOf, vExDivDates, vPaymentDates, vDividends, aCcy, aUnderIndex, aZC));
 }
 
 double ComputeDiscountedDivs(MG_XLObjectPtr& aDividends, const MG_Date& aT1, const MG_Date& aT2)
