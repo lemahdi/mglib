@@ -179,6 +179,14 @@
 			>
 		</File>
 		<File
+			RelativePath=".\regression.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\regression.h"
+			>
+		</File>
+		<File
 			RelativePath=".\solver.cpp"
 			>
 		</File>

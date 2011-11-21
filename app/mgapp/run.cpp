@@ -9,6 +9,7 @@
 #include "mgnova/calendar.h"
 #include "mgnumerical/solver.h"
 #include "mgnova/wrapper/matrix.h"
+#include "mgnumerical/regression.h"
 
 #include "gsl/gsl_rng.h"
 #include "gsl/gsl_qrng.h"
@@ -165,6 +166,65 @@ int main()
 		}
 	}
 	fclose(f);*/
+
+
+	// Regression
+	{
+		cout << "REGRESSION" << endl;
+		
+		// Linear Regression
+		MG_Vector vDataX(5), vDataY(5), vWeights(5, 1./(2*5));
+		vDataX[0]=1.; vDataX[1]=3.; vDataX[2]=4.; vDataX[3]=5.; vDataX[4]=9.;
+		vDataY[0]=2.2; vDataY[1]=5.; vDataY[2]=7.; vDataY[3]=8.4; vDataY[4]=16;
+
+		cout << "Linear Regression:" << endl;
+		MG_LinearReg vReg(vDataX, vDataY);
+		vReg.ProcessLinearReg();
+		MG_Vector vXs(3);
+		vXs[0]=2.; vXs[1]=4.5; vXs[2]=7.;
+		double vX;
+		for(size_t i=0; i<vXs.Size(); ++i)
+		{
+			vX = vXs[i];
+			cout << "X=" << vX << " ==> Y=" << vReg.Estimate(vX) << endl;
+		}
+
+		cout << "Weighted Linear Regression" << endl;
+		MG_LinearReg vWReg(vDataX, vDataY, vWeights);
+		vWReg.ProcessWLinearReg();
+		for(size_t i=0; i<vXs.Size(); ++i)
+		{
+			vX = vXs[i];
+			cout << "X=" << vX << " ==> Y=" << vWReg.Estimate(vX) << endl;
+		}
+
+		// Multi Linear Regression
+		MG_Matrix vMDataX(5, 2);
+		vMDataX.Elt(0,0)=1.; vMDataX.Elt(1,0)=3.; vMDataX.Elt(2,0)=4.; vMDataX.Elt(3,0)=5.; vMDataX.Elt(4,0)=9.;
+		vMDataX.Elt(0,1)=1.; vMDataX.Elt(1,1)=9.; vMDataX.Elt(2,1)=16.; vMDataX.Elt(3,1)=25.; vMDataX.Elt(4,1)=81.;
+
+		cout << "Multi Linear Regression:" << endl;
+		MG_MultiReg vMReg(vMDataX, vDataY);
+		vMReg.ProcessLinearReg();
+		MG_Vector vMX1(2);
+		MG_Vector vMX2(2);
+		MG_Vector vMX3(2);
+		vMX1[0]=2.; vMX1[1]=4.5;
+		vMX2[0]=4.5; vMX2[1]=18.5;
+		vMX3[0]=3.9; vMX3[1]=13.5;
+		cout << "X=(" << vMX1[0] << "," << vMX1[1] << ") ==> Y=" << vMReg.Estimate(vMX1) << endl;
+		cout << "X=(" << vMX2[0] << "," << vMX2[1] << ") ==> Y=" << vMReg.Estimate(vMX2) << endl;
+		cout << "X=(" << vMX3[0] << "," << vMX3[1] << ") ==> Y=" << vMReg.Estimate(vMX3) << endl;
+
+		cout << "Multi Weighted Linear Regression" << endl;
+		MG_MultiReg vWMReg(vMDataX, vDataY, vWeights);
+		vWMReg.ProcessWLinearReg();
+		cout << "X=(" << vMX1[0] << "," << vMX1[1] << ") ==> Y=" << vWMReg.Estimate(vMX1) << endl;
+		cout << "X=(" << vMX2[0] << "," << vMX2[1] << ") ==> Y=" << vWMReg.Estimate(vMX2) << endl;
+		cout << "X=(" << vMX3[0] << "," << vMX3[1] << ") ==> Y=" << vWMReg.Estimate(vMX3) << endl;
+	}
+
+	cin >> ch;
 
 
 	// Solver

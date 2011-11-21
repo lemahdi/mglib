@@ -45,7 +45,8 @@ public:
 	inline size_t	Cols(void)									const { return myCols; }
 	inline size_t	Size(void)									const { return myRows*myCols; }
 	
-	inline const gsl_matrix* const GetPtr(void) const { return myMatrix; }
+	inline const gsl_matrix* const	GetPtr(void) const	{ return myMatrix; }
+	inline gsl_matrix* const		GetPtr(void)		{ return myMatrix; }
 
 	void Transpose(MG_Matrix& aDest);
 
