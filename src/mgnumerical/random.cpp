@@ -6,11 +6,12 @@ using namespace MG;
 
 
 /* Random Abstract Class */
-MG_AbstractRandom::MG_AbstractRandom(const MG_AbstractRandom& aRight) : myName(aRight.myName)
+MG_AbstractRandom::MG_AbstractRandom(const MG_AbstractRandom& aRight) : MG_XLObject(aRight), myName(aRight.myName)
 {}
 
-void MG_AbstractRandom::Swap(MG_AbstractRandom &aRight)
+void MG_AbstractRandom::Swap(MG_AbstractRandom& aRight)
 {
+	MG_XLObject::Swap(aRight);
 	myName.swap(aRight.myName);
 }
 
@@ -37,12 +38,12 @@ const gsl_rng_type* MG_Random::From_MGType_To_GSLType(const RAND_TYPE& aType)
 	case KNUTHRAN2			: return gsl_rng_knuthran2;
 	case KNUTHRAN2002		: return gsl_rng_knuthran2002;
 	case LECUYER21			: return gsl_rng_lecuyer21; // Knuth
-	case MINSTD				: return gsl_rng_minstd; // Park & Miller minimal standard algo
-	case MRG				: return gsl_rng_mrg; // L'Ecuyer, Blouin & Coutre
-	case MT19937			: return gsl_rng_mt19937; // Mersenne Twister, by Makoto Matsumoto & Takuji Nishimura 2002
+	case MINSTD				: return gsl_rng_minstd; // Park&  Miller minimal standard algo
+	case MRG				: return gsl_rng_mrg; // L'Ecuyer, Blouin&  Coutre
+	case MT19937			: return gsl_rng_mt19937; // Mersenne Twister, by Makoto Matsumoto&  Takuji Nishimura 2002
 	case MT19937_1999		: return gsl_rng_mt19937_1999;
 	case MT19937_1998		: return gsl_rng_mt19937_1998;
-	case R250				: return gsl_rng_r250; // Kirkpatrick & Stoll
+	case R250				: return gsl_rng_r250; // Kirkpatrick&  Stoll
 	case RAN0				: return gsl_rng_ran0;
 	case RAN1				: return gsl_rng_ran1;
 	case RAN2				: return gsl_rng_ran2;
@@ -76,7 +77,7 @@ const gsl_rng_type* MG_Random::From_MGType_To_GSLType(const RAND_TYPE& aType)
 	case RANLXS0			: return gsl_rng_ranlxs0; // Lüscher algorithm, 24-bit
 	case RANLXS1			: return gsl_rng_ranlxs1; // Lüscher algorithm, 24-bit, luxury level 1, more decorrelated
 	case RANLXS2			: return gsl_rng_ranlxs2; // Lüscher algorithm, 24-bit, luxury level 2, more decorrelated
-	case RANMAR				: return gsl_rng_ranmar; // RANMAR, by Marsaglia, Zaman & Tsang
+	case RANMAR				: return gsl_rng_ranmar; // RANMAR, by Marsaglia, Zaman&  Tsang
 	case SLATEC				: return gsl_rng_slatec;
 	case TAUS				: return gsl_rng_taus; // Tausworthe generator, by L'Ecuyer
 	case TAUS2				: return gsl_rng_taus2; // Tausworthe generator improved, by L'Ecuyer
@@ -92,7 +93,7 @@ const gsl_rng_type* MG_Random::From_MGType_To_GSLType(const RAND_TYPE& aType)
 	}
 }
 
-MG_Random::MG_Random(	const MG_Random &aRight)
+MG_Random::MG_Random(	const MG_Random& aRight)
 					:	MG_AbstractRandom(aRight)
 					,	myInitialSeed(aRight.myInitialSeed)
 {
@@ -156,7 +157,7 @@ const gsl_qrng_type* MG_QuasiRandom::From_MGType_To_GSLType(const QUASIRAND_TYPE
 	}
 }
 
-MG_QuasiRandom::MG_QuasiRandom	(	const MG_QuasiRandom &aRight)
+MG_QuasiRandom::MG_QuasiRandom	(	const MG_QuasiRandom& aRight)
 								:	MG_AbstractRandom(aRight)
 								,	myValues(aRight.myValues)
 {

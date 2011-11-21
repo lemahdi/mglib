@@ -74,10 +74,3 @@ double MG_ClosedFormulas::VanillaPrice<MG_CF::PUT_DIGIT>(	const double& aF
 
 	return aDf*(1. - MG_NormalDist::CdfFunc((vDD-vStd)));
 }
-/*
-template<> double MG_ClosedFormulas::VanillaPrice<MG_CF::CALL>(const double& , const double& , const double& aT, const double& , const double& );
-template<> double MG_ClosedFormulas::VanillaPrice<MG_CF::PUT>(const double& , const double& , const double& aT, const double& , const double& );
-template<> double MG_ClosedFormulas::VanillaPrice<MG_CF::STRADDLE>(const double& , const double& , const double& aT, const double& , const double& );
-template<> double MG_ClosedFormulas::VanillaPrice<MG_CF::CALL_DIGIT>(const double& , const double& , const double& aT, const double& , const double& );
-template<> double MG_ClosedFormulas::VanillaPrice<MG_CF::PUT_DIGIT>(const double& , const double& , const double& aT, const double& , const double& );
-*/
