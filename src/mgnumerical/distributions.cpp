@@ -127,8 +127,8 @@ void MG_UniformDist::Swap(MG_UniformDist& aRight)
 }
 
 MG_UniformDist::MG_UniformDist(	const MG_RandomPtr	& aRandGen
-							,	const double		& aA
-							,	const double		& aB)
+							,	const double& aA
+							,	const double& aB)
 							:	MG_RandDist(aRandGen)
 							,	myA(aA)
 							,	myB(aB)
@@ -154,5 +154,50 @@ double MG_UniformDist::InvCdf(const double& aP)
 double MG_UniformDist::Draw()
 {
 	return gsl_ran_flat(myRandGen->GetGenerator(), myA, myB);
+}
+
+
+/* Lognormal Distribution Class */
+MG_LogNormalDist::MG_LogNormalDist	(	const MG_LogNormalDist& aRight)
+								:	MG_RandDist(aRight)
+								,	myZeta	(aRight.myZeta)
+								,	mySigma	(aRight.mySigma)
+{}
+
+void MG_LogNormalDist::Swap(MG_LogNormalDist& aRight)
+{
+	MG_RandDist::Swap(aRight);
+	swap(myZeta, aRight.myZeta);
+	swap(mySigma, aRight.mySigma);
+}
+
+MG_LogNormalDist::MG_LogNormalDist	(	const MG_RandomPtr	& aRandGen
+									,	const double		& aZeta
+									,	const double		& aSigma)
+									:	MG_RandDist(aRandGen)
+									,	myZeta	(aZeta)
+									,	mySigma	(aSigma)
+{
+	myXLName = MG_LOGNDIST_XL_NAME;
+}
+
+double MG_LogNormalDist::Density(const double& aX)
+{
+	return gsl_ran_lognormal_pdf(aX, myZeta, mySigma);
+}
+
+double MG_LogNormalDist::Cdf(const double& aX)
+{
+	return gsl_cdf_lognormal_P(aX, myZeta, mySigma);
+}
+
+double MG_LogNormalDist::InvCdf(const double& aP)
+{
+	return gsl_cdf_lognormal_Pinv(aP, myZeta, mySigma);
+}
+
+double MG_LogNormalDist::Draw()
+{
+	return gsl_ran_lognormal(myRandGen->GetGenerator(), myZeta, mySigma);
 }
 

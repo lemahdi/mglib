@@ -121,8 +121,39 @@ public:
 	double DrawTail		(const double& aLimit) { return Draw(); }
 
 private:
-	double				myA;
-	double				myB;
+	double myA;
+	double myB;
+
+};
+
+
+/* Lognormal Distribution Class */
+class MG_LogNormalDist : public MG_RandDist
+{
+public:
+	/* Constructors / Destructor */
+	COPY_CTOR_DECL(MG_LogNormalDist)
+
+	ASSIGN_OPERATOR(MG_LogNormalDist)
+	CLONE_METHOD(MG_LogNormalDist)
+	SWAP_DECL(MG_LogNormalDist)
+
+	MG_LogNormalDist(const MG_RandomPtr& aRandGen, const double& aZeta, const double& aSigma);
+
+	virtual ~MG_LogNormalDist(void) {}
+
+public:
+	/* Engine */
+	double Density		(const double& aX);
+	double DensityTail	(const double& aX, const double& aLimit) { return Density(aX); }
+	double Cdf			(const double& aX);
+	double InvCdf		(const double& aP);
+	double Draw			(void);
+	double DrawTail		(const double& aLimit) { return Draw(); }
+
+private:
+	double myZeta;
+	double mySigma;
 
 };
 
