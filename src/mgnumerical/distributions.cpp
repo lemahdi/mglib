@@ -110,3 +110,49 @@ double MG_NormalDist::InvCdfFunc(const double& aP)
 {
 	return gsl_cdf_ugaussian_Pinv(aP);
 }
+
+
+/* Uniform Distribution Class */
+MG_UniformDist::MG_UniformDist	(	const MG_UniformDist& aRight)
+								:	MG_RandDist(aRight)
+								,	myA(aRight.myA)
+								,	myB(aRight.myB)
+{}
+
+void MG_UniformDist::Swap(MG_UniformDist& aRight)
+{
+	MG_RandDist::Swap(aRight);
+	swap(myA, aRight.myA);
+	swap(myB, aRight.myB);
+}
+
+MG_UniformDist::MG_UniformDist(	const MG_RandomPtr	& aRandGen
+							,	const double		& aA
+							,	const double		& aB)
+							:	MG_RandDist(aRandGen)
+							,	myA(aA)
+							,	myB(aB)
+{
+	myXLName = MG_UDIST_XL_NAME;
+}
+
+double MG_UniformDist::Density(const double& aX)
+{
+	return gsl_ran_flat_pdf(aX, myA, myB);
+}
+
+double MG_UniformDist::Cdf(const double& aX)
+{
+	return gsl_cdf_flat_P(aX, myA, myB);
+}
+
+double MG_UniformDist::InvCdf(const double& aP)
+{
+	return gsl_cdf_flat_Pinv(aP, myA, myB);
+}
+
+double MG_UniformDist::Draw()
+{
+	return gsl_ran_flat(myRandGen->GetGenerator(), myA, myB);
+}
+

@@ -96,4 +96,35 @@ private:
 };
 
 
+/* Uniform Distribution Class */
+class MG_UniformDist : public MG_RandDist
+{
+public:
+	/* Constructors / Destructor */
+	COPY_CTOR_DECL(MG_UniformDist)
+
+	ASSIGN_OPERATOR(MG_UniformDist)
+	CLONE_METHOD(MG_UniformDist)
+	SWAP_DECL(MG_UniformDist)
+
+	MG_UniformDist(const MG_RandomPtr& aRandGen, const double& aA = 0., const double& aB = 1.);
+
+	virtual ~MG_UniformDist(void) {}
+
+public:
+	/* Engine */
+	double Density		(const double& aX);
+	double DensityTail	(const double& aX, const double& aLimit) { return Density(aX); }
+	double Cdf			(const double& aX);
+	double InvCdf		(const double& aP);
+	double Draw			(void);
+	double DrawTail		(const double& aLimit) { return Draw(); }
+
+private:
+	double				myA;
+	double				myB;
+
+};
+
+
 MG_NAMESPACE_END
