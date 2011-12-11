@@ -171,6 +171,14 @@
 			>
 		</File>
 		<File
+			RelativePath=".\minimizer.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\minimizer.h"
+			>
+		</File>
+		<File
 			RelativePath=".\random.cpp"
 			>
 		</File>

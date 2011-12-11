@@ -75,16 +75,18 @@ public:
 	virtual ~MG_FSolver(void);
 
 	/* State */
-	inline void SetBounds	(const double& aMin, const double& aMax) { myMin = aMin; myMax = aMax; }
 	inline void SetEpsilons	(const double& aEpsAbs, const double& aEpsRel) { myEpsAbs = aEpsAbs; myEpsRel = aEpsRel; }
 	inline void SetMaxIter	(const size_t& aMaxIter) { myMaxIter = aMaxIter; }
-	void Load(const MG_FunctionPtr& aFunc);
+	
+	void Load	(const MG_FunctionPtr& aFunc);
+	void Reload	(const double& aMin, const double& aMax);
 
 	/* Engine */
 	double Solve(void);
 
 private:
 	gsl_root_fsolver* mySolver;
+	const FSOLVER_TYPE myType;
 	double myMin;
 	double myMax;
 
@@ -110,14 +112,15 @@ public:
 	virtual ~MG_FDfSolver(void);
 
 	/* State */
-	inline void SetGuess(const double& aGuess) { myGuess = aGuess; }
-	void Load(const MG_FunctionPtr& aFunc);
+	void Load	(const MG_FunctionPtr& aFunc);
+	void Reload	(const double& aGuess);
 
 	/* Engine */
 	double Solve(void);
 
 private:
 	gsl_root_fdfsolver* mySolver;
+	const FDFSOLVER_TYPE myType;
 	double myGuess;
 
 };

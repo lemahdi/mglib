@@ -22,7 +22,7 @@ MG_Solver::MG_Solver(	const MG_Solver& aRight)
 void MG_Solver::Swap(MG_Solver& aRight)
 {
 	MG_XLObject::Swap(aRight);
-	swap(myName, aRight.myName);
+	myName.swap(aRight.myName);
 	myFunc->Swap(*aRight.myFunc);
 	swap(myStatus, aRight.myStatus);
 	swap(myEpsAbs, aRight.myEpsAbs);
@@ -67,14 +67,21 @@ const gsl_root_fsolver_type* MG_FSolver::From_MGType_To_GSLType(const FSOLVER_TY
 
 MG_FSolver::MG_FSolver	(	const MG_FSolver& aRight)
 						:	MG_Solver(aRight)
-						,	mySolver(NULL)
+						,	mySolver(NULL), myType(aRight.myType)
 						,	myMin(aRight.myMin), myMax(aRight.myMax)
-{}
+{
+	if (aRight.mySolver)
+	{
+		const gsl_root_fsolver_type* vType = From_MGType_To_GSLType(myType);
+		mySolver = gsl_root_fsolver_alloc(vType);
+	}
+}
 
 void MG_FSolver::Swap(MG_FSolver& aRight)
 {
 	MG_Solver::Swap(aRight);
 	swap(mySolver, aRight.mySolver);
+	swap(const_cast<FSOLVER_TYPE&>(myType), const_cast<FSOLVER_TYPE&>(aRight.myType));
 	swap(myMin, aRight.myMin);
 	swap(myMax, aRight.myMax);
 }
@@ -86,12 +93,12 @@ MG_FSolver::MG_FSolver	(	const FSOLVER_TYPE& aType
 						,	const double& aEpsRel
 						,	const size_t& aMaxIter)
 						:	MG_Solver(aEpsAbs, aEpsRel, aMaxIter)
-						,	mySolver(NULL)
+						,	mySolver(NULL), myType(aType)
 						,	myMin(aMin), myMax(aMax)
 {
 	myXLName = MG_FSOLVER_XL_NAME;
 
-	const gsl_root_fsolver_type* vType = From_MGType_To_GSLType(aType);
+	const gsl_root_fsolver_type* vType = From_MGType_To_GSLType(myType);
 	if (vType)
 	{
 		mySolver = gsl_root_fsolver_alloc(vType);
@@ -107,6 +114,13 @@ MG_FSolver::~MG_FSolver()
 void MG_FSolver::Load(const MG_FunctionPtr& aFunc)
 {
 	myFunc = aFunc;
+	gsl_root_fsolver_set(mySolver, dynamic_cast<MG_FFunction*>(&*myFunc)->GetFunc(), myMin, myMax);
+}
+
+void MG_FSolver::Reload(const double& aMin, const double& aMax)
+{
+	myMin = aMin;
+	myMax = aMax;
 	gsl_root_fsolver_set(mySolver, dynamic_cast<MG_FFunction*>(&*myFunc)->GetFunc(), myMin, myMax);
 }
 
@@ -153,14 +167,21 @@ const gsl_root_fdfsolver_type* MG_FDfSolver::From_MGType_To_GSLType(const FDFSOL
 
 MG_FDfSolver::MG_FDfSolver	(	const MG_FDfSolver& aRight)
 							:	MG_Solver(aRight)
-							,	mySolver(NULL)
+							,	mySolver(NULL), myType(aRight.myType)
 							,	myGuess(aRight.myGuess)
-{}
+{
+	if (aRight.mySolver)
+	{
+		const gsl_root_fdfsolver_type* vType = From_MGType_To_GSLType(myType);
+		mySolver = gsl_root_fdfsolver_alloc(vType);
+	}
+}
 
 void MG_FDfSolver::Swap(MG_FDfSolver& aRight)
 {
 	MG_Solver::Swap(aRight);
 	swap(mySolver, aRight.mySolver);
+	swap(const_cast<FDFSOLVER_TYPE&>(myType), const_cast<FDFSOLVER_TYPE&>(aRight.myType));
 	swap(myGuess, aRight.myGuess);
 }
 
@@ -170,12 +191,12 @@ MG_FDfSolver::MG_FDfSolver	(	const FDFSOLVER_TYPE& aType
 							,	const double& aEpsRel
 							,	const size_t& aMaxIter)
 							:	MG_Solver(aEpsAbs, aEpsRel, aMaxIter)
-							,	mySolver(NULL)
+							,	mySolver(NULL), myType(aType)
 							,	myGuess	(aGuess)
 {
 	myXLName = MG_FDFSOLVER_XL_NAME;
 
-	const gsl_root_fdfsolver_type* vType = From_MGType_To_GSLType(aType);
+	const gsl_root_fdfsolver_type* vType = From_MGType_To_GSLType(myType);
 	if (vType)
 	{
 		mySolver = gsl_root_fdfsolver_alloc(vType);
@@ -191,6 +212,12 @@ MG_FDfSolver::~MG_FDfSolver()
 void MG_FDfSolver::Load(const MG_FunctionPtr& aFunc)
 {
 	myFunc = aFunc;
+	gsl_root_fdfsolver_set(mySolver, dynamic_cast<MG_FDfFunction*>(&*myFunc)->GetFunc(), myGuess);
+}
+
+void MG_FDfSolver::Reload(const double& aGuess)
+{
+	myGuess = aGuess;
 	gsl_root_fdfsolver_set(mySolver, dynamic_cast<MG_FDfFunction*>(&*myFunc)->GetFunc(), myGuess);
 }
 

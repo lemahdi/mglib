@@ -133,6 +133,7 @@ void yy_delete_buffer (YY_BUFFER_STATE b  );
 #define MG_FDFSOLVER_XL_NAME	"DFSLV"//should define a grammar for functions
 #define MG_LINREG_XL_NAME		"LIREG"
 #define MG_MULREG_XL_NAME		"MLREG"
+#define MG_MINIMIZER_XL_NAME	"MINIM"
 #define MG_HW1FMODEL_XL_NAME	"HW1FM"
 
 
@@ -155,6 +156,7 @@ void yy_delete_buffer (YY_BUFFER_STATE b  );
 #define MG_InterpolatorPtr				CountedPtr<MG::MG_Interpolator>
 #define MG_LinearInterpolatorPtr		CountedPtr<MG::MG_LinearInterpolator>
 #define MG_FunctionPtr					CountedPtr<MG::MG_Function>
+#define MG_FFunctionPtr					CountedPtr<MG::MG_FFunction>
 
 
 /* enum for node direction */
