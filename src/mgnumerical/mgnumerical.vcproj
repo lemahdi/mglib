@@ -179,6 +179,14 @@
 			>
 		</File>
 		<File
+			RelativePath=".\montecarlo.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\montecarlo.h"
+			>
+		</File>
+		<File
 			RelativePath=".\random.cpp"
 			>
 		</File>

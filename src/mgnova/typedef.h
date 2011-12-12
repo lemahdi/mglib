@@ -134,6 +134,7 @@ void yy_delete_buffer (YY_BUFFER_STATE b  );
 #define MG_LINREG_XL_NAME		"LIREG"
 #define MG_MULREG_XL_NAME		"MLREG"
 #define MG_MINIMIZER_XL_NAME	"MINIM"
+#define MG_MONTECARLO_XL_NAME	"MTCRL"
 #define MG_HW1FMODEL_XL_NAME	"HW1FM"
 
 

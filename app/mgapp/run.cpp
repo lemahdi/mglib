@@ -10,6 +10,7 @@
 #include "mgnumerical/solver.h"
 #include "mgnova/wrapper/matrix.h"
 #include "mgnumerical/regression.h"
+#include "mgnumerical/montecarlo.h"
 
 #include "gsl/gsl_rng.h"
 #include "gsl/gsl_qrng.h"
@@ -107,6 +108,32 @@ int main()
 		cout << vDate.ToString(' ', ENG_M3L_DATE) << endl;
 		MG_Date *vFake = (MG_Date*)vDate.Clone();
 		delete vFake;
+	}
+
+	cin >> ch;
+
+	// Monte Carlo
+	{
+		cout << "MONTE CARLO" << endl;
+		struct MG_TestFunc : public MG_MonteCarlo::MCDensity
+		{
+			double AireFunction(double* aX, size_t aDim, void* /*aParams*/)
+			{
+				assert(aDim == 1);
+				return exp(aX[0]);
+			}
+		};
+		MCDensityPtr vFunc(new MG_TestFunc);
+		MG_RandomPtr vRand(new MG_Random(MT19937));
+		size_t vDim(1);
+		MG_MiserMC vIntegral(vDim);
+		vIntegral.Load(vFunc, vRand);
+		double vL[1]; vL[0] = 0.;
+		double vU[1]; vU[0] = log(2.);
+		double vErr;
+		double vInt = vIntegral.Integrate(vL, vU, vErr, 1000000);
+		cout << "Monte Carlo Integral of Exp(x) on [0,ln(2)]: " << vInt << endl;
+		cout << "Error: " << vErr << endl;
 	}
 
 	cin >> ch;
@@ -225,7 +252,6 @@ int main()
 	}
 
 	cin >> ch;
-
 
 	// Solver
 	{

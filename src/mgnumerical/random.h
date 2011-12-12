@@ -77,7 +77,7 @@ public:
 	/* Accessors */
 	inline size_t			GetMin		(void) const { return gsl_rng_min(myGen); }
 	inline size_t			GetMax		(void) const { return gsl_rng_max(myGen); }
-	inline const gsl_rng*	GetGenerator(void) const { return myGen; }
+	inline gsl_rng*			GetGenerator(void) const { return myGen; }
 
 	inline void				SetSeed		(const size_t& aSeed) { myInitialSeed = aSeed; gsl_rng_set(myGen, aSeed); }
 
