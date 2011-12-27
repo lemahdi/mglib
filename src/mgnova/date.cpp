@@ -1,4 +1,5 @@
 #include "mgnova/date.h"
+#include "mgnova/calendar.h"
 #include "mgnova/argconvdef.h"
 #include "mgnova/utils/utils.h"
 
@@ -177,19 +178,20 @@ MG_Date& MG_Date::operator-= (const long& aRight)
 	Rebuild();
 	return *this;
 }
-MG_Date& MG_Date::operator+= (const MG_Date& aRight)
+/*MG_Date& MG_Date::operator+= (const MG_Date& aRight)
 {
 	myJulianDay += aRight.myJulianDay;
 	MG_Date::JdToYmd(myJulianDay, myYear, myMonth, myDay);
 	Rebuild();
 	return *this;
-}
-MG_Date& MG_Date::operator-= (const MG_Date& aRight)
+}*/
+long MG_Date::operator-= (const MG_Date& aRight)
 {
-	myJulianDay -= aRight.myJulianDay;
+	/*myJulianDay -= aRight.myJulianDay;
 	MG_Date::JdToYmd(myJulianDay, myYear, myMonth, myDay);
 	Rebuild();
-	return *this;
+	return *this;*/
+	return myJulianDay - aRight.myJulianDay;
 }
 
 /*
@@ -460,4 +462,274 @@ long MG_Date::ToJulianDay(const char* aDate, char aSeparator, const DATE_DISPLAY
 	long vJulianDay = MG_Date::YmdToJd(vYear, vMonth, vDay);
 	return vJulianDay;
 }
+
+/*
+ * Calendars functions
+ */
+MG_Date MG_Date::NextBusinessDay(size_t aDays, const CALENDAR_NAME& aCal)
+{
+	while (aDays)
+	{
+		++*this;
+		if (MG_Calendar::IsBusinessDay(aCal, *this))
+			--aDays;
+	}
+	return *this;
+}
+
+MG_Date MG_Date::PreviousBusinessDay(size_t aDays, const CALENDAR_NAME& aCal)
+{
+	while (aDays)
+	{
+		--*this;
+		if (MG_Calendar::IsBusinessDay(aCal, *this))
+			--aDays;
+	}
+	return *this;
+}
+
+double MG_Date::BetweenDays	(	const MG_Date		& aDt
+							,	const DAYCOUNT_NAME	& aDayCount
+							,	const bool			& aIsFrac
+							,	const CALENDAR_NAME	& aCal)
+{
+	MG_Date vDt1(*this), vDt2(aDt);
+	int vSign(1);
+	if (vDt1 > vDt2)
+	{
+		MG_Date vTmp(vDt2);
+		vDt2 = vDt1;
+		vDt1 = vTmp;
+		vSign = -1;
+	}
+
+	unsigned int vDay1 = vDt1.GetDay();
+	unsigned int vDay2 = vDt2.GetDay();
+	unsigned int vMth1 = vDt1.GetMonth();
+	unsigned int vMth2 = vDt2.GetMonth();
+	int vYr1 = vDt1.GetYear();
+	int vYr2 = vDt2.GetYear();
+
+	long vLag(0);
+	double vFrac = 1.;
+	switch(aDayCount)
+	{
+	case K_ACT:
+		{
+			MG_Date vBeginYr1(vYr1, 1, 1);
+			MG_Date vBeginYr2(vYr2, 1, 1);
+			unsigned int vDays = 365;
+			if (vBeginYr1.IsLeapYear())
+				vDays = 366;
+			int vLag1 = -(vDt1 - vBeginYr1) / vDays;
+			vDays = 365;
+			if (vBeginYr2.IsLeapYear())
+				vDays = 366;
+			int vLag2 = (vDt2 - vBeginYr2) / vDays;
+			vLag = vLag1 + vLag2 + vYr2 - vYr1;
+			vFrac = 365.;
+		}
+		break;
+	case K_ACT_360:
+		{
+			vLag = *this - aDt;
+			vFrac = 360.;
+		}
+		break;
+	case K_ACT_365:
+		{
+			vLag = *this - aDt;
+			vFrac = 365.;
+		}
+		break;
+	case K_U_30_360:
+		{
+			bool vIsEndFeb1 = vMth1==2 && (vDt1.IsLeapYear()&&vDay1==29 || !vDt1.IsLeapYear()&&vDay1==28);
+			bool vIsEndFeb2 = vMth2==2 && (vDt2.IsLeapYear()&&vDay2==29 || !vDt2.IsLeapYear()&&vDay2==28);
+			unsigned int vDay1Tmp(vDay1), vDay2Tmp(vDay2);
+			if (vIsEndFeb1 && vIsEndFeb2) vDay2Tmp = 30;
+			if (vIsEndFeb1) vDay1Tmp = 30;
+			if (vDay2==31 && vDay1>=30) vDay2Tmp = 30;
+			if (vDay1 == 31) vDay1Tmp = 30;
+			vLag = (360 * (vYr2 - vYr1) + 30 * (vMth2 - vMth1) + (vDay2Tmp - vDay1Tmp));
+			vFrac = 360.;
+		}
+		break;
+	case K_E_30_360:
+		{
+			unsigned int vDay1Tmp(vDay1), vDay2Tmp(vDay2);
+			if (vDay1 == 31) vDay1Tmp = 30;
+			if (vDay1>=30 && vDay2==31) vDay2Tmp = 30;
+			vLag = (360 * (vYr2 - vYr1) + 30 * (vMth2 - vMth1) + (vDay2Tmp - vDay1Tmp));
+			vFrac = 360.;
+		}
+		break;
+	case K_BUS_252:
+		{
+			while (vDt1 < vDt2)
+			{
+				if(MG_Calendar::IsWeekEnd(aCal, vDt1++))
+					continue;
+				++vLag;
+			}
+			vFrac = 252.;
+		}
+		break;
+	};
+
+	if (!aIsFrac)
+		vFrac = 1.;
+
+	return vLag / vFrac;
+}
+
+MG_Date MG_Date::AddMonths	(	const int	& aFreq
+							,	const int	& aTimes
+							,	const bool	& aEndOfMonth)
+{
+	unsigned int vMonths = aFreq * aTimes;
+	int vYrs = (myMonth+vMonths-1) / 12;
+	unsigned int vNextMth = (myMonth+vMonths) % 12;
+	if (vNextMth == 0) vNextMth = 12;
+	MG_Date vNextDt(myYear+vYrs, vNextMth, myDay);
+	if (aEndOfMonth)
+	{
+		MG_Date vOneDayAfter = *this + 1;
+		unsigned int vNewMth = vNextDt.GetMonth();
+		if (vOneDayAfter.GetMonth() != myMonth)
+		{
+			do {
+				++vNextDt;
+			} while(vNextDt.GetMonth() == vNewMth);
+			--vNextDt;
+		}
+	}
+	*this = vNextDt;
+
+	return *this;
+}
+
+MG_Date MG_Date::AddPeriod	(	const int			& aFreq
+							,	const int			& aTimes
+							,	const CALENDAR_NAME	& aCal
+							,	const ADJRULE_NAME	& aAdjRule
+							,	const bool			& aEndOfMonth)
+{
+	unsigned int vDays(0), vMonths(0);
+	switch (aFreq)
+	{
+	case K_DAILY: vDays = 1;
+	case K_WEEKLY: vDays = vDays==0?7:vDays;
+		{
+			switch (aAdjRule)
+			{
+			case K_FIXED:
+				{
+					*this += vDays*aTimes;
+				}
+				break;
+
+			case K_FOLLOWING_PAY:
+			case K_FOLLOWING:
+				{
+					NextBusinessDay(vDays*aTimes, aCal);
+				}
+				break;
+
+			case K_MODIFIED_FOLLOWING:
+			case K_MODIFIED_FOLLOWING_NOREDEMP:
+				{
+					*this += vDays*aTimes;
+					unsigned int vMth = myMonth;
+					if (!MG_Calendar::IsBusinessDay(aCal, *this))
+						NextBusinessDay(1, aCal);
+					if (vMth != myMonth)
+						PreviousBusinessDay(1, aCal);
+				}
+				break;
+
+			case K_PREVIOUS_PAY:
+			case K_PREVIOUS:
+				{
+					*this += vDays*aTimes;
+					if (!MG_Calendar::IsBusinessDay(aCal, *this))
+						PreviousBusinessDay(1, aCal);
+				}
+				break;
+
+			case K_MODIFIED_PREVIOUS:
+			case K_MODIFIED_PREVIOUS_NOREDEMP:
+				{
+					*this += vDays*aTimes;
+					unsigned int vMth = myMonth;
+					if (!MG_Calendar::IsBusinessDay(aCal, *this))
+						PreviousBusinessDay(1, aCal);
+					if (vMth != myMonth)
+						NextBusinessDay(1, aCal);
+				}
+				break;
+			}
+			break;
+		}
+
+	case K_MONTHLY: vMonths = 1;
+	case K_BIMONTHLY: vMonths = vMonths==0?2:vMonths;
+	case K_QUARTERLY: vMonths = vMonths==0?3:vMonths;
+	case K_SEMESTERLY: vMonths = vMonths==0?6:vMonths;
+	case K_ANNUALY: vMonths = vMonths==0?12:vMonths;
+		{
+			AddMonths(vMonths, aTimes, aEndOfMonth);
+			switch (aAdjRule)
+			{
+			case K_FIXED: break;
+
+			case K_FOLLOWING_PAY:
+			case K_FOLLOWING:
+				{
+					if (!MG_Calendar::IsBusinessDay(aCal, *this))
+						NextBusinessDay(1, aCal);
+				}
+				break;
+
+			case K_MODIFIED_FOLLOWING:
+			case K_MODIFIED_FOLLOWING_NOREDEMP:
+				{
+					if (!MG_Calendar::IsBusinessDay(aCal, *this))
+					{
+						unsigned int vMth = myMonth;
+						NextBusinessDay(1, aCal);
+						if (vMth != myMonth)
+							PreviousBusinessDay(1, aCal);
+					}
+				}
+				break;
+
+			case K_PREVIOUS_PAY:
+			case K_PREVIOUS:
+				{
+					if (!MG_Calendar::IsBusinessDay(aCal, *this))
+						PreviousBusinessDay(1, aCal);
+				}
+				break;
+
+			case K_MODIFIED_PREVIOUS:
+			case K_MODIFIED_PREVIOUS_NOREDEMP:
+				{
+					if (!MG_Calendar::IsBusinessDay(aCal, *this))
+					{
+						unsigned int vMth = myMonth;
+						PreviousBusinessDay(1, aCal);
+						if (vMth != myMonth)
+							NextBusinessDay(1, aCal);
+					}
+				}
+				break;
+			}
+		}
+		break;
+	};
+
+	return *this;
+}
+
 

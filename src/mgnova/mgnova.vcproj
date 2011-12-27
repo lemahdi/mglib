@@ -259,6 +259,14 @@
 			>
 		</File>
 		<File
+			RelativePath=".\mginit.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\mginit.h"
+			>
+		</File>
+		<File
 			RelativePath=".\object.cpp"
 			>
 		</File>

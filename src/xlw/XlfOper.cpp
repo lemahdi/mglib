@@ -84,6 +84,17 @@ double xlw::XlfOper::AsDouble(const std::string& ErrorId, int *pxlret) const
     return d;
 };
 
+double xlw::XlfOper::AsDoubleWD(const std::string& ErrorId, const double& DefaultValue, int *pxlret) const
+{
+    double d;
+    int xlret = ConvertToDoubleWD(d, DefaultValue);
+    if (pxlret)
+        *pxlret=xlret;
+    else
+        ThrowOnError( xlret,"Conversion to double " + ErrorId);
+    return d;
+};
+
 /*!
 Attempts to convert the implict object to an array.  Does this by calling
 AsDoubleVector.  If pxlret is not null the method won't throw and the Excel
@@ -166,6 +177,17 @@ short xlw::XlfOper::AsShort(const std::string& ErrorId, int *pxlret) const
     return s;
 };
 
+short xlw::XlfOper::AsShortWD(const std::string& ErrorId, const short& DefaultValue, int *pxlret) const
+{
+    short s;
+    int xlret = ConvertToShortWD(s, DefaultValue);
+    if (pxlret)
+        *pxlret=xlret;
+    else
+        ThrowOnError(xlret, ErrorId + " conversion to short failed");
+    return s;
+};
+
 /*!
 Attempts to convert the implict object to a bool. If pxlret is not null the
 method won't throw and the Excel return code will be returned in this variable.
@@ -187,6 +209,17 @@ bool xlw::XlfOper::AsBool(const std::string& ErrorId, int *pxlret) const
 {
     bool b;
     int xlret = ConvertToBool(b);
+    if (pxlret)
+        *pxlret=xlret;
+    else
+        ThrowOnError(xlret,ErrorId + " conversion to bool failed");
+    return b;
+};
+
+bool xlw::XlfOper::AsBoolWD(const std::string& ErrorId, const bool& DefaultValue, int *pxlret) const
+{
+    bool b;
+    int xlret = ConvertToBoolWD(b, DefaultValue);
     if (pxlret)
         *pxlret=xlret;
     else
@@ -284,6 +317,17 @@ char *xlw::XlfOper::AsString(const std::string& ErrorId, int *pxlret) const
     return s;
 };
 
+char *xlw::XlfOper::AsStringWD(const std::string& ErrorId, const std::string& DefaultValue, int *pxlret) const
+{
+    char * s;
+    int xlret = ConvertToStringWD(s, DefaultValue);
+    if (pxlret)
+        *pxlret=xlret;
+    else
+        ThrowOnError(xlret,ErrorId + " conversion to char* failed");
+    return s;
+};
+
 std::wstring xlw::XlfOper::AsWstring(int *pxlret) const
 {
     std::wstring s;
@@ -370,6 +414,22 @@ MG::MG_Date xlw::XlfOper::AsMGDate(const std::string& ErrorId, int *pxlret) cons
     return output;
 }
 
+MG::MG_Date xlw::XlfOper::AsMGDateWD(const std::string& ErrorId, const std::string& , int *pxlret) const
+{
+	double vXLDate;
+    int xlret = ConvertToDoubleWD(vXLDate, -1);
+    if (pxlret)
+        *pxlret=xlret;
+    else
+        ThrowOnError(xlret,ErrorId + " conversion to MG_Date failed");
+
+	if (vXLDate == -1)
+		return MG::MG_Date();
+
+	MG::MG_Date output = MG_utils::FromXLDateToJulianDay(vXLDate);
+    return output;
+}
+
 /*!
 Attempts to convert the implict object to an Excel object. If pxlret is not null
 the method won't throw and the Excel return code will be returned in this
@@ -387,7 +447,6 @@ MG::MG_XLObjectPtr xlw::XlfOper::AsMGXLObject(int *pxlret) const
         ThrowOnError(xlret," conversion to MG_XLObject failed");
 
 	std::string vXLNameIdStr(vXLNameId), vError;
-	//free(vXLNameId);
 	MG::MG_XLObjectPtr output;
 	if (MG::MG_SCache::Instance()->PersistentGet(vXLNameIdStr, output, vError))
 	    return output;
@@ -404,6 +463,28 @@ MG::MG_XLObjectPtr xlw::XlfOper::AsMGXLObject(const std::string& ErrorId, int *p
         *pxlret=xlret;
     else
         ThrowOnError(xlret,ErrorId + " conversion to MG_XLObject failed");
+
+	std::string vXLNameIdStr(vXLNameId), vError;
+	//free(vXLNameId);
+	MG::MG_XLObjectPtr output;
+	if (MG::MG_SCache::Instance()->PersistentGet(vXLNameIdStr, output, vError))
+	    return output;
+
+	ThrowOnError(xlret,ErrorId + " conversion to MG_Date failed: "+vError);
+	throw std::runtime_error("invalid object reference number: "+vError);
+}
+
+MG::MG_XLObjectPtr xlw::XlfOper::AsMGXLObjectWD(const std::string& ErrorId, const std::string& , int *pxlret) const
+{
+	char* vXLNameId;
+    int xlret = ConvertToString(vXLNameId);
+    if (pxlret)
+        *pxlret=xlret;
+    else
+        ThrowOnError(xlret,ErrorId + " conversion to MG_XLObject failed");
+
+	if (vXLNameId == NULL)
+		return MG::MG_XLObjectPtr(NULL);
 
 	std::string vXLNameIdStr(vXLNameId), vError;
 	//free(vXLNameId);

@@ -201,5 +201,13 @@ namespace xlw {
         return static_cast<int>(AsDouble(ErrorId, pxlret));
     }
 
+    /*!
+    Forwards to XlfOper::AsDouble.
+    */
+	INLINE int XlfOper::AsIntWD(const std::string& ErrorId, const int& DefaultValue, int *pxlret) const
+    {
+        return static_cast<int>(AsDoubleWD(ErrorId, DefaultValue, pxlret));
+    }
+
 }
 

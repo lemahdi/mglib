@@ -122,6 +122,30 @@ int xlw::XlfOperImpl12::ConvertToDouble(const XlfOper &xlfOper, double& d) const
     return xlret;
 };
 
+int xlw::XlfOperImpl12::ConvertToDoubleWD(const XlfOper &xlfOper, double& d, const double& def) const throw()
+{
+    int xlret;
+
+    if (xlfOper.lpxloper12_ == 0)
+        return xlretInvXloper;
+
+    if (xlfOper.lpxloper12_->xltype & xltypeInt)
+    {
+        d = xlfOper.lpxloper12_->val.w;
+        xlret=xlretSuccess;
+    }
+    else if (xlfOper.lpxloper12_->xltype & xltypeNum)
+    {
+        d = xlfOper.lpxloper12_->val.num;
+        xlret=xlretSuccess;
+    }
+    else
+    {
+		d = def;
+    }
+    return xlret;
+};
+
 int xlw::XlfOperImpl12::ConvertToDoubleVector(const XlfOper &xlfOper, std::vector<double>& v, DoubleVectorConvPolicy policy) const
 {
     if (xlfOper.lpxloper12_->xltype == xltypeMissing)
@@ -245,6 +269,25 @@ int xlw::XlfOperImpl12::ConvertToShort(const XlfOper &xlfOper, short& s) const t
         return xlret;
 };
 
+int xlw::XlfOperImpl12::ConvertToShortWD(const XlfOper &xlfOper, short& s, const short& def) const throw()
+{
+    int xlret;
+
+    if (xlfOper.lpxloper12_ == 0)
+        return xlretInvXloper;
+
+    if (xlfOper.lpxloper12_->xltype & xltypeNum)
+    {
+        s = static_cast<short>(xlfOper.lpxloper12_->val.num);
+        xlret=xlretSuccess;
+    }
+    else
+    {
+		s = def;
+        }
+        return xlret;
+};
+
 int xlw::XlfOperImpl12::ConvertToBool(const XlfOper &xlfOper, bool& b) const throw()
 {
     int xlret;
@@ -265,6 +308,25 @@ int xlw::XlfOperImpl12::ConvertToBool(const XlfOper &xlfOper, bool& b) const thr
         xlret = Coerce(xlfOper, xltypeBool, cast);
         if (xlret == xlretSuccess)
             xlret = cast.ConvertToBool(b);
+    }
+    return xlret;
+};
+
+int xlw::XlfOperImpl12::ConvertToBoolWD(const XlfOper &xlfOper, bool& b, const bool& def) const throw()
+{
+    int xlret;
+
+    if (xlfOper.lpxloper12_ == 0)
+        return xlretInvXloper;
+
+    if (xlfOper.lpxloper12_->xltype & xltypeBool)
+    {
+        b = (xlfOper.lpxloper12_->val.xbool != 0);
+        xlret = xlretSuccess;
+    }
+    else
+    {
+        b = def;
     }
     return xlret;
 };
@@ -613,6 +675,31 @@ int xlw::XlfOperImpl12::ConvertToString(const XlfOper &xlfOper, char *& s) const
         xlret = Coerce(xlfOper, xltypeStr, cast);
         if (xlret == xlretSuccess)
             xlret = cast.ConvertToString(s);
+    }
+    return xlret;
+}
+
+int xlw::XlfOperImpl12::ConvertToStringWD(const XlfOper &xlfOper, char *& s, const std::string& def) const throw()
+{
+    int xlret;
+
+    if (xlfOper.lpxloper12_ == 0)
+        return xlretInvXloper;
+
+    if (xlfOper.lpxloper12_->xltype & xltypeStr)
+    {
+        size_t n = xlfOper.lpxloper12_->val.str[0];
+        s = XlfExcel::Instance().GetMemory(n + 1);
+        wcstombs(s, xlfOper.lpxloper12_->val.str + 1, n);
+        s[n] = 0;
+        xlret = xlretSuccess;
+    }
+    else
+    {
+		size_t len = def.length()+1;
+        s = XlfExcel::Instance().GetMemory(len);
+		memcpy(s, def.c_str(), len);
+		s[len-1] = '\0';
     }
     return xlret;
 }

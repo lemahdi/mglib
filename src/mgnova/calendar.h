@@ -13,39 +13,32 @@
 
 
 #include "mgnova/date.h"
-#include "mgnova/argconvdef.h"
-#include "mgnova/patterns/repository.hpp"
 
-#include <vector>
+#include <map>
+#include <list>
 
 
 MG_NAMESPACE_BEGIN
 
 
-class MG_Calendar
+struct MG_Calendar
 {
-	template<typename T,class U> friend class Repository;
+	struct CalPpty
+	{
+		short myWeekEnds;
+		std::string myName;
+	};
 
-private:
-	MG_Calendar(void);
-	MG_Calendar(const CURRENCY_NAME& aCcyName);
+	static std::map< CALENDAR_NAME , CalPpty > ourCalPpty;
 
-public:
-	~MG_Calendar(void) {}
+	static bool LoadCalendars(void);
+	static bool IsBusinessDay(const CALENDAR_NAME& aCal, const MG_Date& aDate);
+	static bool IsWeekEnd(const CALENDAR_NAME& aCal, const MG_Date& aDate);
 
-public:
-	void AddPeriod(const unsigned int& aNbDays, MG_Date& aDate) const;
-
-private:
-	std::vector<unsigned int> myHolidays;
-
-private:
-	static CURRENCY_NAME										ourDefaultCcy;
-	static std::map<CURRENCY_NAME,std::vector<unsigned int> >	ourCalendars;
-
-	static void Init(void);
+	typedef std::map< size_t , std::list<long> > mapYearJulian;
+	typedef std::map< CALENDAR_NAME , mapYearJulian > mapCcyYearJul;
+	static mapCcyYearJul ourCalendars;
 };
-typedef Repository<CURRENCY_NAME,MG_Calendar> MG_RCalendar;
 
 
 MG_NAMESPACE_END

@@ -9,18 +9,18 @@ MG_NAMESPACE_BEGIN
 
 MG_ArgConv::ArgConvPair MonthsArgConv[] =
 {
-	MG_ArgConv::ArgConvPair("JAN",JAN),
-	MG_ArgConv::ArgConvPair("FEB",FEB),
-	MG_ArgConv::ArgConvPair("MAR",MAR),
-	MG_ArgConv::ArgConvPair("APR",APR),
-	MG_ArgConv::ArgConvPair("MAI",MAY),
-	MG_ArgConv::ArgConvPair("JUN",JUN),
-	MG_ArgConv::ArgConvPair("JUL",JUL),
-	MG_ArgConv::ArgConvPair("AUG",AUG),
-	MG_ArgConv::ArgConvPair("SEP",SEP),
-	MG_ArgConv::ArgConvPair("OCT",OCT),
-	MG_ArgConv::ArgConvPair("NOV",NOV),
-	MG_ArgConv::ArgConvPair("DEC",DEC),
+	MG_ArgConv::ArgConvPair("JAN",K_JAN),
+	MG_ArgConv::ArgConvPair("FEB",K_FEB),
+	MG_ArgConv::ArgConvPair("MAR",K_MAR),
+	MG_ArgConv::ArgConvPair("APR",K_APR),
+	MG_ArgConv::ArgConvPair("MAI",K_MAY),
+	MG_ArgConv::ArgConvPair("JUN",K_JUN),
+	MG_ArgConv::ArgConvPair("JUL",K_JUL),
+	MG_ArgConv::ArgConvPair("AUG",K_AUG),
+	MG_ArgConv::ArgConvPair("SEP",K_SEP),
+	MG_ArgConv::ArgConvPair("OCT",K_OCT),
+	MG_ArgConv::ArgConvPair("NOV",K_NOV),
+	MG_ArgConv::ArgConvPair("DEC",K_DEC),
 };
 const MG_ArgConv		MonthsConvertor	= MG_ArgConv		("Months Three Letters", MonthsArgConv, NB_MONTHS_3L);
 const MG_ArgConvReverse	MonthsRevertor	= MG_ArgConvReverse	("Months Three Letters", MonthsArgConv, NB_MONTHS_3L);
@@ -28,13 +28,67 @@ const MG_ArgConvReverse	MonthsRevertor	= MG_ArgConvReverse	("Months Three Letter
 
 MG_ArgConv::ArgConvPair CurrenciesNameArgConv[] =
 {
-	MG_ArgConv::ArgConvPair("USD",USD),
-	MG_ArgConv::ArgConvPair("EUR",EUR),
-	MG_ArgConv::ArgConvPair("JPY",JPY),
-	MG_ArgConv::ArgConvPair("GBP",GBP),
+	MG_ArgConv::ArgConvPair("USD",K_USD),
+	MG_ArgConv::ArgConvPair("EUR",K_EUR),
+	MG_ArgConv::ArgConvPair("JPY",K_JPY),
+	MG_ArgConv::ArgConvPair("GBP",K_GBP),
 };
 const MG_ArgConv		CurrenciesNameConvertor	= MG_ArgConv		("Currencies Name Three Letters", CurrenciesNameArgConv, NB_CURRENCIES);
 const MG_ArgConvReverse	CurrenciesNameRevertor	= MG_ArgConvReverse	("Currencies Name Three Letters", CurrenciesNameArgConv, NB_CURRENCIES);
+
+
+MG_ArgConv::ArgConvPair CalendarsNameArgConv[] =
+{
+	MG_ArgConv::ArgConvPair("USD",K_USD_CAL),
+	MG_ArgConv::ArgConvPair("EUR",K_EUR_CAL),
+	MG_ArgConv::ArgConvPair("JPY",K_JPY_CAL),
+	MG_ArgConv::ArgConvPair("GBP",K_GBP_CAL),
+};
+const MG_ArgConv		CalendarsNameConvertor	= MG_ArgConv		("Calendars Name", CalendarsNameArgConv, NB_CALENDARS);
+const MG_ArgConvReverse	CalendarsNameRevertor	= MG_ArgConvReverse	("Calendars Name", CalendarsNameArgConv, NB_CALENDARS);
+
+
+MG_ArgConv::ArgConvPair FrequencyNameArgConv[] =
+{
+	MG_ArgConv::ArgConvPair("D",K_DAILY),
+	MG_ArgConv::ArgConvPair("W",K_WEEKLY),
+	MG_ArgConv::ArgConvPair("M",K_MONTHLY),
+	MG_ArgConv::ArgConvPair("B",K_BIMONTHLY),
+	MG_ArgConv::ArgConvPair("Q",K_QUARTERLY),
+	MG_ArgConv::ArgConvPair("S",K_SEMESTERLY),
+	MG_ArgConv::ArgConvPair("A",K_ANNUALY),
+};
+const MG_ArgConv		FrequencyNameConvertor	= MG_ArgConv		("Frequencies", FrequencyNameArgConv, NB_FREQUENCIES);
+const MG_ArgConvReverse	FrequencyNameRevertor	= MG_ArgConvReverse	("Frequencies", FrequencyNameArgConv, NB_FREQUENCIES);
+
+
+MG_ArgConv::ArgConvPair DayCountNameArgConv[] =
+{
+	MG_ArgConv::ArgConvPair("ACTUAL",K_ACT),
+	MG_ArgConv::ArgConvPair("A360",K_ACT_360),
+	MG_ArgConv::ArgConvPair("A365",K_ACT_365),
+	MG_ArgConv::ArgConvPair("30/360",K_U_30_360),
+	MG_ArgConv::ArgConvPair("30/360E",K_E_30_360),
+	MG_ArgConv::ArgConvPair("B252",K_BUS_252),
+};
+const MG_ArgConv		DayCountNameConvertor	= MG_ArgConv		("Day Count Basis", DayCountNameArgConv, NB_DAYCOUNT);
+const MG_ArgConvReverse	DayCountNameRevertor	= MG_ArgConvReverse	("Day Count Basis", DayCountNameArgConv, NB_DAYCOUNT);
+
+
+MG_ArgConv::ArgConvPair AdjustmentRuleNameArgConv[] =
+{
+	MG_ArgConv::ArgConvPair("FIXED",K_FIXED),
+	MG_ArgConv::ArgConvPair("FP",K_FOLLOWING_PAY),
+	MG_ArgConv::ArgConvPair("F",K_FOLLOWING),
+	MG_ArgConv::ArgConvPair("MF",K_MODIFIED_FOLLOWING),
+	MG_ArgConv::ArgConvPair("MFN",K_MODIFIED_FOLLOWING_NOREDEMP),
+	MG_ArgConv::ArgConvPair("PP",K_PREVIOUS_PAY),
+	MG_ArgConv::ArgConvPair("P",K_PREVIOUS),
+	MG_ArgConv::ArgConvPair("MP",K_MODIFIED_PREVIOUS),
+	MG_ArgConv::ArgConvPair("MPN",K_MODIFIED_PREVIOUS_NOREDEMP),
+};
+const MG_ArgConv		AdjustmentRuleNameConvertor	= MG_ArgConv		("Adjustment Rule", AdjustmentRuleNameArgConv, NB_ADJRULE);
+const MG_ArgConvReverse	AdjustmentRuleNameRevertor	= MG_ArgConvReverse	("Adjustment Rule", AdjustmentRuleNameArgConv, NB_ADJRULE);
 
 
 MG_ArgConv::ArgConvPair InterpolMethodArgConv[] =

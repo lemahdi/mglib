@@ -175,3 +175,59 @@ MG_XLObjectPtr RandGen_Create(const string& aType, const int& aDim)
 	MG_XLObjectPtr vObj(vRandGen);
 	return vObj;
 }
+
+MG_Date NextBusinessDay	(	MG_Date aDt
+						,	const int& aDays
+						,	const string& aCalendar)
+{
+	CALENDAR_NAME vCal = (CALENDAR_NAME)CalendarsNameConvertor[aCalendar];
+	aDt.NextBusinessDay(aDays, vCal);
+
+	return aDt;
+}
+
+MG_Date PreviousBusinessDay	(	MG_Date aDt
+							,	const int& aDays
+							,	const string& aCalendar)
+{
+	CALENDAR_NAME vCal = (CALENDAR_NAME)CalendarsNameConvertor[aCalendar];
+	aDt.PreviousBusinessDay(aDays, vCal);
+
+	return aDt;
+}
+
+double BetweenDates(	MG_Date aDate1
+				,	MG_Date aDate2
+				,	const string& aDayCount
+				,	const int& aIsFrac
+				,	const string& aCalendar)
+{
+	CALENDAR_NAME vCal = CALENDAR_NAME_DEF;
+	if (aCalendar != "")
+		vCal = (CALENDAR_NAME)CalendarsNameConvertor[aCalendar];
+
+	DAYCOUNT_NAME vDayCount = (DAYCOUNT_NAME)DayCountNameConvertor[aDayCount];
+
+	return aDate1.BetweenDays(aDate2, vDayCount, aIsFrac?true:false, vCal);
+}
+
+MG_Date AddPeriod	(	MG_Date aDt
+					,	const string	& aFreq
+					,	const int		& aTimes
+					,	const string	& aCalendar
+					,	const string	& aAdjRule
+					,	const bool		& aEndOfMonth)
+{
+	string vFreq;
+	int vTimes;
+	SplitFrequency(aFreq, vTimes, vFreq);
+
+	FREQUENCY_NAME vFreqNm = (FREQUENCY_NAME)FrequencyNameConvertor[vFreq];
+	ADJRULE_NAME vAdjRule = (ADJRULE_NAME)AdjustmentRuleNameConvertor[aAdjRule];
+	CALENDAR_NAME vCal = (CALENDAR_NAME)CalendarsNameConvertor[aCalendar];
+
+	aDt.AddPeriod(vFreqNm, vTimes*aTimes, vCal, vAdjRule, aEndOfMonth);
+
+	return aDt;
+}
+

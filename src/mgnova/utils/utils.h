@@ -60,4 +60,6 @@ extern MG::MG_Matrix FromCellMatrixToMGMatrix(const xlw::CellMatrix& aCM);
 
 extern MG::MG_Vector FromCellMatrixToMGVectorDate(const xlw::CellMatrix& aCM, const size_t& aIndex);
 
+extern void SplitFrequency(const std::string& aTimesFreq, int& aTimes, std::string& aFreq);
+
 }

@@ -254,5 +254,25 @@ namespace MG_utils
 		return vRes;
 	}
 
+	/* spliting a xM to x and M */
+	void SplitFrequency(const string& aTimesFreq, int& aTimes, string& aFreq)
+	{
+		size_t vLen = aTimesFreq.length();
+
+		if (vLen == 1)
+		{
+			aTimes = 1;
+			aFreq = aTimesFreq;
+			return;
+		}
+
+		aFreq = aTimesFreq.at(vLen-1);
+		string vTimes = aTimesFreq.substr(0, vLen-1);
+		aTimes = atoi(vTimes.c_str());
+
+		if (aFreq!="Y" && aFreq!="M" && aFreq!="W" && aFreq!="D")
+			MG_THROW("Frequency should be Y, M, W or D");
+	}
+
 }
 

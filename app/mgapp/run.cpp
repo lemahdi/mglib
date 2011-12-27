@@ -1,3 +1,4 @@
+#include "mgnova/mginit.h"
 #include "mginfra/nodes.h"
 #pragma warning(push)
 #pragma warning(disable:4512)
@@ -27,9 +28,9 @@ using namespace MG;
 
 int main()
 {
+	MG_Initializator::Init();
 	MG_SFileError::Instance()->Init();
 	MG_SFuncBuilder::Instance()->Init();
-	MG_RCalendar::Init();
 
 	// Deal Description
 	vector<string> vColNames;
@@ -106,8 +107,14 @@ int main()
 		cout << "DATE" << endl;
 		MG_Date vDate;//(25,12,2010);
 		cout << vDate.ToString(' ', ENG_M3L_DATE) << endl;
-		MG_Date *vFake = (MG_Date*)vDate.Clone();
-		delete vFake;
+
+		cout << "US CALENDAR" << endl;
+		bool vIsBusy = MG_Calendar::IsBusinessDay(K_USD_CAL, MG_Date(2012, 5, 31));
+		string vYesOrNo = vIsBusy ? "Yes" : "No";
+		cout << "Is May 31st 2012 a business day: " << vYesOrNo << endl;
+		vIsBusy = MG_Calendar::IsBusinessDay(K_USD_CAL, MG_Date(2012, 4, 30));
+		vYesOrNo = vIsBusy ? "Yes" : "No";
+		cout << "Is April 30th 2012 a business day: " << vYesOrNo << endl;
 	}
 
 	cin >> ch;

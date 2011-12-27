@@ -21,18 +21,18 @@ MG_NAMESPACE_BEGIN
 
 enum MONTHS_3L
 {
-	JAN,
-	FEB,
-	MAR,
-	APR,
-	MAY,
-	JUN,
-	JUL,
-	AUG,
-	SEP,
-	OCT,
-	NOV,
-	DEC,
+	K_JAN,
+	K_FEB,
+	K_MAR,
+	K_APR,
+	K_MAY,
+	K_JUN,
+	K_JUL,
+	K_AUG,
+	K_SEP,
+	K_OCT,
+	K_NOV,
+	K_DEC,
 
 	NB_MONTHS_3L
 };
@@ -43,16 +43,84 @@ extern const MG_ArgConvReverse	MonthsRevertor;
 
 enum CURRENCY_NAME
 {
-	USD,
-	EUR,
-	JPY,
-	GBP,
+	K_USD,
+	K_EUR,
+	K_JPY,
+	K_GBP,
 
 	NB_CURRENCIES
 };
+#define CURRENCY_NAME_DEF K_EUR
 
 extern const MG_ArgConv			CurrenciesNameConvertor;
 extern const MG_ArgConvReverse	CurrenciesNameRevertor;
+
+
+enum CALENDAR_NAME
+{
+	K_USD_CAL,
+	K_EUR_CAL,
+	K_JPY_CAL,
+	K_GBP_CAL,
+
+	NB_CALENDARS
+};
+#define CALENDAR_NAME_DEF K_EUR_CAL
+
+extern const MG_ArgConv			CalendarsNameConvertor;
+extern const MG_ArgConvReverse	CalendarsNameRevertor;
+
+
+enum FREQUENCY_NAME
+{
+	K_DAILY = 365,
+	K_WEEKLY = 52,
+	K_MONTHLY = 12,
+	K_BIMONTHLY = 6,
+	K_QUARTERLY = 4,
+	K_SEMESTERLY = 2,
+	K_ANNUALY = 1,
+
+	NB_FREQUENCIES = 7
+};
+
+extern const MG_ArgConv			FrequencyNameConvertor;
+extern const MG_ArgConvReverse	FrequencyNameRevertor;
+
+
+enum DAYCOUNT_NAME
+{
+	K_ACT,
+	K_ACT_360,
+	K_ACT_365,
+	K_U_30_360,
+	K_E_30_360,
+	K_BUS_252,
+
+	NB_DAYCOUNT
+};
+
+extern const MG_ArgConv			DayCountNameConvertor;
+extern const MG_ArgConvReverse	DayCountNameRevertor;
+
+
+enum ADJRULE_NAME
+{
+	K_FIXED,
+	K_FOLLOWING_PAY,					// Next business day, same interest period
+	K_FOLLOWING,						// Next business day, modify interest period
+	K_MODIFIED_FOLLOWING,				// Next business day unless month change then previous business day, modifiy interest period
+	K_MODIFIED_FOLLOWING_NOREDEMP,	// Next business day unless month change then previous business day, same interest period
+	K_PREVIOUS_PAY,					// Previous business day, same interest period
+	K_PREVIOUS,						// Previous business day, modify interest period
+	K_MODIFIED_PREVIOUS,				// Previous business day unless month change then next business day, modifiy interest period
+	K_MODIFIED_PREVIOUS_NOREDEMP,		// Previous business day unless month change then next business day, same interest period
+
+	NB_ADJRULE
+};
+
+extern const MG_ArgConv			AdjustmentRuleNameConvertor;
+extern const MG_ArgConvReverse	AdjustmentRuleNameRevertor;
 
 
 /* enum for interpolation methods */

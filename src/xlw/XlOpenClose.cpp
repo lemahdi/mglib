@@ -32,6 +32,8 @@ FOR A PARTICULAR PURPOSE.  See the license for more details.
 #include<memory>
 #include<string>
 
+#include "mgnova/mginit.h"
+
 
 xlw::Win32StreamBuf debuggerStreamBuf;
 std::streambuf * oldStreamBuf;
@@ -113,6 +115,10 @@ extern "C"
 
 			// Clears the status bar.
 			xlw::XlfExcel::Instance().SendMessage();
+
+			// MG Library Initialization
+			MG::MG_Initializator::Init();
+
 			return 1;
 
 		} catch(...) {

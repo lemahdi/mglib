@@ -210,6 +210,8 @@ namespace xlw {
         double AsDouble(int *pxlret = 0) const;
         //! Converts to a double with error identifer.
         double AsDouble(const std::string& ErrorId, int *pxlret = 0) const;
+        //! Converts to a double with error identifer and default value.
+		double AsDoubleWD(const std::string& ErrorId, const double& DefaultValue, int *pxlret = 0) const;
 
         //! Converts to a std::vector<double>.
         std::vector<double> AsDoubleVector(XlfOperImpl::DoubleVectorConvPolicy policy = XlfOperImpl::UniDimensional,
@@ -228,21 +230,29 @@ namespace xlw {
         short AsShort(int *pxlret = 0) const;
         //! Converts to a short with error identifer.
         short AsShort(const std::string& ErrorId, int *pxlret = 0) const;
+        //! Converts to a short with error identifer and default value.
+		short AsShortWD(const std::string& ErrorId, const short& DefaultValue, int *pxlret = 0) const;
 
         //! Converts to a bool.
         bool AsBool(int *pxlret = 0) const;
         //! Converts to a bool with error identifer.
         bool AsBool(const std::string& ErrorId, int *pxlret = 0) const;
+        //! Converts to a bool with error identifer and default value.
+		bool AsBoolWD(const std::string& ErrorId, const bool& DefaultValue, int *pxlret = 0) const;
 
         //! Converts to an int.
         int AsInt(int *pxlret = 0) const;
         //! Converts to an int with error identifer.
         int AsInt(const std::string& ErrorId, int *pxlret = 0) const;
+        //! Converts to an int with error identifer and default value.
+        int AsIntWD(const std::string& ErrorId, const int& DefaultValue, int *pxlret = 0) const;
 
         //! Converts to a char *.
         char *AsString(int *pxlret = 0) const;
         //! Converts to a char * with error identifer.
         char *AsString(const std::string& ErrorId, int *pxlret = 0) const;
+        //! Converts to a char * with error identifer and default value.
+		char *AsStringWD(const std::string& ErrorId, const std::string& DefaultValue, int *pxlret = 0) const;
 
         //! Converts to a wstring.
         std::wstring AsWstring(int *pxlret = 0) const;
@@ -264,11 +274,15 @@ namespace xlw {
         MG::MG_Date AsMGDate(int *pxlret=0) const;
         //! Converts to a date with error identifer.
 		MG::MG_Date AsMGDate(const std::string& ErrorId, int *pxlret=0) const;
+        //! Converts to a date with error identifer and default value.
+		MG::MG_Date AsMGDateWD(const std::string& ErrorId, const std::string& , int *pxlret=0) const;
 
         //! Converts to an Excel object.
         MG::MG_XLObjectPtr AsMGXLObject(int *pxlret=0) const;
         //! Converts to an Excel object with error identifer.
 		MG::MG_XLObjectPtr AsMGXLObject(const std::string& ErrorId, int *pxlret=0) const;
+        //! Converts to an Excel object with error identifer and default value.
+		MG::MG_XLObjectPtr AsMGXLObjectWD(const std::string& ErrorId, const std::string& , int *pxlret=0) const;
         //@}
 
         //! \name Manage reference to underlying XLOPER
@@ -365,18 +379,26 @@ namespace xlw {
         //! Attempts conversion to double and returns Excel error code.
         int ConvertToDouble(double& value) const throw() {
             return XlfOperImpl::instance().ConvertToDouble(*this, value); }
+        int ConvertToDoubleWD(double& value, const double& def) const throw() {
+            return XlfOperImpl::instance().ConvertToDoubleWD(*this, value, def); }
         //! Attempts conversion to short and returns Excel error code.
         int ConvertToShort(short& value) const throw() {
             return XlfOperImpl::instance().ConvertToShort(*this, value); }
+        int ConvertToShortWD(short& value, const short& def) const throw() {
+            return XlfOperImpl::instance().ConvertToShortWD(*this, value, def); }
         //! Attempts conversion to bool and returns Excel error code.
         int ConvertToBool(bool& value) const throw() {
             return XlfOperImpl::instance().ConvertToBool(*this, value); }
+        int ConvertToBoolWD(bool& value, const bool& def) const throw() {
+            return XlfOperImpl::instance().ConvertToBoolWD(*this, value, def); }
         // Attempts conversion to int and returns Excel error code.
         //int ConvertToInt(int& value) const throw() {
         //    return XlfOperImpl::instance().ConvertToInt(*this, value); }
         //! Attempts conversion to string and returns Excel error code.
         int ConvertToString(char *& value) const throw() {
             return XlfOperImpl::instance().ConvertToString(*this, value); }
+		int ConvertToStringWD(char *& value, const std::string& def) const throw() {
+            return XlfOperImpl::instance().ConvertToStringWD(*this, value, def); }
         //! Attempts conversion to wstring and returns Excel error code.
 	    int ConvertToWstring(std::wstring &value) const throw() {
             return XlfOperImpl::instance().ConvertToWstring(*this, value); }

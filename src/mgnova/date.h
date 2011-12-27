@@ -29,6 +29,7 @@
 #include <map>
 
 #include "mgnova/object.h"
+#include "mgnova/argconvdef.h"
 
 
 MG_NAMESPACE_BEGIN
@@ -54,8 +55,8 @@ public:
 	/* Assignment operators */
 	MG_Date& operator+= (const long& aRight);
 	MG_Date& operator-= (const long& aRight);
-	MG_Date& operator+= (const MG_Date& aRight);
-	MG_Date& operator-= (const MG_Date& aRight);
+	//MG_Date& operator+= (const MG_Date& aRight);
+	long operator-= (const MG_Date& aRight);
 
 	/* Arithmetic operators */
 	/* Prefix */
@@ -86,6 +87,22 @@ public:
 	/* String function */
 	std::string ToString(const char& aSeparator, const DATE_DISPLAY& aDD = FR_DATE) const;
 	std::string ToString(void) const;
+
+	/* Calendars functions */
+	MG_Date NextBusinessDay		(size_t aDays, const CALENDAR_NAME& aCal);
+	MG_Date PreviousBusinessDay	(size_t aDays, const CALENDAR_NAME& aCal);
+	double BetweenDays		(	const MG_Date		& aDt
+							,	const DAYCOUNT_NAME	& aDayCount
+							,	const bool			& aIsFrac
+							,	const CALENDAR_NAME	& aCal);
+	MG_Date AddMonths		(	const int	& aFreq
+							,	const int	& aTimes
+							,	const bool	& aEndOfMonth = true);
+	MG_Date AddPeriod		(	const int			& aFreq
+							,	const int			& aTimes
+							,	const CALENDAR_NAME	& aCal
+							,	const ADJRULE_NAME	& aAdjRule = K_FOLLOWING
+							,	const bool			& aEndOfMonth = true);
 
 private:
 	/* Update */
@@ -127,10 +144,10 @@ public:
 	{
 		return vRight += vLeft;
 	}
-	friend MG_Date operator+ (const MG_Date& vLeft, MG_Date vRight)
+	/*friend MG_Date operator+ (const MG_Date& vLeft, MG_Date vRight)
 	{
 		return vRight += vLeft;
-	}
+	}*/
 	friend MG_Date operator- (MG_Date vLeft, const long& vRight)
 	{
 		return vLeft -= vRight;
@@ -139,7 +156,7 @@ public:
 	{
 		return vRight -= vLeft;
 	}
-	friend MG_Date operator- (const MG_Date& vLeft, MG_Date vRight)
+	friend long operator- (const MG_Date& vLeft, MG_Date vRight)
 	{
 		return vRight -= vLeft;
 	}

@@ -209,9 +209,9 @@ namespace
 XLRegistration::Arg
 CallArgs[]=
 {
-{ "Strike"," strike ","B"},
-{ "Maturity"," maturity ","B"},
-{ "Forward"," forward ","B"}
+{ "Strike"," strike ","XLF_OPER"},
+{ "Maturity"," maturity ","XLF_OPER"},
+{ "Forward"," forward ","XLF_OPER"}
 };
   XLRegistration::XLFunctionRegistrationHelper
 registerCall("xlCall",
@@ -230,17 +230,29 @@ extern "C"
 {
 LPXLFOPER EXCEL_EXPORT
 xlCall(
-double Strike,
-double Maturity,
-double Forward)
+LPXLFOPER Strikea,
+LPXLFOPER Maturitya,
+LPXLFOPER Forwarda)
 {
 EXCEL_BEGIN;
 
 	if (XlfExcel::Instance().IsCalledByFuncWiz())
 		return XlfOper(true);
 
+XlfOper Strikeb(
+	(Strikea));
+double Strike(
+	Strikeb.AsDouble("Strike"));
 
+XlfOper Maturityb(
+	(Maturitya));
+double Maturity(
+	Maturityb.AsDouble("Maturity"));
 
+XlfOper Forwardb(
+	(Forwarda));
+double Forward(
+	Forwardb.AsDouble("Forward"));
 
 MG_XLObjectPtr result(
 	Call(
@@ -417,7 +429,7 @@ XLRegistration::Arg
 ComputeZeroRateArgs[]=
 {
 { "aZeroCurve"," zero curve ","XLF_OPER"},
-{ "aMaturity"," maturity ","B"}
+{ "aMaturity"," maturity ","XLF_OPER"}
 };
   XLRegistration::XLFunctionRegistrationHelper
 registerComputeZeroRate("xlComputeZeroRate",
@@ -437,7 +449,7 @@ extern "C"
 LPXLFOPER EXCEL_EXPORT
 xlComputeZeroRate(
 LPXLFOPER aZeroCurvea,
-double aMaturity)
+LPXLFOPER aMaturitya)
 {
 EXCEL_BEGIN;
 
@@ -449,6 +461,10 @@ XlfOper aZeroCurveb(
 MG_XLObjectPtr aZeroCurve(
 	aZeroCurveb.AsMGXLObject("aZeroCurve"));
 
+XlfOper aMaturityb(
+	(aMaturitya));
+double aMaturity(
+	aMaturityb.AsDouble("aMaturity"));
 
 double result(
 	ComputeZeroRate(
@@ -571,8 +587,8 @@ XLRegistration::Arg
 ComputeVolatilityArgs[]=
 {
 { "aVolCurve"," volatility curve ","XLF_OPER"},
-{ "aTenor"," tenor ","B"},
-{ "aMaturity"," maturity ","B"}
+{ "aTenor"," tenor ","XLF_OPER"},
+{ "aMaturity"," maturity ","XLF_OPER"}
 };
   XLRegistration::XLFunctionRegistrationHelper
 registerComputeVolatility("xlComputeVolatility",
@@ -592,8 +608,8 @@ extern "C"
 LPXLFOPER EXCEL_EXPORT
 xlComputeVolatility(
 LPXLFOPER aVolCurvea,
-double aTenor,
-double aMaturity)
+LPXLFOPER aTenora,
+LPXLFOPER aMaturitya)
 {
 EXCEL_BEGIN;
 
@@ -605,7 +621,15 @@ XlfOper aVolCurveb(
 MG_XLObjectPtr aVolCurve(
 	aVolCurveb.AsMGXLObject("aVolCurve"));
 
+XlfOper aTenorb(
+	(aTenora));
+double aTenor(
+	aTenorb.AsDouble("aTenor"));
 
+XlfOper aMaturityb(
+	(aMaturitya));
+double aMaturity(
+	aMaturityb.AsDouble("aMaturity"));
 
 double result(
 	ComputeVolatility(
@@ -847,7 +871,7 @@ XLRegistration::Arg
 RandGen_CreateArgs[]=
 {
 { "aType"," generator type: TAUS, MT19937, .. ","XLF_OPER"},
-{ "aDim"," generator dimension, for quasi random ","B"}
+{ "aDim"," generator dimension, for quasi random ","XLF_OPER"}
 };
   XLRegistration::XLFunctionRegistrationHelper
 registerRandGen_Create("xlRandGen_Create",
@@ -867,7 +891,7 @@ extern "C"
 LPXLFOPER EXCEL_EXPORT
 xlRandGen_Create(
 LPXLFOPER aTypea,
-double aDima)
+LPXLFOPER aDima)
 {
 EXCEL_BEGIN;
 
@@ -879,8 +903,10 @@ XlfOper aTypeb(
 string aType(
 	aTypeb.AsString("aType"));
 
+XlfOper aDimb(
+	(aDima));
 int aDim(
-	static_cast<int>(aDima));
+	aDimb.AsInt("aDim"));
 
 MG_XLObjectPtr result(
 	RandGen_Create(
@@ -892,6 +918,309 @@ if (MG_SCache::Instance()->PersistentInsert(result, vRefObj, vError))
   return XlfOper(vRefObj);
 else
   return XlfOper(vError);
+EXCEL_END
+}
+}
+
+
+
+//////////////////////////
+
+namespace
+{
+XLRegistration::Arg
+NextBusinessDayArgs[]=
+{
+{ "aDate"," reference date ","XLF_OPER"},
+{ "aDays"," days after ","XLF_OPER"},
+{ "aCalendar"," calendar for business days ","XLF_OPER"}
+};
+  XLRegistration::XLFunctionRegistrationHelper
+registerNextBusinessDay("xlNextBusinessDay",
+"MG_NextBusinessDay",
+" next business day ",
+LibraryName,
+NextBusinessDayArgs,
+3
+,false
+);
+}
+
+
+
+extern "C"
+{
+LPXLFOPER EXCEL_EXPORT
+xlNextBusinessDay(
+LPXLFOPER aDatea,
+LPXLFOPER aDaysa,
+LPXLFOPER aCalendara)
+{
+EXCEL_BEGIN;
+
+	if (XlfExcel::Instance().IsCalledByFuncWiz())
+		return XlfOper(true);
+
+XlfOper aDateb(
+	(aDatea));
+MG_Date aDate(
+	aDateb.AsMGDate("aDate"));
+
+XlfOper aDaysb(
+	(aDaysa));
+int aDays(
+	aDaysb.AsInt("aDays"));
+
+XlfOper aCalendarb(
+	(aCalendara));
+string aCalendar(
+	aCalendarb.AsString("aCalendar"));
+
+MG_Date result(
+	NextBusinessDay(
+		aDate,
+		aDays,
+		aCalendar)
+	);
+double vXLDate = MG_utils::FromJulianDayToXLDate(result.GetJulianDay());
+return XlfOper(vXLDate);
+EXCEL_END
+}
+}
+
+
+
+//////////////////////////
+
+namespace
+{
+XLRegistration::Arg
+PreviousBusinessDayArgs[]=
+{
+{ "aDate"," reference date ","XLF_OPER"},
+{ "aDays"," days before ","XLF_OPER"},
+{ "aCalendar"," calendar for business days ","XLF_OPER"}
+};
+  XLRegistration::XLFunctionRegistrationHelper
+registerPreviousBusinessDay("xlPreviousBusinessDay",
+"MG_PreviousBusinessDay",
+" previous business day ",
+LibraryName,
+PreviousBusinessDayArgs,
+3
+,false
+);
+}
+
+
+
+extern "C"
+{
+LPXLFOPER EXCEL_EXPORT
+xlPreviousBusinessDay(
+LPXLFOPER aDatea,
+LPXLFOPER aDaysa,
+LPXLFOPER aCalendara)
+{
+EXCEL_BEGIN;
+
+	if (XlfExcel::Instance().IsCalledByFuncWiz())
+		return XlfOper(true);
+
+XlfOper aDateb(
+	(aDatea));
+MG_Date aDate(
+	aDateb.AsMGDate("aDate"));
+
+XlfOper aDaysb(
+	(aDaysa));
+int aDays(
+	aDaysb.AsInt("aDays"));
+
+XlfOper aCalendarb(
+	(aCalendara));
+string aCalendar(
+	aCalendarb.AsString("aCalendar"));
+
+MG_Date result(
+	PreviousBusinessDay(
+		aDate,
+		aDays,
+		aCalendar)
+	);
+double vXLDate = MG_utils::FromJulianDayToXLDate(result.GetJulianDay());
+return XlfOper(vXLDate);
+EXCEL_END
+}
+}
+
+
+
+//////////////////////////
+
+namespace
+{
+XLRegistration::Arg
+BetweenDatesArgs[]=
+{
+{ "aDate1"," first date ","XLF_OPER"},
+{ "aDate2"," second date ","XLF_OPER"},
+{ "aDayCount"," day count: ACT, A365, A360, 30/360, 30/360E, B252 ","XLF_OPER"},
+{ "aIsFrac"," 0: fraction, 1: days difference (def.) ","XLF_OPER"},
+{ "aCalendar"," calendar for business days ","XLF_OPER"}
+};
+  XLRegistration::XLFunctionRegistrationHelper
+registerBetweenDates("xlBetweenDates",
+"MG_BetweenDates",
+" previous business day ",
+LibraryName,
+BetweenDatesArgs,
+5
+,false
+);
+}
+
+
+
+extern "C"
+{
+LPXLFOPER EXCEL_EXPORT
+xlBetweenDates(
+LPXLFOPER aDate1a,
+LPXLFOPER aDate2a,
+LPXLFOPER aDayCounta,
+LPXLFOPER aIsFraca,
+LPXLFOPER aCalendara)
+{
+EXCEL_BEGIN;
+
+	if (XlfExcel::Instance().IsCalledByFuncWiz())
+		return XlfOper(true);
+
+XlfOper aDate1b(
+	(aDate1a));
+MG_Date aDate1(
+	aDate1b.AsMGDate("aDate1"));
+
+XlfOper aDate2b(
+	(aDate2a));
+MG_Date aDate2(
+	aDate2b.AsMGDate("aDate2"));
+
+XlfOper aDayCountb(
+	(aDayCounta));
+string aDayCount(
+	aDayCountb.AsString("aDayCount"));
+
+XlfOper aIsFracb(
+	(aIsFraca));
+int aIsFrac(
+	aIsFracb.AsIntWD("aIsFrac",1));
+
+XlfOper aCalendarb(
+	(aCalendara));
+string aCalendar(
+	aCalendarb.AsStringWD("aCalendar","0"));
+
+double result(
+	BetweenDates(
+		aDate1,
+		aDate2,
+		aDayCount,
+		aIsFrac,
+		aCalendar)
+	);
+return XlfOper(result);
+EXCEL_END
+}
+}
+
+
+
+//////////////////////////
+
+namespace
+{
+XLRegistration::Arg
+AddPeriodArgs[]=
+{
+{ "aDate"," reference date ","XLF_OPER"},
+{ "aFreq"," frequency: nY, Y, A, S, Q, B, nM, M, nW, W, nD, D ","XLF_OPER"},
+{ "aTimes"," times number to add frequency ","XLF_OPER"},
+{ "aCalendar"," calendar for business days ","XLF_OPER"},
+{ "aAdjRule"," adjustment rule: FIXED, FP, F, MF (def.), PP, P, MP ","XLF_OPER"},
+{ "aEndOfMonth"," 0: go to the end of the month (def.) ","XLF_OPER"}
+};
+  XLRegistration::XLFunctionRegistrationHelper
+registerAddPeriod("xlAddPeriod",
+"MG_AddPeriod",
+" Computing a date ",
+LibraryName,
+AddPeriodArgs,
+6
+,false
+);
+}
+
+
+
+extern "C"
+{
+LPXLFOPER EXCEL_EXPORT
+xlAddPeriod(
+LPXLFOPER aDatea,
+LPXLFOPER aFreqa,
+LPXLFOPER aTimesa,
+LPXLFOPER aCalendara,
+LPXLFOPER aAdjRulea,
+LPXLFOPER aEndOfMontha)
+{
+EXCEL_BEGIN;
+
+	if (XlfExcel::Instance().IsCalledByFuncWiz())
+		return XlfOper(true);
+
+XlfOper aDateb(
+	(aDatea));
+MG_Date aDate(
+	aDateb.AsMGDate("aDate"));
+
+XlfOper aFreqb(
+	(aFreqa));
+string aFreq(
+	aFreqb.AsString("aFreq"));
+
+XlfOper aTimesb(
+	(aTimesa));
+int aTimes(
+	aTimesb.AsInt("aTimes"));
+
+XlfOper aCalendarb(
+	(aCalendara));
+string aCalendar(
+	aCalendarb.AsString("aCalendar"));
+
+XlfOper aAdjRuleb(
+	(aAdjRulea));
+string aAdjRule(
+	aAdjRuleb.AsStringWD("aAdjRule","MF"));
+
+XlfOper aEndOfMonthb(
+	(aEndOfMontha));
+bool aEndOfMonth(
+	aEndOfMonthb.AsBoolWD("aEndOfMonth",true));
+
+MG_Date result(
+	AddPeriod(
+		aDate,
+		aFreq,
+		aTimes,
+		aCalendar,
+		aAdjRule,
+		aEndOfMonth)
+	);
+double vXLDate = MG_utils::FromJulianDayToXLDate(result.GetJulianDay());
+return XlfOper(vXLDate);
 EXCEL_END
 }
 }

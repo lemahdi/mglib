@@ -108,4 +108,37 @@ RandGen_Create(const string& aType // generator type: TAUS, MT19937, ..
 			   , const int& aDim // generator dimension, for quasi random
 			  );
 
+//<xlw:libraryname=MyTestLibrary
+MG_Date // next business day
+NextBusinessDay(MG_Date aDate // reference date
+			   , const int& aDays // days after
+			   , const string& aCalendar // calendar for business days
+			  );
+
+//<xlw:libraryname=MyTestLibrary
+MG_Date // previous business day
+PreviousBusinessDay(MG_Date aDate // reference date
+			   , const int& aDays // days before
+			   , const string& aCalendar // calendar for business days
+			  );
+
+//<xlw:libraryname=MyTestLibrary
+double // previous business day
+BetweenDates(MG_Date aDate1 // first date
+			 , MG_Date aDate2 // second date 
+			 , const string& aDayCount // day count: ACT, A365, A360, 30/360, 30/360E, B252
+			 , const int& aIsFrac = 1 // 0: fraction, 1: days difference (def.)
+			 , const string& aCalendar = "0" // calendar for business days
+			 );
+
+//<xlw:libraryname=MyTestLibrary
+MG_Date // Computing a date
+AddPeriod(MG_Date aDate // reference date
+			   , const string& aFreq // frequency: nY, Y, A, S, Q, B, nM, M, nW, W, nD, D
+			   , const int& aTimes // times number to add frequency
+			   , const string& aCalendar // calendar for business days
+			   , const string& aAdjRule = "MF" // adjustment rule: FIXED, FP, F, MF (def.), PP, P, MP
+			   , const bool& aEndOfMonth = true // 0: go to the end of the month (def.)
+			  );
+
 #endif

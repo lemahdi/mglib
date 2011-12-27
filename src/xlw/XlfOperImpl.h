@@ -125,9 +125,13 @@ namespace xlw {
         virtual int ConvertToDoubleVector(const XlfOper &xlfOper, std::vector<double>& value,
             DoubleVectorConvPolicy policy = UniDimensional) const = 0;
         virtual int ConvertToDouble(const XlfOper &xlfOper, double& value) const throw() = 0;
+        virtual int ConvertToDoubleWD(const XlfOper &xlfOper, double& value, const double& def) const throw() = 0;
         virtual int ConvertToShort(const XlfOper &xlfOper, short& value) const throw() = 0;
+        virtual int ConvertToShortWD(const XlfOper &xlfOper, short& value, const short& def) const throw() = 0;
         virtual int ConvertToBool(const XlfOper &xlfOper, bool& value) const throw() = 0;
+        virtual int ConvertToBoolWD(const XlfOper &xlfOper, bool& value, const bool& def) const throw() = 0;
         virtual int ConvertToString(const XlfOper &xlfOper, char *& value) const throw() = 0;
+		virtual int ConvertToStringWD(const XlfOper &xlfOper, char *& value, const std::string& def) const throw() = 0;
         virtual int ConvertToWstring(const XlfOper &xlfOper, std::wstring &value) const throw() = 0;
         virtual int ConvertToCellMatrix(const XlfOper &xlfOper, CellMatrix& output) const = 0;
         virtual int ConvertToMatrix(const XlfOper &xlfOper, MyMatrix& output) const = 0;
