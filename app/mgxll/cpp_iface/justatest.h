@@ -128,7 +128,7 @@ BetweenDates(MG_Date aDate1 // first date
 			 , MG_Date aDate2 // second date 
 			 , const string& aDayCount // day count: ACT, A365, A360, 30/360, 30/360E, B252
 			 , const int& aIsFrac = 1 // 0: fraction, 1: days difference (def.)
-			 , const string& aCalendar = "0" // calendar for business days
+			 , const string& aCalendar = "" // calendar for business days
 			 );
 
 //<xlw:libraryname=MyTestLibrary

@@ -143,6 +143,7 @@ int xlw::XlfOperImpl4::ConvertToDoubleWD(const XlfOper &xlfOper, double& d, cons
     else
     {
 		d = def;
+        xlret=xlretSuccess;
     }
     return xlret;
 };
@@ -285,6 +286,7 @@ int xlw::XlfOperImpl4::ConvertToShortWD(const XlfOper &xlfOper, short& s, const 
     else
     {
 		s = def;
+        xlret=xlretSuccess;
     }
     return xlret;
 };
@@ -328,6 +330,7 @@ int xlw::XlfOperImpl4::ConvertToBoolWD(const XlfOper &xlfOper, bool& b, const bo
     else
     {
 		b = def;
+        xlret=xlretSuccess;
   }
   return xlret;
 };
@@ -705,6 +708,7 @@ int xlw::XlfOperImpl4::ConvertToStringWD(const XlfOper &xlfOper, char *& s, cons
         s = XlfExcel::Instance().GetMemory(len);
 		memcpy(s, def.c_str(), len);
 		s[len-1] = '\0';
+        xlret = xlretSuccess;
     }
     return xlret;
 }

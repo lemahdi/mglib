@@ -1120,7 +1120,7 @@ int aIsFrac(
 XlfOper aCalendarb(
 	(aCalendara));
 string aCalendar(
-	aCalendarb.AsStringWD("aCalendar","0"));
+	aCalendarb.AsStringWD("aCalendar",""));
 
 double result(
 	BetweenDates(
