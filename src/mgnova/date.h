@@ -152,13 +152,13 @@ public:
 	{
 		return vLeft -= vRight;
 	}
-	friend MG_Date operator- (const long& vLeft, MG_Date vRight)
+	/*friend MG_Date operator- (const long& vLeft, MG_Date vRight)
 	{
 		return vRight -= vLeft;
-	}
-	friend long operator- (const MG_Date& vLeft, MG_Date vRight)
+	}*/
+	friend long operator- (const MG_Date& vLeft, MG_Date& vRight)
 	{
-		return vRight -= vLeft;
+		return vLeft.GetJulianDay() - vRight.GetJulianDay();
 	}
 
 };

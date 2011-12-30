@@ -199,7 +199,7 @@ MG_Date PreviousBusinessDay	(	MG_Date aDt
 double BetweenDates(	MG_Date aDate1
 				,	MG_Date aDate2
 				,	const string& aDayCount
-				,	const int& aIsFrac
+				,	const bool& aIsFrac
 				,	const string& aCalendar)
 {
 	CALENDAR_NAME vCal = CALENDAR_NAME_DEF;
@@ -208,7 +208,7 @@ double BetweenDates(	MG_Date aDate1
 
 	DAYCOUNT_NAME vDayCount = (DAYCOUNT_NAME)DayCountNameConvertor[aDayCount];
 
-	return aDate1.BetweenDays(aDate2, vDayCount, aIsFrac?true:false, vCal);
+	return aDate2.BetweenDays(aDate1, vDayCount, aIsFrac, vCal);
 }
 
 MG_Date AddPeriod	(	MG_Date aDt

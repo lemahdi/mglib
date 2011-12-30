@@ -1066,7 +1066,7 @@ BetweenDatesArgs[]=
 { "aDate1"," first date ","XLF_OPER"},
 { "aDate2"," second date ","XLF_OPER"},
 { "aDayCount"," day count: ACT, A365, A360, 30/360, 30/360E, B252 ","XLF_OPER"},
-{ "aIsFrac"," 0: fraction, 1: days difference (def.) ","XLF_OPER"},
+{ "aIsFrac"," true: fraction, false: days difference (def.) ","XLF_OPER"},
 { "aCalendar"," calendar for business days ","XLF_OPER"}
 };
   XLRegistration::XLFunctionRegistrationHelper
@@ -1114,8 +1114,8 @@ string aDayCount(
 
 XlfOper aIsFracb(
 	(aIsFraca));
-int aIsFrac(
-	aIsFracb.AsIntWD("aIsFrac",1));
+bool aIsFrac(
+	aIsFracb.AsBoolWD("aIsFrac",true));
 
 XlfOper aCalendarb(
 	(aCalendara));
@@ -1149,7 +1149,7 @@ AddPeriodArgs[]=
 { "aTimes"," times number to add frequency ","XLF_OPER"},
 { "aCalendar"," calendar for business days ","XLF_OPER"},
 { "aAdjRule"," adjustment rule: FIXED, FP, F, MF (def.), PP, P, MP ","XLF_OPER"},
-{ "aEndOfMonth"," 0: go to the end of the month (def.) ","XLF_OPER"}
+{ "aEndOfMonth"," true: go to the end of the month (def.) ","XLF_OPER"}
 };
   XLRegistration::XLFunctionRegistrationHelper
 registerAddPeriod("xlAddPeriod",

@@ -127,7 +127,7 @@ double // previous business day
 BetweenDates(MG_Date aDate1 // first date
 			 , MG_Date aDate2 // second date 
 			 , const string& aDayCount // day count: ACT, A365, A360, 30/360, 30/360E, B252
-			 , const int& aIsFrac = 1 // 0: fraction, 1: days difference (def.)
+			 , const bool& aIsFrac = true // true: fraction, false: days difference (def.)
 			 , const string& aCalendar = "" // calendar for business days
 			 );
 
@@ -138,7 +138,7 @@ AddPeriod(MG_Date aDate // reference date
 			   , const int& aTimes // times number to add frequency
 			   , const string& aCalendar // calendar for business days
 			   , const string& aAdjRule = "MF" // adjustment rule: FIXED, FP, F, MF (def.), PP, P, MP
-			   , const bool& aEndOfMonth = true // 0: go to the end of the month (def.)
+			   , const bool& aEndOfMonth = true // true: go to the end of the month (def.)
 			  );
 
 #endif

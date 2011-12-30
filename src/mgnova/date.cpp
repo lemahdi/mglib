@@ -503,64 +503,64 @@ double MG_Date::BetweenDays	(	const MG_Date		& aDt
 		vSign = -1;
 	}
 
-	unsigned int vDay1 = vDt1.GetDay();
-	unsigned int vDay2 = vDt2.GetDay();
-	unsigned int vMth1 = vDt1.GetMonth();
-	unsigned int vMth2 = vDt2.GetMonth();
+	int vDay1 = vDt1.GetDay();
+	int vDay2 = vDt2.GetDay();
+	int vMth1 = vDt1.GetMonth();
+	int vMth2 = vDt2.GetMonth();
 	int vYr1 = vDt1.GetYear();
 	int vYr2 = vDt2.GetYear();
 
-	long vLag(0);
+	double vLag(0.);
 	double vFrac = 1.;
 	switch(aDayCount)
 	{
 	case K_ACT:
 		{
+			if (!aIsFrac)
+			{
+				vLag = vSign * (vDt1 - vDt2);
+				break;
+			}
+
 			MG_Date vBeginYr1(vYr1, 1, 1);
 			MG_Date vBeginYr2(vYr2, 1, 1);
-			unsigned int vDays = 365;
+			double vDays = 365.;
 			if (vBeginYr1.IsLeapYear())
-				vDays = 366;
-			int vLag1 = -(vDt1 - vBeginYr1) / vDays;
-			vDays = 365;
+				vDays = 366.;
+			double vLag1 = (vDt1 - vBeginYr1) / vDays;
+			vDays = 365.;
 			if (vBeginYr2.IsLeapYear())
-				vDays = 366;
-			int vLag2 = (vDt2 - vBeginYr2) / vDays;
-			vLag = vLag1 + vLag2 + vYr2 - vYr1;
-			vFrac = 365.;
+				vDays = 366.;
+			double vLag2 = -(vDt2 - vBeginYr2) / vDays;
+			vLag = vLag1 + vLag2 - (vYr2 - vYr1);
+			vFrac = 1.;
 		}
 		break;
 	case K_ACT_360:
 		{
-			vLag = *this - aDt;
+			vLag = vDt1 - vDt2;
 			vFrac = 360.;
 		}
 		break;
 	case K_ACT_365:
 		{
-			vLag = *this - aDt;
+			vLag = vDt1 - vDt2;
 			vFrac = 365.;
 		}
 		break;
 	case K_U_30_360:
 		{
-			bool vIsEndFeb1 = vMth1==2 && (vDt1.IsLeapYear()&&vDay1==29 || !vDt1.IsLeapYear()&&vDay1==28);
-			bool vIsEndFeb2 = vMth2==2 && (vDt2.IsLeapYear()&&vDay2==29 || !vDt2.IsLeapYear()&&vDay2==28);
-			unsigned int vDay1Tmp(vDay1), vDay2Tmp(vDay2);
-			if (vIsEndFeb1 && vIsEndFeb2) vDay2Tmp = 30;
-			if (vIsEndFeb1) vDay1Tmp = 30;
-			if (vDay2==31 && vDay1>=30) vDay2Tmp = 30;
-			if (vDay1 == 31) vDay1Tmp = 30;
-			vLag = (360 * (vYr2 - vYr1) + 30 * (vMth2 - vMth1) + (vDay2Tmp - vDay1Tmp));
+			if (vDay1 == 31) vDay1 = 30;
+			if (vDay1==30 && vDay2==31) vDay2 = 30;
+			vLag = -(360 * (vYr2 - vYr1) + 30 * (vMth2 - vMth1) + (vDay2 - vDay1));
 			vFrac = 360.;
 		}
 		break;
 	case K_E_30_360:
 		{
-			unsigned int vDay1Tmp(vDay1), vDay2Tmp(vDay2);
-			if (vDay1 == 31) vDay1Tmp = 30;
-			if (vDay1>=30 && vDay2==31) vDay2Tmp = 30;
-			vLag = (360 * (vYr2 - vYr1) + 30 * (vMth2 - vMth1) + (vDay2Tmp - vDay1Tmp));
+			if (vDay1 == 31) vDay1 = 30;
+			if (vDay1<=30 && vDay2==31) vDay2 = 30;
+			vLag = -(360 * (vYr2 - vYr1) + 30 * (vMth2 - vMth1) + (vDay2 - vDay1));
 			vFrac = 360.;
 		}
 		break;
@@ -570,7 +570,7 @@ double MG_Date::BetweenDays	(	const MG_Date		& aDt
 			{
 				if(MG_Calendar::IsWeekEnd(aCal, vDt1++))
 					continue;
-				++vLag;
+				--vLag;
 			}
 			vFrac = 252.;
 		}
@@ -580,7 +580,7 @@ double MG_Date::BetweenDays	(	const MG_Date		& aDt
 	if (!aIsFrac)
 		vFrac = 1.;
 
-	return vLag / vFrac;
+	return vSign * vLag / vFrac;
 }
 
 MG_Date MG_Date::AddMonths	(	const int	& aFreq

@@ -12,13 +12,13 @@ using namespace MG;
 #define MIN_YEAR 2000
 #define MAX_YEAR 2100
 
-#define calendarSunday		0x0000
-#define calendarMonday		0x0001
-#define calendarTuesday		0x0002
-#define calendarWednesday	0x0004
-#define calendarThursday	0x0008
-#define calendarFriday		0x0010
-#define calendarSaturday	0x0020
+#define calendarSunday		0x0001
+#define calendarMonday		0x0002
+#define calendarTuesday		0x0004
+#define calendarWednesday	0x0008
+#define calendarThursday	0x0010
+#define calendarFriday		0x0020
+#define calendarSaturday	0x0040
 #define calendarMaxBits		4
 #define calendarMask		0x0001
 
@@ -164,8 +164,8 @@ bool MG_Calendar::IsBusinessDay(const CALENDAR_NAME& aCal, const MG_Date& aDate)
 bool MG_Calendar::IsWeekEnd(const CALENDAR_NAME& aCal, const MG_Date& aDate)
 {
 	short vWE = ourCalPpty[aCal].myWeekEnds;
-	unsigned int vDayWorkWeek = aDate.GetDayOfWeek();
-	short vWEBit = (short)pow(2., (int)vDayWorkWeek);
+	unsigned int vDayWeek = aDate.GetDayOfWeek();
+	short vWEBit = (short)pow(2., (int)vDayWeek);
 
 	if (vWE & vWEBit)
 		return true;
