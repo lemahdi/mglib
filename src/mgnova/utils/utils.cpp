@@ -274,5 +274,30 @@ namespace MG_utils
 			MG_THROW("Frequency should be Y, M, W or D");
 	}
 
+	/* getting frequency from index name */
+	void GetFromIndexName(const INDEX_NAME& aIndexNm, int& aPeriod, unsigned int& aTimes, FREQUENCY_NAME& aFreqNm)
+	{
+		string vIdxNm = IndexNameRevertor[aIndexNm];
+
+		aPeriod = 0;
+		aTimes = 1;
+
+		size_t vPos = vIdxNm.find_first_of("0123456789");
+		if (vPos == string::npos) return;
+
+		string vPeriod = vIdxNm.substr(vPos);
+		if (aIndexNm >= K_CMS1 && aIndexNm<=K_CMS50)
+		{
+			aPeriod = 1;
+			aTimes = atoi(vPeriod.c_str());
+			aFreqNm = K_ANNUALY;
+			return;
+		}
+	
+		size_t vLen = vPeriod.length();
+		aPeriod = atoi(vPeriod.substr(0, vLen-1).c_str());
+		aFreqNm = K_MONTHLY;
+	}
+
 }
 

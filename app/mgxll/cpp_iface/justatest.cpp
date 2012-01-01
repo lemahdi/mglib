@@ -4,6 +4,7 @@
 #include "mgnova/exception.h"
 #include "mgnova/utils/utils.h"
 #include "mgnova/argconvdef.h"
+#include "mgnova/schedule.h"
 #include "mgmktdata/marketdata.h"
 #include "mggenpricer/gensec/gensecurity.h"
 #include "mgnumerical/random.h"
@@ -221,6 +222,7 @@ MG_Date AddPeriod	(	MG_Date aDt
 	string vFreq;
 	int vTimes;
 	SplitFrequency(aFreq, vTimes, vFreq);
+	if (vFreq == "Y") vFreq = "A";
 
 	FREQUENCY_NAME vFreqNm = (FREQUENCY_NAME)FrequencyNameConvertor[vFreq];
 	ADJRULE_NAME vAdjRule = (ADJRULE_NAME)AdjustmentRuleNameConvertor[aAdjRule];
@@ -230,4 +232,104 @@ MG_Date AddPeriod	(	MG_Date aDt
 
 	return aDt;
 }
+
+
+MG_XLObjectPtr Schedule_Create	(	const MG_Date	& aStartDate
+								,	const MG_Date	& aEndDate
+								,	const string	& aCurrency
+								,	const string	& aFreq
+								,	const string	& aIndexName
+								,	const string	& aDayCount
+								,	const string	& aIntRule
+								,	const string	& aAdjRule
+								,	const string	& aStubRule
+								,	const string	& aResetTiming
+								,	const string	& aPayTiming
+								,	const string	& aResetCalendar
+								,	const string	& aPayCalendar
+								,	const int		& aResetGap
+								,	const int		& aPayGap
+								,	const bool		& aIsDecompound)
+{
+	MG_Currency vCcy(aCurrency);
+	FREQUENCY_NAME vFreq = (FREQUENCY_NAME)FrequencyNameConvertor[aFreq];
+	INDEX_NAME vIdxNm = (INDEX_NAME)IndexNameConvertor[aIndexName];
+	DAYCOUNT_NAME vDayCount = (DAYCOUNT_NAME)DayCountNameConvertor[aDayCount];
+	ADJ_NAME vIntAdj = (ADJ_NAME)AdjustmentNameConvertor[aIntRule];
+	ADJRULE_NAME vAdjRule = (ADJRULE_NAME)AdjustmentRuleNameConvertor[aAdjRule];
+	STUBRULE_NAME vStubRule = (STUBRULE_NAME)StubRuleNameConvertor[aStubRule];
+	TIMING_NAME vRstTiming = (TIMING_NAME)TimingNameConvertor[aResetTiming];
+	TIMING_NAME vPayTiming = (TIMING_NAME)TimingNameConvertor[aPayTiming];
+	CALENDAR_NAME vRstCal = (CALENDAR_NAME)CalendarsNameConvertor[aResetCalendar];
+	CALENDAR_NAME vPayCal = (CALENDAR_NAME)CalendarsNameConvertor[aPayCalendar];
+
+	return MG_XLObjectPtr(new MG_Schedule	(	aStartDate, aEndDate
+											,	vCcy, vFreq, vIdxNm
+											,	vDayCount, vIntAdj, vAdjRule, vStubRule
+											,	vRstTiming, vPayTiming
+											,	vRstCal, vPayCal
+											,	aResetGap, aPayGap, aIsDecompound));
+}
+
+CellMatrix Schedule_GetData(MG_XLObjectPtr& aSched, const string& aData)
+{
+	MG_Schedule& vSched = dynamic_cast<MG_Schedule&>(*aSched);
+
+	MyArray vArray;
+	if (aData == "ResetDate")
+	{
+		const vector<MG_Date>& vDts = vSched.GetResetDates();
+		vArray.resize(vDts.size());
+		for(size_t i=0; i<vArray.size(); ++i)
+			vArray[i] = FromJulianDayToXLDate(vDts[i].GetJulianDay());
+	}
+	else if (aData == "StartDate")
+	{
+		const vector<MG_Date>& vDts = vSched.GetIntStartDates();
+		vArray.resize(vDts.size());
+		for(size_t i=0; i<vArray.size(); ++i)
+			vArray[i] = FromJulianDayToXLDate(vDts[i].GetJulianDay());
+	}
+	else if (aData == "EndDate")
+	{
+		const vector<MG_Date>& vDts = vSched.GetIntEndDates();
+		vArray.resize(vDts.size());
+		for(size_t i=0; i<vArray.size(); ++i)
+			vArray[i] = FromJulianDayToXLDate(vDts[i].GetJulianDay());
+	}
+	else if (aData == "PayDate")
+	{
+		const vector<MG_Date>& vDts = vSched.GetPayDates();
+		vArray.resize(vDts.size());
+		for(size_t i=0; i<vArray.size(); ++i)
+			vArray[i] = FromJulianDayToXLDate(vDts[i].GetJulianDay());
+	}
+	else if (aData == "InterestDays")
+	{
+		const vector<unsigned int>& vDays = vSched.GetIntDays();
+		vArray.resize(vDays.size());
+		for(size_t i=0; i<vArray.size(); ++i)
+			vArray[i] = vDays[i];
+	}
+	else if (aData == "InterestTerms")
+		vArray = vSched.GetIntTerms();
+	else if (aData == "FwdStartDate")
+	{
+		const vector<MG_Date>& vDts = vSched.GetFwdRateStartDates();
+		vArray.resize(vDts.size());
+		for(size_t i=0; i<vArray.size(); ++i)
+			vArray[i] = FromJulianDayToXLDate(vDts[i].GetJulianDay());
+	}
+	else if (aData == "FwdEndDate")
+	{
+		const vector<MG_Date>& vDts = vSched.GetFwdRateEndDates();
+		vArray.resize(vDts.size());
+		for(size_t i=0; i<vArray.size(); ++i)
+			vArray[i] = FromJulianDayToXLDate(vDts[i].GetJulianDay());
+	}
+
+	CellMatrix vInfos(vArray);
+	return vInfos;
+}
+
 

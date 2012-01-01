@@ -89,19 +89,21 @@ public:
 	std::string ToString(void) const;
 
 	/* Calendars functions */
-	MG_Date NextBusinessDay		(size_t aDays, const CALENDAR_NAME& aCal);
-	MG_Date PreviousBusinessDay	(size_t aDays, const CALENDAR_NAME& aCal);
+	MG_Date& NextBusinessDay		(size_t aDays, const CALENDAR_NAME& aCal);
+	MG_Date& PreviousBusinessDay	(size_t aDays, const CALENDAR_NAME& aCal);
+	MG_Date& AdjustToBusinessDay	(const CALENDAR_NAME& aCal, const ADJRULE_NAME& aAdjRule = K_MODIFIED_FOLLOWING);
 	double BetweenDays		(	const MG_Date		& aDt
 							,	const DAYCOUNT_NAME	& aDayCount
 							,	const bool			& aIsFrac
-							,	const CALENDAR_NAME	& aCal);
-	MG_Date AddMonths		(	const int	& aFreq
+							,	const CALENDAR_NAME	& aCal = NB_CALENDARS);
+	MG_Date& AddDays		(	const int& aDays, const CALENDAR_NAME& aCal);
+	MG_Date& AddMonths		(	const int	& aFreq
 							,	const int	& aTimes
 							,	const bool	& aEndOfMonth = true);
-	MG_Date AddPeriod		(	const int			& aFreq
+	MG_Date& AddPeriod		(	const int			& aFreq
 							,	const int			& aTimes
 							,	const CALENDAR_NAME	& aCal
-							,	const ADJRULE_NAME	& aAdjRule = K_FOLLOWING
+							,	const ADJRULE_NAME	& aAdjRule = K_MODIFIED_FOLLOWING
 							,	const bool			& aEndOfMonth = true);
 
 private:

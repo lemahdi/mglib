@@ -41,6 +41,82 @@ extern const MG_ArgConv			MonthsConvertor;
 extern const MG_ArgConvReverse	MonthsRevertor;
 
 
+enum INDEX_NAME
+{
+	K_FIXED,
+
+	K_OIS,
+	K_EONIA,
+	K_SONIA,
+
+	K_LIBOR1M,
+	K_LIBOR3M,
+	K_LIBOR6M,
+	K_LIBOR12M,
+
+	K_EUBOR1M,
+	K_EUBOR3M,
+	K_EUBOR6M,
+	K_EUBOR12M,
+
+	K_CMS1,
+	K_CMS2,
+	K_CMS3,
+	K_CMS4,
+	K_CMS5,
+	K_CMS6,
+	K_CMS7,
+	K_CMS8,
+	K_CMS9,
+	K_CMS10,
+	K_CMS11,
+	K_CMS12,
+	K_CMS13,
+	K_CMS14,
+	K_CMS15,
+	K_CMS16,
+	K_CMS17,
+	K_CMS18,
+	K_CMS19,
+	K_CMS20,
+	K_CMS21,
+	K_CMS22,
+	K_CMS23,
+	K_CMS24,
+	K_CMS25,
+	K_CMS26,
+	K_CMS27,
+	K_CMS28,
+	K_CMS29,
+	K_CMS30,
+	K_CMS31,
+	K_CMS32,
+	K_CMS33,
+	K_CMS34,
+	K_CMS35,
+	K_CMS36,
+	K_CMS37,
+	K_CMS38,
+	K_CMS39,
+	K_CMS40,
+	K_CMS41,
+	K_CMS42,
+	K_CMS43,
+	K_CMS44,
+	K_CMS45,
+	K_CMS46,
+	K_CMS47,
+	K_CMS48,
+	K_CMS49,
+	K_CMS50,
+
+	NB_INDEX
+};
+
+extern const MG_ArgConv			IndexNameConvertor;
+extern const MG_ArgConvReverse	IndexNameRevertor;
+
+
 enum CURRENCY_NAME
 {
 	K_USD,
@@ -51,6 +127,7 @@ enum CURRENCY_NAME
 	NB_CURRENCIES
 };
 #define CURRENCY_NAME_DEF K_EUR
+#define CURRENCY_NAME_DEF_STR "EUR"
 
 extern const MG_ArgConv			CurrenciesNameConvertor;
 extern const MG_ArgConvReverse	CurrenciesNameRevertor;
@@ -66,6 +143,7 @@ enum CALENDAR_NAME
 	NB_CALENDARS
 };
 #define CALENDAR_NAME_DEF K_EUR_CAL
+#define CALENDAR_NAME_DEF_STR "EUR"
 
 extern const MG_ArgConv			CalendarsNameConvertor;
 extern const MG_ArgConvReverse	CalendarsNameRevertor;
@@ -104,23 +182,61 @@ extern const MG_ArgConv			DayCountNameConvertor;
 extern const MG_ArgConvReverse	DayCountNameRevertor;
 
 
+enum STUBRULE_NAME
+{
+	K_SHORT_START,
+	K_LONG_START,
+	K_SHORT_END,
+	K_LONG_END,
+
+	NB_STUBRULE
+};
+
+extern const MG_ArgConv			StubRuleNameConvertor;
+extern const MG_ArgConvReverse	StubRuelNameRevertor;
+
+
+enum ADJ_NAME
+{
+	K_ADJUSTED,
+	K_UNADJUSTED,
+
+	NB_ADJ
+};
+
+extern const MG_ArgConv			AdjustmentNameConvertor;
+extern const MG_ArgConvReverse	AdjustmentNameRevertor;
+
+
 enum ADJRULE_NAME
 {
-	K_FIXED,
-	K_FOLLOWING_PAY,					// Next business day, same interest period
-	K_FOLLOWING,						// Next business day, modify interest period
-	K_MODIFIED_FOLLOWING,				// Next business day unless month change then previous business day, modifiy interest period
+	K_FIXED_RULE,
+	K_FOLLOWING_PAY,				// Next business day, same interest period
+	K_FOLLOWING,					// Next business day, modify interest period
+	K_MODIFIED_FOLLOWING,			// Next business day unless month change then previous business day, modifiy interest period
 	K_MODIFIED_FOLLOWING_NOREDEMP,	// Next business day unless month change then previous business day, same interest period
 	K_PREVIOUS_PAY,					// Previous business day, same interest period
 	K_PREVIOUS,						// Previous business day, modify interest period
-	K_MODIFIED_PREVIOUS,				// Previous business day unless month change then next business day, modifiy interest period
-	K_MODIFIED_PREVIOUS_NOREDEMP,		// Previous business day unless month change then next business day, same interest period
+	K_MODIFIED_PREVIOUS,			// Previous business day unless month change then next business day, modifiy interest period
+	K_MODIFIED_PREVIOUS_NOREDEMP,	// Previous business day unless month change then next business day, same interest period
 
 	NB_ADJRULE
 };
 
 extern const MG_ArgConv			AdjustmentRuleNameConvertor;
 extern const MG_ArgConvReverse	AdjustmentRuleNameRevertor;
+
+
+enum TIMING_NAME
+{
+	K_ADVANCE,
+	K_ARREARS,
+
+	NB_TIMING
+};
+
+extern const MG_ArgConv			TimingNameConvertor;
+extern const MG_ArgConvReverse	TimingNameRevertor;
 
 
 /* enum for interpolation methods */

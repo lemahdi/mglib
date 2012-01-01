@@ -208,6 +208,7 @@ MG_Date& MG_Date::operator-- ()
 {
 	myJulianDay--;
 	MG_Date::JdToYmd(myJulianDay, myYear, myMonth, myDay);
+	Rebuild();
 	return *this;
 }
 MG_Date MG_Date::operator++ (int)
@@ -466,7 +467,7 @@ long MG_Date::ToJulianDay(const char* aDate, char aSeparator, const DATE_DISPLAY
 /*
  * Calendars functions
  */
-MG_Date MG_Date::NextBusinessDay(size_t aDays, const CALENDAR_NAME& aCal)
+MG_Date& MG_Date::NextBusinessDay(size_t aDays, const CALENDAR_NAME& aCal)
 {
 	while (aDays)
 	{
@@ -477,7 +478,7 @@ MG_Date MG_Date::NextBusinessDay(size_t aDays, const CALENDAR_NAME& aCal)
 	return *this;
 }
 
-MG_Date MG_Date::PreviousBusinessDay(size_t aDays, const CALENDAR_NAME& aCal)
+MG_Date& MG_Date::PreviousBusinessDay(size_t aDays, const CALENDAR_NAME& aCal)
 {
 	while (aDays)
 	{
@@ -486,6 +487,19 @@ MG_Date MG_Date::PreviousBusinessDay(size_t aDays, const CALENDAR_NAME& aCal)
 			--aDays;
 	}
 	return *this;
+}
+
+MG_Date& MG_Date::AdjustToBusinessDay(const CALENDAR_NAME& aCal, const ADJRULE_NAME& aAdjRule)
+{
+	return AddPeriod(K_DAILY, 0, aCal, aAdjRule, false);
+}
+
+MG_Date& MG_Date::AddDays(const int& aDays, const CALENDAR_NAME& aCal)
+{
+	if (aDays >= 0)
+		return NextBusinessDay(size_t(aDays), aCal);
+	else
+		return PreviousBusinessDay(size_t(-aDays), aCal);
 }
 
 double MG_Date::BetweenDays	(	const MG_Date		& aDt
@@ -583,15 +597,27 @@ double MG_Date::BetweenDays	(	const MG_Date		& aDt
 	return vSign * vLag / vFrac;
 }
 
-MG_Date MG_Date::AddMonths	(	const int	& aFreq
+MG_Date& MG_Date::AddMonths	(	const int	& aFreq
 							,	const int	& aTimes
 							,	const bool	& aEndOfMonth)
 {
-	unsigned int vMonths = aFreq * aTimes;
-	int vYrs = (myMonth+vMonths-1) / 12;
-	unsigned int vNextMth = (myMonth+vMonths) % 12;
-	if (vNextMth == 0) vNextMth = 12;
-	MG_Date vNextDt(myYear+vYrs, vNextMth, myDay);
+	int vMonths = aFreq * aTimes;
+	int vSign = vMonths>=0 ? 1 : -1;
+	MG_Date vNextDt;
+	if (vSign >= 0)
+	{
+		int vYrs = (myMonth+vMonths-1) / 12;
+		int vNextMth = (myMonth+vMonths) % 12;
+		if (vNextMth == 0) vNextMth = 12;
+		vNextDt = MG_Date(myYear+vYrs, vNextMth, myDay);
+	}
+	else
+	{
+		int vYrs = -(-(int)myMonth-vMonths+12) / 12;
+		int vNextMth = (myMonth+vMonths-12*vYrs) % 12;
+		if (vNextMth == 0) vNextMth = 12;
+		vNextDt = MG_Date(myYear+vYrs, vNextMth, myDay);
+	}
 	if (aEndOfMonth)
 	{
 		MG_Date vOneDayAfter = *this + 1;
@@ -609,7 +635,7 @@ MG_Date MG_Date::AddMonths	(	const int	& aFreq
 	return *this;
 }
 
-MG_Date MG_Date::AddPeriod	(	const int			& aFreq
+MG_Date& MG_Date::AddPeriod	(	const int			& aFreq
 							,	const int			& aTimes
 							,	const CALENDAR_NAME	& aCal
 							,	const ADJRULE_NAME	& aAdjRule
@@ -623,7 +649,7 @@ MG_Date MG_Date::AddPeriod	(	const int			& aFreq
 		{
 			switch (aAdjRule)
 			{
-			case K_FIXED:
+			case K_FIXED_RULE:
 				{
 					*this += vDays*aTimes;
 				}
@@ -681,7 +707,7 @@ MG_Date MG_Date::AddPeriod	(	const int			& aFreq
 			AddMonths(vMonths, aTimes, aEndOfMonth);
 			switch (aAdjRule)
 			{
-			case K_FIXED: break;
+			case K_FIXED_RULE: break;
 
 			case K_FOLLOWING_PAY:
 			case K_FOLLOWING:

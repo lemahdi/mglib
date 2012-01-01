@@ -26,6 +26,75 @@ const MG_ArgConv		MonthsConvertor	= MG_ArgConv		("Months Three Letters", MonthsA
 const MG_ArgConvReverse	MonthsRevertor	= MG_ArgConvReverse	("Months Three Letters", MonthsArgConv, NB_MONTHS_3L);
 
 
+MG_ArgConv::ArgConvPair IndexNameArgConv[] =
+{
+	MG_ArgConv::ArgConvPair("FIXED",K_FIXED),
+	MG_ArgConv::ArgConvPair("OIS",K_OIS),
+	MG_ArgConv::ArgConvPair("EONIA",K_EONIA),
+	MG_ArgConv::ArgConvPair("SONIA",K_SONIA),
+	MG_ArgConv::ArgConvPair("LIBOR1M",K_LIBOR1M),
+	MG_ArgConv::ArgConvPair("LIBOR3M",K_LIBOR3M),
+	MG_ArgConv::ArgConvPair("LIBOR6M",K_LIBOR6M),
+	MG_ArgConv::ArgConvPair("LIBOR12M",K_LIBOR12M),
+	MG_ArgConv::ArgConvPair("EUBOR1M",K_EUBOR1M),
+	MG_ArgConv::ArgConvPair("EUBOR3M",K_EUBOR3M),
+	MG_ArgConv::ArgConvPair("EUBOR6M",K_EUBOR6M),
+	MG_ArgConv::ArgConvPair("EUBOR12M",K_EUBOR12M),
+	MG_ArgConv::ArgConvPair("CMS1",K_CMS1),
+	MG_ArgConv::ArgConvPair("CMS2",K_CMS2),
+	MG_ArgConv::ArgConvPair("CMS3",K_CMS3),
+	MG_ArgConv::ArgConvPair("CMS4",K_CMS4),
+	MG_ArgConv::ArgConvPair("CMS5",K_CMS5),
+	MG_ArgConv::ArgConvPair("CMS6",K_CMS6),
+	MG_ArgConv::ArgConvPair("CMS7",K_CMS7),
+	MG_ArgConv::ArgConvPair("CMS8",K_CMS8),
+	MG_ArgConv::ArgConvPair("CMS9",K_CMS9),
+	MG_ArgConv::ArgConvPair("CMS10",K_CMS10),
+	MG_ArgConv::ArgConvPair("CMS11",K_CMS11),
+	MG_ArgConv::ArgConvPair("CMS12",K_CMS12),
+	MG_ArgConv::ArgConvPair("CMS13",K_CMS13),
+	MG_ArgConv::ArgConvPair("CMS14",K_CMS14),
+	MG_ArgConv::ArgConvPair("CMS15",K_CMS15),
+	MG_ArgConv::ArgConvPair("CMS16",K_CMS16),
+	MG_ArgConv::ArgConvPair("CMS17",K_CMS17),
+	MG_ArgConv::ArgConvPair("CMS18",K_CMS18),
+	MG_ArgConv::ArgConvPair("CMS19",K_CMS19),
+	MG_ArgConv::ArgConvPair("CMS20",K_CMS20),
+	MG_ArgConv::ArgConvPair("CMS21",K_CMS21),
+	MG_ArgConv::ArgConvPair("CMS22",K_CMS22),
+	MG_ArgConv::ArgConvPair("CMS23",K_CMS23),
+	MG_ArgConv::ArgConvPair("CMS24",K_CMS24),
+	MG_ArgConv::ArgConvPair("CMS25",K_CMS25),
+	MG_ArgConv::ArgConvPair("CMS26",K_CMS26),
+	MG_ArgConv::ArgConvPair("CMS27",K_CMS27),
+	MG_ArgConv::ArgConvPair("CMS28",K_CMS28),
+	MG_ArgConv::ArgConvPair("CMS29",K_CMS29),
+	MG_ArgConv::ArgConvPair("CMS30",K_CMS30),
+	MG_ArgConv::ArgConvPair("CMS21",K_CMS31),
+	MG_ArgConv::ArgConvPair("CMS22",K_CMS32),
+	MG_ArgConv::ArgConvPair("CMS23",K_CMS33),
+	MG_ArgConv::ArgConvPair("CMS24",K_CMS34),
+	MG_ArgConv::ArgConvPair("CMS25",K_CMS35),
+	MG_ArgConv::ArgConvPair("CMS26",K_CMS36),
+	MG_ArgConv::ArgConvPair("CMS27",K_CMS37),
+	MG_ArgConv::ArgConvPair("CMS28",K_CMS38),
+	MG_ArgConv::ArgConvPair("CMS29",K_CMS39),
+	MG_ArgConv::ArgConvPair("CMS40",K_CMS40),
+	MG_ArgConv::ArgConvPair("CMS21",K_CMS41),
+	MG_ArgConv::ArgConvPair("CMS22",K_CMS42),
+	MG_ArgConv::ArgConvPair("CMS23",K_CMS43),
+	MG_ArgConv::ArgConvPair("CMS24",K_CMS44),
+	MG_ArgConv::ArgConvPair("CMS25",K_CMS45),
+	MG_ArgConv::ArgConvPair("CMS26",K_CMS46),
+	MG_ArgConv::ArgConvPair("CMS27",K_CMS47),
+	MG_ArgConv::ArgConvPair("CMS28",K_CMS48),
+	MG_ArgConv::ArgConvPair("CMS29",K_CMS49),
+	MG_ArgConv::ArgConvPair("CMS50",K_CMS50),
+};
+const MG_ArgConv		IndexNameConvertor	= MG_ArgConv		("Index", IndexNameArgConv, NB_INDEX);
+const MG_ArgConvReverse	IndexNameRevertor	= MG_ArgConvReverse	("Index", IndexNameArgConv, NB_INDEX);
+
+
 MG_ArgConv::ArgConvPair CurrenciesNameArgConv[] =
 {
 	MG_ArgConv::ArgConvPair("USD",K_USD),
@@ -75,9 +144,29 @@ const MG_ArgConv		DayCountNameConvertor	= MG_ArgConv		("Day Count Basis", DayCou
 const MG_ArgConvReverse	DayCountNameRevertor	= MG_ArgConvReverse	("Day Count Basis", DayCountNameArgConv, NB_DAYCOUNT);
 
 
+MG_ArgConv::ArgConvPair StubRuleNameArgConv[] =
+{
+	MG_ArgConv::ArgConvPair("SS",K_SHORT_START),
+	MG_ArgConv::ArgConvPair("SE",K_SHORT_END),
+	MG_ArgConv::ArgConvPair("LS",K_LONG_START),
+	MG_ArgConv::ArgConvPair("LE",K_LONG_END),
+};
+const MG_ArgConv		StubRuleNameConvertor	= MG_ArgConv		("Stub Rule", StubRuleNameArgConv, NB_STUBRULE);
+const MG_ArgConvReverse	StubRuleNameRevertor	= MG_ArgConvReverse	("Stub Rule", StubRuleNameArgConv, NB_STUBRULE);
+
+
+MG_ArgConv::ArgConvPair AdjustmentNameArgConv[] =
+{
+	MG_ArgConv::ArgConvPair("ADJ",K_ADJUSTED),
+	MG_ArgConv::ArgConvPair("UNADJ",K_UNADJUSTED),
+};
+const MG_ArgConv		AdjustmentNameConvertor	= MG_ArgConv		("Adjustment", AdjustmentNameArgConv, NB_ADJ);
+const MG_ArgConvReverse	AdjustmentNameRevertor	= MG_ArgConvReverse	("Adjustment", AdjustmentNameArgConv, NB_ADJ);
+
+
 MG_ArgConv::ArgConvPair AdjustmentRuleNameArgConv[] =
 {
-	MG_ArgConv::ArgConvPair("FIXED",K_FIXED),
+	MG_ArgConv::ArgConvPair("FIXED",K_FIXED_RULE),
 	MG_ArgConv::ArgConvPair("FP",K_FOLLOWING_PAY),
 	MG_ArgConv::ArgConvPair("F",K_FOLLOWING),
 	MG_ArgConv::ArgConvPair("MF",K_MODIFIED_FOLLOWING),
@@ -89,6 +178,15 @@ MG_ArgConv::ArgConvPair AdjustmentRuleNameArgConv[] =
 };
 const MG_ArgConv		AdjustmentRuleNameConvertor	= MG_ArgConv		("Adjustment Rule", AdjustmentRuleNameArgConv, NB_ADJRULE);
 const MG_ArgConvReverse	AdjustmentRuleNameRevertor	= MG_ArgConvReverse	("Adjustment Rule", AdjustmentRuleNameArgConv, NB_ADJRULE);
+
+
+MG_ArgConv::ArgConvPair TimingNameArgConv[] =
+{
+	MG_ArgConv::ArgConvPair("ADV",K_ADVANCE),
+	MG_ArgConv::ArgConvPair("ARR",K_ARREARS),
+};
+const MG_ArgConv		TimingNameConvertor	= MG_ArgConv		("Timing", TimingNameArgConv, NB_TIMING);
+const MG_ArgConvReverse	TimingNameRevertor	= MG_ArgConvReverse	("Timing", TimingNameArgConv, NB_TIMING);
 
 
 MG_ArgConv::ArgConvPair InterpolMethodArgConv[] =

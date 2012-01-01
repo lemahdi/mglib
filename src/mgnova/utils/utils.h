@@ -62,4 +62,6 @@ extern MG::MG_Vector FromCellMatrixToMGVectorDate(const xlw::CellMatrix& aCM, co
 
 extern void SplitFrequency(const std::string& aTimesFreq, int& aTimes, std::string& aFreq);
 
+extern void GetFromIndexName(const MG::INDEX_NAME& aIndexNm, int& aPeriod, unsigned int& aTimes, MG::FREQUENCY_NAME& aFreqNm);
+
 }

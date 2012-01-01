@@ -243,6 +243,14 @@
 			>
 		</File>
 		<File
+			RelativePath=".\currency.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\currency.h"
+			>
+		</File>
+		<File
 			RelativePath=".\date.cpp"
 			>
 		</File>
@@ -272,6 +280,14 @@
 		</File>
 		<File
 			RelativePath=".\object.h"
+			>
+		</File>
+		<File
+			RelativePath=".\schedule.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\schedule.h"
 			>
 		</File>
 		<File
