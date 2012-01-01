@@ -1066,8 +1066,8 @@ BetweenDatesArgs[]=
 { "Date1"," first date ","XLF_OPER"},
 { "Date2"," second date ","XLF_OPER"},
 { "DayCount"," day count: ACT, A365, A360, 30/360, 30/360E, B252 ","XLF_OPER"},
-{ "IsFrac"," true: fraction, false: days difference (def.) ","XLF_OPER"},
-{ "Calendar"," calendar for business days ","XLF_OPER"}
+{ "[IsFrac]"," true: fraction, false: days difference (def.) ","XLF_OPER"},
+{ "[Calendar]"," calendar for business days ","XLF_OPER"}
 };
   XLRegistration::XLFunctionRegistrationHelper
 registerBetweenDates("xlBetweenDates",
@@ -1148,8 +1148,8 @@ AddPeriodArgs[]=
 { "Freq"," frequency: nY, Y, A, S, Q, B, nM, M, nW, W, nD, D ","XLF_OPER"},
 { "Times"," times number to dd frequency ","XLF_OPER"},
 { "Calendar"," calendar for business days ","XLF_OPER"},
-{ "AdjRule"," djustment rule: FIXED, FP, F, MF (def.), PP, P, MP ","XLF_OPER"},
-{ "EndOfMonth"," true: go to the end of the month (def.) ","XLF_OPER"}
+{ "[AdjRule]"," djustment rule: FIXED, FP, F, MF (def.), PP, P, MP ","XLF_OPER"},
+{ "[EndOfMonth]"," true: go to the end of the month (def.) ","XLF_OPER"}
 };
   XLRegistration::XLFunctionRegistrationHelper
 registerAddPeriod("xlAddPeriod",
@@ -1232,32 +1232,26 @@ EXCEL_END
 namespace
 {
 XLRegistration::Arg
-Schedule_CreateArgs[]=
+IRIndex_CreateArgs[]=
 {
-{ "StartDate"," start date ","XLF_OPER"},
-{ "EndDate"," end date ","XLF_OPER"},
-{ "Currency"," currency ","XLF_OPER"},
-{ "Freq"," frequency: Y, A, S, Q, B, M, W, D ","XLF_OPER"},
 { "IndexName"," index name: LIBOR3M, EURIBOR6M, CMS1, ... ","XLF_OPER"},
-{ "DayCount"," day count: ACTUAL, A360, A365 (def.), 30/360, 30/360E, B252 ","XLF_OPER"},
-{ "IntRule"," interest rule: ADJ (def.), UNADJ ","XLF_OPER"},
-{ "AdjRule"," adjustment rule: FIXED, FP, F, MF (def.), PP, P, MP ","XLF_OPER"},
-{ "StubRule"," stub rule: SS (def.), LS, SE, LE ","XLF_OPER"},
-{ "ResetTiming"," reset timing: ADV (def.), ARR ","XLF_OPER"},
-{ "PayTiming"," pay timing: ADV, ARR (def.) ","XLF_OPER"},
-{ "ResetCalendar"," reset calendar (EUR by def.) ","XLF_OPER"},
-{ "PayCalendar"," pay calendar (EUR by def.) ","XLF_OPER"},
-{ "ResetGap"," reset gap (-2 by def.) ","XLF_OPER"},
-{ "PayGap"," pay gap (0 by def.) ","XLF_OPER"},
-{ "IsDecompound"," decompounding frequency: true (def.) or false ","XLF_OPER"}
+{ "Currency"," currency ","XLF_OPER"},
+{ "[DayCount]"," day count: ACTUAL, A360, A365 (def.), 30/360, 30/360E, B252 ","XLF_OPER"},
+{ "[AdjRule]"," adjustment rule: FIXED, FP, F, MF (def.), PP, P, MP ","XLF_OPER"},
+{ "[ResetTiming]"," reset timing: ADV (def.), ARR ","XLF_OPER"},
+{ "[PayTiming]"," pay timing: ADV, ARR (def.) ","XLF_OPER"},
+{ "[ResetCalendar]"," reset calendar (EUR by def.) ","XLF_OPER"},
+{ "[PayCalendar]"," pay calendar (EUR by def.) ","XLF_OPER"},
+{ "[ResetGap]"," reset gap (-2 by def.) ","XLF_OPER"},
+{ "[PayGap]"," pay gap (0 by def.) ","XLF_OPER"}
 };
   XLRegistration::XLFunctionRegistrationHelper
-registerSchedule_Create("xlSchedule_Create",
-"MG_Schedule_Create",
-" create a schedule ",
+registerIRIndex_Create("xlIRIndex_Create",
+"MG_IRIndex_Create",
+" create an interest rate index ",
 LibraryName,
-Schedule_CreateArgs,
-16
+IRIndex_CreateArgs,
+10
 ,false
 );
 }
@@ -1267,73 +1261,42 @@ Schedule_CreateArgs,
 extern "C"
 {
 LPXLFOPER EXCEL_EXPORT
-xlSchedule_Create(
-LPXLFOPER StartDatea,
-LPXLFOPER EndDatea,
-LPXLFOPER Currencya,
-LPXLFOPER Freqa,
+xlIRIndex_Create(
 LPXLFOPER IndexNamea,
+LPXLFOPER Currencya,
 LPXLFOPER DayCounta,
-LPXLFOPER IntRulea,
 LPXLFOPER AdjRulea,
-LPXLFOPER StubRulea,
 LPXLFOPER ResetTiminga,
 LPXLFOPER PayTiminga,
 LPXLFOPER ResetCalendara,
 LPXLFOPER PayCalendara,
 LPXLFOPER ResetGapa,
-LPXLFOPER PayGapa,
-LPXLFOPER IsDecompounda)
+LPXLFOPER PayGapa)
 {
 EXCEL_BEGIN;
 
 	if (XlfExcel::Instance().IsCalledByFuncWiz())
 		return XlfOper(true);
 
-XlfOper StartDateb(
-	(StartDatea));
-MG_Date StartDate(
-	StartDateb.AsMGDate("StartDate"));
-
-XlfOper EndDateb(
-	(EndDatea));
-MG_Date EndDate(
-	EndDateb.AsMGDate("EndDate"));
+XlfOper IndexNameb(
+	(IndexNamea));
+string IndexName(
+	IndexNameb.AsString("IndexName"));
 
 XlfOper Currencyb(
 	(Currencya));
 string Currency(
 	Currencyb.AsString("Currency"));
 
-XlfOper Freqb(
-	(Freqa));
-string Freq(
-	Freqb.AsString("Freq"));
-
-XlfOper IndexNameb(
-	(IndexNamea));
-string IndexName(
-	IndexNameb.AsString("IndexName"));
-
 XlfOper DayCountb(
 	(DayCounta));
 string DayCount(
 	DayCountb.AsStringWD("DayCount","A365"));
 
-XlfOper IntRuleb(
-	(IntRulea));
-string IntRule(
-	IntRuleb.AsStringWD("IntRule","ADJ"));
-
 XlfOper AdjRuleb(
 	(AdjRulea));
 string AdjRule(
 	AdjRuleb.AsStringWD("AdjRule","MF"));
-
-XlfOper StubRuleb(
-	(StubRulea));
-string StubRule(
-	StubRuleb.AsStringWD("StubRule","SS"));
 
 XlfOper ResetTimingb(
 	(ResetTiminga));
@@ -1365,6 +1328,105 @@ XlfOper PayGapb(
 int PayGap(
 	PayGapb.AsIntWD("PayGap",0));
 
+MG_XLObjectPtr result(
+	IRIndex_Create(
+		IndexName,
+		Currency,
+		DayCount,
+		AdjRule,
+		ResetTiming,
+		PayTiming,
+		ResetCalendar,
+		PayCalendar,
+		ResetGap,
+		PayGap)
+	);
+string vRefObj, vError;
+if (MG_SCache::Instance()->PersistentInsert(result, vRefObj, vError))
+  return XlfOper(vRefObj);
+else
+  return XlfOper(vError);
+EXCEL_END
+}
+}
+
+
+
+//////////////////////////
+
+namespace
+{
+XLRegistration::Arg
+Schedule_CreateArgs[]=
+{
+{ "StartDate"," start date ","XLF_OPER"},
+{ "EndDate"," end date ","XLF_OPER"},
+{ "IRIndex"," interest rate index ","XLF_OPER"},
+{ "Freq"," frequency: Y, A, S, Q, B, M, W, D ","XLF_OPER"},
+{ "[IntRule]"," interest rule: ADJ (def.), UNADJ ","XLF_OPER"},
+{ "[StubRule]"," stub rule: SS (def.), LS, SE, LE ","XLF_OPER"},
+{ "[IsDecompound]"," decompounding frequency: true (def.) or false ","XLF_OPER"}
+};
+  XLRegistration::XLFunctionRegistrationHelper
+registerSchedule_Create("xlSchedule_Create",
+"MG_Schedule_Create",
+" create a schedule ",
+LibraryName,
+Schedule_CreateArgs,
+7
+,false
+);
+}
+
+
+
+extern "C"
+{
+LPXLFOPER EXCEL_EXPORT
+xlSchedule_Create(
+LPXLFOPER StartDatea,
+LPXLFOPER EndDatea,
+LPXLFOPER IRIndexa,
+LPXLFOPER Freqa,
+LPXLFOPER IntRulea,
+LPXLFOPER StubRulea,
+LPXLFOPER IsDecompounda)
+{
+EXCEL_BEGIN;
+
+	if (XlfExcel::Instance().IsCalledByFuncWiz())
+		return XlfOper(true);
+
+XlfOper StartDateb(
+	(StartDatea));
+MG_Date StartDate(
+	StartDateb.AsMGDate("StartDate"));
+
+XlfOper EndDateb(
+	(EndDatea));
+MG_Date EndDate(
+	EndDateb.AsMGDate("EndDate"));
+
+XlfOper IRIndexb(
+	(IRIndexa));
+MG_XLObjectPtr IRIndex(
+	IRIndexb.AsMGXLObject("IRIndex"));
+
+XlfOper Freqb(
+	(Freqa));
+string Freq(
+	Freqb.AsString("Freq"));
+
+XlfOper IntRuleb(
+	(IntRulea));
+string IntRule(
+	IntRuleb.AsStringWD("IntRule","ADJ"));
+
+XlfOper StubRuleb(
+	(StubRulea));
+string StubRule(
+	StubRuleb.AsStringWD("StubRule","SS"));
+
 XlfOper IsDecompoundb(
 	(IsDecompounda));
 bool IsDecompound(
@@ -1374,19 +1436,10 @@ MG_XLObjectPtr result(
 	Schedule_Create(
 		StartDate,
 		EndDate,
-		Currency,
+		IRIndex,
 		Freq,
-		IndexName,
-		DayCount,
 		IntRule,
-		AdjRule,
 		StubRule,
-		ResetTiming,
-		PayTiming,
-		ResetCalendar,
-		PayCalendar,
-		ResetGap,
-		PayGap,
 		IsDecompound)
 	);
 string vRefObj, vError;

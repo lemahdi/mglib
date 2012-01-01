@@ -112,6 +112,7 @@ enum INDEX_NAME
 
 	NB_INDEX
 };
+#define INDEX_NAME_DEF K_EUBOR6M
 
 extern const MG_ArgConv			IndexNameConvertor;
 extern const MG_ArgConvReverse	IndexNameRevertor;

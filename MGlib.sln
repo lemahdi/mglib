@@ -49,6 +49,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cblas", "src\gsl\win32\cbla
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "gsl", "gsl", "{DA18C280-4281-4E23-A5FA-C1997B17DBC4}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mgsecurity", "src\mgsecurity\mgsecurity.vcproj", "{63B84211-3C85-4455-8CCA-7A2FF246C304}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug MT|Win32 = Debug MT|Win32
@@ -145,6 +147,14 @@ Global
 		{5A3A2F64-12A8-4DA7-A98A-EE21464EF37C}.Release MT|Win32.Build.0 = Release MT|Win32
 		{5A3A2F64-12A8-4DA7-A98A-EE21464EF37C}.Release|Win32.ActiveCfg = Release|Win32
 		{5A3A2F64-12A8-4DA7-A98A-EE21464EF37C}.Release|Win32.Build.0 = Release|Win32
+		{63B84211-3C85-4455-8CCA-7A2FF246C304}.Debug MT|Win32.ActiveCfg = Debug|Win32
+		{63B84211-3C85-4455-8CCA-7A2FF246C304}.Debug MT|Win32.Build.0 = Debug|Win32
+		{63B84211-3C85-4455-8CCA-7A2FF246C304}.Debug|Win32.ActiveCfg = Debug|Win32
+		{63B84211-3C85-4455-8CCA-7A2FF246C304}.Debug|Win32.Build.0 = Debug|Win32
+		{63B84211-3C85-4455-8CCA-7A2FF246C304}.Release MT|Win32.ActiveCfg = Release|Win32
+		{63B84211-3C85-4455-8CCA-7A2FF246C304}.Release MT|Win32.Build.0 = Release|Win32
+		{63B84211-3C85-4455-8CCA-7A2FF246C304}.Release|Win32.ActiveCfg = Release|Win32
+		{63B84211-3C85-4455-8CCA-7A2FF246C304}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

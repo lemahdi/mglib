@@ -234,41 +234,52 @@ MG_Date AddPeriod	(	MG_Date aDt
 }
 
 
-MG_XLObjectPtr Schedule_Create	(	const MG_Date	& aStartDate
-								,	const MG_Date	& aEndDate
-								,	const string	& aCurrency
-								,	const string	& aFreq
-								,	const string	& aIndexName
-								,	const string	& aDayCount
-								,	const string	& aIntRule
-								,	const string	& aAdjRule
-								,	const string	& aStubRule
-								,	const string	& aResetTiming
-								,	const string	& aPayTiming
-								,	const string	& aResetCalendar
-								,	const string	& aPayCalendar
-								,	const int		& aResetGap
-								,	const int		& aPayGap
-								,	const bool		& aIsDecompound)
+MG_XLObjectPtr
+IRIndex_Create	(	const string	& aIndexName
+				,	const string	& aCurrency
+				,	const string	& aDayCount
+				,	const string	& aAdjRule
+				,	const string	& aResetTiming
+				,	const string	& aPayTiming
+				,	const string	& aResetCalendar
+				,	const string	& aPayCalendar
+				,	const int		& aResetGap
+				,	const int		& aPayGap)
 {
-	MG_Currency vCcy(aCurrency);
-	FREQUENCY_NAME vFreq = (FREQUENCY_NAME)FrequencyNameConvertor[aFreq];
 	INDEX_NAME vIdxNm = (INDEX_NAME)IndexNameConvertor[aIndexName];
+	MG_Currency vCcy(aCurrency);
 	DAYCOUNT_NAME vDayCount = (DAYCOUNT_NAME)DayCountNameConvertor[aDayCount];
-	ADJ_NAME vIntAdj = (ADJ_NAME)AdjustmentNameConvertor[aIntRule];
 	ADJRULE_NAME vAdjRule = (ADJRULE_NAME)AdjustmentRuleNameConvertor[aAdjRule];
-	STUBRULE_NAME vStubRule = (STUBRULE_NAME)StubRuleNameConvertor[aStubRule];
 	TIMING_NAME vRstTiming = (TIMING_NAME)TimingNameConvertor[aResetTiming];
 	TIMING_NAME vPayTiming = (TIMING_NAME)TimingNameConvertor[aPayTiming];
 	CALENDAR_NAME vRstCal = (CALENDAR_NAME)CalendarsNameConvertor[aResetCalendar];
 	CALENDAR_NAME vPayCal = (CALENDAR_NAME)CalendarsNameConvertor[aPayCalendar];
 
-	return MG_XLObjectPtr(new MG_Schedule	(	aStartDate, aEndDate
-											,	vCcy, vFreq, vIdxNm
-											,	vDayCount, vIntAdj, vAdjRule, vStubRule
+	return MG_XLObjectPtr(new MG_IRIndex	(	vIdxNm, vCcy
+											,	vDayCount, vAdjRule
 											,	vRstTiming, vPayTiming
 											,	vRstCal, vPayCal
-											,	aResetGap, aPayGap, aIsDecompound));
+											,	aResetGap, aPayGap));
+}
+
+MG_XLObjectPtr
+Schedule_Create	(	const MG_Date		& aStartDate
+				,	const MG_Date		& aEndDate
+				,	const MG_XLObjectPtr& aIRIndex
+				,	const string		& aFreq
+				,	const string		& aIntRule
+				,	const string		& aStubRule
+				,	const bool			& aIsDecompound)
+{
+	FREQUENCY_NAME vFreq = (FREQUENCY_NAME)FrequencyNameConvertor[aFreq];
+	ADJ_NAME vIntAdj = (ADJ_NAME)AdjustmentNameConvertor[aIntRule];
+	STUBRULE_NAME vStubRule = (STUBRULE_NAME)StubRuleNameConvertor[aStubRule];
+
+	MG_IRIndex& vIRIndex = dynamic_cast<MG_IRIndex&>(*aIRIndex);
+
+	return MG_XLObjectPtr(new MG_Schedule	(	aStartDate, aEndDate
+											,	vIRIndex
+											,	vFreq, vIntAdj, vStubRule, aIsDecompound));
 }
 
 CellMatrix Schedule_GetData(MG_XLObjectPtr& aSched, const string& aData)

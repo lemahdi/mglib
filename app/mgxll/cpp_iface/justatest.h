@@ -142,22 +142,27 @@ AddPeriod(MG_Date Date // reference date
 			  );
 
 //<xlw:libraryname=MyTestLibrary
-MG_XLObjectPtr // create a schedule
-Schedule_Create(const MG_Date& StartDate // start date
-			   , const MG_Date& EndDate // end date
+MG_XLObjectPtr // create an interest rate index
+IRIndex_Create(const string& IndexName // index name: LIBOR3M, EURIBOR6M, CMS1, ...
 			   , const string& Currency // currency
-			   , const string& Freq // frequency: Y, A, S, Q, B, M, W, D
-			   , const string& IndexName // index name: LIBOR3M, EURIBOR6M, CMS1, ...
 			   , const string& DayCount = "A365" // day count: ACTUAL, A360, A365 (def.), 30/360, 30/360E, B252
-			   , const string& IntRule = "ADJ" // interest rule: ADJ (def.), UNADJ
 			   , const string& AdjRule = "MF" // adjustment rule: FIXED, FP, F, MF (def.), PP, P, MP
-			   , const string& StubRule = "SS" // stub rule: SS (def.), LS, SE, LE
 			   , const string& ResetTiming = "ADV" // reset timing: ADV (def.), ARR
 			   , const string& PayTiming = "ARR" // pay timing: ADV, ARR (def.)
 			   , const string& ResetCalendar = CALENDAR_NAME_DEF_STR // reset calendar (EUR by def.)
 			   , const string& PayCalendar = CALENDAR_NAME_DEF_STR // pay calendar (EUR by def.)
 			   , const int& ResetGap = -2 // reset gap (-2 by def.)
 			   , const int& PayGap = 0 // pay gap (0 by def.)
+			  );
+
+//<xlw:libraryname=MyTestLibrary
+MG_XLObjectPtr // create a schedule
+Schedule_Create(const MG_Date& StartDate // start date
+			   , const MG_Date& EndDate // end date
+			   , const MG_XLObjectPtr& IRIndex // interest rate index
+			   , const string& Freq // frequency: Y, A, S, Q, B, M, W, D
+			   , const string& IntRule = "ADJ" // interest rule: ADJ (def.), UNADJ
+			   , const string& StubRule = "SS" // stub rule: SS (def.), LS, SE, LE
 			   , const bool& IsDecompound = true // decompounding frequency: true (def.) or false
 			  );
 

@@ -2,11 +2,11 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="mgnova"
-	ProjectGUID="{20E51C46-9C2E-4553-9A93-2633B8ADE536}"
-	RootNamespace="mgnova"
+	Name="mgsecurity"
+	ProjectGUID="{63B84211-3C85-4455-8CCA-7A2FF246C304}"
+	RootNamespace="mgsecurity"
 	Keyword="Win32Proj"
-	TargetFrameworkVersion="131072"
+	TargetFrameworkVersion="196613"
 	>
 	<Platforms>
 		<Platform
@@ -154,152 +154,20 @@
 	<References>
 	</References>
 	<Files>
-		<Filter
-			Name="patterns"
-			>
-			<File
-				RelativePath=".\patterns\countedptr.hpp"
-				>
-			</File>
-			<File
-				RelativePath=".\patterns\repository.hpp"
-				>
-			</File>
-			<File
-				RelativePath=".\patterns\singleton.hpp"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="utils"
-			>
-			<File
-				RelativePath=".\utils\utils.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\utils\utils.h"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="funcs"
-			>
-			<File
-				RelativePath=".\funcs\infrafunc.h"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="wrapper"
-			>
-			<File
-				RelativePath=".\wrapper\function.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\wrapper\function.h"
-				>
-			</File>
-			<File
-				RelativePath=".\wrapper\matrix.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\wrapper\matrix.h"
-				>
-			</File>
-			<File
-				RelativePath=".\wrapper\vector.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\wrapper\vector.h"
-				>
-			</File>
-		</Filter>
 		<File
-			RelativePath=".\argconv.cpp"
+			RelativePath=".\security.cpp"
 			>
 		</File>
 		<File
-			RelativePath=".\argconv.h"
+			RelativePath=".\security.h"
 			>
 		</File>
 		<File
-			RelativePath=".\argconvdef.cpp"
+			RelativePath=".\swapleg.cpp"
 			>
 		</File>
 		<File
-			RelativePath=".\argconvdef.h"
-			>
-		</File>
-		<File
-			RelativePath=".\calendar.cpp"
-			>
-		</File>
-		<File
-			RelativePath=".\calendar.h"
-			>
-		</File>
-		<File
-			RelativePath=".\currency.cpp"
-			>
-		</File>
-		<File
-			RelativePath=".\currency.h"
-			>
-		</File>
-		<File
-			RelativePath=".\date.cpp"
-			>
-		</File>
-		<File
-			RelativePath=".\date.h"
-			>
-		</File>
-		<File
-			RelativePath=".\exception.cpp"
-			>
-		</File>
-		<File
-			RelativePath=".\exception.h"
-			>
-		</File>
-		<File
-			RelativePath=".\irindex.cpp"
-			>
-		</File>
-		<File
-			RelativePath=".\irindex.h"
-			>
-		</File>
-		<File
-			RelativePath=".\mginit.cpp"
-			>
-		</File>
-		<File
-			RelativePath=".\mginit.h"
-			>
-		</File>
-		<File
-			RelativePath=".\object.cpp"
-			>
-		</File>
-		<File
-			RelativePath=".\object.h"
-			>
-		</File>
-		<File
-			RelativePath=".\schedule.cpp"
-			>
-		</File>
-		<File
-			RelativePath=".\schedule.h"
-			>
-		</File>
-		<File
-			RelativePath=".\typedef.h"
+			RelativePath=".\swapleg.h"
 			>
 		</File>
 	</Files>

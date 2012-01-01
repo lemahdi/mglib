@@ -68,6 +68,8 @@ double xlw::XlfOper::AsDouble(int *pxlret) const
     int xlret = ConvertToDouble(d);
     if (pxlret)
         *pxlret=xlret;
+	else if (xlret == xlretInvXloper)
+		throw std::exception("double value should be provided");
     else
         ThrowOnError(xlret);
     return d;
@@ -79,6 +81,8 @@ double xlw::XlfOper::AsDouble(const std::string& ErrorId, int *pxlret) const
     int xlret = ConvertToDouble(d);
     if (pxlret)
         *pxlret=xlret;
+	else if (xlret == xlretInvXloper)
+		throw std::exception("double value should be provided");
     else
         ThrowOnError( xlret,"Conversion to double " + ErrorId);
     return d;
@@ -161,6 +165,8 @@ short xlw::XlfOper::AsShort(int *pxlret) const
     int xlret = ConvertToShort(s);
     if (pxlret)
         *pxlret=xlret;
+	else if (xlret == xlretInvXloper)
+		throw std::exception("short value should be provided");
     else
         ThrowOnError(xlret);
     return s;
@@ -172,6 +178,8 @@ short xlw::XlfOper::AsShort(const std::string& ErrorId, int *pxlret) const
     int xlret = ConvertToShort(s);
     if (pxlret)
         *pxlret=xlret;
+	else if (xlret == xlretInvXloper)
+		throw std::exception("short value should be provided");
     else
         ThrowOnError(xlret, ErrorId + " conversion to short failed");
     return s;
@@ -200,6 +208,8 @@ bool xlw::XlfOper::AsBool(int *pxlret) const
     int xlret = ConvertToBool(b);
     if (pxlret)
         *pxlret=xlret;
+	else if (xlret == xlretInvXloper)
+		throw std::exception("boolean value should be provided");
     else
         ThrowOnError(xlret);
     return b;
@@ -211,6 +221,8 @@ bool xlw::XlfOper::AsBool(const std::string& ErrorId, int *pxlret) const
     int xlret = ConvertToBool(b);
     if (pxlret)
         *pxlret=xlret;
+	else if (xlret == xlretInvXloper)
+		throw std::exception("boolean value should be provided");
     else
         ThrowOnError(xlret,ErrorId + " conversion to bool failed");
     return b;
@@ -301,6 +313,8 @@ char *xlw::XlfOper::AsString(int *pxlret) const
     int xlret = ConvertToString(s);
     if (pxlret)
         *pxlret=xlret;
+	else if (xlret == xlretInvXloper)
+		throw std::exception("string value should be provided");
     else
         ThrowOnError(xlret);
     return s;
@@ -312,6 +326,8 @@ char *xlw::XlfOper::AsString(const std::string& ErrorId, int *pxlret) const
     int xlret = ConvertToString(s);
     if (pxlret)
         *pxlret=xlret;
+	else if (xlret == xlretInvXloper)
+		throw std::exception("string value should be provided");
     else
         ThrowOnError(xlret,ErrorId + " conversion to char* failed");
     return s;

@@ -111,13 +111,14 @@ int xlw::XlfOperImpl12::ConvertToDouble(const XlfOper &xlfOper, double& d) const
     else
     {
         // Allocates tmp on the stack to avoid filling the internal buffer.
-        XLOPER12 tmp;
+        /*XLOPER12 tmp;
         // Creates a XlfOper based on tmp.
         XlfOper cast(&tmp);
         // Coerces to numeric type.
         xlret = Coerce(xlfOper, xltypeNum, cast);
         if (xlret == xlretSuccess)
-            xlret = cast.ConvertToDouble(d);
+            xlret = cast.ConvertToDouble(d);*/
+		xlret = xlretInvXloper;
     }
     return xlret;
 };
@@ -259,13 +260,14 @@ int xlw::XlfOperImpl12::ConvertToShort(const XlfOper &xlfOper, short& s) const t
     else
     {
         // Allocates tmp on the stack to avoid filling the internal buffer.
-        XLOPER12 tmp;
+        /*XLOPER12 tmp;
         // Creates a XlfOper based on tmp.
         XlfOper cast(&tmp);
         // Coerces to numeric type.
         xlret = Coerce(xlfOper, xltypeNum, cast);
         if (xlret == xlretSuccess)
-            xlret = cast.ConvertToShort(s);
+            xlret = cast.ConvertToShort(s);*/
+		xlret = xlretInvXloper;
         }
         return xlret;
 };
@@ -305,11 +307,12 @@ int xlw::XlfOperImpl12::ConvertToBool(const XlfOper &xlfOper, bool& b) const thr
     else
     {
         // see ConvertToDouble
-        XLOPER12 tmp;
+        /*XLOPER12 tmp;
         XlfOper cast(&tmp);
         xlret = Coerce(xlfOper, xltypeBool, cast);
         if (xlret == xlretSuccess)
-            xlret = cast.ConvertToBool(b);
+            xlret = cast.ConvertToBool(b);*/
+		xlret = xlretInvXloper;
     }
     return xlret;
 };
@@ -670,14 +673,15 @@ int xlw::XlfOperImpl12::ConvertToString(const XlfOper &xlfOper, char *& s) const
     else
     {
         // see AsDouble
-        XLOPER12 tmp;
+        /*XLOPER12 tmp;
         // Function Coerce calls function Call which sets bit xlbitFreeAuxMem of variable cast,
         // so that the memory which Excel allocates to that variable (the string) is freed
         // when the variable goes out of scope.
         XlfOper cast(&tmp);
         xlret = Coerce(xlfOper, xltypeStr, cast);
         if (xlret == xlretSuccess)
-            xlret = cast.ConvertToString(s);
+            xlret = cast.ConvertToString(s);*/
+		xlret = xlretInvXloper;
     }
     return xlret;
 }

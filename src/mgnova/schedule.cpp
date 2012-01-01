@@ -15,12 +15,9 @@ MG_Schedule::MG_Schedule(	const MG_Schedule& aRight)
 						:	MG_XLObject(aRight)
 						,	myStDt(aRight.myStDt), myEdDt(aRight.myEdDt)
 						,	myAdjStDt(aRight.myAdjStDt), myAdjEdDt(aRight.myAdjEdDt)
-						,	myCcy(aRight.myCcy), myIndexName(aRight.myIndexName)
-						,	myRstCal(aRight.myRstCal), myPayCal(aRight.myPayCal)
-						,	myFreq(aRight.myFreq), myDayCount(aRight.myDayCount), myIsDecompound(aRight.myIsDecompound)
-						,	myIntAdj(aRight.myIntAdj), myAdjRule(aRight.myAdjRule), myStubRule(aRight.myStubRule)
-						,	myRstTiming(aRight.myRstTiming), myPayTiming(aRight.myPayTiming)
-						,	myRstGap(aRight.myRstGap), myPayGap(aRight.myPayGap)
+						,	myIRIndex(aRight.myIRIndex)
+						,	myFreq(aRight.myFreq), myIsDecompound(aRight.myIsDecompound)
+						,	myIntAdj(aRight.myIntAdj), myStubRule(aRight.myStubRule)
 						,	myNbOfFlows(aRight.myNbOfFlows)
 						,	myResetDates(aRight.myResetDates)
 						,	myIntStartDates(aRight.myIntStartDates), myIntEndDates(aRight.myIntEndDates)
@@ -38,22 +35,12 @@ void MG_Schedule::Swap(MG_Schedule& aRight)
 	myAdjStDt.Swap(aRight.myAdjStDt);
 	myAdjEdDt.Swap(aRight.myAdjEdDt);
 
-	myCcy.Swap(aRight.myCcy);
-	swap(myIndexName, aRight.myIndexName);
-	swap(myRstCal, aRight.myRstCal);
-	swap(myPayCal, aRight.myPayCal);
+	myIRIndex.Swap(aRight.myIRIndex);
 
 	swap(myFreq, aRight.myFreq);
-	swap(myDayCount, aRight.myDayCount);
 	swap(myIsDecompound, aRight.myIsDecompound);
-
 	swap(myIntAdj, aRight.myIntAdj);
-	swap(myAdjRule, aRight.myAdjRule);
 	swap(myStubRule, aRight.myStubRule);
-	swap(myRstTiming, aRight.myRstTiming);
-	swap(myPayTiming, aRight.myPayTiming);
-	swap(myRstGap, aRight.myRstGap);
-	swap(myPayGap, aRight.myPayGap);
 
 	swap(myNbOfFlows, aRight.myNbOfFlows);
 	myResetDates.swap(aRight.myResetDates);
@@ -68,27 +55,15 @@ void MG_Schedule::Swap(MG_Schedule& aRight)
 
 MG_Schedule::MG_Schedule(	const MG_Date		& aStDt
 						,	const MG_Date		& aEdDt
-						,	const MG_Currency	& aCcy
+						,	const MG_IRIndex	& aIRIndex
 						,	const FREQUENCY_NAME& aFreq
-						,	const INDEX_NAME	& aIdxNm
-						,	const DAYCOUNT_NAME	& aDayCount
 						,	const ADJ_NAME		& aIntAdj
-						,	const ADJRULE_NAME	& aAdjRule
 						,	const STUBRULE_NAME	& aStubRule
-						,	const TIMING_NAME	& aRstTiming
-						,	const TIMING_NAME	& aPayTiming
-						,	const CALENDAR_NAME	& aRstCal
-						,	const CALENDAR_NAME	& aPayCal
-						,	const int			& aRstGap
-						,	const int			& aPayGap
 						,	const bool			& aIsDecompound)
 						:	myStDt(aStDt), myEdDt(aEdDt)
-						,	myFreq(aFreq), myDayCount(aDayCount), myIsDecompound(aIsDecompound)
-						,	myCcy(aCcy), myIndexName(aIdxNm)
-						,	myIntAdj(aIntAdj), myAdjRule(aAdjRule), myStubRule(aStubRule)
-						,	myRstTiming(aRstTiming), myPayTiming(aPayTiming)
-						,	myRstCal(aRstCal), myPayCal(aPayCal)
-						,	myRstGap(aRstGap), myPayGap(aPayGap)
+						,	myIRIndex(aIRIndex)
+						,	myFreq(aFreq), myIsDecompound(aIsDecompound)
+						,	myIntAdj(aIntAdj), myStubRule(aStubRule)
 {
 	myXLName = MG_SCHED_XL_NAME;
 
@@ -110,10 +85,10 @@ void MG_Schedule::GenerateDates()
 	myFwdRateEndDates.clear();
 
 	myAdjStDt = myStDt;
-	myAdjStDt.AddPeriod(K_DAILY, 0, myCcy.myCalendar, myAdjRule);
+	myAdjStDt.AddPeriod(K_DAILY, 0, myIRIndex.GetCurrency().myCalendar, myIRIndex.GetAdjRule());
 
 	myAdjEdDt = myEdDt;
-	myAdjEdDt.AddPeriod(K_DAILY, 0, myCcy.myCalendar, myAdjRule);
+	myAdjEdDt.AddPeriod(K_DAILY, 0, myIRIndex.GetCurrency().myCalendar, myIRIndex.GetAdjRule());
 
 	MG_Date v1stStDt = myAdjStDt;
 	if (myIntAdj == K_UNADJUSTED)
@@ -137,32 +112,32 @@ void MG_Schedule::GenerateDates()
 	int vPeriod(0);
 	unsigned int vTimes(0);
 	FREQUENCY_NAME vIdxFreq(NB_FREQUENCIES);
-	MG_utils::GetFromIndexName(myIndexName, vPeriod, vTimes, vIdxFreq);
-	vNonAdjEdDt.AddPeriod(myFreq, myNbOfFlows, myCcy.myCalendar, K_FIXED_RULE, true);
+	MG_utils::GetFromIndexName(myIRIndex.GetIndexName(), vPeriod, vTimes, vIdxFreq);
+	vNonAdjEdDt.AddPeriod(myFreq, myNbOfFlows, myIRIndex.GetCurrency().myCalendar, K_FIXED_RULE, true);
 	for(int i=myNbOfFlows-1; i>=0; --i)
 	{
 		vEdDt = vNonAdjEdDt;
 		if (myIntAdj == K_ADJUSTED)
-			vEdDt.AdjustToBusinessDay(myCcy.myCalendar, myAdjRule);
+			vEdDt.AdjustToBusinessDay(myIRIndex.GetCurrency().myCalendar, myIRIndex.GetAdjRule());
 
 		vStDt = vNonAdjEdDt;
 		if (myIntAdj == K_ADJUSTED)
-			vStDt.AdjustToBusinessDay(myCcy.myCalendar, myAdjRule);
-		vStDt.AddPeriod(myFreq, -1, myCcy.myCalendar, myAdjRule, true);
+			vStDt.AdjustToBusinessDay(myIRIndex.GetCurrency().myCalendar, myIRIndex.GetAdjRule());
+		vStDt.AddPeriod(myFreq, -1, myIRIndex.GetCurrency().myCalendar, myIRIndex.GetAdjRule(), true);
 
 		vRstDt = vStDt;
-		if (myRstTiming == K_ARREARS)
+		if (myIRIndex.GetResetTiming() == K_ARREARS)
 			vRstDt = vEdDt;
-		vRstDt.AddDays(myRstGap, myRstCal);
+		vRstDt.AddDays(myIRIndex.GetResetGap(), myIRIndex.GetResetCalendar());
 
 		vPayDt = vEdDt;
-		if (myPayTiming == K_ADVANCE)
+		if (myIRIndex.GetPayTiming() == K_ADVANCE)
 			vPayDt = vStDt;
 		if (myIntAdj == K_ADJUSTED)
-			vPayDt.AdjustToBusinessDay(myPayCal, myAdjRule);
+			vPayDt.AdjustToBusinessDay(myIRIndex.GetPayCalendar(), myIRIndex.GetAdjRule());
 
-		vIntDay = (unsigned int)vEdDt.BetweenDays(vStDt, myDayCount, false);
-		vIntTerm = vEdDt.BetweenDays(vStDt, myDayCount, true);
+		vIntDay = (unsigned int)vEdDt.BetweenDays(vStDt, myIRIndex.GetDayCount(), false);
+		vIntTerm = vEdDt.BetweenDays(vStDt, myIRIndex.GetDayCount(), true);
 
 		myResetDates[i]		= vRstDt;
 		myIntStartDates[i]	= vStDt;
@@ -171,32 +146,32 @@ void MG_Schedule::GenerateDates()
 		myIntDays[i]		= vIntDay;
 		myIntTerms[i]		= vIntTerm;
 
-		if (myRstTiming == K_ARREARS)
+		if (myIRIndex.GetResetTiming() == K_ARREARS)
 		{
 			vFwdStDt = vRstDt;
-			vFwdStDt.NextBusinessDay(myCcy.mySpotDays, myCcy.myCalendar);
+			vFwdStDt.NextBusinessDay(myIRIndex.GetCurrency().mySpotDays, myIRIndex.GetCurrency().myCalendar);
 		}
 		else
 		{
 			vFwdStDt = vStDt;
-			vFwdStDt.NextBusinessDay(0, myCcy.myCalendar);
+			vFwdStDt.NextBusinessDay(0, myIRIndex.GetCurrency().myCalendar);
 		}
 
 		vFwdEdDt = vFwdStDt;
-		if (myRstTiming==K_ADVANCE && myIsDecompound)
+		if (myIRIndex.GetResetTiming()==K_ADVANCE && myIsDecompound)
 			vFwdEdDt += (vEdDt - vStDt);
 		else
 		{
-			if (myIntAdj==K_ADJUSTED || myRstTiming==K_ADVANCE)
-				vFwdEdDt.AddPeriod(vIdxFreq, vTimes*vPeriod, myCcy.myCalendar, myAdjRule, true);
+			if (myIntAdj==K_ADJUSTED || myIRIndex.GetResetTiming()==K_ADVANCE)
+				vFwdEdDt.AddPeriod(vIdxFreq, vTimes*vPeriod, myIRIndex.GetCurrency().myCalendar, myIRIndex.GetAdjRule(), true);
 			else
-				vFwdEdDt.AddPeriod(vIdxFreq, vTimes*vPeriod, myCcy.myCalendar, K_FIXED_RULE, true);
+				vFwdEdDt.AddPeriod(vIdxFreq, vTimes*vPeriod, myIRIndex.GetCurrency().myCalendar, K_FIXED_RULE, true);
 		}
 
 		myFwdRateStartDates[i] = vFwdStDt;
 		myFwdRateEndDates[i] = vFwdEdDt;
 
-		vNonAdjEdDt.AddPeriod(myFreq, -1, myCcy.myCalendar, K_FIXED_RULE, true);
+		vNonAdjEdDt.AddPeriod(myFreq, -1, myIRIndex.GetCurrency().myCalendar, K_FIXED_RULE, true);
 	}
 }
 
