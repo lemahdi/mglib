@@ -35,6 +35,9 @@ public:
 	MG_Model(const MG_Date& aAsOf);
 
 public:
+	/* State */
+	inline const MG_Date& GetAsOf(void) const { return myAsOf; }
+
 	/* Market Data */
 	virtual void Register(MG_RobotPtr& aRbt) = 0;
 
@@ -62,7 +65,11 @@ public:
 	void Register(MG_RobotPtr& aRbt);
 
 	/* Functions */
-	double DiscountFactor(const double& aMaturity);
+	inline double DiscountFactor(const double& aMaturity) const { return myZC->ComputeValue(aMaturity); }
+	double Libor(	const MG_Date		& aStDt
+				,	const MG_Date		& aEdDt
+				,	const DAYCOUNT_NAME	& aDayCount
+				,	const CALENDAR_NAME	& aCal) const;
 
 private:
 	MG_ZeroCurvePtr myZC;

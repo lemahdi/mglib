@@ -49,6 +49,8 @@ enum INDEX_NAME
 	K_EONIA,
 	K_SONIA,
 
+	K_LIMIT_MM,	// money market limit
+
 	K_LIBOR1M,
 	K_LIBOR3M,
 	K_LIBOR6M,
@@ -58,6 +60,8 @@ enum INDEX_NAME
 	K_EUBOR3M,
 	K_EUBOR6M,
 	K_EUBOR12M,
+
+	K_LIMIT_FWD,	// libor limit
 
 	K_CMS1,
 	K_CMS2,
@@ -240,17 +244,29 @@ extern const MG_ArgConv			TimingNameConvertor;
 extern const MG_ArgConvReverse	TimingNameRevertor;
 
 
+enum RCVPAY_NAME
+{
+	K_PAY = -1,
+	K_RCV = 1,
+
+	NB_RCVPAY = 2
+};
+
+extern const MG_ArgConv			RcvPayNameConvertor;
+extern const MG_ArgConvReverse	RcvPayNameRevertor;
+
+
 /* enum for interpolation methods */
 enum INTERPOL_METHOD {
-	NONE_INTERPOL,			// no interpolation
-	STEPUPLEFT_INTERPOL,	// step up left interpol method
-	STEPUPRIGHT_INTERPOL,	// step up right interpol method
-	LIN_INTERPOL,			// linear interpol method
-	POLYNOM_INTERPOL,		// polynomial interpol method
-	CUBICSPLINE_INTERPOL,	// cubic spline interpol method
-	CONSTANT_INTERPOL,		// constant interpol method
+	NONE_INTERPOL			= interpoltypeNone,			// no interpolation
+	STEPUPLEFT_INTERPOL		= interpoltypeStepUpLeft,	// step up left interpol method
+	STEPUPRIGHT_INTERPOL	= interpoltypeStepUpRight,	// step up right interpol method
+	LIN_INTERPOL			= interpoltypeLinear,		// linear interpol method
+	POLYNOM_INTERPOL		= interpoltypePolynomial,	// polynomial interpol method
+	CUBICSPLINE_INTERPOL	= interpoltypeCubicSpline,	// cubic spline interpol method
+	CONSTANT_INTERPOL		= interpoltypeConstant,		// constant interpol method
 
-	NB_INTERPOL_METH
+	NB_INTERPOL_METH		= 7
 };
 
 extern const MG_ArgConv			InterpolMethodConvertor;

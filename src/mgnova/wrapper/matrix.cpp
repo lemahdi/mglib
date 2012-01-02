@@ -26,6 +26,16 @@ MG_Matrix::MG_Matrix(	const size_t& aRows
 	gsl_matrix_set_all(myMatrix, aVal);
 }
 
+MG_Matrix::MG_Matrix(	const MG_Vector& aVect)
+					:	MG_Object()
+					,	myRows(aVect.Size())
+					,	myCols(1)
+{
+	myMatrix = gsl_matrix_calloc(myRows, myCols);
+	for(size_t i=0; i<myRows; ++i)
+		myMatrix->data[i] = aVect[i];
+}
+
 MG_Matrix::MG_Matrix(	const MG_Matrix& aRight)
 					:	MG_Object(aRight)
 					,	myRows(aRight.myRows)

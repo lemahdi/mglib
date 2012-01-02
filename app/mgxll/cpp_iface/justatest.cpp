@@ -4,6 +4,7 @@
 #include "mgnova/exception.h"
 #include "mgnova/utils/utils.h"
 #include "mgnova/argconvdef.h"
+#include "mgnova/termstructure.h"
 #include "mgnova/schedule.h"
 #include "mgmktdata/marketdata.h"
 #include "mggenpricer/gensec/gensecurity.h"
@@ -15,7 +16,8 @@ using namespace MG;
 using namespace MG_utils;
 
 
-MG_Date JustATest(const MG_Date& aDate)
+MG_Date
+JustATest(const MG_Date& aDate)
 {
 	Coord vTop, vBottom;
 	MG_XL_Cached::GetCaller(vTop, vBottom);
@@ -26,7 +28,8 @@ MG_Date JustATest(const MG_Date& aDate)
 	return aDate;
 }
 
-MG_XLObjectPtr Robot(const MG_Date& aAsOf, CellMatrix& aMktData)
+MG_XLObjectPtr
+Robot(const MG_Date& aAsOf, CellMatrix& aMktData)
 {
 	MG_MarketDataPtr vMktData(NULL);
 	size_t vSize = aMktData.RowsInStructure();
@@ -38,7 +41,8 @@ MG_XLObjectPtr Robot(const MG_Date& aAsOf, CellMatrix& aMktData)
 	return MG_XLObjectPtr(new MG_Robot(aAsOf, vMDVect));
 }
 
-MG_XLObjectPtr BSModel(const MG_Date& aAsOf, MG_XLObjectPtr& aRobot)
+MG_XLObjectPtr
+BSModel(const MG_Date& aAsOf, MG_XLObjectPtr& aRobot)
 {
 	MG_BSModel* vMod = new MG_BSModel(aAsOf);
 	MG_RobotPtr vRbt(aRobot);
@@ -47,12 +51,14 @@ MG_XLObjectPtr BSModel(const MG_Date& aAsOf, MG_XLObjectPtr& aRobot)
 }
 
 
-MG_XLObjectPtr Call(const double& Strike, const double& Maturity, const double& Forward)
+MG_XLObjectPtr
+Call(const double& Strike, const double& Maturity, const double& Forward)
 {
 	return MG_XLObjectPtr(new MG_Call(Strike, Maturity, Forward));
 }
 
-double Price(MG_XLObjectPtr& aSec, MG_XLObjectPtr& aMod)
+double
+Price(MG_XLObjectPtr& aSec, MG_XLObjectPtr& aMod)
 {
 	MG_Call* vSec = dynamic_cast<MG_Call*>(&*aSec);
 	return dynamic_cast<MG_BSModel*>(&*aMod)->CallPrice(vSec->myFwd, vSec->myStrike, vSec->myMaturity);
@@ -80,7 +86,8 @@ ZeroCurve_Create	(	const MG_Date	& aAsOf
 	return MG_XLObjectPtr(new MG_ZeroCurve(aAsOf, vMaturities, vZeroRates, aCcy, aUnderIndex, vInterpolCode));
 }
 
-double ComputeZeroRate(MG_XLObjectPtr& aZeroCurve, const double& aMaturity)
+double
+ComputeZeroRate(MG_XLObjectPtr& aZeroCurve, const double& aMaturity)
 {
 	return dynamic_cast<MG_ZeroCurve*>(&*aZeroCurve)->ComputeValue(aMaturity);
 }
@@ -109,7 +116,8 @@ VolatilityCurve_Create	(	const MG_Date	& aAsOf
 	return MG_XLObjectPtr(new MG_IRVolatilityCurve(aAsOf, vMaturities, vTenors, vVols, aCcy, aUnderIndex, vInterpolCode));
 }
 
-double ComputeVolatility(MG_XLObjectPtr& aVolCurve, const double& aTenor, const double& aMaturity)
+double
+ComputeVolatility(MG_XLObjectPtr& aVolCurve, const double& aTenor, const double& aMaturity)
 {
 	return dynamic_cast<MG_IRVolatilityCurve*>(&*aVolCurve)->ComputeValue(aTenor, aMaturity);
 }
@@ -133,13 +141,15 @@ DividendsTable_Create	(	const MG_Date		& aAsOf
 	return MG_XLObjectPtr(new MG_DividendsTable(aAsOf, vExDivDates, vPaymentDates, vDividends, aCcy, aUnderIndex, aZC));
 }
 
-double ComputeDiscountedDivs(MG_XLObjectPtr& aDividends, const MG_Date& aT1, const MG_Date& aT2)
+double
+ComputeDiscountedDivs(MG_XLObjectPtr& aDividends, const MG_Date& aT1, const MG_Date& aT2)
 {
 	assert(aT1 <= aT2);
 	return dynamic_cast<MG_DividendsTable*>(&*aDividends)->ComputeValue(aT1.GetJulianDay(), aT2.GetJulianDay());
 }
 
-MG_XLObjectPtr GenSec_Create(const CellMatrix& aDealDesc)
+MG_XLObjectPtr
+GenSec_Create(const CellMatrix& aDealDesc)
 {
 	size_t vColsSize = aDealDesc.ColumnsInStructure();
 	vector<bool> vIsDate(vColsSize);
@@ -155,7 +165,8 @@ MG_XLObjectPtr GenSec_Create(const CellMatrix& aDealDesc)
 	return MG_XLObjectPtr(new MG_GenSecurity(vDealDesc, vColsSize));
 }
 
-MG_XLObjectPtr RandGen_Create(const string& aType, const int& aDim)
+MG_XLObjectPtr
+RandGen_Create(const string& aType, const int& aDim)
 {
 	bool vIsRand	= RandGenConvertor.Exist(aType);
 	bool vIsQRand	= QuasiRandGenConvertor.Exist(aType);
@@ -177,9 +188,10 @@ MG_XLObjectPtr RandGen_Create(const string& aType, const int& aDim)
 	return vObj;
 }
 
-MG_Date NextBusinessDay	(	MG_Date aDt
-						,	const int& aDays
-						,	const string& aCalendar)
+MG_Date
+NextBusinessDay	(	MG_Date aDt
+				,	const int& aDays
+				,	const string& aCalendar)
 {
 	CALENDAR_NAME vCal = (CALENDAR_NAME)CalendarsNameConvertor[aCalendar];
 	aDt.NextBusinessDay(aDays, vCal);
@@ -187,9 +199,10 @@ MG_Date NextBusinessDay	(	MG_Date aDt
 	return aDt;
 }
 
-MG_Date PreviousBusinessDay	(	MG_Date aDt
-							,	const int& aDays
-							,	const string& aCalendar)
+MG_Date
+PreviousBusinessDay	(	MG_Date aDt
+					,	const int& aDays
+					,	const string& aCalendar)
 {
 	CALENDAR_NAME vCal = (CALENDAR_NAME)CalendarsNameConvertor[aCalendar];
 	aDt.PreviousBusinessDay(aDays, vCal);
@@ -197,11 +210,12 @@ MG_Date PreviousBusinessDay	(	MG_Date aDt
 	return aDt;
 }
 
-double BetweenDates(	MG_Date aDate1
-				,	MG_Date aDate2
-				,	const string& aDayCount
-				,	const bool& aIsFrac
-				,	const string& aCalendar)
+double
+BetweenDates(	MG_Date aDate1
+			,	MG_Date aDate2
+			,	const string& aDayCount
+			,	const bool& aIsFrac
+			,	const string& aCalendar)
 {
 	CALENDAR_NAME vCal = CALENDAR_NAME_DEF;
 	if (aCalendar != "")
@@ -212,12 +226,13 @@ double BetweenDates(	MG_Date aDate1
 	return aDate2.BetweenDays(aDate1, vDayCount, aIsFrac, vCal);
 }
 
-MG_Date AddPeriod	(	MG_Date aDt
-					,	const string	& aFreq
-					,	const int		& aTimes
-					,	const string	& aCalendar
-					,	const string	& aAdjRule
-					,	const bool		& aEndOfMonth)
+MG_Date
+AddPeriod	(	MG_Date aDt
+			,	const string	& aFreq
+			,	const int		& aTimes
+			,	const string	& aCalendar
+			,	const string	& aAdjRule
+			,	const bool		& aEndOfMonth)
 {
 	string vFreq;
 	int vTimes;
@@ -282,7 +297,8 @@ Schedule_Create	(	const MG_Date		& aStartDate
 											,	vFreq, vIntAdj, vStubRule, aIsDecompound));
 }
 
-CellMatrix Schedule_GetData(MG_XLObjectPtr& aSched, const string& aData)
+CellMatrix
+Schedule_GetData(MG_XLObjectPtr& aSched, const string& aData)
 {
 	MG_Schedule& vSched = dynamic_cast<MG_Schedule&>(*aSched);
 
@@ -343,4 +359,23 @@ CellMatrix Schedule_GetData(MG_XLObjectPtr& aSched, const string& aData)
 	return vInfos;
 }
 
+MG_XLObjectPtr
+TermStructure_Create(	const CellMatrix& aPayDates
+					,	const CellMatrix& aValues
+					,	const string& aInterpolMeth)
+{
+	vector<MG_Date> vPayDts = MG_utils::FromCellMatrixToVectorDate(aPayDates, 0);
+	vector<double> vVals = MG_utils::FromCellMatrixToVectorDouble(aValues, 0);
+	int vInterpolMeth = InterpolMethodConvertor[aInterpolMeth];
+
+	return MG_XLObjectPtr(new MG_TermStructure(vPayDts, vVals, vInterpolMeth));
+}
+
+double
+TermStructure_Compute	(	MG_XLObjectPtr& aTermStruct
+						,	const MG_Date& aPayDate)
+{
+	MG_TermStructure& vTermStruct = dynamic_cast<MG_TermStructure&>(*aTermStruct);
+	return vTermStruct.CptValue(aPayDate);
+}
 

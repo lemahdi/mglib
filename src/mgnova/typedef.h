@@ -118,7 +118,7 @@ void yy_delete_buffer (YY_BUFFER_STATE b  );
 /* XL names */
 #define MG_IRINDEX_XL_NAME		"IRIDX"
 #define MG_SCHED_XL_NAME		"SCHED"
-//#define MG_IR
+#define MG_TERMSTRUCT_XL_NAME	"TERMS"
 #define MG_DFMODEL_XL_NAME		"DFMOD"
 #define MG_BSMODEL_XL_NAME		"BSMOD"
 #define MG_ROBOT_XL_NAME		"ROBOT"

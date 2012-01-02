@@ -299,5 +299,23 @@ namespace MG_utils
 		aFreqNm = K_MONTHLY;
 	}
 
+	/* getting frequency from indx name */
+	FREQUENCY_NAME GetFrequencyFromIndex(const INDEX_NAME& aIdxNm)
+	{
+		if (aIdxNm>=K_CMS1 && aIdxNm<=K_CMS50)
+			return K_ANNUALY;
+		
+		if (aIdxNm>K_FIXED && aIdxNm<K_LIMIT_MM)
+			return K_DAILY;
+
+		string vIdxNm = IndexNameRevertor[aIdxNm];
+		size_t vPos = vIdxNm.find_first_of("0123456789");
+		size_t vLen = vIdxNm.length();
+		string vFreqS = vIdxNm.substr(vPos, vLen-1-vPos);
+		int vFreqI = atoi(vFreqS.c_str());
+
+		return (FREQUENCY_NAME)(12/vFreqI);
+	}
+
 }
 

@@ -189,6 +189,15 @@ const MG_ArgConv		TimingNameConvertor	= MG_ArgConv		("Timing", TimingNameArgConv
 const MG_ArgConvReverse	TimingNameRevertor	= MG_ArgConvReverse	("Timing", TimingNameArgConv, NB_TIMING);
 
 
+MG_ArgConv::ArgConvPair RcvPayNameArgConv[] =
+{
+	MG_ArgConv::ArgConvPair("R",K_RCV),
+	MG_ArgConv::ArgConvPair("P",K_PAY),
+};
+const MG_ArgConv		RcvPayNameConvertor	= MG_ArgConv		("Receive / Pay", RcvPayNameArgConv, NB_RCVPAY);
+const MG_ArgConvReverse	RcvPayNameRevertor	= MG_ArgConvReverse	("Receive / Pay", RcvPayNameArgConv, NB_RCVPAY);
+
+
 MG_ArgConv::ArgConvPair InterpolMethodArgConv[] =
 {
 	MG_ArgConv::ArgConvPair("NONE",NONE_INTERPOL),

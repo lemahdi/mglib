@@ -1512,3 +1512,129 @@ EXCEL_END
 
 //////////////////////////
 
+namespace
+{
+XLRegistration::Arg
+TermStructure_CreateArgs[]=
+{
+{ "PayDates"," payment dates ","XLF_OPER"},
+{ "Values"," values ","XLF_OPER"},
+{ "[InterpolMeth]"," interpolation method (LINEAR by def.) ","XLF_OPER"}
+};
+  XLRegistration::XLFunctionRegistrationHelper
+registerTermStructure_Create("xlTermStructure_Create",
+"MG_TermStructure_Create",
+" create a term structure ",
+LibraryName,
+TermStructure_CreateArgs,
+3
+,false
+);
+}
+
+
+
+extern "C"
+{
+LPXLFOPER EXCEL_EXPORT
+xlTermStructure_Create(
+LPXLFOPER PayDatesa,
+LPXLFOPER Valuesa,
+LPXLFOPER InterpolMetha)
+{
+EXCEL_BEGIN;
+
+	if (XlfExcel::Instance().IsCalledByFuncWiz())
+		return XlfOper(true);
+
+XlfOper PayDatesb(
+	(PayDatesa));
+CellMatrix PayDates(
+	PayDatesb.AsCellMatrix("PayDates"));
+
+XlfOper Valuesb(
+	(Valuesa));
+CellMatrix Values(
+	Valuesb.AsCellMatrix("Values"));
+
+XlfOper InterpolMethb(
+	(InterpolMetha));
+string InterpolMeth(
+	InterpolMethb.AsStringWD("InterpolMeth","LINEAR"));
+
+MG_XLObjectPtr result(
+	TermStructure_Create(
+		PayDates,
+		Values,
+		InterpolMeth)
+	);
+string vRefObj, vError;
+if (MG_SCache::Instance()->PersistentInsert(result, vRefObj, vError))
+  return XlfOper(vRefObj);
+else
+  return XlfOper(vError);
+EXCEL_END
+}
+}
+
+
+
+//////////////////////////
+
+namespace
+{
+XLRegistration::Arg
+TermStructure_ComputeArgs[]=
+{
+{ "TermStruct"," term structure ","XLF_OPER"},
+{ "PayDate"," payment date ","XLF_OPER"}
+};
+  XLRegistration::XLFunctionRegistrationHelper
+registerTermStructure_Compute("xlTermStructure_Compute",
+"MG_TermStructure_Compute",
+" create a term structure ",
+LibraryName,
+TermStructure_ComputeArgs,
+2
+,false
+);
+}
+
+
+
+extern "C"
+{
+LPXLFOPER EXCEL_EXPORT
+xlTermStructure_Compute(
+LPXLFOPER TermStructa,
+LPXLFOPER PayDatea)
+{
+EXCEL_BEGIN;
+
+	if (XlfExcel::Instance().IsCalledByFuncWiz())
+		return XlfOper(true);
+
+XlfOper TermStructb(
+	(TermStructa));
+MG_XLObjectPtr TermStruct(
+	TermStructb.AsMGXLObject("TermStruct"));
+
+XlfOper PayDateb(
+	(PayDatea));
+MG_Date PayDate(
+	PayDateb.AsMGDate("PayDate"));
+
+double result(
+	TermStructure_Compute(
+		TermStruct,
+		PayDate)
+	);
+return XlfOper(result);
+EXCEL_END
+}
+}
+
+
+
+//////////////////////////
+

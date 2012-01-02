@@ -505,7 +505,7 @@ MG_Date& MG_Date::AddDays(const int& aDays, const CALENDAR_NAME& aCal)
 double MG_Date::BetweenDays	(	const MG_Date		& aDt
 							,	const DAYCOUNT_NAME	& aDayCount
 							,	const bool			& aIsFrac
-							,	const CALENDAR_NAME	& aCal)
+							,	const CALENDAR_NAME	& aCal) const
 {
 	MG_Date vDt1(*this), vDt2(aDt);
 	int vSign(1);

@@ -15,7 +15,7 @@
 #include "gsl/gsl_matrix.h"
 
 #include "mgnova/typedef.h"
-#include "mgnova/object.h"
+#include "mgnova/wrapper/vector.h"
 
 
 MG_NAMESPACE_BEGIN
@@ -28,6 +28,7 @@ public:
 	/* Constructors / Destructor */
 	MG_Matrix(void);
 	MG_Matrix(const size_t& aRows, const size_t& aCols, const double& aVal = 0.);
+	MG_Matrix(const MG_Vector& aVect);
 
 	COPY_CTOR_DECL(MG_Matrix)
 	ASSIGN_OPERATOR(MG_Matrix)

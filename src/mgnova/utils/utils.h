@@ -64,4 +64,6 @@ extern void SplitFrequency(const std::string& aTimesFreq, int& aTimes, std::stri
 
 extern void GetFromIndexName(const MG::INDEX_NAME& aIndexNm, int& aPeriod, unsigned int& aTimes, MG::FREQUENCY_NAME& aFreqNm);
 
+extern MG::FREQUENCY_NAME GetFrequencyFromIndex(const MG::INDEX_NAME& aIdxNm);
+
 }

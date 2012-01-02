@@ -1,4 +1,5 @@
 #include "mgsecurity/security.h"
+#include "mgmodel/model.h"
 
 
 using namespace std;

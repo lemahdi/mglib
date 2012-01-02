@@ -17,6 +17,8 @@
 #include "mgnova/typedef.h"
 #include "mgnova/object.h"
 
+#include <vector>
+
 
 MG_NAMESPACE_BEGIN
 
@@ -28,6 +30,7 @@ public:
 	/* Constructors / Destructor */
 	MG_Vector(void);
 	MG_Vector(const size_t& aSize, const double& aVal = 0.);
+	MG_Vector(const std::vector<double>& aVals);
 
 	COPY_CTOR_DECL(MG_Vector)
 	ASSIGN_OPERATOR(MG_Vector)

@@ -1,4 +1,4 @@
-#include "mgmktdata/interpolator.h"
+#include "mgnova/interpolator.h"
 #include "mgnova/utils/utils.h"
 #include "mgnova/argconvdef.h"
 

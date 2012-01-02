@@ -155,14 +155,6 @@
 	</References>
 	<Files>
 		<File
-			RelativePath=".\interpolator.cpp"
-			>
-		</File>
-		<File
-			RelativePath=".\interpolator.h"
-			>
-		</File>
-		<File
 			RelativePath=".\marketdata.cpp"
 			>
 		</File>

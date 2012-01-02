@@ -267,6 +267,14 @@
 			>
 		</File>
 		<File
+			RelativePath=".\interpolator.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\interpolator.h"
+			>
+		</File>
+		<File
 			RelativePath=".\irindex.cpp"
 			>
 		</File>
@@ -296,6 +304,14 @@
 		</File>
 		<File
 			RelativePath=".\schedule.h"
+			>
+		</File>
+		<File
+			RelativePath=".\termstructure.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\termstructure.h"
 			>
 		</File>
 		<File

@@ -19,6 +19,10 @@
 MG_NAMESPACE_BEGIN
 
 
+/* Forward Declarations */
+class MG_Model;
+
+
 /* Base class for models */
 class MG_Security : public MG_XLObject
 {
@@ -50,11 +54,16 @@ public:
 
 	virtual ~MG_IRSecurity(void);
 
+	MG_IRSecurity(void) {}
 	MG_IRSecurity(const MG_Schedule& aSched);
 
 public:
 	/* State */
 	inline const MG_Schedule& GetSchedule(void) const { return mySchedule; }
+
+	/* Engine */
+	virtual void	PrePricing	(const MG_Model& aMdl)	= 0;
+	virtual double	Price		(void) const			= 0;
 
 protected:
 	MG_Schedule mySchedule;

@@ -69,6 +69,8 @@ private:
 	CALENDAR_NAME	myRstCal;
 	CALENDAR_NAME	myPayCal;
 
+	FREQUENCY_NAME	myFrequency;
+
 };
 
 MG_NAMESPACE_END

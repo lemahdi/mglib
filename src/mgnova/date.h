@@ -95,7 +95,7 @@ public:
 	double BetweenDays		(	const MG_Date		& aDt
 							,	const DAYCOUNT_NAME	& aDayCount
 							,	const bool			& aIsFrac
-							,	const CALENDAR_NAME	& aCal = NB_CALENDARS);
+							,	const CALENDAR_NAME	& aCal = NB_CALENDARS) const;
 	MG_Date& AddDays		(	const int& aDays, const CALENDAR_NAME& aCal);
 	MG_Date& AddMonths		(	const int	& aFreq
 							,	const int	& aTimes

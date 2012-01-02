@@ -172,4 +172,17 @@ Schedule_GetData(MG_XLObjectPtr& Schedule // schedule
 				 , const string& Data // ResetDate, StartDate, EndDate, PayDate, InterestDays, InterestTerms, FwdStartDate, FwdEndDate
 				 );
 
+//<xlw:libraryname=MyTestLibrary
+MG_XLObjectPtr // create a term structure
+TermStructure_Create(const CellMatrix& PayDates // payment dates
+				 , const CellMatrix& Values // values
+				 , const string& InterpolMeth = "LINEAR" // interpolation method (LINEAR by def.)
+				 );
+
+//<xlw:libraryname=MyTestLibrary
+double // create a term structure
+TermStructure_Compute(MG_XLObjectPtr& TermStruct // term structure
+				 , const MG_Date& PayDate // payment date
+				 );
+
 #endif

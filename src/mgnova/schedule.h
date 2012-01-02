@@ -36,6 +36,7 @@ public:
 	CLONE_METHOD(MG_Schedule)
 	SWAP_DECL(MG_Schedule)
 
+	MG_Schedule(void) {}
 	MG_Schedule	(	const MG_Date		& aStDt
 				,	const MG_Date		& aEdDt
 				,	const MG_IRIndex	& aIRIndex

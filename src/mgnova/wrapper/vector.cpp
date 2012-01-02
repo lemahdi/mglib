@@ -24,6 +24,16 @@ MG_Vector::MG_Vector(	const size_t& aSize
 	gsl_vector_set_all(myVect, aVal);
 }
 
+MG_Vector::MG_Vector(	const vector<double>& aVals)
+					:	MG_Object()
+					,	mySize(aVals.size())
+{
+	assert(mySize != 0);
+	myVect = gsl_vector_calloc(mySize);
+	for(size_t i=0; i<mySize; ++i)
+		myVect->data[i] = aVals[i];
+}
+
 MG_Vector::MG_Vector(	const MG_Vector& aRight)
 					:	MG_Object(aRight)
 					,	mySize(aRight.mySize)

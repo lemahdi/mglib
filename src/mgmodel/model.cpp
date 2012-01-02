@@ -46,9 +46,19 @@ void MG_DfModel::Register(MG_RobotPtr& aRbt)
 	myZC = aRbt->GetMktData("ZERO", "EUR", "EURIB");
 }
 
-double MG_DfModel::DiscountFactor(const double& aMaturity)
+double MG_DfModel::Libor(	const MG_Date		& aStDt
+						,	const MG_Date		& aEdDt
+						,	const DAYCOUNT_NAME	& aDayCount
+						,	const CALENDAR_NAME	& aCal) const
 {
-	return myZC->ComputeValue(aMaturity);
+	double vDelta = aEdDt.BetweenDays(aStDt, aDayCount, true, aCal);
+	double vMatS = (aStDt.GetJulianDay()-GetAsOf().GetJulianDay()) / 365.;
+	double vMatE = (aEdDt.GetJulianDay()-GetAsOf().GetJulianDay()) / 365.;
+	double vDfS = DiscountFactor(vMatS);
+	double vDfE = DiscountFactor(vMatE);
+	double vFwd = 1./vDelta * (vDfS/vDfE - 1.);
+
+	return vFwd;
 }
 
 

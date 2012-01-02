@@ -31,12 +31,24 @@ public:
 
 	virtual ~MG_SwapLeg(void);
 
-	MG_SwapLeg(const MG_Schedule& aSched);
+	MG_SwapLeg	(	const MG_Date		& aStDt
+				,	const MG_Date		& aEdDt
+				,	const RCVPAY_NAME	& aRcvPay
+				,	const MG_IRIndex	& aIRIndex);
+	MG_SwapLeg	(	const MG_Schedule& aSched
+				,	const RCVPAY_NAME& aRcvPay);
 
 public:
 	/* State */
+	inline const MG_IRIndex& GetIRIndex(void) const { return mySchedule.GetIRIndex(); }
+
+	/* Engine */
+	void	PrePricing	(const MG_Model& aMdl)	{}
+	double	Price		(void) const			{ return 0.; }
 
 private:
+	RCVPAY_NAME	myRcvPay;
+	std::vector<double> myRawFwd;
 
 };
 
