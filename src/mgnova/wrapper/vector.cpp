@@ -1,4 +1,5 @@
 #include "mgnova/wrapper/vector.h"
+#include "mgnova/date.h"
 
 
 using namespace std;
@@ -34,6 +35,16 @@ MG_Vector::MG_Vector(	const vector<double>& aVals)
 		myVect->data[i] = aVals[i];
 }
 
+MG_Vector::MG_Vector(	const vector<MG_Date>& aDates)
+					:	MG_Object()
+					,	mySize(aDates.size())
+{
+	assert(mySize != 0);
+	myVect = gsl_vector_calloc(mySize);
+	for(size_t i=0; i<mySize; ++i)
+		myVect->data[i] = aDates[i].GetJulianDay();
+}
+
 MG_Vector::MG_Vector(	const MG_Vector& aRight)
 					:	MG_Object(aRight)
 					,	mySize(aRight.mySize)
@@ -54,7 +65,8 @@ MG_Vector::~MG_Vector()
 void MG_Vector::Swap(MG_Vector& aRight)
 {
 	swap(mySize, aRight.mySize);
-	gsl_vector_swap(myVect, aRight.myVect);
+	//gsl_vector_swap(myVect, aRight.myVect);
+	swap(myVect, aRight.myVect);
 }
 
 

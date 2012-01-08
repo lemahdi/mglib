@@ -340,7 +340,7 @@ ZeroCurve_CreateArgs[]=
 { "ZeroRates"," volatilities ","XLF_OPER"},
 { "Ccy"," currency ","XLF_OPER"},
 { "UnderIndex"," underlying index ","XLF_OPER"},
-{ "InterpolMeth"," interpolation method (LINEAR by def.) ","XLF_OPER"}
+{ "[InterpolMeth]"," interpolation method: LINEAR (def.), CONTINUOUS, CONSTANT, STEPUPLEFT, STEPUPRIGHT, POLYNOMIAL, CUBICSPLINE, AKIMA ","XLF_OPER"}
 };
   XLRegistration::XLFunctionRegistrationHelper
 registerZeroCurve_Create("xlZeroCurve_Create",
@@ -398,8 +398,8 @@ string UnderIndex(
 
 XlfOper InterpolMethb(
 	(InterpolMetha));
-CellMatrix InterpolMeth(
-	InterpolMethb.AsCellMatrix("InterpolMeth"));
+string InterpolMeth(
+	InterpolMethb.AsStringWD("InterpolMeth","LINEAR"));
 
 MG_XLObjectPtr result(
 	ZeroCurve_Create(
@@ -491,7 +491,7 @@ VolatilityCurve_CreateArgs[]=
 { "Volatilities"," volatilities ","XLF_OPER"},
 { "Ccy"," currency ","XLF_OPER"},
 { "UnderIndex"," underlying index ","XLF_OPER"},
-{ "InterpolMeths"," interpolation methods (LINEAR by def.) ","XLF_OPER"}
+{ "InterpolMeths"," 2 interpolation methods: LINEAR (def.), CONTINUOUS, CONSTANT, STEPUPLEFT, STEPUPRIGHT, POLYNOMIAL, CUBICSPLINE, AKIMA ","XLF_OPER"}
 };
   XLRegistration::XLFunctionRegistrationHelper
 registerVolatilityCurve_Create("xlVolatilityCurve_Create",

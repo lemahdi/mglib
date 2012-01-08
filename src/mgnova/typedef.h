@@ -124,6 +124,7 @@ void yy_delete_buffer (YY_BUFFER_STATE b  );
 #define MG_ROBOT_XL_NAME		"ROBOT"
 #define MG_ZERO_XL_NAME			"ZEROC"
 #define MG_DIVS_XL_NAME			"DIVSC"
+#define MG_EQ_XL_NAME			"EQVOL"
 #define MG_IRVOL_XL_NAME		"IRVOL"
 #define MG_EQVOL_XL_NAME		"EQVOL"
 #define MG_GENSEC_XL_NAME		"GLSEC"
@@ -211,12 +212,14 @@ enum DATE_DISPLAY {
 
 /* interpolation types */
 #define interpoltypeNone			0x00000000
-#define interpoltypeStepUpLeft		0x00000001
-#define interpoltypeStepUpRight		0x00000002
-#define interpoltypeLinear			0x00000003
-#define interpoltypePolynomial		0x00000004
-#define interpoltypeCubicSpline		0x00000005
-#define interpoltypeConstant		0x00000006
+#define interpoltypeConstant		0x00000001
+#define interpoltypeStepUpLeft		0x00000002
+#define interpoltypeStepUpRight		0x00000003
+#define interpoltypeLinear			0x00000004
+#define interpoltypeContinuous		0x00000005
+#define interpoltypePolynomial		0x00000006
+#define interpoltypeCubicSpline		0x00000007
+#define interpoltypeAkima			0x00000008
 
 #define interpoltypeMask			0x0000000f
 

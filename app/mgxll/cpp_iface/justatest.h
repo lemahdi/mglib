@@ -52,7 +52,7 @@ ZeroCurve_Create(const MG_Date& AsOf // s of date
 					   , const CellMatrix& ZeroRates // volatilities
 					   , const string& Ccy // currency
 					   , const string& UnderIndex // underlying index
-					   , const CellMatrix& InterpolMeth // interpolation method (LINEAR by def.)
+					   , const string& InterpolMeth = "LINEAR" // interpolation method: LINEAR (def.), CONTINUOUS, CONSTANT, STEPUPLEFT, STEPUPRIGHT, POLYNOMIAL, CUBICSPLINE, AKIMA
 					   );
 
 //<xlw:libraryname=MyTestLibrary
@@ -69,7 +69,7 @@ VolatilityCurve_Create(const MG_Date& AsOf // s of date
 					   , const CellMatrix& Volatilities // volatilities
 					   , const string& Ccy // currency
 					   , const string& UnderIndex // underlying index
-					   , const CellMatrix& InterpolMeths // interpolation methods (LINEAR by def.)
+					   , const CellMatrix& InterpolMeths // 2 interpolation methods: LINEAR (def.), CONTINUOUS, CONSTANT, STEPUPLEFT, STEPUPRIGHT, POLYNOMIAL, CUBICSPLINE, AKIMA
 					   );
 
 //<xlw:libraryname=MyTestLibrary

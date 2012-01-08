@@ -23,6 +23,10 @@
 MG_NAMESPACE_BEGIN
 
 
+/* Forward Declarations */
+class MG_Date;
+
+
 /* Vector Class */
 class MG_Vector : public MG_Object
 {
@@ -31,6 +35,7 @@ public:
 	MG_Vector(void);
 	MG_Vector(const size_t& aSize, const double& aVal = 0.);
 	MG_Vector(const std::vector<double>& aVals);
+	MG_Vector(const std::vector<MG_Date>& aDates);
 
 	COPY_CTOR_DECL(MG_Vector)
 	ASSIGN_OPERATOR(MG_Vector)

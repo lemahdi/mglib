@@ -68,20 +68,17 @@ MG_XLObjectPtr
 ZeroCurve_Create	(	const MG_Date	& aAsOf
 					,	const CellMatrix& aMaturities
 					,	const CellMatrix& aZeroRates
-					,	const string& aCcy
-					,	const string& aUnderIndex
-					,	const CellMatrix& aInterpolMeth)
+					,	const string	& aCcy
+					,	const string	& aUnderIndex
+					,	const string	& aInterpolMeth)
 {
 	if (aZeroRates.Size() != aMaturities.Size())
 		MG_THROW("Zero vector size and Maturities size are not consistent");
 
-	MG_Vector	vMaturities	= FromCellMatrixToMGVectorDouble(aMaturities, 0);
-	MG_Matrix	vZeroRates	= FromCellMatrixToMGMatrix		(aZeroRates);
+	vector<double> vMaturities	= FromCellMatrixToVectorDouble(aMaturities, 0);
+	vector<double> vZeroRates	= FromCellMatrixToVectorDouble(aZeroRates, 0);
 
-	vector<int> vInterpolMeths = vector<int>(1, LIN_INTERPOL);
-	if (!aInterpolMeth(0,0).IsEmpty())
-		vInterpolMeths = FromCellMatrixToInterpolVector(aInterpolMeth);
-	long vInterpolCode = MG_Interpolator::CreateInterpolTypes(vInterpolMeths);
+	int vInterpolCode = InterpolMethodConvertor[aInterpolMeth];
 
 	return MG_XLObjectPtr(new MG_ZeroCurve(aAsOf, vMaturities, vZeroRates, aCcy, aUnderIndex, vInterpolCode));
 }
@@ -104,14 +101,16 @@ VolatilityCurve_Create	(	const MG_Date	& aAsOf
 	if (aVolatilities.Size() != aTenors.Size()*aMaturities.Size())
 		MG_THROW("Volatilities matrix size and (Maturities,Tenors) size are not consistent");
 
-	MG_Vector vMaturities	= FromCellMatrixToMGVectorDouble(aMaturities, 0);
-	MG_Vector vTenors		= FromCellMatrixToMGVectorDouble(aTenors, 0);
-	MG_Matrix vVols			= FromCellMatrixToMGMatrix		(aVolatilities);
+	vector<double> vMaturities	= FromCellMatrixToVectorDouble(aMaturities, 0);
+	vector<double> vTenors		= FromCellMatrixToVectorDouble(aTenors, 0);
+	MG_Matrix vVols				= FromCellMatrixToMGMatrix		(aVolatilities);
 
-	vector<int> vInterpolMeths = vector<int>(2, LIN_INTERPOL);
+	vector<int> vInterpolMeths = vector<int>(2, LINEAR_INTERPOL);
 	if (!aInterpolMeths(0,0).IsEmpty())
 		vInterpolMeths = FromCellMatrixToInterpolVector(aInterpolMeths);
-	long vInterpolCode = MG_Interpolator::CreateInterpolTypes(vInterpolMeths);
+	if (vInterpolMeths.size() == 1)
+		vInterpolMeths.push_back(vInterpolMeths[0]);
+	long vInterpolCode = MG_Interpolator::CreateInterpolCode(vInterpolMeths);
 
 	return MG_XLObjectPtr(new MG_IRVolatilityCurve(aAsOf, vMaturities, vTenors, vVols, aCcy, aUnderIndex, vInterpolCode));
 }
@@ -134,9 +133,9 @@ DividendsTable_Create	(	const MG_Date		& aAsOf
 	if (aExDivDates.Size() != aExDivDates.Size())
 		MG_THROW("Ex dividends dates and payments days should be equal");
 
-	MG_Vector vExDivDates	= FromCellMatrixToMGVectorDate	(aExDivDates, 0);
-	MG_Vector vPaymentDates	= FromCellMatrixToMGVectorDate	(aPaymentDates, 0);
-	MG_Vector vDividends	= FromCellMatrixToMGVectorDouble(aDividends, 0);
+	vector<MG_Date> vExDivDates		= FromCellMatrixToVectorDate(aExDivDates, 0);
+	vector<MG_Date> vPaymentDates	= FromCellMatrixToVectorDate(aPaymentDates, 0);
+	vector<double> vDividends		= FromCellMatrixToVectorDouble(aDividends, 0);
 
 	return MG_XLObjectPtr(new MG_DividendsTable(aAsOf, vExDivDates, vPaymentDates, vDividends, aCcy, aUnderIndex, aZC));
 }

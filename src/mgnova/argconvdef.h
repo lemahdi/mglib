@@ -259,14 +259,16 @@ extern const MG_ArgConvReverse	RcvPayNameRevertor;
 /* enum for interpolation methods */
 enum INTERPOL_METHOD {
 	NONE_INTERPOL			= interpoltypeNone,			// no interpolation
+	CONSTANT_INTERPOL		= interpoltypeConstant,		// constant interpol method
 	STEPUPLEFT_INTERPOL		= interpoltypeStepUpLeft,	// step up left interpol method
 	STEPUPRIGHT_INTERPOL	= interpoltypeStepUpRight,	// step up right interpol method
-	LIN_INTERPOL			= interpoltypeLinear,		// linear interpol method
+	LINEAR_INTERPOL			= interpoltypeLinear,		// linear interpol method
+	CONTINUOUS_INTERPOL		= interpoltypeContinuous,	// continuous interpol method
 	POLYNOM_INTERPOL		= interpoltypePolynomial,	// polynomial interpol method
 	CUBICSPLINE_INTERPOL	= interpoltypeCubicSpline,	// cubic spline interpol method
-	CONSTANT_INTERPOL		= interpoltypeConstant,		// constant interpol method
+	AKIMA_INTERPOL			= interpoltypeAkima,		// non rounded corner algorithm of Wodicka
 
-	NB_INTERPOL_METH		= 7
+	NB_INTERPOL_METH		= 9
 };
 
 extern const MG_ArgConv			InterpolMethodConvertor;

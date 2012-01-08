@@ -29,6 +29,7 @@ public:
 	MG_Matrix(void);
 	MG_Matrix(const size_t& aRows, const size_t& aCols, const double& aVal = 0.);
 	MG_Matrix(const MG_Vector& aVect);
+	MG_Matrix(const std::vector<double>& aVect);
 
 	COPY_CTOR_DECL(MG_Matrix)
 	ASSIGN_OPERATOR(MG_Matrix)
@@ -42,14 +43,15 @@ public:
 	inline double&	Elt	(const size_t& aI, const size_t& aJ)	const { return *gsl_matrix_ptr(myMatrix, aI, aJ); }
 	inline double&	operator ()(const size_t& aI, const size_t& aJ)	const { return *gsl_matrix_ptr(myMatrix, aI, aJ); }
 
-	inline size_t	Rows(void)									const { return myRows; }
-	inline size_t	Cols(void)									const { return myCols; }
-	inline size_t	Size(void)									const { return myRows*myCols; }
+	inline size_t Rows(void) const { return myRows; }
+	inline size_t Cols(void) const { return myCols; }
+	inline size_t Size(void) const { return myRows*myCols; }
+	inline double Last(void) const { return *gsl_matrix_ptr(myMatrix, myRows-1, myCols-1); }
 	
 	inline const gsl_matrix* const	GetPtr(void) const	{ return myMatrix; }
 	inline gsl_matrix* const		GetPtr(void)		{ return myMatrix; }
 
-	void Transpose(MG_Matrix& aDest);
+	void Transpose(MG_Matrix& aDest) const;
 
 public:
 	/* Assignment operators */

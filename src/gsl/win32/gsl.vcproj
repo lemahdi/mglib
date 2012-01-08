@@ -4445,6 +4445,23 @@
 				<File
 					RelativePath="..\utils\memcpy.c"
 					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							EnableIntrinsicFunctions="false"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="0"
+							EnableIntrinsicFunctions="false"
+						/>
+					</FileConfiguration>
 				</File>
 				<File
 					RelativePath="..\utils\memmove.c"

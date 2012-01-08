@@ -36,6 +36,16 @@ MG_Matrix::MG_Matrix(	const MG_Vector& aVect)
 		myMatrix->data[i] = aVect[i];
 }
 
+MG_Matrix::MG_Matrix(	const vector<double>& aVect)
+					:	MG_Object()
+					,	myRows(aVect.size())
+					,	myCols(1)
+{
+	myMatrix = gsl_matrix_calloc(myRows, myCols);
+	for(size_t i=0; i<myRows; ++i)
+		myMatrix->data[i] = aVect[i];
+}
+
 MG_Matrix::MG_Matrix(	const MG_Matrix& aRight)
 					:	MG_Object(aRight)
 					,	myRows(aRight.myRows)
@@ -58,7 +68,8 @@ void MG_Matrix::Swap(MG_Matrix& aRight)
 {
 	swap(myRows, aRight.myRows);
 	swap(myCols, aRight.myCols);
-	gsl_matrix_swap(myMatrix, aRight.myMatrix);
+	//gsl_matrix_swap(myMatrix, aRight.myMatrix);
+	swap(myMatrix, aRight.myMatrix);
 }
 
 
@@ -154,7 +165,7 @@ MG_Matrix MG_Matrix::operator --(int)
 /*
  * Transposition
  */
-void MG_Matrix::Transpose(MG_Matrix& aDest)
+void MG_Matrix::Transpose(MG_Matrix& aDest) const
 {
 	aDest = MG_Matrix(myCols, myRows);
 	gsl_matrix_transpose_memcpy(aDest.myMatrix, myMatrix);

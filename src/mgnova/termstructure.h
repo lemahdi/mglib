@@ -38,18 +38,17 @@ public:
 
 public:
 	/* State */
-	inline const std::vector<MG_Date>	& GetPayDates	(void) const { return myPayDates; }
-	inline const std::vector<double>	& GetValues		(void) const { return myValues; }
+	inline const std::vector<MG_Date>	& GetPayDates	(void) const { return myOriginPayDates; }
+	inline const std::vector<double>	& GetValues		(void) const { return myOriginValues; }
 
 	/* Engine */
 	double CptValue(const MG_Date& aPayDt) const;
 
 private:
-	std::vector<MG_Date>	myPayDates;
-	std::vector<double>		myValues;
+	const std::vector<MG_Date>	myOriginPayDates;
+	const std::vector<double>	myOriginValues;
 
-	const int	myInterpolType;
-	gsl_spline*	myInterpolator;
+	MG_1DInterpolator myInterpolator;
 
 };
 
