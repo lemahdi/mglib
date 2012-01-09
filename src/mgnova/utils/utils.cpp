@@ -317,5 +317,21 @@ namespace MG_utils
 		return (FREQUENCY_NAME)(12/vFreqI);
 	}
 
+	/* building generic date */
+	bool BuildGenericDates	(	const string& aStStr
+							,	MG_GenericDate& aSt
+							,	const string& aEdStr
+							,	MG_GenericDate& aEd)
+	{
+		bool vIsGenDt = aStStr.find("/")!=string::npos && aEdStr.find("/")!=string::npos;
+		if (!vIsGenDt)
+			return false;
+
+		aSt = MG_GenericDate(aStStr);
+		aEd = MG_GenericDate(aStStr, aEdStr);
+
+		return true;
+	}
+
 }
 

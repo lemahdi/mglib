@@ -13,7 +13,6 @@
 
 
 #include "mgmktdata/marketdata.h"
-//#include "mgnova/patterns/countedptr.hpp"
 
 
 MG_NAMESPACE_BEGIN

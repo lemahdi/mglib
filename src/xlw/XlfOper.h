@@ -27,7 +27,7 @@
 // $Id: XlfOper.h 538 2008-05-19 09:34:25Z ericehlers $
 
 #include <xlw/XlfOperImpl.h>
-#include "mgnova/date.h"
+#include "mgnova/genericdate.h"
 #include "mgnova/patterns/countedptr.hpp"
 
 #if defined(_MSC_VER)
@@ -276,6 +276,13 @@ namespace xlw {
 		MG::MG_Date AsMGDate(const std::string& ErrorId, int *pxlret=0) const;
         //! Converts to a date with error identifer and default value.
 		MG::MG_Date AsMGDateWD(const std::string& ErrorId, const std::string& , int *pxlret=0) const;
+
+        //! Converts to a generic date.
+        MG::MG_GenericDate AsMGGenDate(int *pxlret=0) const;
+        //! Converts to a generic date with error identifer.
+		MG::MG_GenericDate AsMGGenDate(const std::string& ErrorId, int *pxlret=0) const;
+        //! Converts to a generic date with error identifer and default value.
+		MG::MG_GenericDate AsMGGenDateWD(const std::string& ErrorId, const std::string& DefaultValue, int *pxlret=0) const;
 
         //! Converts to an Excel object.
         MG::MG_XLObjectPtr AsMGXLObject(int *pxlret=0) const;

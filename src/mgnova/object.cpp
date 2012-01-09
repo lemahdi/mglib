@@ -1,19 +1,8 @@
 #include "mgnova/object.h"
 
-#include "mginfra/func.h"
-#include "mgnumerical/distributions.h"
-#include "mgnova/calendar.h"
 
 using namespace MG;
 
-
-bool MG_Object::Dummy()
-{
-	MG_SFuncBuilder::Instance()->Init();
-	//MG_RCalendar::Init();
-	return true;
-}
-bool MG_Object::ourDummy = MG_Object::Dummy();
 
 MG_XLObject::MG_XLObject() : myXLId(NON_PERSISTENT_XL_OBJECT)
 {}

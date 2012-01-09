@@ -1,6 +1,7 @@
 #include "mgnova/interpolator.h"
 #include "mgnova/utils/utils.h"
 #include "mgnova/argconvdef.h"
+#include "mgnova/exception.h"
 
 
 using namespace std;

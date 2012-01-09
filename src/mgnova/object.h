@@ -16,7 +16,6 @@
 #include <assert.h>
 
 #include "mgnova/typedef.h"
-#include "mgnova/patterns/countedptr.hpp"
 
 
 MG_NAMESPACE_BEGIN
@@ -32,9 +31,6 @@ public:
 	MG_Object& operator= (const MG_Object& /*aRight*/) {}
 	virtual MG_Object* Clone(void) = 0;
 
-private:
-	static bool Dummy(void);
-	static bool ourDummy;
 };
 
 class MG_XLObject : public MG_Object
@@ -51,19 +47,6 @@ public:
 protected:
 	std::string	myXLName;
 	int			myXLId;
-};
-
-class MG_Call : public MG_XLObject
-{
-public:
-	MG_Call(const double& aK, const double& aMat, const double& aFwd)
-		: myStrike(aK), myMaturity(aMat), myFwd(aFwd) { myXLName = "CALL"; }
-	virtual MG_Object* Clone(void) { return NULL; }
-
-public:
-	double myStrike;
-	double myMaturity;
-	double myFwd;
 };
 
 

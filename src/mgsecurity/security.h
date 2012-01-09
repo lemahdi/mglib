@@ -37,6 +37,9 @@ public:
 	SWAP_DECL(MG_Security)
 
 public:
+	/* Engine */
+	virtual void	PrePricing	(const MG_Model& aMdl)	= 0;
+	virtual double	Price		(void) const			= 0;
 
 protected:
 };
@@ -60,10 +63,6 @@ public:
 public:
 	/* State */
 	inline const MG_Schedule& GetSchedule(void) const { return mySchedule; }
-
-	/* Engine */
-	virtual void	PrePricing	(const MG_Model& aMdl)	= 0;
-	virtual double	Price		(void) const			= 0;
 
 protected:
 	MG_Schedule mySchedule;

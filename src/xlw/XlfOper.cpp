@@ -447,6 +447,62 @@ MG::MG_Date xlw::XlfOper::AsMGDateWD(const std::string& ErrorId, const std::stri
 }
 
 /*!
+Attempts to convert the implict object to a generic date. If pxlret is not null
+the method won't throw and the Excel return code will be returned in this
+variable.
+
+\sa xlw::XlfOper::ConvertToMGGenDate.
+*/
+MG::MG_GenericDate xlw::XlfOper::AsMGGenDate(int *pxlret) const
+{
+    char * s;
+    int xlret = ConvertToString(s);
+    if (pxlret)
+        *pxlret=xlret;
+	else if (xlret == xlretInvXloper)
+	{
+		MG::MG_Date vDt = AsMGDate(pxlret);
+		return MG::MG_GenericDate(vDt);
+	}
+    else
+        ThrowOnError(xlret);
+	std::string vS(s);
+	MG::MG_GenericDate output(vS);
+    return output;
+}
+
+MG::MG_GenericDate xlw::XlfOper::AsMGGenDate(const std::string& ErrorId, int *pxlret) const
+{
+    char * s;
+    int xlret = ConvertToString(s);
+    if (pxlret)
+        *pxlret=xlret;
+	else if (xlret == xlretInvXloper)
+	{
+		MG::MG_Date vDt = AsMGDate(ErrorId, pxlret);
+		return MG::MG_GenericDate(vDt);
+	}
+    else
+        ThrowOnError(xlret,ErrorId + " conversion to char* failed");
+	std::string vS(s);
+	MG::MG_GenericDate output(vS);
+    return output;
+}
+
+MG::MG_GenericDate xlw::XlfOper::AsMGGenDateWD(const std::string& ErrorId, const std::string& DefaultValue, int *pxlret) const
+{
+    char * s;
+    int xlret = ConvertToStringWD(s, DefaultValue);
+    if (pxlret)
+        *pxlret=xlret;
+    else
+        ThrowOnError(xlret,ErrorId + " conversion to char* failed");
+	std::string vS(s);
+	MG::MG_GenericDate output(vS);
+    return output;
+}
+
+/*!
 Attempts to convert the implict object to an Excel object. If pxlret is not null
 the method won't throw and the Excel return code will be returned in this
 variable.

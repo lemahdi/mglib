@@ -22,7 +22,7 @@
 #include "xlw/CellMatrix.h"
 #endif
 
-#include "mgnova/date.h"
+#include "mgnova/genericdate.h"
 #include "mgnova/wrapper/vector.h"
 #include "mgnova/wrapper/matrix.h"
 
@@ -65,5 +65,7 @@ extern void SplitFrequency(const std::string& aTimesFreq, int& aTimes, std::stri
 extern void GetFromIndexName(const MG::INDEX_NAME& aIndexNm, int& aPeriod, unsigned int& aTimes, MG::FREQUENCY_NAME& aFreqNm);
 
 extern MG::FREQUENCY_NAME GetFrequencyFromIndex(const MG::INDEX_NAME& aIdxNm);
+
+extern bool BuildGenericDates(const std::string& aStStr, MG::MG_GenericDate& aSt, const std::string& aEdStr, MG::MG_GenericDate& aEd);
 
 }

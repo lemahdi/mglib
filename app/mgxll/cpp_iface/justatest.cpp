@@ -5,8 +5,8 @@
 #include "mgnova/utils/utils.h"
 #include "mgnova/argconvdef.h"
 #include "mgnova/termstructure.h"
-#include "mgnova/schedule.h"
 #include "mgmktdata/marketdata.h"
+#include "mgsecurity/swapleg.h"
 #include "mggenpricer/gensec/gensecurity.h"
 #include "mgnumerical/random.h"
 
@@ -48,20 +48,6 @@ BSModel(const MG_Date& aAsOf, MG_XLObjectPtr& aRobot)
 	MG_RobotPtr vRbt(aRobot);
 	vMod->Register(vRbt);
 	return MG_XLObjectPtr(vMod);
-}
-
-
-MG_XLObjectPtr
-Call(const double& Strike, const double& Maturity, const double& Forward)
-{
-	return MG_XLObjectPtr(new MG_Call(Strike, Maturity, Forward));
-}
-
-double
-Price(MG_XLObjectPtr& aSec, MG_XLObjectPtr& aMod)
-{
-	MG_Call* vSec = dynamic_cast<MG_Call*>(&*aSec);
-	return dynamic_cast<MG_BSModel*>(&*aMod)->CallPrice(vSec->myFwd, vSec->myStrike, vSec->myMaturity);
 }
 
 MG_XLObjectPtr
@@ -376,5 +362,25 @@ TermStructure_Compute	(	MG_XLObjectPtr& aTermStruct
 {
 	MG_TermStructure& vTermStruct = dynamic_cast<MG_TermStructure&>(*aTermStruct);
 	return vTermStruct.CptValue(aPayDate);
+}
+
+MG_XLObjectPtr
+SwapLeg_Create	(	const MG_GenericDate& aStart
+				,	const MG_GenericDate& aEnd
+				,	const string		& aRcvPay
+				,	MG_XLObjectPtr		& aIRIndex)
+{
+	RCVPAY_NAME vRcvPay = (RCVPAY_NAME)RcvPayNameConvertor[aRcvPay];
+	MG_IRIndex& vIRIndex = dynamic_cast<MG_IRIndex&>(*aIRIndex);
+
+	/*MG_GenericDate vGenSt, vGenEd;
+	bool vIsGenDt = MG_utils::BuildGenericDates(aStart, vGenSt, aEnd, vGenEd);
+	if (vIsGenDt)
+		return MG_XLObjectPtr(new MG_SwapLeg(vGenSt, vGenEd, vRcvPay, vIRIndex));
+
+	MG_Date vStDt(aStart);
+	MG_Date vEdDt(aEnd);
+	return MG_XLObjectPtr(new MG_SwapLeg(vStDt, vEdDt, vRcvPay, vIRIndex));*/
+	return MG_XLObjectPtr(new MG_SwapLeg(aStart, aEnd, vRcvPay, vIRIndex));
 }
 

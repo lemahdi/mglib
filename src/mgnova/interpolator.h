@@ -14,9 +14,6 @@
 
 #include <iostream>
 
-#include "mgnova/object.h"
-#include "mgnova/patterns/singleton.hpp"
-#include "mgnova/exception.h"
 #include "mgnova/wrapper/vector.h"
 #include "mgnova/wrapper/matrix.h"
 #include "mgnova/date.h"
@@ -53,7 +50,7 @@ extern double Interpolate_Surface	(	const std::vector<gsl_spline*>	& a1stInterp
 									,	const double					& aY = 0);
 
 /* Interpolator class */
-class MG_Interpolator
+class MG_Interpolator : public MG_Object
 {
 public:
 	typedef double (*MG_StepWiseFunc) (const MG_Matrix&, const size_t&, const MG_Vector&, const double&);
@@ -108,6 +105,7 @@ public:
 	COPY_CTOR_DECL(MG_1DInterpolator)
 		
 	ASSIGN_OPERATOR(MG_1DInterpolator)
+	CLONE_METHOD(MG_1DInterpolator)
 	SWAP_DECL(MG_1DInterpolator)
 	
 	virtual ~MG_1DInterpolator(void);
@@ -145,6 +143,7 @@ public:
 	COPY_CTOR_DECL(MG_2DInterpolator)
 		
 	ASSIGN_OPERATOR(MG_2DInterpolator)
+	CLONE_METHOD(MG_2DInterpolator)
 	SWAP_DECL(MG_2DInterpolator)
 	
 	virtual ~MG_2DInterpolator(void);

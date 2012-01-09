@@ -1,5 +1,6 @@
 #include "mgsecurity/swapleg.h"
 #include "mgnova/utils/utils.h"
+#include "mgmodel/model.h"
 
 
 using namespace std;
@@ -25,6 +26,21 @@ MG_SwapLeg::MG_SwapLeg	(	const MG_Date		& aStDt
 						:	MG_IRSecurity()
 						,	myRcvPay(aRcvPay)
 {
+	myXLName = MG_SWAPLEG_XL_NAME;
+
+	FREQUENCY_NAME vFreq = MG_utils::GetFrequencyFromIndex(aIRIndex.GetIndexName());
+	mySchedule = MG_Schedule(aStDt, aEdDt, aIRIndex, vFreq);
+}
+
+MG_SwapLeg::MG_SwapLeg	(	const MG_GenericDate& aStDt
+						,	const MG_GenericDate& aEdDt
+						,	const RCVPAY_NAME	& aRcvPay
+						,	const MG_IRIndex	& aIRIndex)
+						:	MG_IRSecurity()
+						,	myRcvPay(aRcvPay)
+{
+	myXLName = MG_SWAPLEG_XL_NAME;
+
 	FREQUENCY_NAME vFreq = MG_utils::GetFrequencyFromIndex(aIRIndex.GetIndexName());
 	mySchedule = MG_Schedule(aStDt, aEdDt, aIRIndex, vFreq);
 }
@@ -33,8 +49,14 @@ MG_SwapLeg::MG_SwapLeg	(	const MG_Schedule& aSched
 						,	const RCVPAY_NAME& aRcvPay)
 						:	MG_IRSecurity(aSched)
 						,	myRcvPay(aRcvPay)
-{}
+{
+	myXLName = MG_SWAPLEG_XL_NAME;
+}
 
 MG_SwapLeg::~MG_SwapLeg()
 {}
 
+void MG_SwapLeg::PrePricing(const MG_Model& aMdl)
+{
+	mySchedule.InterpretDates(aMdl.GetAsOf());
+}

@@ -207,132 +207,6 @@ EXCEL_END
 namespace
 {
 XLRegistration::Arg
-CallArgs[]=
-{
-{ "Strike"," strike ","XLF_OPER"},
-{ "Maturity"," maturity ","XLF_OPER"},
-{ "Forward"," forward ","XLF_OPER"}
-};
-  XLRegistration::XLFunctionRegistrationHelper
-registerCall("xlCall",
-"MG_Call",
-" just n object test ",
-LibraryName,
-CallArgs,
-3
-,false
-);
-}
-
-
-
-extern "C"
-{
-LPXLFOPER EXCEL_EXPORT
-xlCall(
-LPXLFOPER Strikea,
-LPXLFOPER Maturitya,
-LPXLFOPER Forwarda)
-{
-EXCEL_BEGIN;
-
-	if (XlfExcel::Instance().IsCalledByFuncWiz())
-		return XlfOper(true);
-
-XlfOper Strikeb(
-	(Strikea));
-double Strike(
-	Strikeb.AsDouble("Strike"));
-
-XlfOper Maturityb(
-	(Maturitya));
-double Maturity(
-	Maturityb.AsDouble("Maturity"));
-
-XlfOper Forwardb(
-	(Forwarda));
-double Forward(
-	Forwardb.AsDouble("Forward"));
-
-MG_XLObjectPtr result(
-	Call(
-		Strike,
-		Maturity,
-		Forward)
-	);
-string vRefObj, vError;
-if (MG_SCache::Instance()->PersistentInsert(result, vRefObj, vError))
-  return XlfOper(vRefObj);
-else
-  return XlfOper(vError);
-EXCEL_END
-}
-}
-
-
-
-//////////////////////////
-
-namespace
-{
-XLRegistration::Arg
-PriceArgs[]=
-{
-{ "Sec"," security ","XLF_OPER"},
-{ "Mod"," model ","XLF_OPER"}
-};
-  XLRegistration::XLFunctionRegistrationHelper
-registerPrice("xlPrice",
-"MG_Price",
-" pricing ",
-LibraryName,
-PriceArgs,
-2
-,false
-);
-}
-
-
-
-extern "C"
-{
-LPXLFOPER EXCEL_EXPORT
-xlPrice(
-LPXLFOPER Seca,
-LPXLFOPER Moda)
-{
-EXCEL_BEGIN;
-
-	if (XlfExcel::Instance().IsCalledByFuncWiz())
-		return XlfOper(true);
-
-XlfOper Secb(
-	(Seca));
-MG_XLObjectPtr Sec(
-	Secb.AsMGXLObject("Sec"));
-
-XlfOper Modb(
-	(Moda));
-MG_XLObjectPtr Mod(
-	Modb.AsMGXLObject("Mod"));
-
-double result(
-	Price(
-		Sec,
-		Mod)
-	);
-return XlfOper(result);
-EXCEL_END
-}
-}
-
-
-
-//////////////////////////
-
-namespace
-{
-XLRegistration::Arg
 ZeroCurve_CreateArgs[]=
 {
 { "AsOf"," s of date ","XLF_OPER"},
@@ -1146,8 +1020,8 @@ AddPeriodArgs[]=
 {
 { "Date"," reference date ","XLF_OPER"},
 { "Freq"," frequency: nY, Y, A, S, Q, B, nM, M, nW, W, nD, D ","XLF_OPER"},
-{ "Times"," times number to dd frequency ","XLF_OPER"},
-{ "Calendar"," calendar for business days ","XLF_OPER"},
+{ "[Times]"," times number to dd frequency (1 by def.) ","XLF_OPER"},
+{ "[Calendar]"," calendar for business days (EUR by def.) ","XLF_OPER"},
 { "[AdjRule]"," djustment rule: FIXED, FP, F, MF (def.), PP, P, MP ","XLF_OPER"},
 { "[EndOfMonth]"," true: go to the end of the month (def.) ","XLF_OPER"}
 };
@@ -1193,12 +1067,12 @@ string Freq(
 XlfOper Timesb(
 	(Timesa));
 int Times(
-	Timesb.AsInt("Times"));
+	Timesb.AsIntWD("Times",1));
 
 XlfOper Calendarb(
 	(Calendara));
 string Calendar(
-	Calendarb.AsString("Calendar"));
+	Calendarb.AsStringWD("Calendar",CALENDAR_NAME_DEF_STR));
 
 XlfOper AdjRuleb(
 	(AdjRulea));
@@ -1234,8 +1108,8 @@ namespace
 XLRegistration::Arg
 IRIndex_CreateArgs[]=
 {
-{ "IndexName"," index name: LIBOR3M, EURIBOR6M, CMS1, ... ","XLF_OPER"},
-{ "Currency"," currency ","XLF_OPER"},
+{ "[IndexName]"," index name: LIBOR3M, EUBOR6M (def.), CMS1, ... ","XLF_OPER"},
+{ "[Currency]"," currency (EUR by def.) ","XLF_OPER"},
 { "[DayCount]"," day count: ACTUAL, A360, A365 (def.), 30/360, 30/360E, B252 ","XLF_OPER"},
 { "[AdjRule]"," adjustment rule: FIXED, FP, F, MF (def.), PP, P, MP ","XLF_OPER"},
 { "[ResetTiming]"," reset timing: ADV (def.), ARR ","XLF_OPER"},
@@ -1281,12 +1155,12 @@ EXCEL_BEGIN;
 XlfOper IndexNameb(
 	(IndexNamea));
 string IndexName(
-	IndexNameb.AsString("IndexName"));
+	IndexNameb.AsStringWD("IndexName",INDEX_NAME_DEF_STR));
 
 XlfOper Currencyb(
 	(Currencya));
 string Currency(
-	Currencyb.AsString("Currency"));
+	Currencyb.AsStringWD("Currency",CURRENCY_NAME_DEF_STR));
 
 XlfOper DayCountb(
 	(DayCounta));
@@ -1630,6 +1504,83 @@ double result(
 		PayDate)
 	);
 return XlfOper(result);
+EXCEL_END
+}
+}
+
+
+
+//////////////////////////
+
+namespace
+{
+XLRegistration::Arg
+SwapLeg_CreateArgs[]=
+{
+{ "Start"," start date or term ","XLF_OPER"},
+{ "End"," end date or duration ","XLF_OPER"},
+{ "RcvPay"," receive or pay ","XLF_OPER"},
+{ "IRIndex"," interest rate index ","XLF_OPER"}
+};
+  XLRegistration::XLFunctionRegistrationHelper
+registerSwapLeg_Create("xlSwapLeg_Create",
+"MG_SwapLeg_Create",
+" create a swap leg ",
+LibraryName,
+SwapLeg_CreateArgs,
+4
+,false
+);
+}
+
+
+
+extern "C"
+{
+LPXLFOPER EXCEL_EXPORT
+xlSwapLeg_Create(
+LPXLFOPER Starta,
+LPXLFOPER Enda,
+LPXLFOPER RcvPaya,
+LPXLFOPER IRIndexa)
+{
+EXCEL_BEGIN;
+
+	if (XlfExcel::Instance().IsCalledByFuncWiz())
+		return XlfOper(true);
+
+XlfOper Startb(
+	(Starta));
+MG_GenericDate Start(
+	Startb.AsMGGenDate("Start"));
+
+XlfOper Endb(
+	(Enda));
+MG_GenericDate End(
+	Endb.AsMGGenDate("End"));
+
+XlfOper RcvPayb(
+	(RcvPaya));
+string RcvPay(
+	RcvPayb.AsString("RcvPay"));
+
+XlfOper IRIndexb(
+	(IRIndexa));
+MG_XLObjectPtr IRIndex(
+	IRIndexb.AsMGXLObject("IRIndex"));
+
+MG_XLObjectPtr result(
+	SwapLeg_Create(
+		Start,
+		End,
+		RcvPay,
+		IRIndex)
+	);
+string vRefObj, vError;
+if (MG_SCache::Instance()->PersistentInsert(result, vRefObj, vError))
+  return XlfOper(vRefObj);
+else
+  return XlfOper(vError);
 EXCEL_END
 }
 }

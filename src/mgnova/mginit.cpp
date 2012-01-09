@@ -1,5 +1,6 @@
 #include "mgnova/mginit.h"
 #include "mgnova/calendar.h"
+#include "mginfra/func.h"
 
 
 using namespace MG;
@@ -8,5 +9,6 @@ using namespace MG;
 void MG_Initializator::Init()
 {
 	MG_Calendar::LoadCalendars();
+	MG_SFuncBuilder::Instance()->Init();
 }
 

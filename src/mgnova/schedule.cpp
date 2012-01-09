@@ -13,6 +13,7 @@ using namespace MG;
  */
 MG_Schedule::MG_Schedule(	const MG_Schedule& aRight)
 						:	MG_XLObject(aRight)
+						,	myGenStDt(aRight.myGenStDt), myGenEdDt(aRight.myGenEdDt)
 						,	myStDt(aRight.myStDt), myEdDt(aRight.myEdDt)
 						,	myAdjStDt(aRight.myAdjStDt), myAdjEdDt(aRight.myAdjEdDt)
 						,	myIRIndex(aRight.myIRIndex)
@@ -29,6 +30,9 @@ MG_Schedule::MG_Schedule(	const MG_Schedule& aRight)
 void MG_Schedule::Swap(MG_Schedule& aRight)
 {
 	MG_XLObject::Swap(aRight);
+
+	myGenStDt.Swap(aRight.myGenStDt);
+	myGenEdDt.Swap(aRight.myGenEdDt);
 
 	myStDt.Swap(aRight.myStDt);
 	myEdDt.Swap(aRight.myEdDt);
@@ -70,8 +74,38 @@ MG_Schedule::MG_Schedule(	const MG_Date		& aStDt
 	GenerateDates();
 }
 
+MG_Schedule::MG_Schedule(	const MG_GenericDate& aStDt
+						,	const MG_GenericDate& aEdDt
+						,	const MG_IRIndex	& aIRIndex
+						,	const FREQUENCY_NAME& aFreq
+						,	const ADJ_NAME		& aIntAdj
+						,	const STUBRULE_NAME	& aStubRule
+						,	const bool			& aIsDecompound)
+						:	myGenStDt(aStDt), myGenEdDt(aEdDt)
+						,	myIRIndex(aIRIndex)
+						,	myFreq(aFreq), myIsDecompound(aIsDecompound)
+						,	myIntAdj(aIntAdj), myStubRule(aStubRule)
+{
+	myXLName = MG_SCHED_XL_NAME;
+
+	assert(aStDt.IsGenDate()==aEdDt.IsGenDate() && " : Start and end dates should be of the same type.");
+	if (!aStDt.IsGenDate())
+		GenerateDates();
+}
+
 MG_Schedule::~MG_Schedule()
 {}
+
+void MG_Schedule::InterpretDates(const MG_Date& aAsOf)
+{
+	myGenStDt.Rebuild(aAsOf);
+	myGenEdDt.Rebuild(aAsOf);
+
+	myStDt = myGenStDt.GetDate();
+	myEdDt = myGenEdDt.GetDate();
+
+	GenerateDates();
+}
 
 void MG_Schedule::GenerateDates()
 {

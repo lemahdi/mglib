@@ -50,7 +50,7 @@ public:
 public:
 	MG_Date(const long& aJD);
 	MG_Date(const int& aY, const unsigned int& aM, const unsigned int& aD);
-	MG_Date(const std::string& aDate, const char& aSeparator, const DATE_DISPLAY& aDD);
+	MG_Date(const std::string& aDate, const char& aSeparator = '/', const DATE_DISPLAY& aDD = FR_DATE);
 
 	/* Assignment operators */
 	MG_Date& operator+= (const long& aRight);
@@ -102,7 +102,7 @@ public:
 							,	const bool	& aEndOfMonth = true);
 	MG_Date& AddPeriod		(	const int			& aFreq
 							,	const int			& aTimes
-							,	const CALENDAR_NAME	& aCal
+							,	const CALENDAR_NAME	& aCal = NB_CALENDARS
 							,	const ADJRULE_NAME	& aAdjRule = K_MODIFIED_FOLLOWING
 							,	const bool			& aEndOfMonth = true);
 

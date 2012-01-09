@@ -14,7 +14,9 @@
 
 #include "mgnova/typedef.h"
 #include "mgnova/object.h"
+#include "mgnova/patterns/countedptr.hpp"
 #include "mgnova/wrapper/function.h"
+
 #include "gsl/gsl_roots.h"
 
 

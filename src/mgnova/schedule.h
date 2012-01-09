@@ -16,7 +16,7 @@
 #include "mgnova/typedef.h"
 #include "mgnova/object.h"
 #include "mgnova/argconvdef.h"
-#include "mgnova/date.h"
+#include "mgnova/genericdate.h"
 #include "mgnova/irindex.h"
 
 #include <vector>
@@ -45,6 +45,14 @@ public:
 				,	const STUBRULE_NAME	& aStubRule		= K_SHORT_START
 				,	const bool			& aIsDecompound	= true
 				);
+	MG_Schedule	(	const MG_GenericDate& aStDt
+				,	const MG_GenericDate& aEdDt
+				,	const MG_IRIndex	& aIRIndex
+				,	const FREQUENCY_NAME& aFreq
+				,	const ADJ_NAME		& aIntAdj		= K_ADJUSTED
+				,	const STUBRULE_NAME	& aStubRule		= K_SHORT_START
+				,	const bool			& aIsDecompound	= true
+				);
 
 	virtual ~MG_Schedule(void);
 
@@ -60,9 +68,13 @@ public:
 	inline const std::vector<MG_Date>		& GetFwdRateEndDates	(void) const { return myFwdRateEndDates; }
 
 	/* Engine */
+	void InterpretDates(const MG_Date& aAsOf);
 	void GenerateDates(void);
 
 private:
+	MG_GenericDate	myGenStDt;
+	MG_GenericDate	myGenEdDt;
+
 	MG_Date			myStDt;
 	MG_Date			myEdDt;
 

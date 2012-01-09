@@ -14,6 +14,7 @@
 
 #include "mgnova/date.h"
 #include "mgnova/interpolator.h"
+#include "mgnova/patterns/countedptr.hpp"
 
 #include "gsl/gsl_interp.h"
 #include "gsl/gsl_spline.h"

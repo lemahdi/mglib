@@ -33,17 +33,21 @@ public:
 
 	MG_SwapLeg	(	const MG_Date		& aStDt
 				,	const MG_Date		& aEdDt
-				,	const RCVPAY_NAME	& aRcvPay
-				,	const MG_IRIndex	& aIRIndex);
+				,	const RCVPAY_NAME	& aRcvPay = K_RCV
+				,	const MG_IRIndex	& aIRIndex = MG_IRIndex());
+	MG_SwapLeg	(	const MG_GenericDate& aSt
+				,	const MG_GenericDate& aEd
+				,	const RCVPAY_NAME	& aRcvPay = K_RCV
+				,	const MG_IRIndex	& aIRIndex = MG_IRIndex());
 	MG_SwapLeg	(	const MG_Schedule& aSched
-				,	const RCVPAY_NAME& aRcvPay);
+				,	const RCVPAY_NAME& aRcvPay = K_RCV);
 
 public:
 	/* State */
 	inline const MG_IRIndex& GetIRIndex(void) const { return mySchedule.GetIRIndex(); }
 
 	/* Engine */
-	void	PrePricing	(const MG_Model& aMdl)	{}
+	void	PrePricing	(const MG_Model& aMdl);
 	double	Price		(void) const			{ return 0.; }
 
 private:

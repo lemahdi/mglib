@@ -8,7 +8,7 @@
 #include <xlw/ArgList.h>
 #include <xlw/Wrapper.h>
 
-#include "mgnova/date.h"
+#include "mgnova/genericdate.h"
 
 
 using namespace xlw;
@@ -31,19 +31,6 @@ MG_XLObjectPtr // just n object test
 BSModel(const MG_Date& AsOf // s of date
 		, MG_XLObjectPtr& Robot // market data robot
 		);
-
-//<xlw:libraryname=MyTestLibrary
-MG_XLObjectPtr // just n object test
-Call(const double& Strike // strike
-		, const double& Maturity // maturity
-		, const double& Forward // forward
-		);
-
-//<xlw:libraryname=MyTestLibrary
-double // pricing
-Price(MG_XLObjectPtr& Sec // security
-	  , MG_XLObjectPtr& Mod // model
-	  );
 
 //<xlw:libraryname=MyTestLibrary
 MG_XLObjectPtr // Creating n zero curve
@@ -135,16 +122,16 @@ BetweenDates(MG_Date Date1 // first date
 MG_Date // Computing a date
 AddPeriod(MG_Date Date // reference date
 			   , const string& Freq // frequency: nY, Y, A, S, Q, B, nM, M, nW, W, nD, D
-			   , const int& Times // times number to dd frequency
-			   , const string& Calendar // calendar for business days
+			   , const int& Times = 1 // times number to dd frequency (1 by def.)
+			   , const string& Calendar = CALENDAR_NAME_DEF_STR // calendar for business days (EUR by def.)
 			   , const string& AdjRule = "MF" // djustment rule: FIXED, FP, F, MF (def.), PP, P, MP
 			   , const bool& EndOfMonth = true // true: go to the end of the month (def.)
 			  );
 
 //<xlw:libraryname=MyTestLibrary
 MG_XLObjectPtr // create an interest rate index
-IRIndex_Create(const string& IndexName // index name: LIBOR3M, EURIBOR6M, CMS1, ...
-			   , const string& Currency // currency
+IRIndex_Create(const string& IndexName = INDEX_NAME_DEF_STR // index name: LIBOR3M, EUBOR6M (def.), CMS1, ...
+			   , const string& Currency = CURRENCY_NAME_DEF_STR // currency (EUR by def.)
 			   , const string& DayCount = "A365" // day count: ACTUAL, A360, A365 (def.), 30/360, 30/360E, B252
 			   , const string& AdjRule = "MF" // adjustment rule: FIXED, FP, F, MF (def.), PP, P, MP
 			   , const string& ResetTiming = "ADV" // reset timing: ADV (def.), ARR
@@ -183,6 +170,14 @@ TermStructure_Create(const CellMatrix& PayDates // payment dates
 double // create a term structure
 TermStructure_Compute(MG_XLObjectPtr& TermStruct // term structure
 				 , const MG_Date& PayDate // payment date
+				 );
+
+//<xlw:libraryname=MyTestLibrary
+MG_XLObjectPtr // create a swap leg
+SwapLeg_Create(const MG_GenericDate& Start // start date or term
+			   , const MG_GenericDate& End // end date or duration
+			   , const string& RcvPay // receive or pay
+			   , MG_XLObjectPtr& IRIndex // interest rate index
 				 );
 
 #endif

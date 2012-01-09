@@ -267,6 +267,14 @@
 			>
 		</File>
 		<File
+			RelativePath=".\genericdate.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\genericdate.h"
+			>
+		</File>
+		<File
 			RelativePath=".\interpolator.cpp"
 			>
 		</File>
