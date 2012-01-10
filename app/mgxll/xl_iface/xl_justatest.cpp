@@ -87,7 +87,7 @@ namespace
 XLRegistration::Arg
 RobotArgs[]=
 {
-{ "AsOf"," s of date ","XLF_OPER"},
+{ "AsOf"," as of date ","XLF_OPER"},
 { "MktData"," market data robot ","XLF_OPER"}
 };
   XLRegistration::XLFunctionRegistrationHelper
@@ -146,15 +146,133 @@ EXCEL_END
 namespace
 {
 XLRegistration::Arg
+PriceArgs[]=
+{
+{ "Security"," financial security ","XLF_OPER"},
+{ "Model"," financial model ","XLF_OPER"}
+};
+  XLRegistration::XLFunctionRegistrationHelper
+registerPrice("xlPrice",
+"MG_Price",
+" Discount Factor pricing model ",
+LibraryName,
+PriceArgs,
+2
+,false
+);
+}
+
+
+
+extern "C"
+{
+LPXLFOPER EXCEL_EXPORT
+xlPrice(
+LPXLFOPER Securitya,
+LPXLFOPER Modela)
+{
+EXCEL_BEGIN;
+
+	if (XlfExcel::Instance().IsCalledByFuncWiz())
+		return XlfOper(true);
+
+XlfOper Securityb(
+	(Securitya));
+MG_XLObjectPtr Security(
+	Securityb.AsMGXLObject("Security"));
+
+XlfOper Modelb(
+	(Modela));
+MG_XLObjectPtr Model(
+	Modelb.AsMGXLObject("Model"));
+
+double result(
+	Price(
+		Security,
+		Model)
+	);
+return XlfOper(result);
+EXCEL_END
+}
+}
+
+
+
+//////////////////////////
+
+namespace
+{
+XLRegistration::Arg
+DfModelArgs[]=
+{
+{ "AsOf"," as of date ","XLF_OPER"},
+{ "Robot"," market data robot ","XLF_OPER"}
+};
+  XLRegistration::XLFunctionRegistrationHelper
+registerDfModel("xlDfModel",
+"MG_DfModel",
+" Discount Factor pricing model ",
+LibraryName,
+DfModelArgs,
+2
+,false
+);
+}
+
+
+
+extern "C"
+{
+LPXLFOPER EXCEL_EXPORT
+xlDfModel(
+LPXLFOPER AsOfa,
+LPXLFOPER Robota)
+{
+EXCEL_BEGIN;
+
+	if (XlfExcel::Instance().IsCalledByFuncWiz())
+		return XlfOper(true);
+
+XlfOper AsOfb(
+	(AsOfa));
+MG_Date AsOf(
+	AsOfb.AsMGDate("AsOf"));
+
+XlfOper Robotb(
+	(Robota));
+MG_XLObjectPtr Robot(
+	Robotb.AsMGXLObject("Robot"));
+
+MG_XLObjectPtr result(
+	DfModel(
+		AsOf,
+		Robot)
+	);
+string vRefObj, vError;
+if (MG_SCache::Instance()->PersistentInsert(result, vRefObj, vError))
+  return XlfOper(vRefObj);
+else
+  return XlfOper(vError);
+EXCEL_END
+}
+}
+
+
+
+//////////////////////////
+
+namespace
+{
+XLRegistration::Arg
 BSModelArgs[]=
 {
-{ "AsOf"," s of date ","XLF_OPER"},
+{ "AsOf"," as of date ","XLF_OPER"},
 { "Robot"," market data robot ","XLF_OPER"}
 };
   XLRegistration::XLFunctionRegistrationHelper
 registerBSModel("xlBSModel",
 "MG_BSModel",
-" just n object test ",
+" Black & Scholes pricing model ",
 LibraryName,
 BSModelArgs,
 2

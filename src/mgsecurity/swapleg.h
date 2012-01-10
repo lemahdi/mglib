@@ -13,6 +13,7 @@
 
 
 #include "mgsecurity/security.h"
+#include "mgnova/wrapper/vector.h"
 
 
 MG_NAMESPACE_BEGIN
@@ -48,11 +49,12 @@ public:
 
 	/* Engine */
 	void	PrePricing	(const MG_Model& aMdl);
-	double	Price		(void) const			{ return 0.; }
+	double	Price		(void) const;
 
 private:
 	RCVPAY_NAME	myRcvPay;
-	std::vector<double> myRawFwd;
+	MG_Vector myRawFwd;
+	MG_Vector myDfs;
 
 };
 

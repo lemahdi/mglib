@@ -41,7 +41,7 @@ public:
 	virtual ~MG_MarketData(void);
 
 public:
-	virtual double ComputeValue(const double& aX = 0, const double& aY = 0, const double& aZ = 0) = 0;
+	virtual double ComputeValue(const double& aX = 0, const double& aY = 0, const double& aZ = 0) const = 0;
 
 	inline std::string GetType		(void) const { return myType; }
 	inline std::string GetCurrency	(void) const { return myCurrency; }
@@ -65,7 +65,7 @@ public:
 
 	MG_EmptyMD(const std::string& aType, const std::string& aCcy, const std::string& aUnderIndex);
 
-	double ComputeValue(const double& aX = 0, const double& aY = 0, const double& aZ = 0);
+	double ComputeValue(const double& aX = 0, const double& aY = 0, const double& aZ = 0) const;
 };
 
 
@@ -90,7 +90,7 @@ public:
 	virtual ~MG_ZeroCurve(void);
 
 public:
-	virtual double ComputeValue(const double& aMaturity = 0, const double& aY = 0, const double& aZ = 0);
+	virtual double ComputeValue(const double& aMaturity = 0, const double& aY = 0, const double& aZ = 0) const;
 
 private:
 	MG_1DInterpolator myInterpolator;
@@ -140,7 +140,7 @@ public:
 						,	const int					& aInterpolType);
 
 public:
-	virtual double ComputeValue(const double& aTenor = 0, const double& aMaturity = 0, const double& aZ = 0);
+	virtual double ComputeValue(const double& aTenor = 0, const double& aMaturity = 0, const double& aZ = 0) const;
 
 private:
 	MG_Matrix			myTransCurve;
@@ -167,7 +167,7 @@ public:
 					,	const MG_ZeroCurvePtr		& aZeroCurve);
 
 public:
-	virtual double ComputeValue(const double& aT1 = 0, const double& aT2 = 0, const double& aZ = 0);
+	virtual double ComputeValue(const double& aT1 = 0, const double& aT2 = 0, const double& aZ = 0) const;
 
 private:
 	std::vector<MG_Date>	myExDivDates;
@@ -197,7 +197,7 @@ public:
 						,	const int					& aInterpolTypes = interpoltypeLinear);
 
 public:
-	virtual double ComputeValue(const double& aStrike = 0, const double& aMaturity = 0, const double& aZ = 0);
+	virtual double ComputeValue(const double& aStrike = 0, const double& aMaturity = 0, const double& aZ = 0) const;
 
 private:
 	MG_Matrix			myTransCurve;

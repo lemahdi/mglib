@@ -159,3 +159,42 @@ MG_Vector MG_Vector::operator --(int)
 	return vOld;
 }
 
+/*
+ * Arithmetic functions
+ */
+double MG_Vector::Sum(void) const
+{
+	double vSum(0.);
+	const double* vElts = gsl_vector_const_ptr(myVect, 0);
+	for(size_t i=0; i<mySize; ++i)
+		vSum += vElts[i];
+	return vSum;
+}
+
+double MG_Vector::SumProduct(const MG_Vector& aRight) const
+{
+	assert(mySize==aRight.mySize && " : Vector's SumProduct operation should be done on vectors of the same size.");
+	MG_Vector vTmp = *this;
+	vTmp *= aRight;
+	return vTmp.Sum();
+}
+
+/*
+ * Utility functions
+ */
+void MG_Vector::Clear()
+{
+	gsl_vector_free(myVect);
+	mySize = 0;
+	myVect = NULL;
+}
+
+void MG_Vector::Resize(const size_t& aSize, const double& aVal)
+{
+	assert(aSize != 0);
+	gsl_vector_free(myVect);
+	mySize = aSize;
+	myVect = gsl_vector_calloc(mySize);
+	gsl_vector_set_all(myVect, aVal);
+}
+

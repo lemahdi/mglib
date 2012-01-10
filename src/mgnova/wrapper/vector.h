@@ -70,6 +70,10 @@ public:
 	MG_Vector operator ++(int);
 	MG_Vector operator --(int);
 
+	/* Arithmetic functions */
+	double Sum(void) const;
+	double SumProduct(const MG_Vector& aRight) const;
+
 	/* Comparison */
 
 	/* Utility Functions */
@@ -77,6 +81,8 @@ public:
 	inline const double	& Front	(void) const	{ return *gsl_vector_ptr(myVect, 0); }
 	inline double		& Back	(void)			{ return *gsl_vector_ptr(myVect, mySize-1); }
 	inline const double	& Back	(void) const	{ return *gsl_vector_ptr(myVect, mySize-1); }
+	void Clear(void);
+	void Resize(const size_t& aSize, const double& aVal = 0.);
 
 private:
 	gsl_vector*	myVect;

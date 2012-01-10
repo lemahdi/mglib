@@ -53,7 +53,7 @@ MG_EmptyMD::MG_EmptyMD	(	const string& aType
 						:	MG_MarketData(MG_Date(), aType, aCcy, aUnderIndex)
 {}
 
-double MG_EmptyMD::ComputeValue(const double& , const double& , const double& )
+double MG_EmptyMD::ComputeValue(const double& , const double& , const double& ) const
 {
 	return 0.;
 }
@@ -86,7 +86,7 @@ MG_ZeroCurve::MG_ZeroCurve	(	const MG_Date		& aAsOf
 MG_ZeroCurve::~MG_ZeroCurve()
 {}
 
-double MG_ZeroCurve::ComputeValue(const double& aMaturity, const double& , const double& )
+double MG_ZeroCurve::ComputeValue(const double& aMaturity, const double& , const double& ) const
 {
 	double vRate = myInterpolator.Eval(aMaturity);
 	return exp(-vRate*aMaturity);
@@ -144,7 +144,7 @@ MG_IRVolatilityCurve::MG_IRVolatilityCurve	(	const MG_Date		& aAsOf
 	myInterpolator = MG_2DInterpolator(aTenors, aMaturities, myTransCurve, aInterpolTypes);
 }
 
-double MG_IRVolatilityCurve::ComputeValue(const double& aTenor, const double& aMaturity, const double& )
+double MG_IRVolatilityCurve::ComputeValue(const double& aTenor, const double& aMaturity, const double& ) const
 {
 	return myInterpolator.Eval(aTenor, aMaturity);
 }
@@ -186,7 +186,7 @@ MG_DividendsTable::MG_DividendsTable(	const MG_Date			& aAsOf
 	myXLName = MG_DIVS_XL_NAME;
 }
 
-double MG_DividendsTable::ComputeValue(const double& aT1, const double& aT2, const double& )
+double MG_DividendsTable::ComputeValue(const double& aT1, const double& aT2, const double& ) const
 {
 	if (aT1>myExDivJulInterp.Back() || aT2<myExDivJulInterp.Front())
 		return 0.;
@@ -228,7 +228,7 @@ MG_EQVolatilityCurve::MG_EQVolatilityCurve	(	const MG_Date		& aAsOf
 	myInterpolator = MG_2DInterpolator(aStrikes, aMaturities, myTransCurve, aInterpolTypes);
 }
 
-double MG_EQVolatilityCurve::ComputeValue(const double& aStrike, const double& aMaturity, const double& )
+double MG_EQVolatilityCurve::ComputeValue(const double& aStrike, const double& aMaturity, const double& ) const
 {
 	return myInterpolator.Eval(aStrike, aMaturity);
 }

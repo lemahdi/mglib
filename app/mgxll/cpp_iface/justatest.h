@@ -22,13 +22,25 @@ JustATest(const MG_Date& Date);
 
 //<xlw:libraryname=MyTestLibrary
 MG_XLObjectPtr // Market data robot
-Robot(const MG_Date& AsOf // s of date
+Robot(const MG_Date& AsOf // as of date
 		, CellMatrix& MktData // market data robot
 		);
 
 //<xlw:libraryname=MyTestLibrary
-MG_XLObjectPtr // just n object test
-BSModel(const MG_Date& AsOf // s of date
+double // Discount Factor pricing model
+Price(MG_XLObjectPtr& Security // financial security
+		, MG_XLObjectPtr& Model // financial model
+		);
+
+//<xlw:libraryname=MyTestLibrary
+MG_XLObjectPtr // Discount Factor pricing model
+DfModel(const MG_Date& AsOf // as of date
+		, MG_XLObjectPtr& Robot // market data robot
+		);
+
+//<xlw:libraryname=MyTestLibrary
+MG_XLObjectPtr // Black & Scholes pricing model
+BSModel(const MG_Date& AsOf // as of date
 		, MG_XLObjectPtr& Robot // market data robot
 		);
 

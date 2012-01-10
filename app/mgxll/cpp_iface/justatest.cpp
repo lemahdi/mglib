@@ -28,6 +28,16 @@ JustATest(const MG_Date& aDate)
 	return aDate;
 }
 
+double
+Price(MG_XLObjectPtr& aSec, MG_XLObjectPtr& aMdl)
+{
+	MG_IRSecurity& vSec = dynamic_cast<MG_IRSecurity&>(*aSec);
+	MG_Model& vMdl = dynamic_cast<MG_Model&>(*aMdl);
+
+	vSec.PrePricing(vMdl);
+	return vSec.Price();
+}
+
 MG_XLObjectPtr
 Robot(const MG_Date& aAsOf, CellMatrix& aMktData)
 {
@@ -39,6 +49,15 @@ Robot(const MG_Date& aAsOf, CellMatrix& aMktData)
 		vMDVect[i] = MG_MarketDataPtr(aMktData(i, 0).MGObjectValue()->Clone());
 
 	return MG_XLObjectPtr(new MG_Robot(aAsOf, vMDVect));
+}
+
+MG_XLObjectPtr
+DfModel(const MG_Date& aAsOf, MG_XLObjectPtr& aRobot)
+{
+	MG_DfModel* vMod = new MG_DfModel(aAsOf);
+	MG_RobotPtr vRbt(aRobot);
+	vMod->Register(vRbt);
+	return MG_XLObjectPtr(vMod);
 }
 
 MG_XLObjectPtr

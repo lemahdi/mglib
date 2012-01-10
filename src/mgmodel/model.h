@@ -19,6 +19,15 @@
 MG_NAMESPACE_BEGIN
 
 
+/* IR Pricing Functions */
+extern double DiscountPrice(const MG_ZeroCurve& aZc, const double& aMat);
+
+extern double LiborPrice(	const MG_ZeroCurve	& aZc
+						,	const double		& aMatSt
+						,	const double		& aMatEd
+						,	const double		& aDelta);
+
+
 /* Base class for models */
 class MG_Model : public MG_XLObject
 {
@@ -41,7 +50,14 @@ public:
 	/* Market Data */
 	virtual void Register(MG_RobotPtr& aRbt) = 0;
 
-private:
+	/* Engine */
+	virtual double DiscountFactor(const MG_Date& aMaturity) const = 0;
+	virtual double Libor(	const MG_Date		& aStDt
+						,	const MG_Date		& aEdDt
+						,	const DAYCOUNT_NAME	& aDayCount
+						,	const CALENDAR_NAME	& aCal) const = 0;
+
+protected:
 	MG_Date myAsOf;
 };
 
@@ -64,8 +80,8 @@ public:
 	/* Market Data */
 	void Register(MG_RobotPtr& aRbt);
 
-	/* Functions */
-	inline double DiscountFactor(const double& aMaturity) const { return myZC->ComputeValue(aMaturity); }
+	/* Engine */
+	double DiscountFactor(const MG_Date& aMaturity) const;
 	double Libor(	const MG_Date		& aStDt
 				,	const MG_Date		& aEdDt
 				,	const DAYCOUNT_NAME	& aDayCount
@@ -95,9 +111,18 @@ public:
 	/* Market Data */
 	void Register(MG_RobotPtr& aRbt);
 
-	/* Functions */
-	double CallPrice(const double& aFwd, const double& aTenorStrike, const double& aMaturity);
-	double PutPrice(const double& aFwd, const double& aTenorStrike, const double& aMaturity);
+	/* Engine */
+	double DiscountFactor(const MG_Date& aMaturity) const;
+	double Libor(	const MG_Date		& aStDt
+				,	const MG_Date		& aEdDt
+				,	const DAYCOUNT_NAME	& aDayCount
+				,	const CALENDAR_NAME	& aCal) const;
+	double CallPrice(	const double& aFwd
+					,	const double& aTenorStrike
+					,	const double& aMaturity);
+	double PutPrice	(	const double& aFwd
+					,	const double& aTenorStrike
+					,	const double& aMaturity);
 
 private:
 	MG_ZeroCurvePtr			myZC;

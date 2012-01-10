@@ -158,7 +158,7 @@ public:
 	{
 		return vRight -= vLeft;
 	}*/
-	friend long operator- (const MG_Date& vLeft, MG_Date& vRight)
+	friend long operator- (const MG_Date& vLeft, const MG_Date& vRight)
 	{
 		return vLeft.GetJulianDay() - vRight.GetJulianDay();
 	}

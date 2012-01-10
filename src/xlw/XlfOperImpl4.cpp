@@ -430,7 +430,7 @@ int xlw::XlfOperImpl4::ConvertToCellMatrix(const XlfOper &xlfOper, CellMatrix& o
 		    std::string vErr;
 		    MG::MG_XLObjectPtr vObj(NULL);
 		    MG::MG_SCache::Instance()->PersistentGet(vDesc, vObj, vErr);
-		    if (vObj == NULL)
+		    if (vObj != NULL)
 			    tmpCell(0,0) = vObj;
 		    else
 			    tmpCell(0,0) = vErr;

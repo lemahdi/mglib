@@ -59,4 +59,25 @@ MG_SwapLeg::~MG_SwapLeg()
 void MG_SwapLeg::PrePricing(const MG_Model& aMdl)
 {
 	mySchedule.InterpretDates(aMdl.GetAsOf());
+	size_t vNbFlows = mySchedule.GetResetDates().size();
+
+	myRawFwd.Clear();
+	myRawFwd.Resize(vNbFlows);
+	myDfs.Clear();
+	myDfs.Resize(vNbFlows);
+
+	const vector<MG_Date>& vFwdStDts = mySchedule.GetFwdRateStartDates();
+	const vector<MG_Date>& vFwdEdDts = mySchedule.GetFwdRateEndDates();
+	const vector<MG_Date>& vPayDts = mySchedule.GetPayDates();
+	for(size_t i=0; i<vNbFlows; ++i)
+	{
+		myRawFwd[i] = aMdl.Libor(vFwdStDts[i], vFwdEdDts[i]
+								, mySchedule.GetIRIndex().GetDayCount(), mySchedule.GetIRIndex().GetPayCalendar());
+		myDfs[i] = aMdl.DiscountFactor(vPayDts[i]);
+	}
+}
+
+double MG_SwapLeg::Price(void) const
+{
+	return myRawFwd.SumProduct(myDfs);
 }
