@@ -32,16 +32,14 @@ public:
 
 	virtual ~MG_SwapLeg(void);
 
-	MG_SwapLeg	(	const MG_Date		& aStDt
-				,	const MG_Date		& aEdDt
-				,	const RCVPAY_NAME	& aRcvPay = K_RCV
-				,	const MG_IRIndex	& aIRIndex = MG_IRIndex());
 	MG_SwapLeg	(	const MG_GenericDate& aSt
 				,	const MG_GenericDate& aEd
 				,	const RCVPAY_NAME	& aRcvPay = K_RCV
-				,	const MG_IRIndex	& aIRIndex = MG_IRIndex());
-	MG_SwapLeg	(	const MG_Schedule& aSched
-				,	const RCVPAY_NAME& aRcvPay = K_RCV);
+				,	const MG_IRIndex	& aIRIndex = MG_IRIndex()
+				,	const double		& aSpdOrRate = 0.);
+	MG_SwapLeg	(	const MG_Schedule	& aSched
+				,	const RCVPAY_NAME	& aRcvPay = K_RCV
+				,	const double		& aSpdOrRate = 0.);
 
 public:
 	/* State */
@@ -53,6 +51,10 @@ public:
 
 private:
 	RCVPAY_NAME	myRcvPay;
+	MG_IRIndex myIRIndex;
+
+	double mySpreadOrRate;
+
 	MG_Vector myRawFwd;
 	MG_Vector myDfs;
 

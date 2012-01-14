@@ -135,8 +135,11 @@ void MG_Schedule::GenerateDates()
 	myPayDates.resize(myNbOfFlows);
 	myIntDays.resize(myNbOfFlows);
 	myIntTerms.resize(myNbOfFlows);
-	myFwdRateStartDates.resize(myNbOfFlows);
-	myFwdRateEndDates.resize(myNbOfFlows);
+	if (myIRIndex.GetIndexName() != K_FIXED)
+	{
+		myFwdRateStartDates.resize(myNbOfFlows);
+		myFwdRateEndDates.resize(myNbOfFlows);
+	}
 
 	MG_Date vNonAdjEdDt(myStDt);
 	MG_Date vEdDt, vStDt, vRstDt, vPayDt;
@@ -180,30 +183,33 @@ void MG_Schedule::GenerateDates()
 		myIntDays[i]		= vIntDay;
 		myIntTerms[i]		= vIntTerm;
 
-		if (myIRIndex.GetResetTiming() == K_ARREARS)
+		if (myIRIndex.GetIndexName() != K_FIXED)
 		{
-			vFwdStDt = vRstDt;
-			vFwdStDt.NextBusinessDay(myIRIndex.GetCurrency().mySpotDays, myIRIndex.GetCurrency().myCalendar);
-		}
-		else
-		{
-			vFwdStDt = vStDt;
-			vFwdStDt.NextBusinessDay(0, myIRIndex.GetCurrency().myCalendar);
-		}
-
-		vFwdEdDt = vFwdStDt;
-		if (myIRIndex.GetResetTiming()==K_ADVANCE && myIsDecompound)
-			vFwdEdDt += (vEdDt - vStDt);
-		else
-		{
-			if (myIntAdj==K_ADJUSTED || myIRIndex.GetResetTiming()==K_ADVANCE)
-				vFwdEdDt.AddPeriod(vIdxFreq, vTimes*vPeriod, myIRIndex.GetCurrency().myCalendar, myIRIndex.GetAdjRule(), true);
+			if (myIRIndex.GetResetTiming() == K_ARREARS)
+			{
+				vFwdStDt = vRstDt;
+				vFwdStDt.NextBusinessDay(myIRIndex.GetCurrency().mySpotDays, myIRIndex.GetCurrency().myCalendar);
+			}
 			else
-				vFwdEdDt.AddPeriod(vIdxFreq, vTimes*vPeriod, myIRIndex.GetCurrency().myCalendar, K_FIXED_RULE, true);
-		}
+			{
+				vFwdStDt = vStDt;
+				vFwdStDt.NextBusinessDay(0, myIRIndex.GetCurrency().myCalendar);
+			}
 
-		myFwdRateStartDates[i] = vFwdStDt;
-		myFwdRateEndDates[i] = vFwdEdDt;
+			vFwdEdDt = vFwdStDt;
+			if (myIRIndex.GetResetTiming()==K_ADVANCE && myIsDecompound)
+				vFwdEdDt += (vEdDt - vStDt);
+			else
+			{
+				if (myIntAdj==K_ADJUSTED || myIRIndex.GetResetTiming()==K_ADVANCE)
+					vFwdEdDt.AddPeriod(vIdxFreq, vTimes*vPeriod, myIRIndex.GetCurrency().myCalendar, myIRIndex.GetAdjRule(), true);
+				else
+					vFwdEdDt.AddPeriod(vIdxFreq, vTimes*vPeriod, myIRIndex.GetCurrency().myCalendar, K_FIXED_RULE, true);
+			}
+
+			myFwdRateStartDates[i] = vFwdStDt;
+			myFwdRateEndDates[i] = vFwdEdDt;
+		}
 
 		vNonAdjEdDt.AddPeriod(myFreq, -1, myIRIndex.GetCurrency().myCalendar, K_FIXED_RULE, true);
 	}
