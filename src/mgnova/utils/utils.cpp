@@ -290,7 +290,7 @@ namespace MG_utils
 		{
 			aPeriod = 1;
 			aTimes = atoi(vPeriod.c_str());
-			aFreqNm = K_ANNUALY;
+			aFreqNm = K_YEARLY;
 			return;
 		}
 	
@@ -303,7 +303,7 @@ namespace MG_utils
 	FREQUENCY_NAME GetFrequencyFromIndex(const INDEX_NAME& aIdxNm)
 	{
 		if (aIdxNm>=K_CMS1 && aIdxNm<=K_CMS50)
-			return K_ANNUALY;
+			return K_YEARLY;
 		
 		if (aIdxNm>K_FIXED && aIdxNm<K_LIMIT_MM)
 			return K_DAILY;

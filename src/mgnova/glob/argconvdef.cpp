@@ -125,7 +125,7 @@ MG_ArgConv::ArgConvPair FrequencyNameArgConv[] =
 	MG_ArgConv::ArgConvPair("B",K_BIMONTHLY),
 	MG_ArgConv::ArgConvPair("Q",K_QUARTERLY),
 	MG_ArgConv::ArgConvPair("S",K_SEMESTERLY),
-	MG_ArgConv::ArgConvPair("A",K_ANNUALY),
+	MG_ArgConv::ArgConvPair("Y",K_YEARLY),
 };
 const MG_ArgConv		FrequencyNameConvertor	= MG_ArgConv		("Frequencies", FrequencyNameArgConv, NB_FREQUENCIES);
 const MG_ArgConvReverse	FrequencyNameRevertor	= MG_ArgConvReverse	("Frequencies", FrequencyNameArgConv, NB_FREQUENCIES);

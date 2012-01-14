@@ -98,17 +98,20 @@ MG_Schedule::~MG_Schedule()
 
 void MG_Schedule::InterpretDates(const MG_Date& aAsOf)
 {
+	if (!myGenStDt.IsGenDate())
+		return;
+
 	myGenStDt.Rebuild(aAsOf);
 	myGenEdDt.Rebuild(aAsOf);
-
-	myStDt = myGenStDt.GetDate();
-	myEdDt = myGenEdDt.GetDate();
 
 	GenerateDates();
 }
 
 void MG_Schedule::GenerateDates()
 {
+	myStDt = myGenStDt.GetDate();
+	myEdDt = myGenEdDt.GetDate();
+
 	myResetDates.clear();
 	myIntStartDates.clear();
 	myIntEndDates.clear();

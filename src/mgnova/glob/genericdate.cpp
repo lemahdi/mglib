@@ -60,6 +60,17 @@ MG_GenericDate::MG_GenericDate	(	const string& aRefStart
 	myFreq = (FREQUENCY_NAME)FrequencyNameConvertor[vFreqS];
 }
 
+MG_GenericDate::MG_GenericDate	(	const MG_GenericDate& aRefStart
+								,	const string& aStart)
+								:	myStart		(aStart)
+								,	myRefDate	(new MG_GenericDate(aRefStart))
+								,	myIsGenDate	(true)
+{
+	string vFreqS;
+	MG_utils::SplitFrequency(aStart, myTimes, vFreqS);
+	myFreq = (FREQUENCY_NAME)FrequencyNameConvertor[vFreqS];
+}
+
 MG_GenericDate::MG_GenericDate	(	const MG_Date& aDt)
 								:	myDate		(aDt)
 								,	myTimes		(0)

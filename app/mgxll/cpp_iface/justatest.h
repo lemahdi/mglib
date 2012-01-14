@@ -187,7 +187,7 @@ TermStructure_Compute(MG_XLObjectPtr& TermStruct // term structure
 //<xlw:libraryname=MyTestLibrary
 MG_XLObjectPtr // create a swap leg
 SwapLeg_Create(const MG_GenericDate& Start // start date or term
-			   , const MG_GenericDate& End // end date or duration
+			   , MG_GenericDate& End // end date or duration
 			   , const string& RcvPay // receive or pay
 			   , MG_XLObjectPtr& IRIndex // interest rate index
 				 );

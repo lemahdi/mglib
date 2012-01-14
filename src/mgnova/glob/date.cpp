@@ -701,7 +701,7 @@ MG_Date& MG_Date::AddPeriod	(	const int			& aFreq
 	case K_BIMONTHLY: vMonths = vMonths==0?2:vMonths;
 	case K_QUARTERLY: vMonths = vMonths==0?3:vMonths;
 	case K_SEMESTERLY: vMonths = vMonths==0?6:vMonths;
-	case K_ANNUALY: vMonths = vMonths==0?12:vMonths;
+	case K_YEARLY: vMonths = vMonths==0?12:vMonths;
 		{
 			AddMonths(vMonths, aTimes, aEndOfMonth);
 			switch (aAdjRule)

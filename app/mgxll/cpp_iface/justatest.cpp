@@ -241,7 +241,6 @@ AddPeriod	(	MG_Date aDt
 	string vFreq;
 	int vTimes;
 	SplitFrequency(aFreq, vTimes, vFreq);
-	if (vFreq == "Y") vFreq = "A";
 
 	FREQUENCY_NAME vFreqNm = (FREQUENCY_NAME)FrequencyNameConvertor[vFreq];
 	ADJRULE_NAME vAdjRule = (ADJRULE_NAME)AdjustmentRuleNameConvertor[aAdjRule];
@@ -385,21 +384,14 @@ TermStructure_Compute	(	MG_XLObjectPtr& aTermStruct
 
 MG_XLObjectPtr
 SwapLeg_Create	(	const MG_GenericDate& aStart
-				,	const MG_GenericDate& aEnd
+				,	MG_GenericDate& aEnd
 				,	const string		& aRcvPay
 				,	MG_XLObjectPtr		& aIRIndex)
 {
 	RCVPAY_NAME vRcvPay = (RCVPAY_NAME)RcvPayNameConvertor[aRcvPay];
 	MG_IRIndex& vIRIndex = dynamic_cast<MG_IRIndex&>(*aIRIndex);
+	aEnd.SetRefDate(aStart);
 
-	/*MG_GenericDate vGenSt, vGenEd;
-	bool vIsGenDt = MG_utils::BuildGenericDates(aStart, vGenSt, aEnd, vGenEd);
-	if (vIsGenDt)
-		return MG_XLObjectPtr(new MG_SwapLeg(vGenSt, vGenEd, vRcvPay, vIRIndex));
-
-	MG_Date vStDt(aStart);
-	MG_Date vEdDt(aEnd);
-	return MG_XLObjectPtr(new MG_SwapLeg(vStDt, vEdDt, vRcvPay, vIRIndex));*/
 	return MG_XLObjectPtr(new MG_SwapLeg(aStart, aEnd, vRcvPay, vIRIndex));
 }
 
