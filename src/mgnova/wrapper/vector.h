@@ -14,8 +14,8 @@
 
 #include "gsl/gsl_vector.h"
 
-#include "mgnova/typedef.h"
-#include "mgnova/object.h"
+#include "mgnova/glob/typedef.h"
+#include "mgnova/glob/object.h"
 
 #include <vector>
 

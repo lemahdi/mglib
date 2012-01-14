@@ -12,7 +12,8 @@
 #pragma once
 
 
-#include "mgnova/typedef.h"
+#include "mgnova/glob/typedef.h"
+
 #include "gsl/gsl_math.h"
 
 

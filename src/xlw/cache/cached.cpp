@@ -1,5 +1,5 @@
 #include "xlw/cache/cached.h"
-#include "mgnova/exception.h"
+#include "mgnova/glob/exception.h"
 #include "xlw/cache/xlcache.h"
 
 #include <sstream>

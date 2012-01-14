@@ -12,8 +12,8 @@
 #pragma once
 
 
-#include "mgnova/object.h"
-#include "mgnova/schedule.h"
+#include "mgnova/glob/object.h"
+#include "mgnova/market/schedule.h"
 
 
 MG_NAMESPACE_BEGIN

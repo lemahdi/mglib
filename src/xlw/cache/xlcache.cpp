@@ -1,6 +1,6 @@
 #include "xlw/cache/xlcache.h"
 #include "xlw/mgw/cpp_xloper.h"
-#include "mgnova/exception.h"
+#include "mgnova/glob/exception.h"
 
 #include <locale>
 #include <sstream>

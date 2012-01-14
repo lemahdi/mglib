@@ -35,7 +35,7 @@
 
 
 #include <cstddef>
-#include "mgnova/typedef.h"
+#include "mgnova/glob/typedef.h"
 
 using std::size_t;
 

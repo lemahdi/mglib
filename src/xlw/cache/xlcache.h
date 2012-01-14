@@ -12,7 +12,7 @@
 #pragma once
 
 
-#include "mgnova/typedef.h"
+#include "mgnova/glob/typedef.h"
 
 
 MG_NAMESPACE_BEGIN

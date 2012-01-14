@@ -15,8 +15,8 @@
 #include <vector>
 #include <map>
 
-#include "mgnova/object.h"
-#include "mgnova/typedef.h"
+#include "mgnova/glob/object.h"
+#include "mgnova/glob/typedef.h"
 #include "mgnova/patterns/singleton.hpp"
 
 

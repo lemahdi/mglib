@@ -1,7 +1,7 @@
 #include "mgnova/utils/utils.h"
-#include "mgnova/date.h"
-#include "mgnova/exception.h"
-#include "mgnova/argconvdef.h"
+#include "mgnova/glob/date.h"
+#include "mgnova/glob/exception.h"
+#include "mgnova/glob/argconvdef.h"
 
 #include <sstream>
 #include <math.h>

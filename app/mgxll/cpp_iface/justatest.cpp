@@ -1,14 +1,14 @@
 #include "mgxll/cpp_iface/justatest.h"
 #include "xlw/cache/xlcache.h"
-#include "mgmodel/model.h"
-#include "mgnova/exception.h"
+#include "mgnova/glob/exception.h"
 #include "mgnova/utils/utils.h"
-#include "mgnova/argconvdef.h"
-#include "mgnova/termstructure.h"
+#include "mgnova/glob/argconvdef.h"
+#include "mgnova/market/termstructure.h"
+#include "mgnova/numerical/random.h"
 #include "mgmktdata/marketdata.h"
+#include "mgmodel/model.h"
 #include "mgsecurity/swapleg.h"
 #include "mggenpricer/gensec/gensecurity.h"
-#include "mgnumerical/random.h"
 
 
 using namespace std;

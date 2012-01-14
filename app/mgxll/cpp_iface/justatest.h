@@ -8,7 +8,7 @@
 #include <xlw/ArgList.h>
 #include <xlw/Wrapper.h>
 
-#include "mgnova/genericdate.h"
+#include "mgnova/glob/genericdate.h"
 
 
 using namespace xlw;

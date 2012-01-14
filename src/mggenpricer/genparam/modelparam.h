@@ -12,8 +12,8 @@
 #pragma once
 
 
-#include "mgnova/object.h"
-#include "mgnova/argconvdef.h"
+#include "mgnova/glob/object.h"
+#include "mgnova/glob/argconvdef.h"
 
 
 MG_NAMESPACE_BEGIN

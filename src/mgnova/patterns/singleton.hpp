@@ -15,7 +15,7 @@
 
 #include <iostream>
 
-#include "mgnova/typedef.h"
+#include "mgnova/glob/typedef.h"
 #include "mgnova/patterns/countedptr.hpp"
 
 

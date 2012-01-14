@@ -14,7 +14,7 @@
 
 #include "gsl/gsl_matrix.h"
 
-#include "mgnova/typedef.h"
+#include "mgnova/glob/typedef.h"
 #include "mgnova/wrapper/vector.h"
 
 

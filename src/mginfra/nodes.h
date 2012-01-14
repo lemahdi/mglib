@@ -28,7 +28,7 @@
 
 #include "mgnova/patterns/singleton.hpp"
 #include "mginfra/func.h"
-#include "mgnova/date.h"
+#include "mgnova/glob/date.h"
 
 
 MG_NAMESPACE_BEGIN

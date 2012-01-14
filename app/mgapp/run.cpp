@@ -4,14 +4,14 @@
 #pragma warning(disable:4512)
 #include "mginfra/my_parser.tab.hpp"
 #pragma warning(pop)
-#include "mgnova/date.h"
-#include "mgnumerical/random.h"
-#include "mgnumerical/distributions.h"
-#include "mgnova/calendar.h"
-#include "mgnumerical/solver.h"
+#include "mgnova/glob/date.h"
+#include "mgnova/market/calendar.h"
 #include "mgnova/wrapper/matrix.h"
-#include "mgnumerical/regression.h"
-#include "mgnumerical/montecarlo.h"
+#include "mgnova/numerical/random.h"
+#include "mgnova/numerical/distributions.h"
+#include "mgnova/numerical/solver.h"
+#include "mgnova/numerical/regression.h"
+#include "mgnova/numerical/montecarlo.h"
 
 #include "gsl/gsl_rng.h"
 #include "gsl/gsl_qrng.h"

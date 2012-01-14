@@ -22,7 +22,7 @@
 #include "xlw/CellMatrix.h"
 #endif
 
-#include "mgnova/genericdate.h"
+#include "mgnova/glob/genericdate.h"
 #include "mgnova/wrapper/vector.h"
 #include "mgnova/wrapper/matrix.h"
 
