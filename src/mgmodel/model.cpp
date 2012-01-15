@@ -2,29 +2,6 @@
 #include <math.h>
 
 
-MG_NAMESPACE_BEGIN
-
-
-double DiscountPrice(const MG_ZeroCurve& aZc, const double& aMat)
-{
-	return aZc.ComputeValue(aMat);
-}
-
-double LiborPrice	(	const MG_ZeroCurve	& aZc
-					,	const double		& aMatSt
-					,	const double		& aMatEd
-					,	const double		& aDelta)
-{
-	double vDfS = DiscountPrice(aZc, aMatSt);
-	double vDfE = DiscountPrice(aZc, aMatEd);
-	double vFwd = 1./aDelta * (vDfS/vDfE - 1.);
-
-	return vFwd;
-}
-
-MG_NAMESPACE_END
-
-
 using namespace std;
 using namespace MG;
 
@@ -72,7 +49,7 @@ void MG_DfModel::Register(MG_RobotPtr& aRbt)
 double MG_DfModel::DiscountFactor(const MG_Date& aMaturity) const
 {
 	double vMat = (aMaturity - myAsOf) / 365.;
-	return DiscountPrice(*myZC, vMat);
+	return myZC->DiscountFactor(vMat);
 }
 
 double MG_DfModel::Libor(	const MG_Date		& aStDt
@@ -83,7 +60,7 @@ double MG_DfModel::Libor(	const MG_Date		& aStDt
 	double vDelta = aEdDt.BetweenDays(aStDt, aDayCount, true, aCal);
 	double vMatS = (aStDt-myAsOf) / 365.;
 	double vMatE = (aEdDt-myAsOf) / 365.;
-	return LiborPrice(*myZC, vMatS, vMatE, vDelta);
+	return myZC->Libor(vMatS, vMatE, vDelta);
 }
 
 
@@ -114,8 +91,8 @@ void MG_BSModel::Register(MG_RobotPtr& aRbt)
 
 double MG_BSModel::DiscountFactor(const MG_Date& aMaturity) const
 {
-	double vMat = (aMaturity - myAsOf) / 365.;
-	return DiscountPrice(*myZC, vMat);
+	double vMat = (aMaturity-myAsOf) / 365.;
+	return myZC->DiscountFactor(vMat);
 }
 
 double MG_BSModel::Libor(	const MG_Date		& aStDt
@@ -126,20 +103,20 @@ double MG_BSModel::Libor(	const MG_Date		& aStDt
 	double vDelta = aEdDt.BetweenDays(aStDt, aDayCount, true, aCal);
 	double vMatS = (aStDt-myAsOf) / 365.;
 	double vMatE = (aEdDt-myAsOf) / 365.;
-	return LiborPrice(*myZC, vMatS, vMatE, vDelta);
+	return myZC->Libor(vMatS, vMatE, vDelta);
 }
 
 double MG_BSModel::CallPrice(const double &aFwd, const double &aTenorStrike, const double &aMaturity)
 {
-	double vDf = myZC->ComputeValue(aMaturity);
+	double vDf = myZC->DiscountFactor(aMaturity);
 	double vVol = myAtmVol->ComputeValue(aTenorStrike, aMaturity);
-	return MG_CF::VanillaPrice<MG_CF::CALL>(aFwd, aTenorStrike, aMaturity, vDf, vVol);
+	return MG_CF::CallPrice(aFwd, aTenorStrike, aMaturity, vDf, vVol);
 }
 
 double MG_BSModel::PutPrice(const double &aFwd, const double &aTenorStrike, const double &aMaturity)
 {	
-	double DF = myZC->ComputeValue(aMaturity);
+	double DF = myZC->DiscountFactor(aMaturity);
 	double vVol = myAtmVol->ComputeValue(aTenorStrike, aMaturity);
-	return MG_CF::VanillaPrice<MG_CF::PUT>(aFwd, aTenorStrike, aMaturity, DF, vVol);
+	return MG_CF::PutPrice(aFwd, aTenorStrike, aMaturity, DF, vVol);
 }
 

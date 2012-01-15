@@ -16,33 +16,46 @@
 
 #include "mgnova/glob/typedef.h"
 
-#include "gsl/gsl_nan.h"
-#include "gsl/gsl_sys.h"
-
 
 MG_NAMESPACE_BEGIN
 
-
-/* Useful class for closed formulas */
-class MG_ClosedFormulas
+/* Closed Formula namespace */
+namespace MG_CF
 {
-public:
-	enum CF_NAME
-	{
-		CALL,
-		PUT,
-		CALL_DIGIT,
-		PUT_DIGIT,
-		STRADDLE
-	};
+	/* Option Pricing Formulas */
+	typedef double (*OptionPrice) (const double& aF, const double& aK, const double& aT, const double& aDf, const double& aVol);
 
-	template<CF_NAME>
-	static double VanillaPrice(const double& aF, const double& aK, const double& aT, const double& aDf, const double& aVol);
-	/*{
-		return GSL_NAN;
-	}*/
-};
-typedef MG_ClosedFormulas MG_CF;
+	extern double CallPrice	(	const double& aF
+							,	const double& aK
+							,	const double& aT
+							,	const double& aDf
+							,	const double& aVol);
+
+	extern double PutPrice	(	const double& aF
+							,	const double& aK
+							,	const double& aT
+							,	const double& aDf
+							,	const double& aVol);
+
+	extern double DigitalCallPrice	(	const double& aF
+									,	const double& aK
+									,	const double& aT
+									,	const double& aDf
+									,	const double& aVol);
+
+	extern double DigitalPutPrice	(	const double& aF
+									,	const double& aK
+									,	const double& aT
+									,	const double& aDf
+									,	const double& aVol);
+
+	extern double StraddlePrice	(	const double& aF
+								,	const double& aK
+								,	const double& aT
+								,	const double& aDf
+								,	const double& aVol);
+
+}
 
 
 MG_NAMESPACE_END

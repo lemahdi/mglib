@@ -20,12 +20,6 @@ MG_NAMESPACE_BEGIN
 
 
 /* IR Pricing Functions */
-extern double DiscountPrice(const MG_ZeroCurve& aZc, const double& aMat);
-
-extern double LiborPrice(	const MG_ZeroCurve	& aZc
-						,	const double		& aMatSt
-						,	const double		& aMatEd
-						,	const double		& aDelta);
 
 
 /* Base class for models */

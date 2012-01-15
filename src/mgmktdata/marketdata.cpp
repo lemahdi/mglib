@@ -88,8 +88,24 @@ MG_ZeroCurve::~MG_ZeroCurve()
 
 double MG_ZeroCurve::ComputeValue(const double& aMaturity, const double& , const double& ) const
 {
+	return DiscountFactor(aMaturity);
+}
+
+double MG_ZeroCurve::DiscountFactor(const double& aMaturity) const
+{
 	double vRate = myInterpolator.Eval(aMaturity);
 	return exp(-vRate*aMaturity);
+}
+
+double MG_ZeroCurve::Libor	(	const double& aMatSt
+							,	const double& aMatEd
+							,	const double& aDelta)
+{
+	double vDfS = DiscountFactor(aMatSt);
+	double vDfE = DiscountFactor(aMatEd);
+	double vFwd = 1./aDelta * (vDfS/vDfE - 1.);
+
+	return vFwd;
 }
 
 

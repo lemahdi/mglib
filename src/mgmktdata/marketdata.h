@@ -92,6 +92,9 @@ public:
 public:
 	virtual double ComputeValue(const double& aMaturity = 0, const double& aY = 0, const double& aZ = 0) const;
 
+	double DiscountFactor(const double& aMaturity) const;
+	double Libor(const double& aMatSt, const double& aMatEd, const double& aDelta);
+
 private:
 	MG_1DInterpolator myInterpolator;
 
