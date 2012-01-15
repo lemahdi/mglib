@@ -1,4 +1,5 @@
 #include "mgmodel/model.h"
+#include "mgnova/glob/exception.h"
 #include <math.h>
 
 
@@ -106,17 +107,33 @@ double MG_BSModel::Libor(	const MG_Date		& aStDt
 	return myZC->Libor(vMatS, vMatE, vDelta);
 }
 
-double MG_BSModel::CallPrice(const double &aFwd, const double &aTenorStrike, const double &aMaturity)
+double MG_BSModel::OptionPrice	(	const MG_CF::OPTION_TYPE& aOptType
+								,	const double			&aFwd
+								,	const double			&aTenorStrike
+								,	const double			&aMaturity) const
 {
 	double vDf = myZC->DiscountFactor(aMaturity);
 	double vVol = myAtmVol->ComputeValue(aTenorStrike, aMaturity);
-	return MG_CF::CallPrice(aFwd, aTenorStrike, aMaturity, vDf, vVol);
+	switch (aOptType)
+	{
+	case MG_CF::CALL:
+		return MG_CF::CallPrice(aFwd, aTenorStrike, aMaturity, vDf, vVol);
+
+	case MG_CF::PUT:
+		return MG_CF::PutPrice(aFwd, aTenorStrike, aMaturity, vDf, vVol);
+
+	case MG_CF::DIGITAL_CALL:
+		return MG_CF::DigitalCallPrice(aFwd, aTenorStrike, aMaturity, vDf, vVol);
+
+	case MG_CF::DIGITAL_PUT:
+		return MG_CF::DigitalPutPrice(aFwd, aTenorStrike, aMaturity, vDf, vVol);
+
+	case MG_CF::STRADDLE:
+		return MG_CF::StraddlePrice(aFwd, aTenorStrike, aMaturity, vDf, vVol);
+
+	default:
+		MG_THROW("unrecognized payoff.");
+	};
 }
 
-double MG_BSModel::PutPrice(const double &aFwd, const double &aTenorStrike, const double &aMaturity)
-{	
-	double DF = myZC->DiscountFactor(aMaturity);
-	double vVol = myAtmVol->ComputeValue(aTenorStrike, aMaturity);
-	return MG_CF::PutPrice(aFwd, aTenorStrike, aMaturity, DF, vVol);
-}
 

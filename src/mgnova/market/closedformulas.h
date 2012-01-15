@@ -23,6 +23,17 @@ MG_NAMESPACE_BEGIN
 namespace MG_CF
 {
 	/* Option Pricing Formulas */
+	enum OPTION_TYPE
+	{
+		CALL,
+		PUT,
+		DIGITAL_CALL,
+		DIGITAL_PUT,
+		STRADDLE,
+
+		OPTION_NB
+	};
+
 	typedef double (*OptionPrice) (const double& aF, const double& aK, const double& aT, const double& aDf, const double& aVol);
 
 	extern double CallPrice	(	const double& aF

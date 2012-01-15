@@ -111,12 +111,10 @@ public:
 				,	const MG_Date		& aEdDt
 				,	const DAYCOUNT_NAME	& aDayCount
 				,	const CALENDAR_NAME	& aCal) const;
-	double CallPrice(	const double& aFwd
-					,	const double& aTenorStrike
-					,	const double& aMaturity);
-	double PutPrice	(	const double& aFwd
-					,	const double& aTenorStrike
-					,	const double& aMaturity);
+	double OptionPrice	(	const MG_CF::OPTION_TYPE& aOptType
+						,	const double			&aFwd
+						,	const double			& aTenorStrike
+						,	const double			& aMaturity) const;
 
 private:
 	MG_ZeroCurvePtr			myZC;
