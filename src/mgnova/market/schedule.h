@@ -58,6 +58,8 @@ public:
 
 	/* State */
 	inline const MG_IRIndex					& GetIRIndex			(void) const { return myIRIndex; }
+	inline const MG_Date					& GetStartDate			(void) const { return myStDt; }
+	inline const MG_Date					& GetEndDate			(void) const { return myEdDt; }
 	inline const std::vector<MG_Date>		& GetResetDates			(void) const { return myResetDates; }
 	inline const std::vector<MG_Date>		& GetIntStartDates		(void) const { return myIntStartDates; }
 	inline const std::vector<MG_Date>		& GetIntEndDates		(void) const { return myIntEndDates; }

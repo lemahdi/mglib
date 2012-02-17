@@ -1,5 +1,4 @@
 #include "mgsecurity/swapleg.h"
-#include "mgnova/utils/utils.h"
 #include "mgmodel/model.h"
 
 
@@ -34,9 +33,7 @@ MG_SwapLeg::MG_SwapLeg	(	const MG_GenericDate& aStDt
 						,	mySpreadOrRate	(aSpdOrRate)
 {
 	myXLName = MG_SWAPLEG_XL_NAME;
-
-	FREQUENCY_NAME vFreq = MG_utils::GetFrequencyFromIndex(aIRIndex.GetIndexName());
-	mySchedule = MG_Schedule(aStDt, aEdDt, aIRIndex, vFreq);
+	GenerateSchedule(aStDt, aEdDt, aIRIndex);
 }
 
 MG_SwapLeg::MG_SwapLeg	(	const MG_Schedule	& aSched
@@ -85,6 +82,8 @@ void MG_SwapLeg::PrePricing(const MG_Model& aMdl)
 
 double MG_SwapLeg::Price(void) const
 {
-	MG_Vector vFwd = myRawFwd + mySpreadOrRate;
-	return vFwd.SumProduct(myDfs);
+	MG_Vector vDelta(mySchedule.GetIntTerms());
+	MG_Vector vDeltaFwd = myRawFwd + mySpreadOrRate;
+	vDeltaFwd *= vDelta;
+	return vDeltaFwd.SumProduct(myDfs);
 }

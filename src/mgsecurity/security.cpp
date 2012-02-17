@@ -1,4 +1,5 @@
 #include "mgsecurity/security.h"
+#include "mgnova/utils/utils.h"
 #include "mgmodel/model.h"
 
 
@@ -37,5 +38,35 @@ MG_IRSecurity::MG_IRSecurity(	const MG_Schedule& aSched)
 {}
 
 MG_IRSecurity::~MG_IRSecurity()
+{}
+
+void MG_IRSecurity::GenerateSchedule(const MG_GenericDate& aStDt, const MG_GenericDate& aEdDt, const MG_IRIndex& aIRIndex)
+{
+	FREQUENCY_NAME vFreq = MG_utils::GetFrequencyFromIndex(aIRIndex.GetIndexName());
+	mySchedule = MG_Schedule(aStDt, aEdDt, aIRIndex, vFreq);
+}
+
+
+/* Base IR Option class */
+MG_IROption::MG_IROption(	const MG_IROption& aRight)
+						:	MG_Security(aRight)
+						,	myMaturity	(aRight.myMaturity)
+						,	myUnderlying(aRight.myUnderlying->Clone())
+{}
+
+void MG_IROption::Swap(MG_IROption& aRight)
+{
+	MG_Security::Swap(aRight);
+	myMaturity.Swap(aRight.myMaturity);
+	myUnderlying.Swap(aRight.myUnderlying);
+}
+
+MG_IROption::MG_IROption(	const MG_GenericDate& aMaturity, const MG_IRSecurityPtr& aUnderlying)
+						:	MG_Security()
+						,	myMaturity	(aMaturity)
+						,	myUnderlying(aUnderlying)
+{}
+
+MG_IROption::~MG_IROption()
 {}
 

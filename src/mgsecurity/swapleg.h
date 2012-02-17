@@ -43,7 +43,7 @@ public:
 
 public:
 	/* State */
-	inline const MG_IRIndex& GetIRIndex(void) const { return mySchedule.GetIRIndex(); }
+	inline const MG_IRIndex& GetIRIndex(void) const { return myIRIndex; }
 
 	/* Engine */
 	void	PrePricing	(const MG_Model& aMdl);

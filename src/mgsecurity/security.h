@@ -13,6 +13,7 @@
 
 
 #include "mgnova/glob/object.h"
+#include "mgnova/patterns/countedptr.hpp"
 #include "mgnova/market/schedule.h"
 
 
@@ -63,9 +64,41 @@ public:
 public:
 	/* State */
 	inline const MG_Schedule& GetSchedule(void) const { return mySchedule; }
+	inline const MG_Date& GetStartDate	(void) const { return mySchedule.GetStartDate(); }
+	inline const MG_Date& GetEndDate	(void) const { return mySchedule.GetEndDate(); }
+
+protected:
+	/* Engine */
+	void GenerateSchedule(const MG_GenericDate& aStDt, const MG_GenericDate& aEdDt, const MG_IRIndex& aIdx);
 
 protected:
 	MG_Schedule mySchedule;
+
+};
+
+/* Interest Rate base class option */
+class MG_IROption : public MG_Security
+{
+public:
+	/* Constructors / Destructor */
+	COPY_CTOR_DECL(MG_IROption)
+
+	ASSIGN_OPERATOR(MG_IROption)
+	//CLONE_METHOD(MG_IROption)
+	SWAP_DECL(MG_IROption)
+
+	virtual ~MG_IROption(void);
+
+	MG_IROption(void) {}
+	MG_IROption(const MG_GenericDate& aMaturity, const MG_IRSecurityPtr& aUnderlying);
+
+public:
+	/* State */
+	inline const MG_GenericDate& GetMaturity(void) const { return myMaturity; }
+
+protected:
+	MG_GenericDate myMaturity;
+	MG_IRSecurityPtr myUnderlying;
 
 };
 
