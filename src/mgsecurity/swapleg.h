@@ -1,6 +1,5 @@
 /*
  * Copyright			: 2012 by MG
- * File					: swapleg.h
  * Version				: 0.1.23
  * Last changed			: 01 JAN 2012
  * Purpose				: MG_SwapLeg is an interest rate coupon leg
@@ -12,8 +11,8 @@
 #pragma once
 
 
-#include "mgsecurity/security.h"
-#include "mgnova/wrapper/vector.h"
+#include "mgsecurity/irsecurity.h"
+#include <vector>
 
 
 MG_NAMESPACE_BEGIN
@@ -46,6 +45,7 @@ public:
 	inline const MG_IRIndex& GetIRIndex(void) const { return myIRIndex; }
 
 	/* Engine */
+	double	ImpliedSpread(void) const { return 0.; }
 	void	PrePricing	(const MG_Model& aMdl);
 	double	Price		(void) const;
 
@@ -55,8 +55,8 @@ private:
 
 	double mySpreadOrRate;
 
-	MG_Vector myRawFwd;
-	MG_Vector myDfs;
+	std::vector<double> myRawFwd;
+	std::vector<double> myDfs;
 
 };
 

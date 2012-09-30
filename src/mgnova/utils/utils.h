@@ -68,4 +68,25 @@ extern MG::FREQUENCY_NAME GetFrequencyFromIndex(const MG::INDEX_NAME& aIdxNm);
 
 extern bool BuildGenericDates(const std::string& aStStr, MG::MG_GenericDate& aSt, const std::string& aEdStr, MG::MG_GenericDate& aEd);
 
+extern MG::MG_ObjectPtr CloneCPtr(const MG::MG_ObjectPtr& aCPtr);
+
+namespace Vector
+{
+
+extern void VectorPlus (std::vector<double>& aDest, const std::vector<double>& aV);
+extern void VectorPlus (std::vector<double>& aDest, const double& aVal);
+
+extern void VectorMinus(std::vector<double>& aDest, const std::vector<double>& aV);
+extern void VectorMinus(std::vector<double>& aDest, const double& aVal);
+
+extern void VectorMult(std::vector<double>& aDest, const std::vector<double>& aV);
+extern void VectorMult(std::vector<double>& aDest, const double& aVal);
+
+extern void VectorDiv(std::vector<double>& aDest, const std::vector<double>& aV);
+extern void VectorDiv(std::vector<double>& aDest, const double& aVal);
+
+extern double VectorSumProduct(const std::vector<double>& aV1, const std::vector<double>& aV2);
+
+}
+
 }

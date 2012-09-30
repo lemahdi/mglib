@@ -1,6 +1,5 @@
 /*
  * Copyright			: 2010 by MG
- * File					: countedptr.hpp
  * Version				: 0.1.15
  * Last changed			: 22 DEC 2010
  * Purpose				: CountedPtr is an implementation of the smart pointer
@@ -35,10 +34,10 @@ public:
 template<class T,class U>
 void CopyCountedPtr::CopyOperator(const CountedPtr<T>& aTo, const CountedPtr<U>& aFrom)
 {
-	if (aTo.myPtr == aFrom.myPtr)
+	T* vTmp = (T*)aFrom.myPtr;
+	if (aTo.myPtr == vTmp)
 		return;
 
-	T* vTmp = dynamic_cast<T*>(aFrom.myPtr);
 	if (vTmp)
 	{
 		aTo.Release();

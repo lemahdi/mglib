@@ -1,6 +1,5 @@
 /*
  * Copyright			: 2012 by MG
- * File					: fra.h
  * Version				: 0.1.23
  * Last changed			: 16 JAN 2012
  * Purpose				: MG_Fra is a Forward Rate Agreement
@@ -12,8 +11,7 @@
 #pragma once
 
 
-#include "mgsecurity/security.h"
-#include "mgnova/wrapper/vector.h"
+#include "mgsecurity/irsecurity.h"
 
 
 MG_NAMESPACE_BEGIN
@@ -43,6 +41,7 @@ public:
 	inline const MG_IRIndex& GetIRIndex(void) const { return mySchedule.GetIRIndex(); }
 
 	/* Engine */
+	double	ImpliedSpread(void) const { return 0.; }
 	void	PrePricing	(const MG_Model& aMdl);
 	double	Price		(void) const;
 

@@ -1,9 +1,11 @@
 #include "mgsecurity/swapleg.h"
 #include "mgmodel/model.h"
+#include "mgnova/utils/utils.h"
 
 
 using namespace std;
 using namespace MG;
+using namespace MG_utils::Vector;
 
 
 /* IR Swap Leg class */
@@ -20,6 +22,8 @@ void MG_SwapLeg::Swap(MG_SwapLeg& aRight)
 	swap(myRcvPay, aRight.myRcvPay);
 	myIRIndex.Swap(aRight.myIRIndex);
 	swap(mySpreadOrRate, aRight.mySpreadOrRate);
+	myRawFwd.swap(aRight.myRawFwd);
+	myDfs.swap(aRight.myDfs);
 }
 
 MG_SwapLeg::MG_SwapLeg	(	const MG_GenericDate& aStDt
@@ -55,10 +59,10 @@ void MG_SwapLeg::PrePricing(const MG_Model& aMdl)
 	mySchedule.InterpretDates(aMdl.GetAsOf());
 	size_t vNbFlows = mySchedule.GetResetDates().size();
 
-	myRawFwd.Clear();
-	myRawFwd.Resize(vNbFlows);
-	myDfs.Clear();
-	myDfs.Resize(vNbFlows);
+	myRawFwd.clear();
+	myRawFwd.resize(vNbFlows);
+	myDfs.clear();
+	myDfs.resize(vNbFlows);
 
 	const vector<MG_Date>& vFwdStDts = mySchedule.GetFwdRateStartDates();
 	const vector<MG_Date>& vFwdEdDts = mySchedule.GetFwdRateEndDates();
@@ -74,7 +78,7 @@ void MG_SwapLeg::PrePricing(const MG_Model& aMdl)
 	}
 	else
 	{
-		myRawFwd = MG_Vector(vNbFlows);
+		myRawFwd.resize(vNbFlows);
 		for(size_t i=0; i<vNbFlows; ++i)
 			myDfs[i] = aMdl.DiscountFactor(vPayDts[i]);
 	}
@@ -82,8 +86,10 @@ void MG_SwapLeg::PrePricing(const MG_Model& aMdl)
 
 double MG_SwapLeg::Price(void) const
 {
-	MG_Vector vDelta(mySchedule.GetIntTerms());
-	MG_Vector vDeltaFwd = myRawFwd + mySpreadOrRate;
-	vDeltaFwd *= vDelta;
-	return vDeltaFwd.SumProduct(myDfs);
+	vector<double> vDeltaFwd(myRawFwd);
+	const vector<double>& vDelta(mySchedule.GetIntTerms());
+
+	VectorPlus(vDeltaFwd, mySpreadOrRate);
+	VectorMult(vDeltaFwd, vDelta);
+	return VectorSumProduct(vDeltaFwd, myDfs);
 }

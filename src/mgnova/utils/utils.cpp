@@ -5,6 +5,8 @@
 
 #include <sstream>
 #include <math.h>
+#include <functional>
+#include <algorithm>
 
 
 using namespace std;
@@ -333,5 +335,89 @@ namespace MG_utils
 		return true;
 	}
 
+	/* clonning smart pointers */
+	MG_ObjectPtr CloneCPtr(const MG_ObjectPtr& aCPtr)
+	{
+		return MG_ObjectPtr(aCPtr->Clone());
+	}
+
+	/* vector support */
+	namespace Vector
+	{
+		/* adding vectors */
+		void VectorPlus(vector<double>& aDest, const vector<double>& aV)
+		{
+			assert(aDest.size()==aV.size() && "Cannot add two vectors with different sizes.");
+
+			vector<double> v1st(aDest);
+			aDest.clear();
+			transform(v1st.begin(), v1st.end(), aV.begin(), back_inserter(aDest), plus<double>());
+		}
+
+		/* adding a scalar to a vector */
+		void VectorPlus(vector<double>& aDest, const double& aVal)
+		{
+			transform(aDest.begin(), aDest.end(), aDest.begin(), bind1st(plus<double>(), aVal));
+		}
+
+		/* substracting vectors */
+		void VectorMinus(vector<double>& aDest, const vector<double>& aV)
+		{
+			assert(aDest.size()==aV.size() && "Cannot substract two vectors with different sizes.");
+
+			vector<double> v1st(aDest);
+			aDest.clear();
+			transform(v1st.begin(), v1st.end(), aV.begin(), back_inserter(aDest), minus<double>());
+		}
+
+		/* substracting a scalar from a vector */
+		void VectorMinus(vector<double>& aDest, const double& aVal)
+		{
+			transform(aDest.begin(), aDest.end(), aDest.begin(), bind1st(minus<double>(), aVal));
+		}
+
+		/* myltiplying vectors */
+		void VectorMult(vector<double>& aDest, const vector<double>& aV)
+		{
+			assert(aDest.size()==aV.size() && "Cannot multiply two vectors with different sizes.");
+
+			vector<double> v1st(aDest);
+			aDest.clear();
+			transform(v1st.begin(), v1st.end(), aV.begin(), back_inserter(aDest), multiplies<double>());
+		}
+
+		/* myltiplying a vector by a scalar */
+		void VectorMult(vector<double>& aDest, const double& aVal)
+		{
+			transform(aDest.begin(), aDest.end(), aDest.begin(), bind1st(multiplies<double>(), aVal));
+		}
+
+		/* dividing vectors */
+		void VectorDiv(vector<double>& aDest, const vector<double>& aV)
+		{
+			assert(aDest.size()==aV.size() && "Cannot divide two vectors with different sizes.");
+
+			vector<double> v1st(aDest);
+			aDest.clear();
+			transform(v1st.begin(), v1st.end(), aV.begin(), back_inserter(aDest), divides<double>());
+		}
+
+		/* dividing a vector by a scalar */
+		void VectorDiv(vector<double>& aDest, const double& aVal)
+		{
+			transform(aDest.begin(), aDest.end(), aDest.begin(), bind1st(divides<double>(), aVal));
+		}
+
+		/* sum product */
+		double VectorSumProduct(const vector<double>& aV1, const vector<double>& aV2)
+		{
+			vector<double> vTmp(aV1);
+			VectorMult(vTmp, aV2);
+			double vRes = 0.;
+			for(size_t i=0; i<vTmp.size(); ++i)
+				vRes += vTmp[i];
+			return vRes;
+		}
+	}
 }
 

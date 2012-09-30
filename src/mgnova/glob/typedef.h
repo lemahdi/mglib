@@ -121,6 +121,7 @@ void yy_delete_buffer (YY_BUFFER_STATE b  );
 #define MG_SCHED_XL_NAME		"SCHED"
 #define MG_SWAPLEG_XL_NAME		"SWPLG"
 #define MG_FRA_XL_NAME			"FRALG"
+#define MG_CAPFL_XL_NAME		"CAPFL"
 #define MG_DFMODEL_XL_NAME		"DFMOD"
 #define MG_BSMODEL_XL_NAME		"BSMOD"
 #define MG_ROBOT_XL_NAME		"ROBOT"
@@ -164,7 +165,8 @@ void yy_delete_buffer (YY_BUFFER_STATE b  );
 #define MG_LinearInterpolatorPtr		CountedPtr<MG::MG_LinearInterpolator>
 #define MG_FunctionPtr					CountedPtr<MG::MG_Function>
 #define MG_FFunctionPtr					CountedPtr<MG::MG_FFunction>
-#define MG_IRSecurityPtr				CountedPtr<MG::MG_IRSecurity>
+#define MG_SecurityPtr					CountedPtr<MG::MG_Security>
+#define MG_SwapLegPtr					CountedPtr<MG::MG_SwapLeg>
 
 
 /* enum for node direction */

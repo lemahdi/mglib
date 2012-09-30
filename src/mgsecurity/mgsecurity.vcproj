@@ -155,11 +155,43 @@
 	</References>
 	<Files>
 		<File
+			RelativePath=".\cap.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\cap.h"
+			>
+		</File>
+		<File
+			RelativePath=".\digital.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\digital.h"
+			>
+		</File>
+		<File
 			RelativePath=".\fra.cpp"
 			>
 		</File>
 		<File
 			RelativePath=".\fra.h"
+			>
+		</File>
+		<File
+			RelativePath=".\irsecurity.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\irsecurity.h"
+			>
+		</File>
+		<File
+			RelativePath=".\option.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\option.h"
 			>
 		</File>
 		<File
@@ -176,6 +208,14 @@
 		</File>
 		<File
 			RelativePath=".\swapleg.h"
+			>
+		</File>
+		<File
+			RelativePath=".\swaption.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\swaption.h"
 			>
 		</File>
 	</Files>
