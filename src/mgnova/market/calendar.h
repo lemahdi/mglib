@@ -1,8 +1,7 @@
 /*
  * Copyright			: 2011 by MG
- * File					: calendar.h
  * Version				: 0.1.21
- * Last changed			: 12 MAR 2011
+ * Date					: 12 MAR 2011
  * Purpose				: MG_Calendar is intended to manage currency business days
  * Author				: MM Akkouh
  * Notes				: 

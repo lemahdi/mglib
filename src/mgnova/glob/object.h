@@ -1,8 +1,7 @@
 /*
  * Copyright			: 2010 by MG
- * File					: object.h
  * Version				: 0.1.20
- * Last changed			: 02 JAN 2011
+ * Date					: 02 JAN 2011
  * Purpose				: MG_Object is a base class for almost all classes
  * Author				: MM Akkouh
  * Notes				: 

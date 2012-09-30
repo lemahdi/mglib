@@ -1,8 +1,7 @@
 /*
  * Copyright			: 2011 by MG
- * File					: random.h
  * Version				: 0.1.24
- * Last changed			: 15 NOV 2011
+ * Date					: 15 NOV 2011
  * Purpose				: 
  * Author				: MM Akkouh
  * Notes				: 

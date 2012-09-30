@@ -1,8 +1,7 @@
 /*
  * Copyright			: 2010 by MG
- * File					: typedef.h
  * Version				: 0.1.3
- * Last changed			: 11 JUL 2010
+ * Date					: 11 JUL 2010
  * Purpose				: useful definitions file
  * Author				: MM Akkouh
  * Notes				: 

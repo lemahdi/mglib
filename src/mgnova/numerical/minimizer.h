@@ -1,8 +1,7 @@
 /*
  * Copyright			: 2011 by MG
- * File					: minimizer.h
  * Version				: 0.1.23
- * Last changed			: 21 NOV 2011
+ * Date					: 21 NOV 2011
  * Purpose				: MG_Minimizer is a base class for minimizing functions
  * Author				: MM Akkouh
  * Notes				: This class does not guarantee to find an absolute minima

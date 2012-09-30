@@ -1,8 +1,7 @@
 /*
  * Copyright			: 2012 by MG
- * File					: termstructure.h
  * Version				: 0.1.23
- * Last changed			: 02 JAN 2012
+ * Date					: 02 JAN 2012
  * Purpose				: MG_TermStructure is a term structure container
  * Author				: MM Akkouh
  * Notes				: 

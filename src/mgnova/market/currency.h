@@ -1,8 +1,7 @@
 /*
  * Copyright			: 2011 by MG
- * File					: currency.h
  * Version				: 0.1.23
- * Last changed			: 31 DEC 2011
+ * Date					: 31 DEC 2011
  * Purpose				: MG_Currency is a struct for currency attributes
  * Author				: MM Akkouh
  * Notes				: 

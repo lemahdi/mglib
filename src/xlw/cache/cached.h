@@ -1,8 +1,7 @@
 /*
  * Copyright			: 2010 by MG
- * File					: cached.h
  * Version				: 0.1.22
- * Last changed			: 24 APR 2011
+ * Date					: 24 APR 2011
  * Purpose				: MG_Cached is a class for managing the persistence
  * Author				: MM Akkouh
  * Notes				: 

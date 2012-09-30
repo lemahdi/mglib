@@ -1,7 +1,7 @@
 /*
  * Copyright			: 2012 by MG
  * Version				: 0.1.23
- * Last changed			: 16 SEP 2012
+ * Date					: 16 SEP 2012
  * Purpose				: MG_IRSecurity is a base class for creating IR securities
  * Author				: MM Akkouh
  * Notes				: 

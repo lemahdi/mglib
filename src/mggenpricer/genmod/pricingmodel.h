@@ -1,8 +1,7 @@
 /*
  * Copyright			: 2011 by MG
- * File					: pricingmodel.h
  * Version				: 0.1.23
- * Last changed			: 01 NOV 2011
+ * Date					: 01 NOV 2011
  * Purpose				: MG_PricingModel is a base class for stochastic models
  * Author				: MM Akkouh
  * Notes				: 

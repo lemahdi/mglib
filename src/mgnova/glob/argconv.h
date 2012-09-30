@@ -1,8 +1,7 @@
 /*
  * Copyright			: 2010 by MG
- * File					: argconv.h
  * Version				: 0.1.17
- * Last changed			: 25 DEC 2010
+ * Date					: 25 DEC 2010
  * Purpose				: MG_ArgConv is a class for converting string characters to integers
  *						  MG_ArgConvReverse is a class for converting integers to string characters
  * Author				: MM Akkouh

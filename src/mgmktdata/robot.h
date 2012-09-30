@@ -1,8 +1,7 @@
 /*
  * Copyright			: 2011 by MG
- * File					: robot.h
  * Version				: 0.1.23
- * Last changed			: 06 NOV 2011
+ * Date					: 06 NOV 2011
  * Purpose				: MG_Robot is a class dealing with market data
  * Author				: MM Akkouh
  * Notes				: 

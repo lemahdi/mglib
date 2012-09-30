@@ -1,8 +1,7 @@
 /*
  * Copyright			: 2010 by MG
- * File					: date.h
  * Version				: 0.1.16
- * Last changed			: 25 DEC 2010
+ * Date					: 25 DEC 2010
  * Purpose				: Tiny class for Julian dates
  * Author				: MM Akkouh
  * Notes				: The original author is Todd Knarr who put

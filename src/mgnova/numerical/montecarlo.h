@@ -1,8 +1,7 @@
 /*
  * Copyright			: 2011 by MG
- * File					: montecarlo.h
  * Version				: 0.1.23
- * Last changed			: 11 DEC 2011
+ * Date					: 11 DEC 2011
  * Purpose				: MG_MonteCarlo is a base class for dealing with multidimensional Monte Carlo integration
  * Author				: MM Akkouh
  * Notes				: The statistical estimate of the error on the result should be taken as a guide rather than a strict error bound

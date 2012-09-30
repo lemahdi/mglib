@@ -1,8 +1,7 @@
 /*
  * Copyright			: 2011 by MG
- * File					: marketdata.h
  * Version				: 0.1.21
- * Last changed			: 25 MAR 2011
+ * Date					: 25 MAR 2011
  * Purpose				: MG_MarketData is a base class for market datas
  * Author				: MM Akkouh
  * Notes				: 

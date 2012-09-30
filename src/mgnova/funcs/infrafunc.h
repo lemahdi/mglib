@@ -1,8 +1,7 @@
 /*
  * Copyright			: 2011 by MG
- * File					: infrafunc.h
  * Version				: 0.1.21
- * Last changed			: 17 MAR 2011
+ * Date					: 17 MAR 2011
  * Purpose				: some structures to define simple fucntions
  * Author				: MM Akkouh
  * Notes				: 

@@ -1,8 +1,7 @@
 /*
  * Copyright			: 2010 by MG
- * File					: argconvdef.h
  * Version				: 0.1.17
- * Last changed			: 25 DEC 2010
+ * Date					: 25 DEC 2010
  * Purpose				: Specializations of MG_ArgConv  and MG_ArgConvReverse
  * Author				: MM Akkouh
  * Notes				: 3 letters months name

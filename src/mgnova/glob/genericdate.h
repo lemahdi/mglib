@@ -1,7 +1,7 @@
 /*
  * Copyright			: 2012 by MG
  * Version				: 0.1.23
- * Last changed			: 08 JAN 2012
+ * Date					: 08 JAN 2012
  * Purpose				: Tiny class for generic dates
  * Author				: MM Akkouh
  * Notes				: 

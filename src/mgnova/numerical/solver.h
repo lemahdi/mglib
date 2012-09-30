@@ -1,8 +1,7 @@
 /*
  * Copyright			: 2011 by MG
- * File					: solver.h
  * Version				: 0.1.21
- * Last changed			: 13 MAR 2011
+ * Date					: 13 MAR 2011
  * Purpose				: MG_Solver is a base class for solver methods
  * Author				: MM Akkouh
  * Notes				: Solver class, ..

@@ -1,7 +1,7 @@
 /*
  * Copyright			: 2012 by MG
  * Version				: 0.1.23
- * Last changed			: 16 JAN 2012
+ * Date					: 16 JAN 2012
  * Purpose				: MG_Fra is a Forward Rate Agreement
  * Author				: MM Akkouh
  * Notes				: 

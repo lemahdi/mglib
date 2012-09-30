@@ -1,8 +1,7 @@
 /*
  * Copyright			: 2011 by MG
- * File					: exception.h
  * Version				: 0.1.21
- * Last changed			: 17 MAR 2011
+ * Date					: 17 MAR 2011
  * Purpose				: MG_Exception is the MG library exception class
  * Author				: MM Akkouh
  * Notes				: 

@@ -1,8 +1,7 @@
 /*
  * Copyright			: 2010 by MG
- * File					: func.h
  * Version				: 0.1.14
- * Last changed			: 21 DEC 2010
+ * Date					: 21 DEC 2010
  * Purpose				: MG_Func is a base class for creating defined functions
  *						  MG_FuncBuilder is a singleton class for loading defined functions
  * Author				: MM Akkouh

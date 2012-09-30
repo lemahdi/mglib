@@ -1,8 +1,7 @@
 /*
  * Copyright			: 2011 by MG
- * File					: mginit.h
  * Version				: 0.1.23
- * Last changed			: 25 DEC 2011
+ * Date					: 25 DEC 2011
  * Purpose				: MG Library Initializer
  * Author				: MM Akkouh
  * Notes				: 

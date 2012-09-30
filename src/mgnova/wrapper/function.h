@@ -1,8 +1,7 @@
 /*
  * Copyright			: 2011 by MG
- * File					: function.h
  * Version				: 0.1.24
- * Last changed			: 24 AUG 2011
+ * Date					: 24 AUG 2011
  * Purpose				: MG_Function is a wrapper class for GSL
  * Author				: MM Akkouh
  * Notes				:

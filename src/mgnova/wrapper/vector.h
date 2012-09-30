@@ -1,8 +1,7 @@
 /*
  * Copyright			: 2011 by MG
- * File					: vector.h
  * Version				: 0.2.0
- * Last changed			: 28 JUL 2011
+ * Date					: 28 JUL 2011
  * Purpose				: MG_Vector is a wrapper of the gsl_vector type
  * Author				: MM Akkouh
  * Notes				: 

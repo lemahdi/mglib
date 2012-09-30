@@ -1,8 +1,7 @@
 /*
  * Copyright			: 2011 by MG
- * File					: closedformulas.h
  * Version				: 0.1.23
- * Last changed			: 22 MAY 2011
+ * Date					: 22 MAY 2011
  * Purpose				: Usefull Functions
  * Author				: Ghada EL BOURY
  * Notes				: 

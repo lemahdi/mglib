@@ -1,8 +1,7 @@
 /*
  * Copyright			: 2011 by MG
- * File					: hw1f.h
  * Version				: 0.1.23
- * Last changed			: 01 NOV 2011
+ * Date					: 01 NOV 2011
  * Purpose				: MG_HW1F is the Hull & White One Factor model
  * Author				: MM Akkouh
  * Notes				: 

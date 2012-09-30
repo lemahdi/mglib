@@ -1,8 +1,7 @@
 /*
  * Copyright			: 2011 by MG
- * File					: gensecurity.h
  * Version				: 0.1.23
- * Last changed			: 07 MAY 2011
+ * Date					: 07 MAY 2011
  * Purpose				: MG_GenSecurity is a class for parsing payoffs
  * Author				: MM Akkouh
  * Notes				: 

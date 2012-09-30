@@ -1,8 +1,7 @@
 /*
  * Copyright			: 2010 by MG
- * File					: utils.h
  * Version				: 0.1.17
- * Last changed			: 26 DEC 2010
+ * Date					: 26 DEC 2010
  * Purpose				: Some useful functions
  * Author				: MM Akkouh
  * Notes				: Functions

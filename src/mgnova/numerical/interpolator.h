@@ -1,8 +1,7 @@
 /*
  * Copyright			: 2011 by MG
- * File					: marketdata.h
  * Version				: 0.1.21
- * Last changed			: 25 MAR 2011
+ * Date					: 25 MAR 2011
  * Purpose				: MG_Interpolator is a base class for interpolators
  * Author				: MM Akkouh
  * Notes				: 

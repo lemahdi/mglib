@@ -1,8 +1,7 @@
 /*
  * Copyright			: 2011 by MG
- * File					: matrix.h
  * Version				: 0.2.0
- * Last changed			: 30 JUL 2011
+ * Date					: 30 JUL 2011
  * Purpose				: MG_Matrix is a wrapper of the gsl_matrix type
  * Author				: MM Akkouh
  * Notes				: 

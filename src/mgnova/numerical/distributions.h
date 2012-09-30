@@ -1,8 +1,7 @@
 /*
  * Copyright			: 2011 by MG
- * File					: normal.h
  * Version				: 0.1.21
- * Last changed			: 05 MAR 2011
+ * Date					: 05 MAR 2011
  * Purpose				: simple class to deal with normal distribution fucntion
  * Author				: MM Akkouh
  * Notes				: 

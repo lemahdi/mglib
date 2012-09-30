@@ -1,9 +1,8 @@
 
 /*
  * Copyright			: 2011 by MG
- * File					: schedule.h
  * Version				: 0.1.23
- * Last changed			: 31 DEC 2011
+ * Date					: 31 DEC 2011
  * Purpose				: MG_Schedule is a class for dealing with interest and libor dates
  * Author				: MM Akkouh
  * Notes				: 

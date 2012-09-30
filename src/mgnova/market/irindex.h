@@ -1,8 +1,7 @@
 /*
  * Copyright			: 2012 by MG
- * File					: irindex.h
  * Version				: 0.1.23
- * Last changed			: 01 JAN 2012
+ * Date					: 01 JAN 2012
  * Purpose				: MG_IRIndex is an interest rate index descriptor
  * Author				: MM Akkouh
  * Notes				: 

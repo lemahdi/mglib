@@ -2,7 +2,7 @@
  * Copyright			: 2012 by MG
  * File					: security.h
  * Version				: 0.1.23
- * Last changed			: 01 JAN 2012
+ * Date					: 01 JAN 2012
  * Purpose				: MG_Security is a base class for creating securities
  * Author				: MM Akkouh
  * Notes				: 

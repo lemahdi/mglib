@@ -1,8 +1,7 @@
 /*
  * Copyright			: 2011 by MG
- * File					: repository.hpp
  * Version				: 0.1.21
- * Last changed			: 12 MAR 2011
+ * Date					: 12 MAR 2011
  * Purpose				: Repositoy is an implementation of the repository
  *						design pattern
  * Author				: MM Akkouh

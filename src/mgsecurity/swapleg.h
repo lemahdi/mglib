@@ -1,7 +1,7 @@
 /*
  * Copyright			: 2012 by MG
  * Version				: 0.1.23
- * Last changed			: 01 JAN 2012
+ * Date					: 01 JAN 2012
  * Purpose				: MG_SwapLeg is an interest rate coupon leg
  * Author				: MM Akkouh
  * Notes				: 

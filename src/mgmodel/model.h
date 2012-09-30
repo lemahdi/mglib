@@ -1,7 +1,7 @@
 /*
  * Copyright			: 2010 by MG
  * Version				: 0.1.17
- * Last changed			: 29 DEC 2010
+ * Date					: 29 DEC 2010
  * Purpose				: MG_Model is a base class for creating models
  * Author				: MM Akkouh
  * Notes				: 

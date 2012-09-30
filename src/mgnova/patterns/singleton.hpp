@@ -1,8 +1,7 @@
 /*
  * Copyright			: 2010 by MG
- * File					: singleton.hpp
  * Version				: 0.1.11
- * Last changed			: 18 DEC 2010
+ * Date					: 18 DEC 2010
  * Purpose				: Singleton is an implementation of the singleton
  *						design pattern
  * Author				: MM Akkouh

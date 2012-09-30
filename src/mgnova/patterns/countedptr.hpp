@@ -1,7 +1,7 @@
 /*
  * Copyright			: 2010 by MG
  * Version				: 0.1.15
- * Last changed			: 22 DEC 2010
+ * Date					: 22 DEC 2010
  * Purpose				: CountedPtr is an implementation of the smart pointer
  *						design pattern
  * Author				: MM Akkouh
