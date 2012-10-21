@@ -305,4 +305,13 @@ const MG_ArgConv		ModelParamGenConvertor	= MG_ArgConv		("Pricing Model Parameter
 const MG_ArgConvReverse	ModelParamGenRevertor	= MG_ArgConvReverse	("Pricing Model Parameter Types", ModelParamGenArgConv, NB_MODELPARAM_TYPE);
 
 
+MG_ArgConv::ArgConvPair CallPutNameArgConv[] =
+{
+	MG_ArgConv::ArgConvPair("C",K_CALL),
+	MG_ArgConv::ArgConvPair("P",K_PUT),
+};
+const MG_ArgConv		CallPutNameConvertor	= MG_ArgConv		("Call / Put", CallPutNameArgConv, NB_CALLPUT);
+const MG_ArgConvReverse	CallPutNameRevertor		= MG_ArgConvReverse	("Call / Put", CallPutNameArgConv, NB_CALLPUT);
+
+
 MG_NAMESPACE_END

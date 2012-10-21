@@ -1,4 +1,5 @@
 #include "mgsecurity/swaption.h"
+#include "mgsecurity/swapleg.h"
 //#include "mgmodel/model.h"
 
 
@@ -17,9 +18,9 @@ void MG_Swaption::Swap(MG_Swaption& aRight)
 }
 
 MG_Swaption::MG_Swaption(	const MG_GenericDate& aMat
-						,	const MG_SwapLegPtr	& aUnd
+						,	const MG_Schedule	& aSched
 						,	const double		& aStrike)
-						:	MG_VanillaOption(aMat, aUnd, aStrike)
+						:	MG_VanillaOption(aMat, MG_SecurityPtr(new MG_SwapLeg(aSched, K_RCV)), aStrike)
 {
 	myXLName = MG_CAPFL_XL_NAME;
 }

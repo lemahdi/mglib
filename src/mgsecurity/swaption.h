@@ -18,7 +18,7 @@ MG_NAMESPACE_BEGIN
 
 
 class MG_GenericDate;
-class MG_SwapLeg;
+class MG_Schedule;
 
 
 /* Cap / Floor */
@@ -35,7 +35,7 @@ public:
 	virtual ~MG_Swaption(void);
 
 	MG_Swaption	(	const MG_GenericDate& aMat
-				,	const MG_SwapLegPtr	& aUnd
+				,	const MG_Schedule	& aUnd
 				,	const double		& aStrike);
 
 public:

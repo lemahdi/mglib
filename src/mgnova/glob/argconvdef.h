@@ -339,4 +339,16 @@ extern const MG_ArgConv			ModleParamGenConvertor;
 extern const MG_ArgConvReverse	ModleParamGenRevertor;
 
 
+enum CALLPUT_NAME
+{
+	K_PUT = -1,
+	K_CALL = 1,
+
+	NB_CALLPUT = 2
+};
+
+extern const MG_ArgConv			CallPutNameConvertor;
+extern const MG_ArgConvReverse	CallPutNameRevertor;
+
+
 MG_NAMESPACE_END

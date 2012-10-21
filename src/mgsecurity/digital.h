@@ -18,7 +18,6 @@ MG_NAMESPACE_BEGIN
 
 
 class MG_GenericDate;
-class MG_SwapLeg;
 
 
 /* Cap / Floor */
@@ -35,7 +34,6 @@ public:
 	virtual ~MG_Digital(void);
 
 	MG_Digital	(	const MG_GenericDate& aMat
-				,	const MG_SwapLegPtr	& aUnd
 				,	const double		& aStrike);
 
 public:

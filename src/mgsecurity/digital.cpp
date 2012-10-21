@@ -16,10 +16,9 @@ void MG_Digital::Swap(MG_Digital& aRight)
 	MG_VanillaOption::Swap(aRight);
 }
 
-MG_Digital::MG_Digital(	const MG_GenericDate& aMat
-						,	const MG_SwapLegPtr	& aUnd
+MG_Digital::MG_Digital	(	const MG_GenericDate& aMat
 						,	const double		& aStrike)
-						:	MG_VanillaOption(aMat, aUnd, aStrike)
+						:	MG_VanillaOption(aMat, MG_SecurityPtr(NULL), aStrike)
 {
 	myXLName = MG_CAPFL_XL_NAME;
 }

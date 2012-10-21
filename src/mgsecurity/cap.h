@@ -18,7 +18,7 @@ MG_NAMESPACE_BEGIN
 
 
 class MG_GenericDate;
-class MG_SwapLeg;
+class MG_Schedule;
 
 
 /* Cap / Floor */
@@ -35,7 +35,8 @@ public:
 	virtual ~MG_CapFloor(void);
 
 	MG_CapFloor	(	const MG_GenericDate& aMat
-				,	const MG_SwapLegPtr	& aUnd
+				,	const MG_Schedule	& aSched
+				,	const CALLPUT_NAME	& aCallPut
 				,	const double		& aStrike);
 
 public:
@@ -44,6 +45,7 @@ public:
 	double	Price		(void) const;
 
 private:
+	CALLPUT_NAME myCallPut;
 
 };
 
