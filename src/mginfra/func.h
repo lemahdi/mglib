@@ -24,6 +24,10 @@
 MG_NAMESPACE_BEGIN
 
 
+class MG_PricingModel;
+class MG_IRPricingModel;
+
+
 class MG_Func
 {
 public:
@@ -31,6 +35,8 @@ public:
 	virtual ~MG_Func(void);
 
 	virtual double Eval(const std::vector<double>& aArgs) = 0;
+
+	virtual void SetModel(const MG_PricingModelPtr& ) {}
 };
 
 class MG_MaxFunc : public MG_Func
@@ -87,6 +93,19 @@ public:
 	MG_IfFunc(void);
 
 	virtual double Eval(const std::vector<double>& aArgs);
+};
+
+class MG_LiborFunc : public MG_Func
+{
+public:
+	MG_LiborFunc(void);
+
+	virtual double Eval(const std::vector<double>& aArgs);
+
+	void SetModel(const MG_PricingModelPtr& aMdl);
+
+private:
+	MG_IRPricingModelPtr myModel;
 };
 
 class MG_FuncBuilder

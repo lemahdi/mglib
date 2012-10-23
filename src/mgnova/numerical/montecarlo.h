@@ -15,7 +15,6 @@
 #include "mgnova/glob/object.h"
 #include "mgnova/patterns/countedptr.hpp"
 #include "mgnova/wrapper/function.h"
-#include "mgnova/numerical/random.h"
 
 #include "gsl/gsl_monte_plain.h"
 #include "gsl/gsl_monte_miser.h"
@@ -26,6 +25,7 @@ MG_NAMESPACE_BEGIN
 
 
 #define MCDensityPtr CountedPtr<MG_MonteCarlo::MCDensity>
+class MG_Random;
 
 
 /* MonteCarlo Class */

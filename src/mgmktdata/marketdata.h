@@ -42,6 +42,7 @@ public:
 public:
 	virtual double ComputeValue(const double& aX = 0, const double& aY = 0, const double& aZ = 0) const = 0;
 
+	inline const MG_Date& AsOf		(void) const { return myAsOf; }
 	inline std::string GetType		(void) const { return myType; }
 	inline std::string GetCurrency	(void) const { return myCurrency; }
 	inline std::string GetUnderIndex(void) const { return myUnderIndex; }
@@ -119,6 +120,34 @@ public:
 
 protected:
 	MG_2DInterpolator myInterpolator;
+
+};
+
+
+/* Flat Volatility */
+class MG_FlatVolCurve : public MG_VolatilityCurve
+{
+public:
+	/* Constructors / Destructor */
+	COPY_CTOR_DECL(MG_FlatVolCurve)
+
+	ASSIGN_OPERATOR(MG_FlatVolCurve)
+	CLONE_METHOD(MG_FlatVolCurve)
+	SWAP_DECL(MG_FlatVolCurve)
+
+	MG_FlatVolCurve	(	const MG_Date		& aAsOf
+					,	const double		& aValue
+					,	const std::string	& aType
+					,	const std::string	& aCcy
+					,	const std::string	& aUnderIndex);
+
+	virtual ~MG_FlatVolCurve(void);
+	double ComputeValue(const double& aMaturity = 0, const double& aY = 0, const double& aZ = 0) const;
+
+public:
+
+protected:
+	double myValue;
 
 };
 

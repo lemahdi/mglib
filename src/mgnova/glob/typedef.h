@@ -142,6 +142,7 @@ void yy_delete_buffer (YY_BUFFER_STATE b  );
 #define MG_MINIMIZER_XL_NAME	"MINIM"
 #define MG_MONTECARLO_XL_NAME	"MTCRL"
 #define MG_HW1FMODEL_XL_NAME	"HW1FM"
+#define MG_GENPRICER_XL_NAME	"GENPR"
 
 
 /* CountedPtr definitions */
@@ -151,9 +152,15 @@ void yy_delete_buffer (YY_BUFFER_STATE b  );
 #define MG_XLObjectPtr					CountedPtr<MG::MG_XLObject>
 #define MG_FuncPtr						CountedPtr<MG::MG_Func>
 #define MG_FuncBuilderPtr				CountedPtr<MG::MG_FuncBuilder>
+#define MG_GenSecurityPtr				CountedPtr<MG::MG_GenSecurity>
 #define MG_RandomPtr					CountedPtr<MG::MG_Random>
 #define MG_SamplerPtr					CountedPtr<MG::MG_Sampler>
 #define MG_CdfNormalPtr					CountedPtr<MG::MG_CdfNormal>
+#define MG_NumericalMethodPtr			CountedPtr<MG::MG_NumericalMethod>
+#define MG_MonteCarloMethodPtr			CountedPtr<MG::MG_MonteCarloMethod>
+#define MG_PricingModelPtr				CountedPtr<MG::MG_PricingModel>
+#define MG_IRPricingModelPtr			CountedPtr<MG::MG_IRPricingModel>
+#define MG_MonteCarloPtr				CountedPtr<MG::MG_MonteCarlo>
 #define MG_UnaryFuncPtr					CountedPtr<MG::MG_UnaryFunc>
 #define MG_RobotPtr						CountedPtr<MG::MG_Robot>
 #define MG_MarketDataPtr				CountedPtr<MG::MG_MarketData>

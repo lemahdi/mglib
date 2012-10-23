@@ -170,6 +170,14 @@
 			Name="genmod"
 			>
 			<File
+				RelativePath=".\genmod\blackscholes.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\genmod\blackscholes.h"
+				>
+			</File>
+			<File
 				RelativePath=".\genmod\hw1f.cpp"
 				>
 			</File>
@@ -193,6 +201,14 @@
 				RelativePath=".\genmod\pricingmodel.h"
 				>
 			</File>
+			<File
+				RelativePath=".\genmod\vasicek.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\genmod\vasicek.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="genparam"
@@ -203,6 +219,38 @@
 			</File>
 			<File
 				RelativePath=".\genparam\modelparam.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="gennumerics"
+			>
+			<File
+				RelativePath=".\gennumerics\mcmethod.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\gennumerics\mcmethod.h"
+				>
+			</File>
+			<File
+				RelativePath=".\gennumerics\nummethod.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\gennumerics\nummethod.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="genpricer"
+			>
+			<File
+				RelativePath=".\genpricer\genpricer.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\genpricer\genpricer.h"
 				>
 			</File>
 		</Filter>

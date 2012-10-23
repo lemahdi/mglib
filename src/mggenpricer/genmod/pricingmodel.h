@@ -12,6 +12,8 @@
 
 
 #include "mgnova/glob/object.h"
+#include "mgnova/patterns/countedptr.hpp"
+#include "mggenpricer/gennumerics/mcmethod.h"
 
 
 MG_NAMESPACE_BEGIN
@@ -32,7 +34,12 @@ public:
 
 	virtual ~MG_PricingModel(void);
 
+	/* accessors */
+	inline const MG_NumericalMethodPtr& NumMethod(void) const { return myNumMethod; }
+	inline void NumMethod(const MG_NumericalMethodPtr& aNumMethod) { myNumMethod = aNumMethod; }
+
 private:
+	MG_NumericalMethodPtr myNumMethod;
 };
 
 

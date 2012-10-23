@@ -34,8 +34,7 @@ MG_GenSecurity::MG_GenSecurity	(	const vector<string>& aDealDesc
 	myXLName = MG_GENSEC_XL_NAME;
 	myRows = (aDealDesc.size()/myCols) - 1;
 
-	MG_NodeManager vManager;
-	yy::my_parser vParser(myWalker, vManager);	// make a cpp calc parser
+	yy::my_parser vParser(myWalker, myManager);	// make a cpp calc parser
 	for(unsigned int i=0; i<myDealDesc.size(); i++)
 	{
 		const char* vText = myDealDesc[i].c_str();
@@ -47,9 +46,14 @@ MG_GenSecurity::MG_GenSecurity	(	const vector<string>& aDealDesc
 			myWalker.IncCurrentRow();
 		myWalker.IncCurrentCol();
 	}
-	vManager.PostProcess();
+	myManager.PostProcess();
 }
 
 MG_GenSecurity::~MG_GenSecurity()
 {}
+
+void MG_GenSecurity::PropagateModel(const MG_PricingModelPtr& aMdl)
+{
+	myManager.ModelProcess(aMdl);
+}
 

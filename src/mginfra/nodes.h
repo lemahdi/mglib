@@ -213,7 +213,7 @@ class MG_FuncNode : public MG_Node
 public:
 	MG_FuncNode(const Coord& aC, MG_FuncPtr aF, MG_Node* aArgN);
 
-	inline MG_FuncPtr GetFunc(void) const { return myFunc; }
+	inline MG_FuncPtr Func(void) const { return myFunc; }
 
 private:
 	MG_FuncPtr myFunc;
@@ -229,6 +229,7 @@ private:
 class MG_NodeManager
 {
 public:
+	// self-generated copy-constructor is enough
 	MG_NodeManager(void) {}
 	virtual ~MG_NodeManager(void);
 
@@ -251,10 +252,14 @@ public:
 	MG_Node* BuildDate		(const MG_TableWalker& walker, const long& aJD);
 	MG_Node* BuildRef		(const MG_TableWalker& walker, const char* aRef, const int& aIdx);
 	MG_Node* BuildArg		(const MG_TableWalker& walker, MG_Node* aN, MG_Node* aArgN);
-	MG_Node* BuildFunc		(const MG_TableWalker& walker, const char* aRef,MG_Node* aArgN);
+	MG_Node* BuildFunc		(const MG_TableWalker& walker, const char* aRef, MG_Node* aArgN);
 
 	/* Rebuilding References */
 	void PostProcess(void);
+
+	/* Propagating Model */
+	void ModelProcess(const MG_PricingModelPtr& aMdl);
+
 private:
 	void CheckCircularReference(MMCoord& aPCMM, const Coord& vWalk, std::map< Coord,bool >& aCheck);
 
@@ -265,8 +270,10 @@ public:
 private:
 	/* Map of all nodes */
 	CoordNodeMap				AllNodes;
-	/* Vector of ref  nodes */
+	/* Vector of ref nodes */
 	std::vector<MG_RefNode*>	RefNodes;
+	/* Vector of func nodes */
+	std::vector<MG_FuncNode*>	FuncNodes;
 };
 
 

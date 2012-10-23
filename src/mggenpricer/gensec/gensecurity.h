@@ -31,6 +31,13 @@ public:
 
 	MG_GenSecurity(const std::vector<std::string>& aDealDesc, const size_t& aCols);
 
+	/* Accessors */
+	inline const MG_TableWalker& Walker(void) const { return myWalker; }
+	inline MG_NodeManager& Manager(void) { return myManager; }
+
+	/* Engine */
+	void PropagateModel(const MG_PricingModelPtr& aMdl);
+
 private:
 	std::vector<std::string>	myHeader;
 	std::vector<std::string>	myDealDesc;
@@ -38,6 +45,7 @@ private:
 	size_t						myCols;
 
 	MG_TableWalker				myWalker;
+	MG_NodeManager				myManager;
 };
 
 

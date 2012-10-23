@@ -181,6 +181,14 @@
 	</References>
 	<Files>
 		<File
+			RelativePath=".\init.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\init.h"
+			>
+		</File>
+		<File
 			RelativePath=".\run.cpp"
 			>
 		</File>

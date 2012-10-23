@@ -60,7 +60,10 @@ public:
 	}
 	CountedPtr(T* aPtr) : myPtr(aPtr), myCount(new long(1)) {}
 	template<class U>
-	CountedPtr(U* aPtr) : myPtr(dynamic_cast<T*>(aPtr)), myCount(new long(1)) {}
+	CountedPtr(U* aPtr) : myPtr(dynamic_cast<T*>(aPtr)), myCount(new long(1))
+	{
+		if (!myPtr) delete aPtr; // this should avoir memory leaks
+	}
 
 	CountedPtr(const CountedPtr<T>& aCPtr)
 	{

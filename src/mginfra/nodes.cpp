@@ -275,11 +275,11 @@ MG_Node* MG_NodeManager::BuildFunc(const MG_TableWalker& walker, const char* aFu
 	MG_FuncPtr vF = MG_SFuncBuilder::Instance()->GetFunc(string(aFuncName));
 	MG_Node* vFuncN = new MG_FuncNode(vC, vF, aArgN);
 	Insert(vC, vFuncN);
+	FuncNodes.push_back((MG_FuncNode*)vFuncN);
 	return vFuncN;
 }
 
-void
-MG_NodeManager::PostProcess()
+void MG_NodeManager::PostProcess()
 {
 	MG_RefNode* vRefN = NULL;
 	MG_Node* vN = NULL;
@@ -304,7 +304,8 @@ MG_NodeManager::PostProcess()
 		vParentChild = PairCoord(vParentC,vChildC);
 		vParentV.push_back(vParentC);
 		vCheck.insert(make_pair(vParentC,false));
-		vPCMM.insert(vParentChild);
+		if (vPCMM.find(vParentChild.first) == vPCMM.end())
+			vPCMM.insert(vParentChild);
 	}
 
 	for(unsigned int i=0; i<vParentV.size(); i++)
@@ -312,6 +313,13 @@ MG_NodeManager::PostProcess()
 		map< Coord,bool > vCheckCopy(vCheck);
 		CheckCircularReference(vPCMM, vParentV[i], vCheckCopy);
 	}
+}
+
+void MG_NodeManager::ModelProcess(const MG_PricingModelPtr& aMdl)
+{
+	size_t vSize = FuncNodes.size();
+	for(size_t i=0; i<vSize; ++i)
+		FuncNodes[i]->Func()->SetModel(aMdl);
 }
 
 void MG_NodeManager::CheckCircularReference(MMCoord& aPCMM, const Coord& vWalk, map< Coord,bool >& aCheck)
@@ -324,8 +332,7 @@ void MG_NodeManager::CheckCircularReference(MMCoord& aPCMM, const Coord& vWalk, 
 		CheckCircularReference(aPCMM, itMMC->second, aCheck);
 }
 
-double
-MG_NodeManager::Eval(MG_Node *aN)
+double MG_NodeManager::Eval(MG_Node *aN)
 {
 	double vVal = 0;
 
@@ -360,7 +367,7 @@ MG_NodeManager::Eval(MG_Node *aN)
 				vArgVals.push_back(vArgN->GetValue());
 				vArgN = (MG_ArgNode*)(vArgN->GetR());
 			}
-			vVal = ((MG_FuncNode *)aN)->GetFunc()->Eval(vArgVals);
+			vVal = ((MG_FuncNode *)aN)->Func()->Eval(vArgVals);
 			break;
 			}
 

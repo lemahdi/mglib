@@ -109,6 +109,36 @@ double MG_ZeroCurve::Libor	(	const double& aMatSt
 }
 
 
+/* Flat Volatility class */
+MG_FlatVolCurve::MG_FlatVolCurve(	const MG_FlatVolCurve& aRight)
+								:	MG_VolatilityCurve(aRight)
+								,	myValue(aRight.myValue)
+{}
+
+void MG_FlatVolCurve::Swap(MG_FlatVolCurve &aRight)
+{
+	MG_VolatilityCurve::Swap(aRight);
+	std::swap(myValue, aRight.myValue);
+}
+
+MG_FlatVolCurve::MG_FlatVolCurve(	const MG_Date	& aAsOf
+								,	const double	& aValue
+								,	const string	& aType
+								,	const string	& aCcy
+								,	const string	& aUnderIndex)
+								:	MG_VolatilityCurve(aAsOf, aType, aCcy, aUnderIndex)
+								,	myValue(aValue)
+{}
+
+MG_FlatVolCurve::~MG_FlatVolCurve()
+{}
+
+double MG_FlatVolCurve::ComputeValue(const double&, const double&, const double&) const
+{
+	return myValue;
+}
+
+
 /* Volatility class */
 MG_VolatilityCurve::MG_VolatilityCurve	(	const MG_VolatilityCurve& aRight)
 										:	MG_MarketData(aRight)

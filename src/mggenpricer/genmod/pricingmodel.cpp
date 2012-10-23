@@ -12,7 +12,9 @@ MG_PricingModel::MG_PricingModel(const MG_PricingModel& aRight) : MG_XLObject(aR
 {}
 
 void MG_PricingModel::Swap(MG_PricingModel& aRight)
-{}
+{
+	myNumMethod.Swap(aRight.myNumMethod);
+}
 
 MG_PricingModel::MG_PricingModel()
 {}

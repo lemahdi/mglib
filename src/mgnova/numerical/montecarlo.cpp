@@ -1,4 +1,5 @@
 #include "mgnova/numerical/montecarlo.h"
+#include "mgnova/numerical/random.h"
 
 #include "gsl/gsl_errno.h"
 #include "mgnova/glob/exception.h"

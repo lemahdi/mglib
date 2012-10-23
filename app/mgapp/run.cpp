@@ -22,15 +22,74 @@
 #include "gsl/gsl_sys.h"
 #include "gsl/gsl_vector.h"
 
+#include "init.h"
+#include "mggenpricer/gensec/gensecurity.h"
+#include "mggenpricer/gennumerics/mcmethod.h"
+#include "mggenpricer/genmod/blackscholes.h"
+#include "mggenpricer/genpricer/genpricer.h"
+#include "mgmktdata/marketdata.h"
+
 
 using namespace std;
 using namespace MG;
+
+void TestGenPricer(void)
+{
+	MG_Date vAsOf(15, 2, 2010);
+
+	//==> Gen Sec
+	vector<string> vDealDesc;
+	// 1st row
+	vDealDesc.push_back("ResetDate");
+	vDealDesc.push_back("StartDate");
+	vDealDesc.push_back("EndDate");
+	vDealDesc.push_back("PayDate");
+	vDealDesc.push_back("IT");
+	vDealDesc.push_back("Spot");
+	vDealDesc.push_back("Strike");
+	vDealDesc.push_back("Payoff");
+	// flows
+	vDealDesc.push_back("15/02/2011");
+	vDealDesc.push_back("17/02/2011");
+	vDealDesc.push_back("17/05/2011");
+	vDealDesc.push_back("17/05/2011");
+	vDealDesc.push_back("0.25");
+	vDealDesc.push_back("LIBOR(ResetDate[i],StartDate[i],EndDate[i],PayDate[i],IT[i],IT[i],0)");
+	vDealDesc.push_back("2");
+	vDealDesc.push_back("MAX(Spot[i]-Strike[i],0)");
+	// Gen Sec
+	MG_GenSecurityPtr vGenSec(new MG_GenSecurity(vDealDesc, 8));
+
+	//==> Num Method
+	// random generator
+	MG_RandomPtr vRandGen(new MG_Random(MT19937));
+	// monte carlo
+	MG_MonteCarloMethodPtr vNumMeth(new MG_MonteCarloMethod(1, 100000, vRandGen));
+	vNumMeth->Simulate();
+
+	//==> Model
+	MG_ZeroCurvePtr vZc(BuildZC(vAsOf));
+	MG_VolatilityCurvePtr vVol(new MG_FlatVolCurve(vAsOf, 0.2, "IRG", "EUR", "EURIB"));
+	MG_PricingModelPtr vMod(new MG_BlackScholes(vZc, vVol));
+	vMod->NumMethod(vNumMeth);
+
+	//==> Gen Pricer
+	MG_GenPricer vGenPricer(vGenSec, vMod);
+	vGenPricer.Price();
+
+	char c;
+	cin >> c;
+}
 
 int main()
 {
 	MG_Initializator::Init();
 	MG_SFileError::Instance()->Init();
 	MG_SFuncBuilder::Instance()->Init();
+
+	// Generic Pricer Test
+	TestGenPricer();
+	return 0;
 
 	// Deal Description
 	vector<string> vColNames;
