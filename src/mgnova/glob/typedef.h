@@ -146,6 +146,8 @@ void yy_delete_buffer (YY_BUFFER_STATE b  );
 
 
 /* CountedPtr definitions */
+#define MG_StdVectDblPtr				CountedPtr< std::vector<double> >
+#define MG_StdVectBoolPtr				CountedPtr< std::vector<bool> >
 #define MG_CachePtr						CountedPtr<MG::MG_Cache>
 #define MG_FileErrorPtr					CountedPtr<MG::MG_FileError>
 #define MG_ObjectPtr					CountedPtr<MG::MG_Object>

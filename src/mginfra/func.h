@@ -38,17 +38,17 @@ public:
 	MG_Arg(const double& aDbl) : myType(ARG_DOUBLE), myDouble(aDbl) {}
 	MG_Arg(const std::string& aStr) : myType(ARG_STRING), myString(aStr) {}
 	MG_Arg(const MG_Date& aDt) : myType(ARG_DATE), myDate(aDt), myDouble(aDt.GetJulianDay()) {}
-	MG_Arg(const std::vector<double>& aVDbl) : myType(ARG_V_DOUBLE), myVDouble(aVDbl) {}
+	MG_Arg(const MG_StdVectDblPtr& aVDbl) : myType(ARG_V_DOUBLE), myVDouble(aVDbl) {}
 	MG_Arg(const bool& aBool) : myType(ARG_BOOL), myBool(aBool) {}
-	MG_Arg(const std::vector<bool>& aVBool) : myType(ARG_V_BOOL), myVBool(aVBool) {}
+	MG_Arg(const MG_StdVectBoolPtr& aVBool) : myType(ARG_V_BOOL), myVBool(aVBool) {}
 
 	inline const TYPE&					Type	(void) const { return myType; }
 	inline double						Double	(void) const { return myDouble; }
 	inline const std::string&			String	(void) const { return myString; }
 	inline const MG_Date&				Date	(void) const { return myDate; }
-	inline const std::vector<double>&	VDouble	(void) const { return myVDouble; }
+	inline const MG_StdVectDblPtr&		VDouble	(void) const { return myVDouble; }
 	inline bool							Bool	(void) const { return myBool; }
-	inline const std::vector<bool>&		VBool	(void) const { return myVBool; }
+	inline const MG_StdVectBoolPtr&		VBool	(void) const { return myVBool; }
 
 	friend std::ostream& operator<< (std::ostream& aOs, const MG_Arg& aArg)
 	{
@@ -62,9 +62,9 @@ private:
 	double myDouble;
 	std::string myString;
 	MG_Date myDate;
-	std::vector<double> myVDouble;
+	MG_StdVectDblPtr myVDouble;
 	bool myBool;
-	std::vector<bool> myVBool;
+	MG_StdVectBoolPtr myVBool;
 };
 
 

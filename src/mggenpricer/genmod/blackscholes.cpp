@@ -32,98 +32,107 @@ MG_BlackScholes::MG_BlackScholes(	const MG_ZeroCurvePtr& aZC
 MG_BlackScholes::~MG_BlackScholes()
 {}
 
-vector<double> MG_BlackScholes::Libor	(	const MG_Date& aRstDt, const MG_Date& aStDt, const MG_Date& aEdDt, const MG_Date& aPayDt
+MG_StdVectDblPtr MG_BlackScholes::Libor	(	const MG_Date& aRstDt, const MG_Date& aStDt, const MG_Date& aEdDt, const MG_Date& aPayDt
 										,	const double& aDelta, const double& aTenor, const double& aSpread
 										,	const vector<double>& aStates)
 {
 	double vAsOfJul = myZC->AsOf().GetJulianDay();
 	double vMat = (aRstDt.GetJulianDay()-vAsOfJul)/365.;
 	size_t vNbStates = aStates.size();
-	vector<double> vLibors(vNbStates);
+	MG_StdVectDblPtr vLiborsPtr(new vector<double>(vNbStates));
+	vector<double>& vLibors = *vLiborsPtr;
 	double vLibor = MG_IRPricingModel::Libor(aStDt, aEdDt, aPayDt, aDelta);
 	double vVol = myVol->ComputeValue(aTenor, vMat);
 	double vExpVar = exp(-0.5*vVol*vVol*vMat);
 	double vSqrt = vVol*sqrt(vMat);
 	for(size_t i=0; i<vNbStates; ++i)
 		vLibors[i] = vLibor * vExpVar * exp(vSqrt*aStates[i]) + aSpread;
-	return vLibors;
+	return vLiborsPtr;
 }
 
 //==> One coupon pricing
-vector<double> MG_BlackScholes::Caplet	(	const MG_Date& aMatDt
+MG_StdVectDblPtr MG_BlackScholes::Caplet	(	const MG_Date& aMatDt
 										,	const MG_Date& aRstDt, const MG_Date& aStDt, const MG_Date& aEdDt, const MG_Date& aPayDt
 										,	const double& aDelta, const double& aTenor, const double& aSpread
 										,	const double& aStrike, const vector<double>& aStates)
 {
-	vector<double> vLibors = Libor(aRstDt, aStDt, aEdDt, aPayDt, aDelta, aTenor, aSpread, aStates);
+	MG_StdVectDblPtr vLiborsPtr = Libor(aRstDt, aStDt, aEdDt, aPayDt, aDelta, aTenor, aSpread, aStates);
+	vector<double>& vLibors = *vLiborsPtr;
 	size_t vNbStates = aStates.size();
-	vector<double> vPayoffs(vNbStates);
+	MG_StdVectDblPtr vPayoffsPtr(new vector<double>(vNbStates));
+	vector<double>& vPayoffs = *vPayoffsPtr;
 	for(size_t i=0; i<vNbStates; ++i)
 		vPayoffs[i] = std::max(vLibors[i]-aStrike, 0.);
-	return vPayoffs;
+	return vPayoffsPtr;
 }
-vector<double> MG_BlackScholes::Floorlet(	const MG_Date& aMatDt
+MG_StdVectDblPtr MG_BlackScholes::Floorlet(	const MG_Date& aMatDt
 										,	const MG_Date& aRstDt, const MG_Date& aStDt, const MG_Date& aEdDt, const MG_Date& aPayDt
 										,	const double& aDelta, const double& aTenor, const double& aSpread
 										,	const double& aStrike, const vector<double>& aStates)
 {
-	vector<double> vLibors = Libor(aRstDt, aStDt, aEdDt, aPayDt, aDelta, aTenor, aSpread, aStates);
+	MG_StdVectDblPtr vLiborsPtr = Libor(aRstDt, aStDt, aEdDt, aPayDt, aDelta, aTenor, aSpread, aStates);
+	vector<double>& vLibors = *vLiborsPtr;
 	size_t vNbStates = aStates.size();
-	vector<double> vPayoffs(vNbStates);
+	MG_StdVectDblPtr vPayoffsPtr(new vector<double>(vNbStates));
+	vector<double>& vPayoffs = *vPayoffsPtr;
 	for(size_t i=0; i<vNbStates; ++i)
 		vPayoffs[i] = std::max(aStrike-vLibors[i], 0.);
-	return vPayoffs;
+	return vPayoffsPtr;
 }
-vector<double> MG_BlackScholes::DigitalUp	(	const MG_Date& aMatDt
+MG_StdVectDblPtr MG_BlackScholes::DigitalUp	(	const MG_Date& aMatDt
 											,	const MG_Date& aRstDt, const MG_Date& aStDt, const MG_Date& aEdDt, const MG_Date& aPayDt
 											,	const double& aDelta, const double& aTenor, const double& aSpread
 											,	const double& aStrike, const double& aAlpha
 											,	const vector<double>& aStates)
 {
-	vector<double> vLibors = Libor(aRstDt, aStDt, aEdDt, aPayDt, aDelta, aTenor, aSpread, aStates);
+	MG_StdVectDblPtr vLiborsPtr = Libor(aRstDt, aStDt, aEdDt, aPayDt, aDelta, aTenor, aSpread, aStates);
+	vector<double>& vLibors = *vLiborsPtr;
 	size_t vNbStates = aStates.size();
-	vector<double> vPayoffs(vNbStates);
+	MG_StdVectDblPtr vPayoffsPtr(new vector<double>(vNbStates));
+	vector<double>& vPayoffs = *vPayoffsPtr;
 	for(size_t i=0; i<vNbStates; ++i)
 	{
 		int vCond = vLibors[i]>aStrike ? 1 : 0;
 		vPayoffs[i] = aAlpha * vCond;
 	}
-	return vPayoffs;
+	return vPayoffsPtr;
 }
-vector<double> MG_BlackScholes::DigitalDown	(	const MG_Date& aMatDt
+MG_StdVectDblPtr MG_BlackScholes::DigitalDown	(	const MG_Date& aMatDt
 											,	const MG_Date& aRstDt, const MG_Date& aStDt, const MG_Date& aEdDt, const MG_Date& aPayDt
 											,	const double& aDelta, const double& aTenor, const double& aSpread
 											,	const double& aStrike, const double& aAlpha
 											,	const vector<double>& aStates)
 {
-	vector<double> vLibors = Libor(aRstDt, aStDt, aEdDt, aPayDt, aDelta, aTenor, aSpread, aStates);
+	MG_StdVectDblPtr vLiborsPtr = Libor(aRstDt, aStDt, aEdDt, aPayDt, aDelta, aTenor, aSpread, aStates);
+	vector<double>& vLibors = *vLiborsPtr;
 	size_t vNbStates = aStates.size();
-	vector<double> vPayoffs(vNbStates);
+	MG_StdVectDblPtr vPayoffsPtr(new vector<double>(vNbStates));
+	vector<double>& vPayoffs = *vPayoffsPtr;
 	for(size_t i=0; i<vNbStates; ++i)
 	{
 		int vCond = vLibors[i]<aStrike ? 1 : 0;
 		vPayoffs[i] = aAlpha * vCond;
 	}
-	return vPayoffs;
+	return vPayoffsPtr;
 }
 
 //==> Set of coupons pricing
-vector<double> MG_BlackScholes::Cap(const MG_Date& aMatDt
+MG_StdVectDblPtr MG_BlackScholes::Cap(const MG_Date& aMatDt
 								,	const MG_Schedule& aSched, const double& aTenor, const vector<double>& aSpread
 								,	const double& aStrike, const vector<double>& aStates)
 {
-	return vector<double>();
+	return MG_StdVectDblPtr();
 }
-vector<double> MG_BlackScholes::Floor(const MG_Date& aMatDt
+MG_StdVectDblPtr MG_BlackScholes::Floor(const MG_Date& aMatDt
 								,	const MG_Schedule& aSched, const double& aTenor, const vector<double>& aSpread
 								,	const double& aStrike, const vector<double>& aStates)
 {
-	return vector<double>();
+	return MG_StdVectDblPtr();
 }
 
 //==> Other
-vector<double> MG_BlackScholes::Swaption(const MG_Date& aMatDt, const MG_Schedule& aSched, const double& aTenor
+MG_StdVectDblPtr MG_BlackScholes::Swaption(const MG_Date& aMatDt, const MG_Schedule& aSched, const double& aTenor
 								,	const double& aStrike, const vector<double>& aStates)
 {
-	return vector<double>();
+	return MG_StdVectDblPtr();
 }

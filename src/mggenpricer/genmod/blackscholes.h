@@ -43,42 +43,42 @@ public:
 
 public:
 	//==> Underlying
-	std::vector<double> Libor(const MG_Date& aRstDt, const MG_Date& aStDt, const MG_Date& aEdDt, const MG_Date& aPayDt
+	MG_StdVectDblPtr Libor(const MG_Date& aRstDt, const MG_Date& aStDt, const MG_Date& aEdDt, const MG_Date& aPayDt
 							, const double& aDelta, const double& aTenor, const double& aSpread
 							, const std::vector<double>& aStates);
 
 	//==> One coupon pricing
-	std::vector<double> Caplet(const MG_Date& aMatDt
+	MG_StdVectDblPtr Caplet(const MG_Date& aMatDt
 						, const MG_Date& aRstDt, const MG_Date& aStDt, const MG_Date& aEdDt, const MG_Date& aPayDt
 						, const double& aDelta, const double& aTenor, const double& aSpread
 						, const double& aStrike, const std::vector<double>& aStates);
-	std::vector<double> Floorlet(const MG_Date& aMatDt
+	MG_StdVectDblPtr Floorlet(const MG_Date& aMatDt
 						, const MG_Date& aRstDt, const MG_Date& aStDt, const MG_Date& aEdDt, const MG_Date& aPayDt
 						, const double& aDelta, const double& aTenor, const double& aSpread
 						, const double& aStrike, const std::vector<double>& aStates);
-	std::vector<double> DigitalUp(const MG_Date& aMatDt
+	MG_StdVectDblPtr DigitalUp(const MG_Date& aMatDt
 						, const MG_Date& aRstDt, const MG_Date& aStDt, const MG_Date& aEdDt, const MG_Date& aPayDt
 						, const double& aDelta, const double& aTenor, const double& aSpread
 						, const double& aStrike, const double& aAlpha
 						, const std::vector<double>& aStates);
-	std::vector<double> DigitalDown(const MG_Date& aMatDt
+	MG_StdVectDblPtr DigitalDown(const MG_Date& aMatDt
 						, const MG_Date& aRstDt, const MG_Date& aStDt, const MG_Date& aEdDt, const MG_Date& aPayDt
 						, const double& aDelta, const double& aTenor, const double& aSpread
 						, const double& aStrike, const double& aAlpha
 						, const std::vector<double>& aStates);
 
 	//==> Set of coupons pricing
-	std::vector<double> Cap(const MG_Date& aMatDt
+	MG_StdVectDblPtr Cap(const MG_Date& aMatDt
 						, const MG_Schedule& aSched, const double& aTenor, const std::vector<double>& aSpread
 						, const double& aStrike
 						, const std::vector<double>& aStates);
-	std::vector<double> Floor(const MG_Date& aMatDt
+	MG_StdVectDblPtr Floor(const MG_Date& aMatDt
 						, const MG_Schedule& aSched, const double& aTenor, const std::vector<double>& aSpread
 						, const double& aStrike
 						, const std::vector<double>& aStates);
 
 	//==> Other
-	std::vector<double> Swaption(const MG_Date& aMatDt, const MG_Schedule& aSched, const double& aTenor
+	MG_StdVectDblPtr Swaption(const MG_Date& aMatDt, const MG_Schedule& aSched, const double& aTenor
 						, const double& aStrike
 						, const std::vector<double>& aStates);
 

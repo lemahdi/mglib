@@ -2,6 +2,8 @@
 #include "mggenpricer/gensec/gensecurity.h"
 #include "mggenpricer/genmod/pricingmodel.h"
 
+#include "mgnova/numerical/distributions.h"
+
 #include <math.h>
 
 
@@ -52,15 +54,20 @@ void MG_GenPricer::Price() const
 		//cout << vManager.Eval(n).Double() << endl;
 		MG_Arg vArg = vManager.Eval(n, vStates);
 		double vAvg(0.);
-		const vector<double>& vVals = vArg.VDouble();
+		const vector<double>& vVals = *vArg.VDouble();
 		for(size_t i=0; i<vSimulNb; ++i)
 			vAvg += vVals[i];
-		cout << "MC: " << vAvg/vSimulNb << endl;
 		
 		double vMat = MG_Date(2011, 2, 15) - MG_Date(2010, 2, 15);
 		vMat /= 365.;
 		double vVol = 0.2;
-		double vFwd = 0.02;
-		cout << "Proxy: " << 0.4*vFwd*exp(-0.02*vMat)*vVol*sqrt(vMat) << endl;
+		double vFwd = 0.01955;
+
+		double vD1 = 0.5*vVol*sqrt(vMat);
+		double vD2 = -vD1;
+		
+		cout << "MC: " << vAvg/vSimulNb/**exp(-0.02*vMat)*//vFwd << endl;
+		cout << "Proxy: " << 0.4*vFwd/**exp(-0.02*vMat)*/*vVol*sqrt(vMat)/vFwd << endl;
+		cout << "BS: " << vFwd * (MG_NormalDist::CdfFunc(vD1)-MG_NormalDist::CdfFunc(vD2))/vFwd << endl;
 	}
 }
