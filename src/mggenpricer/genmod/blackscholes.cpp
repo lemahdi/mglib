@@ -14,21 +14,18 @@ using namespace MG;
  */
 MG_BlackScholes::MG_BlackScholes(	const MG_BlackScholes& aRight)
 								:	MG_IRPricingModel(aRight)
-								,	myZC(aRight.myZC)
 								,	myVol(aRight.myVol)
 {}
 
 void MG_BlackScholes::Swap(MG_BlackScholes& aRight)
 {
-	MG_PricingModel::Swap(aRight);
-	myZC.Swap(aRight.myZC);
+	MG_IRPricingModel::Swap(aRight);
 	myVol.Swap(aRight.myVol);
 }
 
 MG_BlackScholes::MG_BlackScholes(	const MG_ZeroCurvePtr& aZC
 								,	const MG_VolatilityCurvePtr& aVol)
-								:	MG_IRPricingModel()
-								,	myZC(aZC)
+								:	MG_IRPricingModel(aZC)
 								,	myVol(aVol)
 {}
 
@@ -43,7 +40,7 @@ vector<double> MG_BlackScholes::Libor	(	const MG_Date& aRstDt, const MG_Date& aS
 	double vMat = (aRstDt.GetJulianDay()-vAsOfJul)/365.;
 	size_t vNbStates = aStates.size();
 	vector<double> vLibors(vNbStates);
-	double vLibor = myZC->Libor((aStDt.GetJulianDay()-vAsOfJul)/365., (aEdDt.GetJulianDay()-vAsOfJul)/365., aDelta);
+	double vLibor = MG_IRPricingModel::Libor(aStDt, aEdDt, aPayDt, aDelta);
 	double vVol = myVol->ComputeValue(aTenor, vMat);
 	double vExpVar = exp(-0.5*vVol*vVol*vMat);
 	double vSqrt = vVol*sqrt(vMat);

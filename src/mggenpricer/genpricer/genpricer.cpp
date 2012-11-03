@@ -2,6 +2,8 @@
 #include "mggenpricer/gensec/gensecurity.h"
 #include "mggenpricer/genmod/pricingmodel.h"
 
+#include <math.h>
+
 
 using namespace std;
 using namespace MG;
@@ -36,12 +38,27 @@ void MG_GenPricer::Price() const
 	const MG_TableWalker& vWalker = myGenSec->Walker();
 	MG_NodeManager& vManager = myGenSec->Manager();
 
+	const MG_MonteCarloMethod& vMC = dynamic_cast<MG_MonteCarloMethod&>(*myPricingModel->NumMethod());
+	const MG_Matrix& vSimul = vMC.Simulations();
+	size_t vSimulNb = vMC.SimulNb();
+	vector<double> vStates(vSimulNb);
+	for(size_t i=0; i<vSimulNb; ++i)
+		vStates[i] = vSimul.Elt(i, 0);
+
+	double vMat = MG_Date(2011, 2, 15) - MG_Date(2010, 2, 15);
+	vMat /= 365.;
+	double vVol = 0.2;
 	for(unsigned int i=0; i<vWalker.GetRows(); i++)
 	{
 		Coord c(i,(unsigned int)vWalker.GetCols()-1);
 		MG_Node* n = vManager.GetNode(c);
 		cout << vManager.Eval(n).Double() << endl;
+		/*MG_Arg vArg = vManager.Eval(n, vStates);
+		double vAvg(0.);
+		const vector<double>& vVals = vArg.VDouble();
+		for(size_t i=0; i<vSimulNb; ++i)
+			vAvg += vVals[i];
+		cout << "MC: " << vAvg/vSimulNb << endl;
+		cout << "Proxy: " << 0.4*vVol*sqrt(vMat) << endl;*/
 	}
-
-	//for(size_t j=0; j<myPricingModel->NumMethod()->
 }

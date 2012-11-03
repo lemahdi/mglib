@@ -93,7 +93,7 @@ double MG_ZeroCurve::ComputeValue(const double& aMaturity, const double& , const
 
 double MG_ZeroCurve::DiscountFactor(const double& aMaturity) const
 {
-	double vRate = myInterpolator.Eval(aMaturity);
+	double vRate = myInterpolator.Eval(aMaturity) / 100.;
 	return exp(-vRate*aMaturity);
 }
 

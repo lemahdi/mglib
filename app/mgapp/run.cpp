@@ -55,7 +55,7 @@ void TestGenPricer(void)
 	vDealDesc.push_back("17/05/2011");
 	vDealDesc.push_back("0.25");
 	vDealDesc.push_back("LIBOR(ResetDate[i],StartDate[i],EndDate[i],PayDate[i],IT[i],IT[i],0)");
-	vDealDesc.push_back("0.012");
+	vDealDesc.push_back("0.02");
 	vDealDesc.push_back("MAX(Spot[i]-Strike[i],0)");
 	// Gen Sec
 	MG_GenSecurityPtr vGenSec(new MG_GenSecurity(vDealDesc, 8));
@@ -64,7 +64,7 @@ void TestGenPricer(void)
 	// random generator
 	MG_RandomPtr vRandGen(new MG_Random(MT19937));
 	// monte carlo
-	MG_MonteCarloMethodPtr vNumMeth(new MG_MonteCarloMethod(1, 100000, vRandGen));
+	MG_MonteCarloMethodPtr vNumMeth(new MG_MonteCarloMethod(1, 1000, vRandGen));
 	vNumMeth->Simulate();
 
 	//==> Model
@@ -89,7 +89,7 @@ int main()
 
 	// Generic Pricer Test
 	TestGenPricer();
-	//return 0;
+	return 0;
 
 	// Deal Description
 	vector<string> vColNames;

@@ -28,7 +28,7 @@ public:
 	SWAP_DECL(MG_HW1F)
 	//CLONE_METHOD(MG_HW1F)
 
-	MG_HW1F(void);
+	MG_HW1F(const MG_ZeroCurvePtr& aZC);
 
 	virtual ~MG_HW1F(void);
 

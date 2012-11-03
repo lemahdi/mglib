@@ -74,8 +74,8 @@ public:
 	MG_Func(void);
 	virtual ~MG_Func(void);
 
-	virtual double Eval(const std::vector<MG_Arg>& aArgs) = 0;
-	virtual std::vector<double> Eval(const std::vector<MG_Arg>& aArgs, const std::vector<double>& aStates);
+	virtual MG_Arg Eval(const std::vector<MG_Arg>& aArgs) = 0;
+	virtual MG_Arg Eval(const std::vector<MG_Arg>& aArgs, const std::vector<double>& aStates);
 
 	virtual void SetModel(const MG_PricingModelPtr& ) {}
 };
@@ -85,7 +85,7 @@ class MG_MaxFunc : public MG_Func
 public:
 	MG_MaxFunc(void);
 
-	double Eval(const std::vector<MG_Arg>& aArgs);
+	MG_Arg Eval(const std::vector<MG_Arg>& aArgs);
 };
 
 class MG_MinFunc : public MG_Func
@@ -93,7 +93,7 @@ class MG_MinFunc : public MG_Func
 public:
 	MG_MinFunc(void);
 
-	double Eval(const std::vector<MG_Arg>& aArgs);
+	MG_Arg Eval(const std::vector<MG_Arg>& aArgs);
 };
 
 class MG_AbsFunc : public MG_Func
@@ -101,7 +101,7 @@ class MG_AbsFunc : public MG_Func
 public:
 	MG_AbsFunc(void);
 
-	double Eval(const std::vector<MG_Arg>& aArgs);
+	MG_Arg Eval(const std::vector<MG_Arg>& aArgs);
 };
 
 class MG_ExpFunc : public MG_Func
@@ -109,7 +109,7 @@ class MG_ExpFunc : public MG_Func
 public:
 	MG_ExpFunc(void);
 
-	double Eval(const std::vector<MG_Arg>& aArgs);
+	MG_Arg Eval(const std::vector<MG_Arg>& aArgs);
 };
 
 class MG_LogFunc : public MG_Func
@@ -117,7 +117,7 @@ class MG_LogFunc : public MG_Func
 public:
 	MG_LogFunc(void);
 
-	double Eval(const std::vector<MG_Arg>& aArgs);
+	MG_Arg Eval(const std::vector<MG_Arg>& aArgs);
 };
 
 class MG_PowFunc : public MG_Func
@@ -125,7 +125,7 @@ class MG_PowFunc : public MG_Func
 public:
 	MG_PowFunc(void);
 
-	double Eval(const std::vector<MG_Arg>& aArgs);
+	MG_Arg Eval(const std::vector<MG_Arg>& aArgs);
 };
 
 class MG_IfFunc : public MG_Func
@@ -133,7 +133,7 @@ class MG_IfFunc : public MG_Func
 public:
 	MG_IfFunc(void);
 
-	double Eval(const std::vector<MG_Arg>& aArgs);
+	MG_Arg Eval(const std::vector<MG_Arg>& aArgs);
 };
 
 class MG_LiborFunc : public MG_Func
@@ -141,8 +141,8 @@ class MG_LiborFunc : public MG_Func
 public:
 	MG_LiborFunc(void);
 
-	double Eval(const std::vector<MG_Arg>& aArgs);
-	std::vector<double> Eval(const std::vector<MG_Arg>& aArgs, const std::vector<double>& aStates);
+	MG_Arg Eval(const std::vector<MG_Arg>& aArgs);
+	MG_Arg Eval(const std::vector<MG_Arg>& aArgs, const std::vector<double>& aStates);
 
 	void SetModel(const MG_PricingModelPtr& aMdl);
 

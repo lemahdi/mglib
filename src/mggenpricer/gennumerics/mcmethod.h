@@ -43,6 +43,7 @@ public:
 	/* accessors */
 	inline size_t TimeSteps(void) const { return myTimeSteps; }
 	inline size_t SimulNb(void) const { return mySimulNb; }
+	inline const MG_Matrix Simulations(void) const { return mySimulations; }
 
 	/* engine */
 	void Simulate(void);

@@ -13,10 +13,10 @@ MG_Vasicek::MG_Vasicek(const MG_Vasicek& aRight) : MG_IRPricingModel(aRight)
 
 void MG_Vasicek::Swap(MG_Vasicek& aRight)
 {
-	MG_PricingModel::Swap(aRight);
+	MG_IRPricingModel::Swap(aRight);
 }
 
-MG_Vasicek::MG_Vasicek() : MG_IRPricingModel()
+MG_Vasicek::MG_Vasicek(const MG_ZeroCurvePtr& aZC) : MG_IRPricingModel(aZC)
 {}
 
 MG_Vasicek::~MG_Vasicek()

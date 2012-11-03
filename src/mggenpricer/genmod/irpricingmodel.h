@@ -12,6 +12,7 @@
 
 
 #include "mggenpricer/genmod/pricingmodel.h"
+#include "mgnova/patterns/countedptr.hpp"
 
 #include <vector>
 
@@ -21,6 +22,7 @@ MG_NAMESPACE_BEGIN
 
 class MG_Date;
 class MG_Schedule;
+class MG_ZeroCurve;
 
 
 /* Base class for models */
@@ -34,13 +36,18 @@ public:
 	SWAP_DECL(MG_IRPricingModel)
 	//CLONE_METHOD(MG_IRPricingModel)
 
-	MG_IRPricingModel(void);
+	MG_IRPricingModel(const MG_ZeroCurvePtr& aZC);
 
 	virtual ~MG_IRPricingModel(void);
+
+	//==> Accessors
+	const MG_Date& AsOf(void) const;
+	const MG_ZeroCurvePtr& ZcCurve(void) const;
 
 public:
 	//==> Underlying
 	// Libor + m
+	double Libor(const MG_Date& aStDt, const MG_Date& aEdDt, const MG_Date& aPayDt, const double& aDelta);
 	virtual std::vector<double> Libor(const MG_Date& aRstDt, const MG_Date& aStDt, const MG_Date& aEdDt, const MG_Date& aPayDt
 						, const double& aDelta, const double& aTenor, const double& aSpread
 						, const std::vector<double>& aStates) = 0;
@@ -83,6 +90,9 @@ public:
 	virtual std::vector<double> Swaption(const MG_Date& aMatDt, const MG_Schedule& aSched, const double& aTenor
 						, const double& aStrike
 						, const std::vector<double>& aStates) = 0;
+
+protected:
+	MG_ZeroCurvePtr myZC;
 };
 
 

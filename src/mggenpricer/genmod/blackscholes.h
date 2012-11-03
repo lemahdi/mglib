@@ -12,7 +12,6 @@
 
 
 #include "mggenpricer/genmod/irpricingmodel.h"
-#include "mgnova/patterns/countedptr.hpp"
 
 #include <vector>
 
@@ -20,9 +19,7 @@
 MG_NAMESPACE_BEGIN
 
 
-class MG_Date;
 class MG_Schedule;
-class MG_ZeroCurve;
 class MG_VolatilityCurve;
 
 
@@ -40,6 +37,9 @@ public:
 	MG_BlackScholes(const MG_ZeroCurvePtr& aZC, const MG_VolatilityCurvePtr& aVol);
 
 	virtual ~MG_BlackScholes(void);
+
+	//==> Accessors
+	inline const MG_VolatilityCurvePtr& VolCurve(void) const { return myVol; }
 
 public:
 	//==> Underlying
@@ -83,7 +83,6 @@ public:
 						, const std::vector<double>& aStates);
 
 private:
-	MG_ZeroCurvePtr myZC;
 	MG_VolatilityCurvePtr myVol;
 
 };

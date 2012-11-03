@@ -34,7 +34,7 @@ public:
 	SWAP_DECL(MG_Vasicek)
 	CLONE_METHOD(MG_Vasicek)
 
-	MG_Vasicek(void);
+	MG_Vasicek(const MG_ZeroCurvePtr& aZC);
 
 	virtual ~MG_Vasicek(void);
 

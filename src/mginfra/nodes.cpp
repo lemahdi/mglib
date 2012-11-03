@@ -383,19 +383,19 @@ MG_Arg MG_NodeManager::Eval(MG_Node *aN)
 			case GE_OP: vCmp = vLArg.Double() >= vRArg.Double(); break;
 			case LE_OP: vCmp = vLArg.Double() <= vRArg.Double(); break;
 
-			default: cerr << "internal error: bad node " << ((MG_CmpNode*)aN)->GetOperator() << endl;
+			default: cerr << "internal error: bad node " << ((MG_CmpNode*)aN)->GetOperator() << endl; break;
 			}
 			return MG_Arg(vCmp);
 		}
 
 		/* expressions */
-		case ADD_NODE: return MG_Arg(Eval(aN->GetL()).Double() + Eval(aN->GetR()).Double()); break;
-		case SUB_NODE: return MG_Arg(Eval(aN->GetL()).Double() - Eval(aN->GetR()).Double()); break;
-		case MUL_NODE: return MG_Arg(Eval(aN->GetL()).Double() * Eval(aN->GetR()).Double()); break;
-		case DIV_NODE: return MG_Arg(Eval(aN->GetL()).Double() / Eval(aN->GetR()).Double()); break;
-		case NEG_NODE: return MG_Arg(-Eval(aN->GetR()).Double()); break;
+		case ADD_NODE: return MG_Arg(Eval(aN->GetL()).Double() + Eval(aN->GetR()).Double());
+		case SUB_NODE: return MG_Arg(Eval(aN->GetL()).Double() - Eval(aN->GetR()).Double());
+		case MUL_NODE: return MG_Arg(Eval(aN->GetL()).Double() * Eval(aN->GetR()).Double());
+		case DIV_NODE: return MG_Arg(Eval(aN->GetL()).Double() / Eval(aN->GetR()).Double());
+		case NEG_NODE: return MG_Arg(-Eval(aN->GetR()).Double());
 
-		default: cerr << "internal error: bad node " << aN->GetNodeType() << endl;
+		default: cerr << "internal error: bad node " << aN->GetNodeType() << endl; break;
 	}
 
 	return MG_Arg();
@@ -421,8 +421,8 @@ MG_Arg MG_NodeManager::Eval(MG_Node *aN, const vector<double>& aStates)
 		/* function argument */
 		case ARG_NODE:
 			{
-			MG_Arg vArg(Eval(aN->GetL()));
-			((MG_ArgNode*)aN)->SetValue(vArg.Double());
+			MG_Arg vArg(Eval(aN->GetL(), aStates));
+			//((MG_ArgNode*)aN)->SetValue(vArg.Double());
 			return vArg;
 			}
 
@@ -433,7 +433,7 @@ MG_Arg MG_NodeManager::Eval(MG_Node *aN, const vector<double>& aStates)
 			MG_Node* vArgNode(aN->GetL());
 			do
 			{
-				vArgs.push_back(Eval(vArgNode));
+				vArgs.push_back(Eval(vArgNode, aStates));
 				vArgNode = vArgNode->GetR();
 			} while (vArgNode);
 			return MG_Arg(((MG_FuncNode *)aN)->Func()->Eval(vArgs, aStates));
@@ -454,8 +454,8 @@ MG_Arg MG_NodeManager::Eval(MG_Node *aN, const vector<double>& aStates)
 				case EQ_OP: return MG_Arg(vLArg.Double() == vRArg.Double());
 				case GE_OP: return MG_Arg(vLArg.Double() >= vRArg.Double());
 				case LE_OP: return MG_Arg(vLArg.Double() <= vRArg.Double());
-				default: cerr << "internal error: bad node " << ((MG_CmpNode*)aN)->GetOperator() << endl;
-					break;
+
+				default: cerr << "internal error: bad node " << ((MG_CmpNode*)aN)->GetOperator() << endl; break;
 				}
 			}
 
@@ -467,14 +467,14 @@ MG_Arg MG_NodeManager::Eval(MG_Node *aN, const vector<double>& aStates)
 				double vRArgD = vRArg.Double();
 				switch(((MG_CmpNode*)aN)->GetOperator())
 				{
-				case GT_OP: for(size_t i=0; i<vNbStates; ++i) vVCmp[i] = vVLArg[i] > vRArgD;
-				case LT_OP: for(size_t i=0; i<vNbStates; ++i) vVCmp[i] = vVLArg[i] < vRArgD;
-				case NE_OP: for(size_t i=0; i<vNbStates; ++i) vVCmp[i] = vVLArg[i] != vRArgD;
-				case EQ_OP: for(size_t i=0; i<vNbStates; ++i) vVCmp[i] = vVLArg[i] == vRArgD;
-				case GE_OP: for(size_t i=0; i<vNbStates; ++i) vVCmp[i] = vVLArg[i] >= vRArgD;
-				case LE_OP: for(size_t i=0; i<vNbStates; ++i) vVCmp[i] = vVLArg[i] <= vRArgD;
-				default: cerr << "internal error: bad node " << aN->GetNodeType() << endl;
-					break;
+				case GT_OP: for(size_t i=0; i<vNbStates; ++i) vVCmp[i] = vVLArg[i] > vRArgD; break;
+				case LT_OP: for(size_t i=0; i<vNbStates; ++i) vVCmp[i] = vVLArg[i] < vRArgD; break;
+				case NE_OP: for(size_t i=0; i<vNbStates; ++i) vVCmp[i] = vVLArg[i] != vRArgD; break;
+				case EQ_OP: for(size_t i=0; i<vNbStates; ++i) vVCmp[i] = vVLArg[i] == vRArgD; break;
+				case GE_OP: for(size_t i=0; i<vNbStates; ++i) vVCmp[i] = vVLArg[i] >= vRArgD; break;
+				case LE_OP: for(size_t i=0; i<vNbStates; ++i) vVCmp[i] = vVLArg[i] <= vRArgD; break;
+
+				default: cerr << "internal error: bad node " << aN->GetNodeType() << endl; break;
 				}
 			}
 			else if (vLArg.Type()==MG_Arg::ARG_DOUBLE && vRArg.Type()==MG_Arg::ARG_V_DOUBLE)
@@ -483,14 +483,14 @@ MG_Arg MG_NodeManager::Eval(MG_Node *aN, const vector<double>& aStates)
 				double vLArgD = vLArg.Double();
 				switch(((MG_CmpNode*)aN)->GetOperator())
 				{
-				case GT_OP: for(size_t i=0; i<vNbStates; ++i) vVCmp[i] = vLArgD > vVRArg[i];
-				case LT_OP: for(size_t i=0; i<vNbStates; ++i) vVCmp[i] = vLArgD < vVRArg[i];
-				case NE_OP: for(size_t i=0; i<vNbStates; ++i) vVCmp[i] = vLArgD != vVRArg[i];
-				case EQ_OP: for(size_t i=0; i<vNbStates; ++i) vVCmp[i] = vLArgD == vVRArg[i];
-				case GE_OP: for(size_t i=0; i<vNbStates; ++i) vVCmp[i] = vLArgD >= vVRArg[i];
-				case LE_OP: for(size_t i=0; i<vNbStates; ++i) vVCmp[i] = vLArgD <= vVRArg[i];
-				default: cerr << "internal error: bad node " << aN->GetNodeType() << endl;
-					break;
+				case GT_OP: for(size_t i=0; i<vNbStates; ++i) vVCmp[i] = vLArgD > vVRArg[i]; break;
+				case LT_OP: for(size_t i=0; i<vNbStates; ++i) vVCmp[i] = vLArgD < vVRArg[i]; break;
+				case NE_OP: for(size_t i=0; i<vNbStates; ++i) vVCmp[i] = vLArgD != vVRArg[i]; break;
+				case EQ_OP: for(size_t i=0; i<vNbStates; ++i) vVCmp[i] = vLArgD == vVRArg[i]; break;
+				case GE_OP: for(size_t i=0; i<vNbStates; ++i) vVCmp[i] = vLArgD >= vVRArg[i]; break;
+				case LE_OP: for(size_t i=0; i<vNbStates; ++i) vVCmp[i] = vLArgD <= vVRArg[i]; break;
+
+				default: cerr << "internal error: bad node " << aN->GetNodeType() << endl; break;
 				}
 			}
 			else if (vLArg.Type()==MG_Arg::ARG_V_DOUBLE && vRArg.Type()==MG_Arg::ARG_V_DOUBLE)
@@ -499,14 +499,14 @@ MG_Arg MG_NodeManager::Eval(MG_Node *aN, const vector<double>& aStates)
 				const vector<double>& vVRArg = vRArg.VDouble();
 				switch(((MG_CmpNode*)aN)->GetOperator())
 				{
-				case GT_OP: for(size_t i=0; i<vNbStates; ++i) vVCmp[i] = vVLArg[i] > vVRArg[i];
-				case LT_OP: for(size_t i=0; i<vNbStates; ++i) vVCmp[i] = vVLArg[i] < vVRArg[i];
-				case NE_OP: for(size_t i=0; i<vNbStates; ++i) vVCmp[i] = vVLArg[i] != vVRArg[i];
-				case EQ_OP: for(size_t i=0; i<vNbStates; ++i) vVCmp[i] = vVLArg[i] == vVRArg[i];
-				case GE_OP: for(size_t i=0; i<vNbStates; ++i) vVCmp[i] = vVLArg[i] >= vVRArg[i];
-				case LE_OP: for(size_t i=0; i<vNbStates; ++i) vVCmp[i] = vVLArg[i] <= vVRArg[i];
-				default: cerr << "internal error: bad node " << aN->GetNodeType() << endl;
-					break;
+				case GT_OP: for(size_t i=0; i<vNbStates; ++i) vVCmp[i] = vVLArg[i] > vVRArg[i]; break;
+				case LT_OP: for(size_t i=0; i<vNbStates; ++i) vVCmp[i] = vVLArg[i] < vVRArg[i]; break;
+				case NE_OP: for(size_t i=0; i<vNbStates; ++i) vVCmp[i] = vVLArg[i] != vVRArg[i]; break;
+				case EQ_OP: for(size_t i=0; i<vNbStates; ++i) vVCmp[i] = vVLArg[i] == vVRArg[i]; break;
+				case GE_OP: for(size_t i=0; i<vNbStates; ++i) vVCmp[i] = vVLArg[i] >= vVRArg[i]; break;
+				case LE_OP: for(size_t i=0; i<vNbStates; ++i) vVCmp[i] = vVLArg[i] <= vVRArg[i]; break;
+
+				default: cerr << "internal error: bad node " << aN->GetNodeType() << endl; break;
 				}
 			}
 			return MG_Arg(vVCmp);
@@ -530,8 +530,8 @@ MG_Arg MG_NodeManager::Eval(MG_Node *aN, const vector<double>& aStates)
 				case MUL_NODE: return MG_Arg(vLArg.Double() * vRArg.Double());
 				case DIV_NODE: return MG_Arg(vLArg.Double() / vRArg.Double());
 				case NEG_NODE: return MG_Arg(-vRArg.Double());
-				default: cerr << "internal error: bad node " << aN->GetNodeType() << endl;
-					break;
+
+				default: cerr << "internal error: bad node " << aN->GetNodeType() << endl; break;
 				}
 			}
 
@@ -543,13 +543,13 @@ MG_Arg MG_NodeManager::Eval(MG_Node *aN, const vector<double>& aStates)
 				double vRArgD = vRArg.Double();
 				switch(aN->GetNodeType())
 				{
-				case ADD_NODE: for(size_t i=0; i<vNbStates; ++i) vVArithOp[i] = vVLArg[i] + vRArgD;
-				case SUB_NODE: for(size_t i=0; i<vNbStates; ++i) vVArithOp[i] = vVLArg[i] - vRArgD;
-				case MUL_NODE: for(size_t i=0; i<vNbStates; ++i) vVArithOp[i] = vVLArg[i] * vRArgD;
-				case DIV_NODE: for(size_t i=0; i<vNbStates; ++i) vVArithOp[i] = vVLArg[i] / vRArgD;
+				case ADD_NODE: for(size_t i=0; i<vNbStates; ++i) vVArithOp[i] = vVLArg[i] + vRArgD; break;
+				case SUB_NODE: for(size_t i=0; i<vNbStates; ++i) vVArithOp[i] = vVLArg[i] - vRArgD; break;
+				case MUL_NODE: for(size_t i=0; i<vNbStates; ++i) vVArithOp[i] = vVLArg[i] * vRArgD; break;
+				case DIV_NODE: for(size_t i=0; i<vNbStates; ++i) vVArithOp[i] = vVLArg[i] / vRArgD; break;
 				case NEG_NODE: return MG_Arg(-vRArgD);
-				default: cerr << "internal error: bad node " << aN->GetNodeType() << endl;
-					break;
+
+				default: cerr << "internal error: bad node " << aN->GetNodeType() << endl; break;
 				}
 			}
 			else if (vLArg.Type()==MG_Arg::ARG_DOUBLE && vRArg.Type()==MG_Arg::ARG_V_DOUBLE)
@@ -558,13 +558,13 @@ MG_Arg MG_NodeManager::Eval(MG_Node *aN, const vector<double>& aStates)
 				double vLArgD = vLArg.Double();
 				switch(aN->GetNodeType())
 				{
-				case ADD_NODE: for(size_t i=0; i<vNbStates; ++i) vVArithOp[i] = vLArgD + vVRArg[i];
-				case SUB_NODE: for(size_t i=0; i<vNbStates; ++i) vVArithOp[i] = vLArgD - vVRArg[i];
-				case MUL_NODE: for(size_t i=0; i<vNbStates; ++i) vVArithOp[i] = vLArgD * vVRArg[i];
-				case DIV_NODE: for(size_t i=0; i<vNbStates; ++i) vVArithOp[i] = vLArgD / vVRArg[i];
-				case NEG_NODE: for(size_t i=0; i<vNbStates; ++i) vVArithOp[i] = -vVRArg[i];
-				default: cerr << "internal error: bad node " << aN->GetNodeType() << endl;
-					break;
+				case ADD_NODE: for(size_t i=0; i<vNbStates; ++i) vVArithOp[i] = vLArgD + vVRArg[i]; break;
+				case SUB_NODE: for(size_t i=0; i<vNbStates; ++i) vVArithOp[i] = vLArgD - vVRArg[i]; break;
+				case MUL_NODE: for(size_t i=0; i<vNbStates; ++i) vVArithOp[i] = vLArgD * vVRArg[i]; break;
+				case DIV_NODE: for(size_t i=0; i<vNbStates; ++i) vVArithOp[i] = vLArgD / vVRArg[i]; break;
+				case NEG_NODE: for(size_t i=0; i<vNbStates; ++i) vVArithOp[i] = -vVRArg[i]; break;
+
+				default: cerr << "internal error: bad node " << aN->GetNodeType() << endl; break;
 				}
 			}
 			else if (vLArg.Type()==MG_Arg::ARG_V_DOUBLE && vRArg.Type()==MG_Arg::ARG_V_DOUBLE)
@@ -573,13 +573,13 @@ MG_Arg MG_NodeManager::Eval(MG_Node *aN, const vector<double>& aStates)
 				const vector<double>& vVRArg = vRArg.VDouble();
 				switch(aN->GetNodeType())
 				{
-				case ADD_NODE: for(size_t i=0; i<vNbStates; ++i) vVArithOp[i] = vVLArg[i] + vVRArg[i];
-				case SUB_NODE: for(size_t i=0; i<vNbStates; ++i) vVArithOp[i] = vVLArg[i] - vVRArg[i];
-				case MUL_NODE: for(size_t i=0; i<vNbStates; ++i) vVArithOp[i] = vVLArg[i] * vVRArg[i];
-				case DIV_NODE: for(size_t i=0; i<vNbStates; ++i) vVArithOp[i] = vVLArg[i] / vVRArg[i];
-				case NEG_NODE: for(size_t i=0; i<vNbStates; ++i) vVArithOp[i] = -vVRArg[i];
-				default: cerr << "internal error: bad node " << aN->GetNodeType() << endl;
-					break;
+				case ADD_NODE: for(size_t i=0; i<vNbStates; ++i) vVArithOp[i] = vVLArg[i] + vVRArg[i]; break;
+				case SUB_NODE: for(size_t i=0; i<vNbStates; ++i) vVArithOp[i] = vVLArg[i] - vVRArg[i]; break;
+				case MUL_NODE: for(size_t i=0; i<vNbStates; ++i) vVArithOp[i] = vVLArg[i] * vVRArg[i]; break;
+				case DIV_NODE: for(size_t i=0; i<vNbStates; ++i) vVArithOp[i] = vVLArg[i] / vVRArg[i]; break;
+				case NEG_NODE: for(size_t i=0; i<vNbStates; ++i) vVArithOp[i] = -vVRArg[i]; break;
+
+				default: cerr << "internal error: bad node " << aN->GetNodeType() << endl; break;
 				}
 			}
 			return MG_Arg(vVArithOp);

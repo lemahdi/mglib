@@ -28,8 +28,8 @@ MG_MonteCarloMethod::MG_MonteCarloMethod(	const size_t		& aTimeSteps
 										,	const size_t		& aSimulNb
 										,	const MG_RandomPtr& aRndGen)
 										:	MG_NumericalMethod()
-										,	myTimeSteps		(aTimeSteps)
-										,	mySimulNb		(aSimulNb)
+										,	myTimeSteps		(aTimeSteps) // columns
+										,	mySimulNb		(aSimulNb) // rows
 										,	myRandGen		(aRndGen)
 										,	mySimulations	(aSimulNb, aTimeSteps)
 {}
