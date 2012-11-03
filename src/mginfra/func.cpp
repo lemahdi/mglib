@@ -18,8 +18,7 @@ MG_Func::~MG_Func() {}
 
 MG_Arg MG_Func::Eval(const vector<MG_Arg> &aArgs, const vector<double> &)
 {
-	MG_Arg vArg(Eval(aArgs));
-	return MG_Arg(vector<double>(1, vArg.Double()));
+	return Eval(aArgs);
 }
 
 

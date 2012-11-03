@@ -64,7 +64,7 @@ void TestGenPricer(void)
 	// random generator
 	MG_RandomPtr vRandGen(new MG_Random(MT19937));
 	// monte carlo
-	MG_MonteCarloMethodPtr vNumMeth(new MG_MonteCarloMethod(1, 1000, vRandGen));
+	MG_MonteCarloMethodPtr vNumMeth(new MG_MonteCarloMethod(1, 10000, vRandGen));
 	vNumMeth->Simulate();
 
 	//==> Model

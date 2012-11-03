@@ -45,20 +45,22 @@ void MG_GenPricer::Price() const
 	for(size_t i=0; i<vSimulNb; ++i)
 		vStates[i] = vSimul.Elt(i, 0);
 
-	double vMat = MG_Date(2011, 2, 15) - MG_Date(2010, 2, 15);
-	vMat /= 365.;
-	double vVol = 0.2;
 	for(unsigned int i=0; i<vWalker.GetRows(); i++)
 	{
 		Coord c(i,(unsigned int)vWalker.GetCols()-1);
 		MG_Node* n = vManager.GetNode(c);
-		cout << vManager.Eval(n).Double() << endl;
-		/*MG_Arg vArg = vManager.Eval(n, vStates);
+		//cout << vManager.Eval(n).Double() << endl;
+		MG_Arg vArg = vManager.Eval(n, vStates);
 		double vAvg(0.);
 		const vector<double>& vVals = vArg.VDouble();
 		for(size_t i=0; i<vSimulNb; ++i)
 			vAvg += vVals[i];
 		cout << "MC: " << vAvg/vSimulNb << endl;
-		cout << "Proxy: " << 0.4*vVol*sqrt(vMat) << endl;*/
+		
+		double vMat = MG_Date(2011, 2, 15) - MG_Date(2010, 2, 15);
+		vMat /= 365.;
+		double vVol = 0.2;
+		double vFwd = 0.02;
+		cout << "Proxy: " << 0.4*vFwd*exp(-0.02*vMat)*vVol*sqrt(vMat) << endl;
 	}
 }
