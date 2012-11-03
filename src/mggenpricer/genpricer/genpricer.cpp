@@ -40,6 +40,8 @@ void MG_GenPricer::Price() const
 	{
 		Coord c(i,(unsigned int)vWalker.GetCols()-1);
 		MG_Node* n = vManager.GetNode(c);
-		cout << vManager.Eval(n) << endl;
+		cout << vManager.Eval(n).Double() << endl;
 	}
+
+	//for(size_t j=0; j<myPricingModel->NumMethod()->
 }

@@ -35,7 +35,7 @@ using namespace MG;
 
 void TestGenPricer(void)
 {
-	MG_Date vAsOf(15, 2, 2010);
+	MG_Date vAsOf(2010, 2, 15);
 
 	//==> Gen Sec
 	vector<string> vDealDesc;
@@ -55,7 +55,7 @@ void TestGenPricer(void)
 	vDealDesc.push_back("17/05/2011");
 	vDealDesc.push_back("0.25");
 	vDealDesc.push_back("LIBOR(ResetDate[i],StartDate[i],EndDate[i],PayDate[i],IT[i],IT[i],0)");
-	vDealDesc.push_back("2");
+	vDealDesc.push_back("0.012");
 	vDealDesc.push_back("MAX(Spot[i]-Strike[i],0)");
 	// Gen Sec
 	MG_GenSecurityPtr vGenSec(new MG_GenSecurity(vDealDesc, 8));
@@ -89,7 +89,7 @@ int main()
 
 	// Generic Pricer Test
 	TestGenPricer();
-	return 0;
+	//return 0;
 
 	// Deal Description
 	vector<string> vColNames;
@@ -156,7 +156,7 @@ int main()
 	{
 		Coord c(i,(unsigned int)walker.GetCols()-1);
 		MG_Node* n = manager.GetNode(c);
-		cout << manager.Eval(n) << endl;
+		cout << manager.Eval(n).Double() << endl;
 	}
 
 	char ch;

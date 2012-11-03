@@ -265,7 +265,8 @@ private:
 
 public:
 	/* Evaluating */
-	double Eval(MG_Node* aN);
+	MG_Arg Eval(MG_Node* aN);
+	MG_Arg Eval(MG_Node* aN, const std::vector<double>& aStates);
 
 private:
 	/* Map of all nodes */

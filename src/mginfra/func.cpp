@@ -16,75 +16,112 @@ MG_Func::MG_Func() {}
 
 MG_Func::~MG_Func() {}
 
+vector<double> MG_Func::Eval(const vector<MG_Arg> &aArgs, const vector<double> &)
+{
+	return vector<double>(1, Eval(aArgs));
+}
+
 
 MG_MaxFunc::MG_MaxFunc() : MG_Func() {}
 
-double MG_MaxFunc::Eval(const vector<double>& aArgs)
+double MG_MaxFunc::Eval(const vector<MG_Arg>& aArgs)
 {
 	assert(aArgs.size() == 2);
-	return aArgs[0]>aArgs[1] ? aArgs[0] : aArgs[1];
+	assert(aArgs[0].Type() == MG_Arg::ARG_DOUBLE);
+	assert(aArgs[1].Type() == MG_Arg::ARG_DOUBLE);
+
+	return aArgs[0].Double()>aArgs[1].Double() ? aArgs[0].Double() : aArgs[1].Double();
 }
 
 
 MG_MinFunc::MG_MinFunc() : MG_Func() {}
 
-double MG_MinFunc::Eval(const vector<double>& aArgs)
+double MG_MinFunc::Eval(const vector<MG_Arg>& aArgs)
 {
 	assert(aArgs.size() == 2);
-	return aArgs[0]<aArgs[1] ? aArgs[0] : aArgs[1];
+	assert(aArgs[0].Type() == MG_Arg::ARG_DOUBLE);
+	assert(aArgs[1].Type() == MG_Arg::ARG_DOUBLE);
+
+	return aArgs[0].Double()<aArgs[1].Double() ? aArgs[0].Double() : aArgs[1].Double();
 }
 
 
 MG_AbsFunc::MG_AbsFunc() : MG_Func() {}
 
-double MG_AbsFunc::Eval(const vector<double>& aArgs)
+double MG_AbsFunc::Eval(const vector<MG_Arg>& aArgs)
 {
 	assert(aArgs.size() == 1);
-	return fabs(aArgs[0]);
+	assert(aArgs[0].Type() == MG_Arg::ARG_DOUBLE);
+
+	return fabs(aArgs[0].Double());
 }
 
 
 MG_ExpFunc::MG_ExpFunc() : MG_Func() {}
 
-double MG_ExpFunc::Eval(const vector<double>& aArgs)
+double MG_ExpFunc::Eval(const vector<MG_Arg>& aArgs)
 {
 	assert(aArgs.size() == 1);
-	return exp(aArgs[0]);
+	assert(aArgs[0].Type() == MG_Arg::ARG_DOUBLE);
+
+	return exp(aArgs[0].Double());
 }
 
 
 MG_LogFunc::MG_LogFunc() : MG_Func() {}
 
-double MG_LogFunc::Eval(const vector<double>& aArgs)
+double MG_LogFunc::Eval(const vector<MG_Arg>& aArgs)
 {
 	assert(aArgs.size() == 1);
-	return log(aArgs[0]);
+	assert(aArgs[0].Type() == MG_Arg::ARG_DOUBLE);
+
+	return log(aArgs[0].Double());
 }
 
 MG_PowFunc::MG_PowFunc() : MG_Func() {}
 
-double MG_PowFunc::Eval(const vector<double>& aArgs)
+double MG_PowFunc::Eval(const vector<MG_Arg>& aArgs)
 {
 	assert(aArgs.size() == 2);
-	return pow(aArgs[0],aArgs[1]);
+	assert(aArgs[0].Type() == MG_Arg::ARG_DOUBLE);
+	assert(aArgs[1].Type() == MG_Arg::ARG_DOUBLE);
+
+	return pow(aArgs[0].Double(), aArgs[1].Double());
 }
 
 MG_IfFunc::MG_IfFunc() : MG_Func() {}
 
-double MG_IfFunc::Eval(const vector<double>& aArgs)
+double MG_IfFunc::Eval(const vector<MG_Arg>& aArgs)
 {
 	assert(aArgs.size() == 3);
-	return aArgs[0] ? aArgs[1] : aArgs[2];
+	assert(aArgs[0].Type() == MG_Arg::ARG_BOOL);
+	assert(aArgs[1].Type() == MG_Arg::ARG_DOUBLE);
+	assert(aArgs[2].Type() == MG_Arg::ARG_DOUBLE);
+
+	return aArgs[0].Bool() ? aArgs[1].Double() : aArgs[2].Double();
 }
 
 MG_LiborFunc::MG_LiborFunc() : MG_Func() {}
 
-double MG_LiborFunc::Eval(const vector<double>& aArgs)
+double MG_LiborFunc::Eval(const vector<MG_Arg>& aArgs)
+{
+	return Eval(aArgs, vector<double>(1,0.))[0];
+}
+
+vector<double> MG_LiborFunc::Eval(const vector<MG_Arg>& aArgs, const vector<double>& aStates)
 {
 	assert(aArgs.size() == 7);
-	return myModel->Libor(MG_Date((long)(aArgs[0])), MG_Date((long)(aArgs[1]))
-						, MG_Date((long)(aArgs[2])), MG_Date((long)(aArgs[3]))
-						, aArgs[4], aArgs[5], aArgs[6], vector<double>(1,0.))[0];
+	assert(aArgs[0].Type() == MG_Arg::ARG_DATE);
+	assert(aArgs[1].Type() == MG_Arg::ARG_DATE);
+	assert(aArgs[2].Type() == MG_Arg::ARG_DATE);
+	assert(aArgs[3].Type() == MG_Arg::ARG_DATE);
+	assert(aArgs[4].Type() == MG_Arg::ARG_DOUBLE);
+	assert(aArgs[5].Type() == MG_Arg::ARG_DOUBLE);
+	assert(aArgs[6].Type() == MG_Arg::ARG_DOUBLE);
+
+	return myModel->Libor(aArgs[0].Date(), aArgs[1].Date()
+						, aArgs[2].Date(), aArgs[3].Date()
+						, aArgs[4].Double(), aArgs[5].Double(), aArgs[6].Double(), aStates);
 }
 
 void MG_LiborFunc::SetModel(const MG_PricingModelPtr& aMdl)
