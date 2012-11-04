@@ -1,5 +1,6 @@
 #include "mginfra/nodes.h"
 #include "mginfra/func.h"
+#include "mginfra/arg.h"
 
 #include <algorithm>
 

@@ -3,6 +3,7 @@
 #include "mggenpricer/genmod/pricingmodel.h"
 
 #include "mgnova/numerical/distributions.h"
+#include "mginfra/arg.h"
 
 #include <math.h>
 

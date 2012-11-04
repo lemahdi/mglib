@@ -39,6 +39,7 @@
 #include <iostream>
 using namespace std;
 #include "mginfra/nodes.h"
+#include "mginfra/arg.h"
 
 #pragma warning(push)
 #pragma warning(disable:4065)
@@ -559,7 +560,7 @@ namespace yy {
 #line 93 "src/mginfra/my_parser.ypp"
     {
 		cout << "= ";
-		cout << manager.Eval((yysemantic_stack_[(3) - (2)].nval));
+		cout << manager.Eval((yysemantic_stack_[(3) - (2)].nval)).Double();
 		walker.IncCurrentCol();
 		cout << endl << "> ";
 	}

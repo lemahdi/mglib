@@ -10,6 +10,7 @@
 #include <iostream>
 using namespace std;
 #include "mginfra/nodes.h"
+#include "mginfra/arg.h"
 
 #pragma warning(push)
 #pragma warning(disable:4065)
@@ -92,7 +93,7 @@ arglist:					{ $$ = NULL; }
 calclist: /* nothing */
 	| calclist exp EOL {
 		cout << "= ";
-		cout << manager.Eval($2);
+		cout << manager.Eval($2).Double();
 		walker.IncCurrentCol();
 		cout << endl << "> ";
 	}

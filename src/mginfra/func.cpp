@@ -1,11 +1,8 @@
 #include "mginfra/func.h"
-#include "mgnova/glob/date.h"
+#include "mginfra/arg.h"
 #include "mggenpricer/genmod/irpricingmodel.h"
 
-#include <map>
-#include <string>
 #include <math.h>
-#include <assert.h>
 
 
 using namespace std;
