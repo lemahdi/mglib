@@ -156,7 +156,7 @@ void yy_delete_buffer (YY_BUFFER_STATE b  );
 #define MG_FuncBuilderPtr				CountedPtr<MG::MG_FuncBuilder>
 #define MG_GenSecurityPtr				CountedPtr<MG::MG_GenSecurity>
 #define MG_RandomPtr					CountedPtr<MG::MG_Random>
-#define MG_SamplerPtr					CountedPtr<MG::MG_Sampler>
+#define MG_RandDistPtr					CountedPtr<MG::MG_RandDist>
 #define MG_CdfNormalPtr					CountedPtr<MG::MG_CdfNormal>
 #define MG_NumericalMethodPtr			CountedPtr<MG::MG_NumericalMethod>
 #define MG_MonteCarloMethodPtr			CountedPtr<MG::MG_MonteCarloMethod>

@@ -56,16 +56,18 @@ void TestGenPricer(void)
 	vDealDesc.push_back("17/05/2011");
 	vDealDesc.push_back("0.25");
 	vDealDesc.push_back("LIBOR(ResetDate[i],StartDate[i],EndDate[i],PayDate[i],IT[i],IT[i],0)");
-	vDealDesc.push_back("0.01955");
+	vDealDesc.push_back("0.01955");//
 	vDealDesc.push_back("MAX(Spot[i]-Strike[i],0)");
+	//vDealDesc.push_back("Spot[i]");//("MAX(Spot[i]-Strike[i],0)");
 	// Gen Sec
 	MG_GenSecurityPtr vGenSec(new MG_GenSecurity(vDealDesc, 8));
 
 	//==> Num Method
 	// random generator
 	MG_RandomPtr vRandGen(new MG_Random(MT19937));
+	MG_RandDistPtr vDist(new MG_NormalDist(vRandGen, MG_NormalDist::ZIGGURAT));
 	// monte carlo
-	MG_MonteCarloMethodPtr vNumMeth(new MG_MonteCarloMethod(1, 10000, vRandGen));
+	MG_MonteCarloMethodPtr vNumMeth(new MG_MonteCarloMethod(1, 10000, vDist));
 	vNumMeth->Simulate();
 
 	//==> Model
@@ -204,63 +206,6 @@ int main()
 	}
 
 	cin >> ch;
-
-	// GEB : debut test generateur normale
-	/*int nbSimul = 10;
-	int nbScenarK = 1001;
-	std::vector<double> PrixCalls, ScenraK, PrixBS;
-	PrixCalls.resize(nbScenarK,0.);
-	ScenraK.resize(nbScenarK,0.);
-	PrixBS.resize(nbScenarK,0.);
-	double Kmin = 0.;
-	double Kmax = 5.;
-	double PasK = (Kmax-Kmin)/(nbScenarK-1);
-	for (int j = 0; j < nbScenarK; j++) {
-		ScenraK[j] = Kmin + j*PasK;
-	}
-
-	MG_ParkMillerRand* vRand = new MG_ParkMillerRand();
-	MG_RandomPtr vRandPtr(vRand);
-	MG_SamplerPtr vSampler(new MG_BoxMullerSampler(1, vRandPtr));
-	//vSampler = MG_SamplerPtr(new MG_AntitheticSampler(1, vSampler));
-	std::vector<double> x, xanti;
-	double esp = 0.;
-	double Vol = 0.3;
-	double T = 1.;
-	double S, Santi, d1, d0;
-
-	for (int i = 0; i < nbSimul; i++) {
-		x = vSampler->GenerateSample();
-		xanti = vSampler->GetSampleAntithetic(x);
-		S = exp(-0.5*Vol*Vol*T + Vol*sqrt(T)*x[0]);
-		Santi = exp(-0.5*Vol*Vol*T + Vol*sqrt(T)*xanti[0]);
-		for (int j = 0; j < nbScenarK; j++) {
-			PrixCalls[j] += 0.5*max(S-ScenraK[j],0.)/nbSimul; 
-			PrixCalls[j] += 0.5*max(Santi-ScenraK[j],0.)/nbSimul; 
-		}
-		//esp += (0.5*x[0] + 0.5*xanti[0])/nbSimul;
-	}
-
-	for (int j = 0; j < nbScenarK; j++) {
-		d1 = -log(ScenraK[j]) + 0.5*Vol*Vol*T;
-		d1 /= Vol*sqrt(T);
-		d0 = d1 - Vol*sqrt(T);
-		PrixBS[j] = MG_SCdfNormal::Instance()->CumulativeNormal(d1) - ScenraK[j]*MG_SCdfNormal::Instance()->CumulativeNormal(d0);
-	}
-
-#ifdef WIN32
-	FILE* f(NULL);
-	fopen_s(&f,"TestNormal.data","w");
-#else
-	FILE* f = fopen("TestNormal.data","w");
-#endif
-	if (f) {
-		for (int j = 0; j < nbScenarK; j++) {
-			fprintf(f,"%f/n",PrixCalls[j]); 
-		}
-	}
-	fclose(f);*/
-
 
 	// Regression
 	{

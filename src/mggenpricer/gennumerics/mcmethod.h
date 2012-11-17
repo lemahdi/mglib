@@ -19,8 +19,7 @@
 MG_NAMESPACE_BEGIN
 
 
-class MG_MonteCarlo;
-class MG_Random;
+class MG_RandDist;
 
 
 /* Base class for models */
@@ -36,7 +35,7 @@ public:
 
 	MG_MonteCarloMethod	(	const size_t		& aTimeSteps
 						,	const size_t		& aSimulNb
-						,	const MG_RandomPtr	& aRndGen);
+						,	const MG_RandDistPtr& aDist);
 
 	virtual ~MG_MonteCarloMethod(void);
 
@@ -51,7 +50,7 @@ public:
 private:
 	size_t myTimeSteps;
 	size_t mySimulNb;
-	MG_RandomPtr myRandGen;
+	MG_RandDistPtr myDist;
 
 	MG_Matrix mySimulations;
 };

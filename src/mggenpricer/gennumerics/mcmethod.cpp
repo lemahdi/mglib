@@ -1,5 +1,5 @@
 #include "mggenpricer/gennumerics/mcmethod.h"
-#include "mgnova/numerical/random.h"
+#include "mgnova/numerical/distributions.h"
 
 
 using namespace std;
@@ -20,26 +20,26 @@ void MG_MonteCarloMethod::Swap(MG_MonteCarloMethod& aRight)
 	MG_NumericalMethod::Swap(aRight);
 	std::swap(myTimeSteps, aRight.myTimeSteps);
 	std::swap(mySimulNb, aRight.mySimulNb);
-	myRandGen.Swap(aRight.myRandGen);
+	myDist.Swap(aRight.myDist);
 	mySimulations.Swap(aRight.mySimulations);
 }
 
 MG_MonteCarloMethod::MG_MonteCarloMethod(	const size_t		& aTimeSteps
 										,	const size_t		& aSimulNb
-										,	const MG_RandomPtr& aRndGen)
+										,	const MG_RandDistPtr& aDist)
 										:	MG_NumericalMethod()
 										,	myTimeSteps		(aTimeSteps) // columns
 										,	mySimulNb		(aSimulNb) // rows
-										,	myRandGen		(aRndGen)
+										,	myDist			(aDist)
 										,	mySimulations	(aSimulNb, aTimeSteps)
 {}
 
 MG_MonteCarloMethod::~MG_MonteCarloMethod()
 {}
 
-void MG_MonteCarloMethod::Simulate()
+void MG_MonteCarloMethod::Simulate(void)
 {
 	for(size_t i=0; i<mySimulNb; ++i)
 		for(size_t j=0; j<myTimeSteps; ++j)
-			mySimulations(i, j) = myRandGen->DrawUniform();
+			mySimulations(i, j) = myDist->Draw();
 }

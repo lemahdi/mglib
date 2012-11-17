@@ -2,6 +2,8 @@
 #include "mggenpricer/gensec/gensecurity.h"
 #include "mggenpricer/genmod/pricingmodel.h"
 
+#include "mggenpricer/genmod/irpricingmodel.h"
+
 #include "mgnova/numerical/distributions.h"
 #include "mginfra/arg.h"
 
@@ -58,17 +60,27 @@ void MG_GenPricer::Price() const
 		const vector<double>& vVals = *vArg.VDouble();
 		for(size_t i=0; i<vSimulNb; ++i)
 			vAvg += vVals[i];
+		vAvg /= vSimulNb;
+
+		MG_Date vRstDt(2011, 2, 15);
+		MG_Date vStDt(2011, 2, 17);
+		MG_Date vEdDt(2011, 5, 17);
 		
 		double vMat = MG_Date(2011, 2, 15) - MG_Date(2010, 2, 15);
 		vMat /= 365.;
 		double vVol = 0.2;
-		double vFwd = 0.01955;
+		double vFwd = dynamic_cast<MG_IRPricingModel&>(*myPricingModel).Libor(vStDt, vEdDt, vEdDt, 0.25);
+		double vStrike = 0.01955;
 
 		double vD1 = 0.5*vVol*sqrt(vMat);
 		double vD2 = -vD1;
 		
-		cout << "MC: " << vAvg/vSimulNb/**exp(-0.02*vMat)*//vFwd << endl;
+		double vMC = vAvg/vFwd;
+		double vBS = (vFwd*MG_NormalDist::CdfFunc(vD1) - vStrike*MG_NormalDist::CdfFunc(vD2)) / vFwd;
+		cout << "MC: " << vMC/**exp(-0.02*vMat)*/ << endl;
 		cout << "Proxy: " << 0.4*vFwd/**exp(-0.02*vMat)*/*vVol*sqrt(vMat)/vFwd << endl;
-		cout << "BS: " << vFwd * (MG_NormalDist::CdfFunc(vD1)-MG_NormalDist::CdfFunc(vD2))/vFwd << endl;
+		cout << "BS: " << vBS << endl;
+
+		cout << "MC-BS: " << (vMC-vBS)*10000. << " bp" << endl;
 	}
 }

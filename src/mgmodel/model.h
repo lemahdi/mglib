@@ -111,7 +111,7 @@ public:
 				,	const DAYCOUNT_NAME	& aDayCount
 				,	const CALENDAR_NAME	& aCal) const;
 	double OptionPrice	(	const MG_CF::OPTION_TYPE& aOptType
-						,	const double			&aFwd
+						,	const double			& aFwd
 						,	const double			& aTenorStrike
 						,	const double			& aMaturity) const;
 
