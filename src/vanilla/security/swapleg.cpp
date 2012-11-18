@@ -23,15 +23,16 @@ void MG_SwapLeg::Swap(MG_SwapLeg& aRight)
 	myIRIndex.Swap(aRight.myIRIndex);
 	swap(mySpreadOrRate, aRight.mySpreadOrRate);
 	myRawFwd.swap(aRight.myRawFwd);
-	myDfs.swap(aRight.myDfs);
 }
 
-MG_SwapLeg::MG_SwapLeg	(	const MG_GenericDate& aStDt
-						,	const MG_GenericDate& aEdDt
-						,	const RCVPAY_NAME	& aRcvPay
-						,	const MG_IRIndex	& aIRIndex
-						,	const double		& aSpdOrRate)
-						:	MG_IRSecurity()
+MG_SwapLeg::MG_SwapLeg	(	const MG_GenericDate	& aStDt
+						,	const MG_GenericDate	& aEdDt
+						,	const RCVPAY_NAME		& aRcvPay
+						,	const MG_IRIndex		& aIRIndex
+						,	const double			& aSpdOrRate
+						,	const NX_NAME			& aNX
+						,	const MG_TermStructure	& aNotional)
+						:	MG_IRSecurity(aNX, aNotional)
 						,	myRcvPay		(aRcvPay)
 						,	myIRIndex		(aIRIndex)
 						,	mySpreadOrRate	(aSpdOrRate)
@@ -40,10 +41,12 @@ MG_SwapLeg::MG_SwapLeg	(	const MG_GenericDate& aStDt
 	GenerateSchedule(aStDt, aEdDt, aIRIndex);
 }
 
-MG_SwapLeg::MG_SwapLeg	(	const MG_Schedule	& aSched
-						,	const RCVPAY_NAME	& aRcvPay
-						,	const double		& aSpdOrRate)
-						:	MG_IRSecurity(aSched)
+MG_SwapLeg::MG_SwapLeg	(	const MG_Schedule		& aSched
+						,	const RCVPAY_NAME		& aRcvPay
+						,	const double			& aSpdOrRate
+						,	const NX_NAME			& aNX
+						,	const MG_TermStructure	& aNotional)
+						:	MG_IRSecurity(aSched, aNX, aNotional)
 						,	myRcvPay		(aRcvPay)
 						,	myIRIndex		(aSched.GetIRIndex())
 						,	mySpreadOrRate	(aSpdOrRate)
@@ -54,47 +57,58 @@ MG_SwapLeg::MG_SwapLeg	(	const MG_Schedule	& aSched
 MG_SwapLeg::~MG_SwapLeg()
 {}
 
+double MG_SwapLeg::Level(const MG_Model& aMdl) const
+{
+	MG_SwapLeg vSwapLeg(*this);
+	vSwapLeg.PrePricing(aMdl);
+
+	MG_Schedule& vSched = vSwapLeg.mySchedule;
+	vector<double> vDeltaDfNot = vSched.GetIntTerms();
+	const vector<double>& vDfs = vSwapLeg.Dfs();
+	VectorMult(vDeltaDfNot, vDfs);
+	const vector<double>& vNotionals = vSwapLeg.Notionals();
+	VectorMult(vDeltaDfNot, vNotionals);
+
+	double vLvl = VectorSum(vDeltaDfNot);
+	return vLvl;
+}
+
 void MG_SwapLeg::PrePricing(const MG_Model& aMdl)
 {
 	mySchedule.InterpretDates(aMdl.GetAsOf());
-	size_t vNbFlows = mySchedule.GetResetDates().size();
+	size_t vNbFlows = mySchedule.NbFlows();
 
-	myRawFwd.clear();
 	myRawFwd.resize(vNbFlows);
-	myDfs.clear();
 	myDfs.resize(vNbFlows);
+	myNotionals.resize(vNbFlows);
 
-	const vector<MG_Date>& vFwdStDts = mySchedule.GetFwdRateStartDates();
-	const vector<MG_Date>& vFwdEdDts = mySchedule.GetFwdRateEndDates();
 	const vector<MG_Date>& vPayDts = mySchedule.GetPayDates();
-	if (myIRIndex.GetIndexName() != K_FIXED)
+	
+	for(size_t i=0; i<vNbFlows; ++i)
 	{
+		const MG_Date& vPayDt = vPayDts[i];
+		myDfs[i] = aMdl.DiscountFactor(vPayDt);
+		myNotionals[i] = myNotional.CptValue(vPayDt);
+	}
+	if (!IsFixed())
+	{
+		const vector<MG_Date>& vFwdStDts = mySchedule.GetFwdRateStartDates();
+		const vector<MG_Date>& vFwdEdDts = mySchedule.GetFwdRateEndDates();
 		for(size_t i=0; i<vNbFlows; ++i)
-		{
 			myRawFwd[i] = aMdl.Libor(vFwdStDts[i], vFwdEdDts[i]
 									, myIRIndex.GetDayCount(), myIRIndex.GetPayCalendar());
-			myDfs[i] = aMdl.DiscountFactor(vPayDts[i]);
-		}
-	}
-	else
-	{
-		myRawFwd.resize(vNbFlows);
-		for(size_t i=0; i<vNbFlows; ++i)
-			myDfs[i] = aMdl.DiscountFactor(vPayDts[i]);
 	}
 }
 
 double MG_SwapLeg::Price(void) const
 {
-	vector<double> vDeltaFwd(myRawFwd);
+	vector<double> vDeltaFwdNot(myRawFwd);
 	const vector<double>& vDelta(mySchedule.GetIntTerms());
 
-	VectorPlus(vDeltaFwd, mySpreadOrRate);
-	VectorMult(vDeltaFwd, vDelta);
-	return VectorSumProduct(vDeltaFwd, myDfs);
+	VectorPlus(vDeltaFwdNot, mySpreadOrRate);
+	VectorMult(vDeltaFwdNot, vDelta);
+	VectorMult(vDeltaFwdNot, myDfs);
+	double vPrice = VectorSumProduct(vDeltaFwdNot, myNotionals);
+	return myRcvPay * vPrice;
 }
 
-vector<double> MG_SwapLeg::Forward() const
-{
-	return myRawFwd;
-}

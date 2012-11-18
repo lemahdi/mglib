@@ -22,7 +22,7 @@ void MG_Swaption::Swap(MG_Swaption& aRight)
 }
 
 MG_Swaption::MG_Swaption(	const MG_GenericDate& aMatDt
-						,	const MG_SwapLeg	& aUnderlying
+						,	const MG_SwapPtr	& aUnderlying
 						,	const CALLPUT_NAME	& aCallPut
 						,	const double		& aStrike)
 						:	MG_VanillaOption(vector<MG_Date>(), aUnderlying, aStrike)
@@ -48,12 +48,14 @@ void MG_Swaption::PrePricing(const MG_Model& aMdl)
 	myFlows.resize(1);
 	myDfs.resize(1);
 
-	myForwards[0] = 0.;
-	myFlows[0] = 0.;
+	myForwards[0] = Swap()->SwapRate(aMdl);
+	double vMat = (myMatDt - vAsOf) / 365.;
+	myFlows[0] = aMdl.OptionPrice(myCallPut==K_CALL ? MG_CF::CALL : MG_CF::PUT, myForwards[0], 0., vMat);
 	myDfs[0] = aMdl.DiscountFactor(myMatDts[0]);
 }
 
 double MG_Swaption::Price(void) const
 {
-	return 0.;
+	double vPrice = myFlows[0] * myDfs[0];
+	return vPrice;
 }

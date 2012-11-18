@@ -35,11 +35,11 @@ public:
 	virtual ~MG_Digital(void);
 
 	MG_Digital	(	const MG_GenericDate& aMatDt
-				,	const MG_Security	& aUnderlying
+				,	const MG_SecurityPtr& aUnderlying
 				,	const CALLPUT_NAME	& aCallPut
 				,	const double		& aStrike);
 	MG_Digital	(	const std::vector<MG_Date>	& aMatDts
-				,	const MG_Security			& aUnderlying
+				,	const MG_SecurityPtr		& aUnderlying
 				,	const CALLPUT_NAME			& aCallPut
 				,	const double				& aStrike);
 

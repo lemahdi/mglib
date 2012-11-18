@@ -1,13 +1,15 @@
 #include "vanilla/security/callput.h"
 #include "vanilla/model/model.h"
+#include "nova/utils/utils.h"
 
 
 using namespace std;
 using namespace MG;
+using namespace MG_utils::Vector;
 
 
 /* Call / Put option class */
-MG_CallPut::MG_CallPut(	const MG_CallPut& aRight)
+MG_CallPut::MG_CallPut	(	const MG_CallPut& aRight)
 						:	MG_VanillaOption(aRight)
 						,	myMatDt		(aRight.myMatDt)
 						,	myCallPut	(aRight.myCallPut)
@@ -21,7 +23,7 @@ void MG_CallPut::Swap(MG_CallPut& aRight)
 }
 
 MG_CallPut::MG_CallPut	(	const MG_GenericDate& aMatDt
-						,	const MG_Security	& aUnderlying
+						,	const MG_SecurityPtr& aUnderlying
 						,	const CALLPUT_NAME	& aCallPut
 						,	const double		& aStrike)
 						:	MG_VanillaOption(vector<MG_Date>(), aUnderlying, aStrike)
@@ -32,7 +34,7 @@ MG_CallPut::MG_CallPut	(	const MG_GenericDate& aMatDt
 }
 
 MG_CallPut::MG_CallPut	(	const vector<MG_Date>	& aMatDts
-						,	const MG_Security		& aUnderlying
+						,	const MG_SecurityPtr	& aUnderlying
 						,	const CALLPUT_NAME		& aCallPut
 						,	const double			& aStrike)
 						:	MG_VanillaOption(aMatDts, aUnderlying, aStrike)
@@ -77,11 +79,7 @@ void MG_CallPut::PrePricing(const MG_Model& aMdl)
 
 double MG_CallPut::Price(void) const
 {
-	size_t vNbFlows = myForwards.size();
-
-	double vPrice(0.);
-	for(size_t i=0; i<vNbFlows; ++i)
-		vPrice += myDfs[i] * myFlows[i];
-
+	vector<double> vFlowsPV = myFlows;
+	double vPrice = VectorSumProduct(vFlowsPV, myDfs);
 	return vPrice;
 }

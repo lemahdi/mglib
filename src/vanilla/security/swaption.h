@@ -12,13 +12,11 @@
 
 
 #include "vanilla/security/option.h"
+#include "vanilla/security/swap.h"
 #include "nova/glob/genericdate.h"
 
 
 MG_NAMESPACE_BEGIN
-
-
-class MG_SwapLeg;
 
 
 /* Cap / Floor */
@@ -35,11 +33,13 @@ public:
 	virtual ~MG_Swaption(void);
 
 	MG_Swaption	(	const MG_GenericDate& aMatDt
-				,	const MG_SwapLeg	& aUnderlying
+				,	const MG_SwapPtr	& aUnderlying
 				,	const CALLPUT_NAME	& aCallPut
 				,	const double		& aStrike);
 
 public:
+	/* State */
+	MG_SwapPtr Swap(void) { return myUnderlying; }
 	/* Engine */
 	void	PrePricing	(const MG_Model& aMdl);
 	double	Price		(void) const;

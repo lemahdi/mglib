@@ -403,7 +403,7 @@ CallPut_Create	(	const MG_GenericDate& aMaturity
 				,	const double		& aStrike)
 {
 	CALLPUT_NAME vCallPut = (CALLPUT_NAME)CallPutNameConvertor[aCallPut];
-	const MG_Security& vUnderlying = dynamic_cast<MG_Security&>(*aUnderlying);
+	MG_SecurityPtr vUnderlying(aUnderlying->Clone());
 
 	return MG_XLObjectPtr(new MG_CallPut(aMaturity, vUnderlying, vCallPut, aStrike));
 }

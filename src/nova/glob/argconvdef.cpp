@@ -198,6 +198,17 @@ const MG_ArgConv		RcvPayNameConvertor	= MG_ArgConv		("Receive / Pay", RcvPayName
 const MG_ArgConvReverse	RcvPayNameRevertor	= MG_ArgConvReverse	("Receive / Pay", RcvPayNameArgConv, NB_RCVPAY);
 
 
+MG_ArgConv::ArgConvPair NXNameArgConv[] =
+{
+	MG_ArgConv::ArgConvPair("NONE",K_NX_NONE),
+	MG_ArgConv::ArgConvPair("START",K_NX_START),
+	MG_ArgConv::ArgConvPair("END",K_NX_END),
+	MG_ArgConv::ArgConvPair("BOTH",K_NX_BOTH),
+};
+const MG_ArgConv		NXNameConvertor	= MG_ArgConv		("Notional Exchange", NXNameArgConv, NB_NX);
+const MG_ArgConvReverse	NXNameRevertor	= MG_ArgConvReverse	("Notional Exchange", NXNameArgConv, NB_NX);
+
+
 MG_ArgConv::ArgConvPair InterpolMethodArgConv[] =
 {
 	MG_ArgConv::ArgConvPair("NONE",NONE_INTERPOL),

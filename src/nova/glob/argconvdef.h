@@ -256,6 +256,20 @@ extern const MG_ArgConv			RcvPayNameConvertor;
 extern const MG_ArgConvReverse	RcvPayNameRevertor;
 
 
+enum NX_NAME
+{
+	K_NX_NONE,
+	K_NX_START,
+	K_NX_END,
+	K_NX_BOTH,
+
+	NB_NX
+};
+
+extern const MG_ArgConv			NXNameConvertor;
+extern const MG_ArgConvReverse	NXNameRevertor;
+
+
 /* enum for interpolation methods */
 enum INTERPOL_METHOD {
 	NONE_INTERPOL			= interpoltypeNone,			// no interpolation

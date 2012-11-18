@@ -18,16 +18,16 @@ void MG_VanillaOption::Swap(MG_VanillaOption& aRight)
 {
 	MG_Security::Swap(aRight);
 	myMatDts.swap(aRight.myMatDts);
-	std::swap(myUnderlying, aRight.myUnderlying);
+	myUnderlying.Swap(aRight.myUnderlying);
 	std::swap(myStrike, aRight.myStrike);
 }
 
 MG_VanillaOption::MG_VanillaOption	(	const vector<MG_Date>	& aMatDts
-									,	const MG_Security		& aUnd
+									,	const MG_SecurityPtr	& aUnd
 									,	const double			& aStrike)
 									:	MG_Security()
 									,	myMatDts	(aMatDts)
-									,	myUnderlying((MG_Security*)aUnd.Clone())
+									,	myUnderlying((MG_Security*)aUnd->Clone())
 									,	myStrike	(aStrike)
 {}
 

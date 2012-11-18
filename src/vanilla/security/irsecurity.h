@@ -31,8 +31,11 @@ public:
 
 	virtual ~MG_IRSecurity(void);
 
-	MG_IRSecurity(void) {}
-	MG_IRSecurity(const MG_Schedule& aSched);
+	MG_IRSecurity	(	const NX_NAME& aNX = K_NX_NONE
+					,	const MG_TermStructure& aNotional = MG_TermStructure(100.));
+	MG_IRSecurity	(	const MG_Schedule& aSched
+					,	const NX_NAME& aNX = K_NX_NONE
+					,	const MG_TermStructure& aNotional = MG_TermStructure(100.));
 
 public:
 	/* State */
@@ -40,14 +43,20 @@ public:
 	inline const MG_Date& GetStartDate		(void) const { return mySchedule.GetStartDate(); }
 	inline const MG_Date& GetEndDate		(void) const { return mySchedule.GetEndDate(); }
 
-protected:
 	/* Engine */
 	void GenerateSchedule(const MG_GenericDate& aStDt, const MG_GenericDate& aEdDt, const MG_IRIndex& aIdx);
-	virtual double ImpliedSpread(void) const = 0;
+
+public:
+	virtual double ImpliedSpread(const MG_Model& aMdl, const size_t& aLegId, const double& aPrice = 0.) const = 0;
+	virtual double ImpliedRate	(const MG_Model& aMdl, const size_t& aLegId, const double& aPrice = 0.) const = 0;
+	
+	void	PrePricing		(const MG_Model& aMdl);
 
 protected:
 	MG_Schedule mySchedule;
+	NX_NAME myNX;
 
 };
+
 
 MG_NAMESPACE_END

@@ -12,7 +12,7 @@
 #pragma once
 
 
-#include "nova/glob/object.h"
+#include "nova/market/termstructure.h"
 
 #include <vector>
 
@@ -29,7 +29,7 @@ class MG_Security : public MG_XLObject
 {
 public:
 	/* Constructors / Destructor */
-	MG_Security(void);
+	MG_Security(const MG_TermStructure& aNotional = MG_TermStructure(100.));
 	// self-generated copy-constructor is enough
 	virtual ~MG_Security(void);
 
@@ -39,20 +39,22 @@ public:
 
 public:
 	/* Accessors */
-	inline double GetPrice(void) const { return myPrice; }
 	inline const std::vector<double>& Forwards(void) const { return myForwards; }
 	inline const std::vector<double>& Flows(void) const { return myFlows; }
 	inline const std::vector<double>& Dfs(void) const { return myDfs; }
+	inline const std::vector<double>& Notionals(void) const { return myNotionals; }
 
 	/* Engine */
 	virtual void	PrePricing	(const MG_Model& aMdl)	= 0;
 	virtual double	Price		(void) const			= 0;
 
 protected:
-	double myPrice;
 	std::vector<double> myForwards;
 	std::vector<double> myFlows;
 	std::vector<double> myDfs;
+	std::vector<double> myNotionals;
+
+	MG_TermStructure myNotional;
 };
 
 

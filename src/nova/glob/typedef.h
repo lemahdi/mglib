@@ -119,6 +119,7 @@ void yy_delete_buffer (YY_BUFFER_STATE b  );
 #define MG_IRINDEX_XL_NAME		"IRIDX"
 #define MG_SCHED_XL_NAME		"SCHED"
 #define MG_SWAPLEG_XL_NAME		"SWPLG"
+#define MG_SWAP_XL_NAME			"SWAPS"
 #define MG_FRA_XL_NAME			"FRALG"
 #define MG_CALLPUT_XL_NAME		"CALPT"
 #define MG_DIGITAL_XL_NAME		"DIGIT"
@@ -177,6 +178,7 @@ void yy_delete_buffer (YY_BUFFER_STATE b  );
 #define MG_FFunctionPtr					CountedPtr<MG::MG_FFunction>
 #define MG_SecurityPtr					CountedPtr<MG::MG_Security>
 #define MG_SwapLegPtr					CountedPtr<MG::MG_SwapLeg>
+#define MG_SwapPtr						CountedPtr<MG::MG_Swap>
 
 
 /* enum for node direction */

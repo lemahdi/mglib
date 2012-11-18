@@ -31,9 +31,10 @@ public:
 
 	virtual ~MG_TermStructure(void);
 
-	MG_TermStructure	(	const std::vector<MG_Date>	& aPayDates
-						,	const std::vector<double>	& aValues
-						,	const int					& aInterpolType);
+	MG_TermStructure(const double& aVal);
+	MG_TermStructure(	const std::vector<MG_Date>	& aPayDates
+					,	const std::vector<double>	& aValues
+					,	const int					& aInterpolType);
 
 public:
 	/* State */
@@ -50,5 +51,6 @@ private:
 	MG_1DInterpolator myInterpolator;
 
 };
+
 
 MG_NAMESPACE_END

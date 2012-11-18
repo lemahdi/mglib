@@ -12,6 +12,7 @@
 
 
 #include "nova/glob/date.h"
+#include "nova/patterns/countedptr.hpp"
 #include "vanilla/security/security.h"
 
 
@@ -32,12 +33,12 @@ public:
 	virtual ~MG_VanillaOption(void);
 
 	MG_VanillaOption(	const std::vector<MG_Date>	& aMatDts
-					,	const MG_Security			& aUnd
+					,	const MG_SecurityPtr		& aUnd
 					,	const double				& aStrike);
 
 protected:
 	std::vector<MG_Date> myMatDts;
-	std::auto_ptr<MG_Security> myUnderlying;
+	MG_SecurityPtr myUnderlying;
 	double myStrike;
 
 };

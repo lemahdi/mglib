@@ -408,6 +408,15 @@ namespace MG_utils
 			transform(aDest.begin(), aDest.end(), aDest.begin(), bind1st(divides<double>(), aVal));
 		}
 
+		/* sum */
+		double VectorSum(const vector<double>& aV)
+		{
+			double vRes = 0.;
+			for(size_t i=0; i<aV.size(); ++i)
+				vRes += aV[i];
+			return vRes;
+		}
+
 		/* sum product */
 		double VectorSumProduct(const vector<double>& aV1, const vector<double>& aV2)
 		{

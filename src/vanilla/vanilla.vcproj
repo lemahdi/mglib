@@ -206,6 +206,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\security\swap.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\security\swap.h"
+				>
+			</File>
+			<File
 				RelativePath=".\security\swapleg.cpp"
 				>
 			</File>

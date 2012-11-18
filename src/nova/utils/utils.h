@@ -84,6 +84,7 @@ extern void VectorMult(std::vector<double>& aDest, const double& aVal);
 extern void VectorDiv(std::vector<double>& aDest, const std::vector<double>& aV);
 extern void VectorDiv(std::vector<double>& aDest, const double& aVal);
 
+extern double VectorSum(const std::vector<double>& aV);
 extern double VectorSumProduct(const std::vector<double>& aV1, const std::vector<double>& aV2);
 
 }

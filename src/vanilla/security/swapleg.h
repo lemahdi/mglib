@@ -12,6 +12,7 @@
 
 
 #include "vanilla/security/irsecurity.h"
+
 #include <vector>
 
 
@@ -31,25 +32,35 @@ public:
 
 	virtual ~MG_SwapLeg(void);
 
-	MG_SwapLeg	(	const MG_GenericDate& aSt
-				,	const MG_GenericDate& aEd
-				,	const RCVPAY_NAME	& aRcvPay = K_RCV
-				,	const MG_IRIndex	& aIRIndex = MG_IRIndex()
-				,	const double		& aSpdOrRate = 0.);
-	MG_SwapLeg	(	const MG_Schedule	& aSched
-				,	const RCVPAY_NAME	& aRcvPay = K_RCV
-				,	const double		& aSpdOrRate = 0.);
+	MG_SwapLeg	(	const MG_GenericDate	& aSt
+				,	const MG_GenericDate	& aEd
+				,	const RCVPAY_NAME		& aRcvPay = K_RCV
+				,	const MG_IRIndex		& aIRIndex = MG_IRIndex()
+				,	const double			& aSpdOrRate = 0.
+				,	const NX_NAME			& aNX = K_NX_NONE
+				,	const MG_TermStructure	& aNotional = MG_TermStructure(100.));
+	MG_SwapLeg	(	const MG_Schedule		& aSched
+				,	const RCVPAY_NAME		& aRcvPay = K_RCV
+				,	const double			& aSpdOrRate = 0.
+				,	const NX_NAME			& aNX = K_NX_NONE
+				,	const MG_TermStructure	& aNotional = MG_TermStructure(100.));
 
 public:
 	/* State */
 	inline const MG_IRIndex& GetIRIndex(void) const { return myIRIndex; }
+	inline bool IsFixed(void) const { return myIRIndex.GetIndexName() == K_FIXED; }
+	inline bool IsFloat(void) const { return myIRIndex.GetIndexName() != K_FIXED; }
+	inline void Spread(const double& aSpread) { mySpreadOrRate = aSpread; }
 
 	/* Engine */
-	double	ImpliedSpread(void) const { return 0.; }
-	void	PrePricing	(const MG_Model& aMdl);
-	double	Price		(void) const;
+	double	Level			(const MG_Model& aMdl) const;
 
-	std::vector<double> Forward(void) const;
+	double	ImpliedSpread	(const MG_Model& , const size_t& , const double& ) const { return 0.; }
+	double	ImpliedRate		(const MG_Model& , const size_t& , const double& ) const { return 0.; }
+
+	void	PrePricing		(const MG_Model& aMdl);
+	double	Price			(void) const;
+
 
 private:
 	RCVPAY_NAME	myRcvPay;
@@ -58,8 +69,8 @@ private:
 	double mySpreadOrRate;
 
 	std::vector<double> myRawFwd;
-	std::vector<double> myDfs;
 
 };
+
 
 MG_NAMESPACE_END

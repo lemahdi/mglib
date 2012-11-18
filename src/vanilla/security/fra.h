@@ -41,9 +41,11 @@ public:
 	inline const MG_IRIndex& GetIRIndex(void) const { return mySchedule.GetIRIndex(); }
 
 	/* Engine */
-	double	ImpliedSpread(void) const { return 0.; }
-	void	PrePricing	(const MG_Model& aMdl);
-	double	Price		(void) const;
+	double	ImpliedSpread	(const MG_Model& , const size_t& , const double& ) const { return 0.; }
+	double	ImpliedRate		(const MG_Model& , const size_t& , const double& ) const { return 0.; }
+
+	void	PrePricing		(const MG_Model& aMdl);
+	double	Price			(void) const;
 
 private:
 	RCVPAY_NAME	myRcvPay;

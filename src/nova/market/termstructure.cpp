@@ -5,7 +5,7 @@ using namespace std;
 using namespace MG;
 
 
-/* IR Descriptor class */
+/* Term Structure class */
 MG_TermStructure::MG_TermStructure	(	const MG_TermStructure& aRight)
 									:	MG_XLObject(aRight)
 									,	myOriginPayDates(aRight.myOriginPayDates)
@@ -19,6 +19,14 @@ void MG_TermStructure::Swap(MG_TermStructure& aRight)
 	const_cast<vector<MG_Date>&>(myOriginPayDates).swap(const_cast<vector<MG_Date>&>(aRight.myOriginPayDates));
 	swap(const_cast<vector<double>&>(myOriginValues), const_cast<vector<double>&>(aRight.myOriginValues));
 	myInterpolator.Swap(aRight.myInterpolator);
+}
+
+MG_TermStructure::MG_TermStructure	(	const double& aVal)
+									:	myOriginPayDates(vector<MG_Date>(1))
+									,	myOriginValues	(vector<double>(1, aVal))
+									,	myInterpolator	(vector<MG_Date>(1), vector<double>(1, aVal), CONSTANT_INTERPOL)
+{
+	myXLName = MG_TERMSTRUCT_XL_NAME;
 }
 
 MG_TermStructure::MG_TermStructure	(	const vector<MG_Date>	& aPayDates
