@@ -1,5 +1,5 @@
-#include "mgsecurity/swaption.h"
-#include "mgsecurity/swapleg.h"
+#include "vanilla/swaption.h"
+#include "vanilla/swapleg.h"
 #include "mgmodel/model.h"
 
 

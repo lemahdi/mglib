@@ -48,7 +48,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cblas", "src\gsl\win32\cbla
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "gsl", "gsl", "{DA18C280-4281-4E23-A5FA-C1997B17DBC4}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mgsecurity", "src\mgsecurity\mgsecurity.vcproj", "{63B84211-3C85-4455-8CCA-7A2FF246C304}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vanilla", "src\vanilla\vanilla.vcproj", "{63B84211-3C85-4455-8CCA-7A2FF246C304}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

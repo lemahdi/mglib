@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="mgsecurity"
+	Name="vanilla"
 	ProjectGUID="{63B84211-3C85-4455-8CCA-7A2FF246C304}"
 	RootNamespace="mgsecurity"
 	Keyword="Win32Proj"

@@ -12,7 +12,7 @@
 
 
 #include "mgnova/glob/date.h"
-#include "mgsecurity/security.h"
+#include "vanilla/security.h"
 
 
 MG_NAMESPACE_BEGIN

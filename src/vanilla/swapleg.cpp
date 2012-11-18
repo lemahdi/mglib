@@ -1,4 +1,4 @@
-#include "mgsecurity/swapleg.h"
+#include "vanilla/swapleg.h"
 #include "mgmodel/model.h"
 #include "mgnova/utils/utils.h"
 

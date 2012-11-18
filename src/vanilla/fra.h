@@ -11,7 +11,7 @@
 #pragma once
 
 
-#include "mgsecurity/irsecurity.h"
+#include "vanilla/irsecurity.h"
 
 
 MG_NAMESPACE_BEGIN

@@ -11,7 +11,7 @@
 #pragma once
 
 
-#include "mgsecurity/option.h"
+#include "vanilla/option.h"
 #include "mgnova/glob/genericdate.h"
 
 

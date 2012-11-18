@@ -1,8 +1,8 @@
 /*
  * Copyright			: 2012 by MG
  * Version				: 0.1.23
- * Date					: 17 NOV 2012
- * Purpose				: MG_CallPut is Call or Put option
+ * Date					: 30 SEP 2012
+ * Purpose				: MG_Digital is a Digital option
  * Author				: MM Akkouh
  * Notes				: 
  */
@@ -11,31 +11,34 @@
 #pragma once
 
 
-#include "mgsecurity/option.h"
+#include "vanilla/option.h"
 #include "mgnova/glob/genericdate.h"
 
 
 MG_NAMESPACE_BEGIN
 
 
+class MG_GenericDate;
+
+
 /* Cap / Floor */
-class MG_CallPut : public MG_VanillaOption
+class MG_Digital : public MG_VanillaOption
 {
 public:
 	/* Constructors / Destructor */
-	COPY_CTOR_DECL(MG_CallPut)
+	COPY_CTOR_DECL(MG_Digital)
 
-	ASSIGN_OPERATOR(MG_CallPut)
-	CLONE_METHOD(MG_CallPut)
-	SWAP_DECL(MG_CallPut)
+	ASSIGN_OPERATOR(MG_Digital)
+	CLONE_METHOD(MG_Digital)
+	SWAP_DECL(MG_Digital)
 
-	virtual ~MG_CallPut(void);
+	virtual ~MG_Digital(void);
 
-	MG_CallPut	(	const MG_GenericDate& aMatDt
+	MG_Digital	(	const MG_GenericDate& aMatDt
 				,	const MG_Security	& aUnderlying
 				,	const CALLPUT_NAME	& aCallPut
 				,	const double		& aStrike);
-	MG_CallPut	(	const std::vector<MG_Date>	& aMatDts
+	MG_Digital	(	const std::vector<MG_Date>	& aMatDts
 				,	const MG_Security			& aUnderlying
 				,	const CALLPUT_NAME			& aCallPut
 				,	const double				& aStrike);
