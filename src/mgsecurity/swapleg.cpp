@@ -93,3 +93,8 @@ double MG_SwapLeg::Price(void) const
 	VectorMult(vDeltaFwd, vDelta);
 	return VectorSumProduct(vDeltaFwd, myDfs);
 }
+
+vector<double> MG_SwapLeg::Forward() const
+{
+	return myRawFwd;
+}

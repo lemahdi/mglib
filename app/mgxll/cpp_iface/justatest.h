@@ -48,7 +48,7 @@ BSModel(const MG_Date& AsOf // as of date
 MG_XLObjectPtr // Creating n zero curve
 ZeroCurve_Create(const MG_Date& AsOf // s of date
 					   , const CellMatrix& Maturities // maturities
-					   , const CellMatrix& ZeroRates // volatilities
+					   , const CellMatrix& ZeroRates // zero coupons rates
 					   , const string& Ccy // currency
 					   , const string& UnderIndex // underlying index
 					   , const string& InterpolMeth = "LINEAR" // interpolation method: LINEAR (def.), CONTINUOUS, CONSTANT, STEPUPLEFT, STEPUPRIGHT, POLYNOMIAL, CUBICSPLINE, AKIMA
@@ -190,6 +190,14 @@ SwapLeg_Create(const MG_GenericDate& Start // start date or term
 			   , MG_GenericDate& End // end date or duration
 			   , const string& RcvPay // receive or pay
 			   , MG_XLObjectPtr& IRIndex // interest rate index
+				 );
+
+//<xlw:libraryname=MyTestLibrary
+MG_XLObjectPtr // create a call or put
+CallPut_Create(const MG_GenericDate& Maturity
+			   , MG_XLObjectPtr& Underlying // underlying
+			   , const string& CallPut // call (C) or put (P)
+			   , const double& Strike // strike
 				 );
 
 #endif

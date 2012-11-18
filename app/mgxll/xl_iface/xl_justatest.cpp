@@ -329,7 +329,7 @@ ZeroCurve_CreateArgs[]=
 {
 { "AsOf"," s of date ","XLF_OPER"},
 { "Maturities"," maturities ","XLF_OPER"},
-{ "ZeroRates"," volatilities ","XLF_OPER"},
+{ "ZeroRates"," zero coupons rates ","XLF_OPER"},
 { "Ccy"," currency ","XLF_OPER"},
 { "UnderIndex"," underlying index ","XLF_OPER"},
 { "[InterpolMeth]"," interpolation method: LINEAR (def.), CONTINUOUS, CONSTANT, STEPUPLEFT, STEPUPRIGHT, POLYNOMIAL, CUBICSPLINE, AKIMA ","XLF_OPER"}
@@ -1693,6 +1693,83 @@ MG_XLObjectPtr result(
 		End,
 		RcvPay,
 		IRIndex)
+	);
+string vRefObj, vError;
+if (MG_SCache::Instance()->PersistentInsert(result, vRefObj, vError))
+  return XlfOper(vRefObj);
+else
+  return XlfOper(vError);
+EXCEL_END
+}
+}
+
+
+
+//////////////////////////
+
+namespace
+{
+XLRegistration::Arg
+CallPut_CreateArgs[]=
+{
+{ "Maturity","too lazy to comment this one ","XLF_OPER"},
+{ "Underlying"," underlying ","XLF_OPER"},
+{ "CallPut"," call (C) or put (P) ","XLF_OPER"},
+{ "Strike"," strike ","XLF_OPER"}
+};
+  XLRegistration::XLFunctionRegistrationHelper
+registerCallPut_Create("xlCallPut_Create",
+"MG_CallPut_Create",
+" create a call or put ",
+LibraryName,
+CallPut_CreateArgs,
+4
+,false
+);
+}
+
+
+
+extern "C"
+{
+LPXLFOPER EXCEL_EXPORT
+xlCallPut_Create(
+LPXLFOPER Maturitya,
+LPXLFOPER Underlyinga,
+LPXLFOPER CallPuta,
+LPXLFOPER Strikea)
+{
+EXCEL_BEGIN;
+
+	if (XlfExcel::Instance().IsCalledByFuncWiz())
+		return XlfOper(true);
+
+XlfOper Maturityb(
+	(Maturitya));
+MG_GenericDate Maturity(
+	Maturityb.AsMGGenDate("Maturity"));
+
+XlfOper Underlyingb(
+	(Underlyinga));
+MG_XLObjectPtr Underlying(
+	Underlyingb.AsMGXLObject("Underlying"));
+
+XlfOper CallPutb(
+	(CallPuta));
+string CallPut(
+	CallPutb.AsString("CallPut"));
+
+XlfOper Strikeb(
+	(Strikea));
+double Strike(
+	Strikeb.AsDouble("Strike"));
+
+MG_XLObjectPtr result(
+	CallPut_Create(
+		Maturity,
+		Underlying,
+		CallPut,
+		Strike)
 	);
 string vRefObj, vError;
 if (MG_SCache::Instance()->PersistentInsert(result, vRefObj, vError))

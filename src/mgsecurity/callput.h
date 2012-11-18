@@ -1,8 +1,8 @@
 /*
  * Copyright			: 2012 by MG
  * Version				: 0.1.23
- * Date					: 30 SEP 2012
- * Purpose				: MG_Swaption is a Swaption option
+ * Date					: 17 NOV 2012
+ * Purpose				: MG_CallPut is Call or Put option
  * Author				: MM Akkouh
  * Notes				: 
  */
@@ -18,26 +18,27 @@
 MG_NAMESPACE_BEGIN
 
 
-class MG_SwapLeg;
-
-
 /* Cap / Floor */
-class MG_Swaption : public MG_VanillaOption
+class MG_CallPut : public MG_VanillaOption
 {
 public:
 	/* Constructors / Destructor */
-	COPY_CTOR_DECL(MG_Swaption)
+	COPY_CTOR_DECL(MG_CallPut)
 
-	ASSIGN_OPERATOR(MG_Swaption)
-	CLONE_METHOD(MG_Swaption)
-	SWAP_DECL(MG_Swaption)
+	ASSIGN_OPERATOR(MG_CallPut)
+	CLONE_METHOD(MG_CallPut)
+	SWAP_DECL(MG_CallPut)
 
-	virtual ~MG_Swaption(void);
+	virtual ~MG_CallPut(void);
 
-	MG_Swaption	(	const MG_GenericDate& aMatDt
-				,	const MG_SwapLeg	& aUnderlying
+	MG_CallPut	(	const MG_GenericDate& aMatDt
+				,	const MG_Security	& aUnderlying
 				,	const CALLPUT_NAME	& aCallPut
 				,	const double		& aStrike);
+	MG_CallPut	(	const std::vector<MG_Date>	& aMatDts
+				,	const MG_Security			& aUnderlying
+				,	const CALLPUT_NAME			& aCallPut
+				,	const double				& aStrike);
 
 public:
 	/* Engine */

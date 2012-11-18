@@ -8,12 +8,16 @@ using namespace MG;
 /*
  * Robot Base Class
  */
-MG_Robot::MG_Robot(const MG_Robot& aRight) : MG_XLObject(aRight), myAsOf(aRight.myAsOf)
+MG_Robot::MG_Robot(const MG_Robot& aRight)
+	: MG_XLObject(aRight)
+	, myAsOf	(aRight.myAsOf)
+	, myKeyData	(aRight.myKeyData)
 {}
 
 void MG_Robot::Swap(MG_Robot& aRight)
 {
 	myAsOf.Swap(aRight.myAsOf);
+	myKeyData.swap(aRight.myKeyData);
 }
 
 MG_Robot::~MG_Robot()
@@ -30,7 +34,8 @@ MG_Robot::MG_Robot(const MG_Date& aAsOf, const vector<MG_MarketDataPtr>& aMktDat
 void MG_Robot::AddMktData(const MG_MarketDataPtr& aMktData)
 {
 	string vKey = CreateKey(*aMktData);
-	myKeyData.insert(make_pair(vKey, aMktData)); // be aware here, aMktData is not inserted if vKey already exist
+	pair<mapStrMkt::iterator,bool> vIsNew = myKeyData.insert(make_pair(vKey, aMktData)); // be aware here, aMktData is not inserted if vKey already exist
+	if (vIsNew.second) myMktData.push_back(aMktData);
 }
 
 MG_MarketDataPtr MG_Robot::GetMktData(const string& aType, const string& aCcy, const string& aUnderIndex)

@@ -49,6 +49,8 @@ public:
 	void	PrePricing	(const MG_Model& aMdl);
 	double	Price		(void) const;
 
+	std::vector<double> Forward(void) const;
+
 private:
 	RCVPAY_NAME	myRcvPay;
 	MG_IRIndex myIRIndex;

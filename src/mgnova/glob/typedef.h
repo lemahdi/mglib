@@ -54,7 +54,7 @@ void yy_delete_buffer (YY_BUFFER_STATE b  );
 	}
 
 #define CLONE_METHOD(CLASS) \
-	inline MG_Object* Clone(void) { return new CLASS(*this); }
+	inline MG_Object* Clone(void) const { return new CLASS(*this); }
 
 #define SWAP_DECL(CLASS)	\
 	void Swap(CLASS& aRight);
@@ -120,7 +120,9 @@ void yy_delete_buffer (YY_BUFFER_STATE b  );
 #define MG_SCHED_XL_NAME		"SCHED"
 #define MG_SWAPLEG_XL_NAME		"SWPLG"
 #define MG_FRA_XL_NAME			"FRALG"
-#define MG_CAPFL_XL_NAME		"CAPFL"
+#define MG_CALLPUT_XL_NAME		"CALPT"
+#define MG_DIGITAL_XL_NAME		"DIGIT"
+#define MG_SWAPTION_XL_NAME		"SWOPT"
 #define MG_DFMODEL_XL_NAME		"DFMOD"
 #define MG_BSMODEL_XL_NAME		"BSMOD"
 #define MG_ROBOT_XL_NAME		"ROBOT"

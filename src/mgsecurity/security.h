@@ -14,6 +14,8 @@
 
 #include "mgnova/glob/object.h"
 
+#include <vector>
+
 
 MG_NAMESPACE_BEGIN
 
@@ -36,11 +38,21 @@ public:
 	SWAP_DECL(MG_Security)
 
 public:
+	/* Accessors */
+	inline double GetPrice(void) const { return myPrice; }
+	inline const std::vector<double>& Forwards(void) const { return myForwards; }
+	inline const std::vector<double>& Flows(void) const { return myFlows; }
+	inline const std::vector<double>& Dfs(void) const { return myDfs; }
+
 	/* Engine */
 	virtual void	PrePricing	(const MG_Model& aMdl)	= 0;
 	virtual double	Price		(void) const			= 0;
 
 protected:
+	double myPrice;
+	std::vector<double> myForwards;
+	std::vector<double> myFlows;
+	std::vector<double> myDfs;
 };
 
 

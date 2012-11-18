@@ -51,7 +51,6 @@ private:
 	double myFixedRate;
 
 	double myRawFwd;
-	double myDf;
 
 };
 

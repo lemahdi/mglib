@@ -11,14 +11,19 @@
 #pragma once
 
 
+#include "mgnova/glob/date.h"
 #include "mgnova/market/closedformulas.h"
+#include "mgnova/patterns/countedptr.hpp"
 #include "mgmktdata/robot.h"
 
 
 MG_NAMESPACE_BEGIN
 
 
-/* IR Pricing Functions */
+/*class MG_Date;
+class MG_Robot;
+class MG_ZeroCurve;
+class MG_VolatilityCurve;*/
 
 
 /* Base class for models */
@@ -49,6 +54,10 @@ public:
 						,	const MG_Date		& aEdDt
 						,	const DAYCOUNT_NAME	& aDayCount
 						,	const CALENDAR_NAME	& aCal) const = 0;
+	virtual double OptionPrice	(	const MG_CF::OPTION_TYPE& aOptType
+								,	const double			& aFwd
+								,	const double			& aTenorStrike
+								,	const double			& aMaturity) const = 0;
 
 protected:
 	MG_Date myAsOf;
@@ -79,6 +88,10 @@ public:
 				,	const MG_Date		& aEdDt
 				,	const DAYCOUNT_NAME	& aDayCount
 				,	const CALENDAR_NAME	& aCal) const;
+	double OptionPrice	(	const MG_CF::OPTION_TYPE& aOptType
+						,	const double			& aFwd
+						,	const double			& aTenorStrike
+						,	const double			& aMaturity) const;
 
 private:
 	MG_ZeroCurvePtr myZC;

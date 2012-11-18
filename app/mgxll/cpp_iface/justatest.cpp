@@ -8,6 +8,7 @@
 #include "mgmktdata/marketdata.h"
 #include "mgmodel/model.h"
 #include "mgsecurity/swapleg.h"
+#include "mgsecurity/callput.h"
 #include "mggenpricer/gensec/gensecurity.h"
 
 
@@ -384,7 +385,7 @@ TermStructure_Compute	(	MG_XLObjectPtr& aTermStruct
 
 MG_XLObjectPtr
 SwapLeg_Create	(	const MG_GenericDate& aStart
-				,	MG_GenericDate& aEnd
+				,	MG_GenericDate		& aEnd
 				,	const string		& aRcvPay
 				,	MG_XLObjectPtr		& aIRIndex)
 {
@@ -393,5 +394,17 @@ SwapLeg_Create	(	const MG_GenericDate& aStart
 	aEnd.SetRefDate(aStart);
 
 	return MG_XLObjectPtr(new MG_SwapLeg(aStart, aEnd, vRcvPay, vIRIndex));
+}
+
+MG_XLObjectPtr
+CallPut_Create	(	const MG_GenericDate& aMaturity
+				,	MG_XLObjectPtr		& aUnderlying
+				,	const string		& aCallPut
+				,	const double		& aStrike)
+{
+	CALLPUT_NAME vCallPut = (CALLPUT_NAME)CallPutNameConvertor[aCallPut];
+	const MG_Security& vUnderlying = dynamic_cast<MG_Security&>(*aUnderlying);
+
+	return MG_XLObjectPtr(new MG_CallPut(aMaturity, vUnderlying, vCallPut, aStrike));
 }
 

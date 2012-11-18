@@ -155,11 +155,11 @@
 	</References>
 	<Files>
 		<File
-			RelativePath=".\cap.cpp"
+			RelativePath=".\callput.cpp"
 			>
 		</File>
 		<File
-			RelativePath=".\cap.h"
+			RelativePath=".\callput.h"
 			>
 		</File>
 		<File

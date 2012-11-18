@@ -56,6 +56,7 @@ public:
 	virtual ~MG_Schedule(void);
 
 	/* State */
+	inline size_t							NbFlows					(void) const { return myNbOfFlows; }
 	inline const MG_IRIndex					& GetIRIndex			(void) const { return myIRIndex; }
 	inline const MG_Date					& GetStartDate			(void) const { return myStDt; }
 	inline const MG_Date					& GetEndDate			(void) const { return myEdDt; }

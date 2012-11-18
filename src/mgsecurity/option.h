@@ -11,10 +11,8 @@
 #pragma once
 
 
-#include "mgnova/glob/genericdate.h"
+#include "mgnova/glob/date.h"
 #include "mgsecurity/security.h"
-#include "mgnova/patterns/countedptr.hpp"
-#include "mgnova/glob/typedef.h"
 
 
 MG_NAMESPACE_BEGIN
@@ -33,22 +31,13 @@ public:
 
 	virtual ~MG_VanillaOption(void);
 
-	MG_VanillaOption(	const MG_GenericDate& aMat
-					,	const MG_SecurityPtr& aUnd
-					,	const double		& aStrike);
-
-public:
-	/* State */
-	inline const MG_GenericDate& MaturityDate(void) const { return myMatDt; }
-	inline const MG_SecurityPtr& Underlying(void) const { return myUnderlying; }
-	inline double Strike(void) const { return myStrike; }
-	
-	/* Engine */
-	void PrePricing(const MG_Model& aMdl);
+	MG_VanillaOption(	const std::vector<MG_Date>	& aMatDts
+					,	const MG_Security			& aUnd
+					,	const double				& aStrike);
 
 protected:
-	MG_GenericDate myMatDt;
-	MG_SecurityPtr myUnderlying;
+	std::vector<MG_Date> myMatDts;
+	std::auto_ptr<MG_Security> myUnderlying;
 	double myStrike;
 
 };

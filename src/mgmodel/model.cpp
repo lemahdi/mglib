@@ -1,6 +1,5 @@
 #include "mgmodel/model.h"
 #include "mgnova/glob/exception.h"
-#include <math.h>
 
 
 using namespace std;
@@ -64,6 +63,14 @@ double MG_DfModel::Libor(	const MG_Date		& aStDt
 	return myZC->Libor(vMatS, vMatE, vDelta);
 }
 
+double MG_DfModel::OptionPrice	(	const MG_CF::OPTION_TYPE& //aOptType
+								,	const double			& //aFwd
+								,	const double			& //aTenorStrike
+								,	const double			& /*aMaturity*/) const
+{
+	MG_THROW("Cannot compute volatility for a Discount Factor model.");
+}
+
 
 /* Black & Scholes Model class */
 MG_BSModel::MG_BSModel	(	const MG_Date &aAsOf)
@@ -108,28 +115,27 @@ double MG_BSModel::Libor(	const MG_Date		& aStDt
 }
 
 double MG_BSModel::OptionPrice	(	const MG_CF::OPTION_TYPE& aOptType
-								,	const double			&aFwd
-								,	const double			&aTenorStrike
-								,	const double			&aMaturity) const
+								,	const double			& aFwd
+								,	const double			& aTenorStrike
+								,	const double			& aMaturity) const
 {
-	double vDf = myZC->DiscountFactor(aMaturity);
 	double vVol = myAtmVol->ComputeValue(aTenorStrike, aMaturity);
 	switch (aOptType)
 	{
 	case MG_CF::CALL:
-		return MG_CF::CallPrice(aFwd, aTenorStrike, aMaturity, vDf, vVol);
+		return MG_CF::CallPrice(aFwd, aTenorStrike, aMaturity, 1., vVol);
 
 	case MG_CF::PUT:
-		return MG_CF::PutPrice(aFwd, aTenorStrike, aMaturity, vDf, vVol);
+		return MG_CF::PutPrice(aFwd, aTenorStrike, aMaturity, 1., vVol);
 
 	case MG_CF::DIGITAL_CALL:
-		return MG_CF::DigitalCallPrice(aFwd, aTenorStrike, aMaturity, vDf, vVol);
+		return MG_CF::DigitalCallPrice(aFwd, aTenorStrike, aMaturity, 1., vVol);
 
 	case MG_CF::DIGITAL_PUT:
-		return MG_CF::DigitalPutPrice(aFwd, aTenorStrike, aMaturity, vDf, vVol);
+		return MG_CF::DigitalPutPrice(aFwd, aTenorStrike, aMaturity, 1., vVol);
 
 	case MG_CF::STRADDLE:
-		return MG_CF::StraddlePrice(aFwd, aTenorStrike, aMaturity, vDf, vVol);
+		return MG_CF::StraddlePrice(aFwd, aTenorStrike, aMaturity, 1., vVol);
 
 	default:
 		MG_THROW("unrecognized payoff.");

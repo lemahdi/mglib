@@ -28,7 +28,7 @@ public:
 	virtual ~MG_Object(void) {}
 
 	MG_Object& operator= (const MG_Object& /*aRight*/) {}
-	virtual MG_Object* Clone(void) = 0;
+	virtual MG_Object* Clone(void) const = 0;
 
 };
 

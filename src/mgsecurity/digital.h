@@ -12,6 +12,7 @@
 
 
 #include "mgsecurity/option.h"
+#include "mgnova/glob/genericdate.h"
 
 
 MG_NAMESPACE_BEGIN
@@ -33,8 +34,14 @@ public:
 
 	virtual ~MG_Digital(void);
 
-	MG_Digital	(	const MG_GenericDate& aMat
+	MG_Digital	(	const MG_GenericDate& aMatDt
+				,	const MG_Security	& aUnderlying
+				,	const CALLPUT_NAME	& aCallPut
 				,	const double		& aStrike);
+	MG_Digital	(	const std::vector<MG_Date>	& aMatDts
+				,	const MG_Security			& aUnderlying
+				,	const CALLPUT_NAME			& aCallPut
+				,	const double				& aStrike);
 
 public:
 	/* Engine */
@@ -42,6 +49,8 @@ public:
 	double	Price		(void) const;
 
 private:
+	MG_GenericDate myMatDt;
+	CALLPUT_NAME myCallPut;
 
 };
 
