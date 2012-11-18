@@ -9,7 +9,7 @@
 #include "vanilla/model/model.h"
 #include "vanilla/security/swapleg.h"
 #include "vanilla/security/callput.h"
-#include "mggenpricer/gensec/gensecurity.h"
+#include "genpricer/gensec/gensecurity.h"
 
 
 using namespace std;

@@ -1,9 +1,9 @@
 #include "mgnova/mginit.h"
-#include "mggenpricer/infra/nodes.h"
-#include "mggenpricer/infra/arg.h"
+#include "genpricer/infra/nodes.h"
+#include "genpricer/infra/arg.h"
 #pragma warning(push)
 #pragma warning(disable:4512)
-#include "mggenpricer/infra/my_parser.tab.hpp"
+#include "genpricer/infra/my_parser.tab.hpp"
 #pragma warning(pop)
 #include "mgnova/glob/date.h"
 #include "mgnova/market/calendar.h"
@@ -24,10 +24,10 @@
 #include "gsl/gsl_vector.h"
 
 #include "init.h"
-#include "mggenpricer/gensec/gensecurity.h"
-#include "mggenpricer/numerics/mcmethod.h"
-#include "mggenpricer/genmod/blackscholes.h"
-#include "mggenpricer/genpricer/genpricer.h"
+#include "genpricer/gensec/gensecurity.h"
+#include "genpricer/numerics/mcmethod.h"
+#include "genpricer/genmod/blackscholes.h"
+#include "genpricer/genpricer/genpricer.h"
 #include "mgmktdata/marketdata.h"
 
 

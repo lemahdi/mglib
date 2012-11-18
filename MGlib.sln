@@ -29,8 +29,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mgxll", "app\mgxll\mgxll.vc
 		{336ABAD6-64AC-4C7F-8CBB-52C70BF143E1} = {336ABAD6-64AC-4C7F-8CBB-52C70BF143E1}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mggenpricer", "src\mggenpricer\mggenpricer.vcproj", "{336ABAD6-64AC-4C7F-8CBB-52C70BF143E1}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gsl", "src\gsl\win32\gsl.vcproj", "{94F0E96C-F526-4B2F-8B90-B7FAA2F608FD}"
 	ProjectSection(ProjectDependencies) = postProject
 		{5A3A2F64-12A8-4DA7-A98A-EE21464EF37C} = {5A3A2F64-12A8-4DA7-A98A-EE21464EF37C}
@@ -41,6 +39,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "gsl", "gsl", "{DA18C280-4281-4E23-A5FA-C1997B17DBC4}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vanilla", "src\vanilla\vanilla.vcproj", "{63B84211-3C85-4455-8CCA-7A2FF246C304}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "genpricer", "src\genpricer\genpricer.vcproj", "{336ABAD6-64AC-4C7F-8CBB-52C70BF143E1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -90,14 +90,6 @@ Global
 		{BC4406A2-82D9-46E1-9432-EAABE9AEED88}.Release MT|Win32.Build.0 = Release|Win32
 		{BC4406A2-82D9-46E1-9432-EAABE9AEED88}.Release|Win32.ActiveCfg = Release|Win32
 		{BC4406A2-82D9-46E1-9432-EAABE9AEED88}.Release|Win32.Build.0 = Release|Win32
-		{336ABAD6-64AC-4C7F-8CBB-52C70BF143E1}.Debug MT|Win32.ActiveCfg = Debug|Win32
-		{336ABAD6-64AC-4C7F-8CBB-52C70BF143E1}.Debug MT|Win32.Build.0 = Debug|Win32
-		{336ABAD6-64AC-4C7F-8CBB-52C70BF143E1}.Debug|Win32.ActiveCfg = Debug|Win32
-		{336ABAD6-64AC-4C7F-8CBB-52C70BF143E1}.Debug|Win32.Build.0 = Debug|Win32
-		{336ABAD6-64AC-4C7F-8CBB-52C70BF143E1}.Release MT|Win32.ActiveCfg = Release|Win32
-		{336ABAD6-64AC-4C7F-8CBB-52C70BF143E1}.Release MT|Win32.Build.0 = Release|Win32
-		{336ABAD6-64AC-4C7F-8CBB-52C70BF143E1}.Release|Win32.ActiveCfg = Release|Win32
-		{336ABAD6-64AC-4C7F-8CBB-52C70BF143E1}.Release|Win32.Build.0 = Release|Win32
 		{94F0E96C-F526-4B2F-8B90-B7FAA2F608FD}.Debug MT|Win32.ActiveCfg = Debug MT|Win32
 		{94F0E96C-F526-4B2F-8B90-B7FAA2F608FD}.Debug MT|Win32.Build.0 = Debug MT|Win32
 		{94F0E96C-F526-4B2F-8B90-B7FAA2F608FD}.Debug|Win32.ActiveCfg = Debug|Win32
@@ -122,6 +114,14 @@ Global
 		{63B84211-3C85-4455-8CCA-7A2FF246C304}.Release MT|Win32.Build.0 = Release|Win32
 		{63B84211-3C85-4455-8CCA-7A2FF246C304}.Release|Win32.ActiveCfg = Release|Win32
 		{63B84211-3C85-4455-8CCA-7A2FF246C304}.Release|Win32.Build.0 = Release|Win32
+		{336ABAD6-64AC-4C7F-8CBB-52C70BF143E1}.Debug MT|Win32.ActiveCfg = Debug|Win32
+		{336ABAD6-64AC-4C7F-8CBB-52C70BF143E1}.Debug MT|Win32.Build.0 = Debug|Win32
+		{336ABAD6-64AC-4C7F-8CBB-52C70BF143E1}.Debug|Win32.ActiveCfg = Debug|Win32
+		{336ABAD6-64AC-4C7F-8CBB-52C70BF143E1}.Debug|Win32.Build.0 = Debug|Win32
+		{336ABAD6-64AC-4C7F-8CBB-52C70BF143E1}.Release MT|Win32.ActiveCfg = Release|Win32
+		{336ABAD6-64AC-4C7F-8CBB-52C70BF143E1}.Release MT|Win32.Build.0 = Release|Win32
+		{336ABAD6-64AC-4C7F-8CBB-52C70BF143E1}.Release|Win32.ActiveCfg = Release|Win32
+		{336ABAD6-64AC-4C7F-8CBB-52C70BF143E1}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

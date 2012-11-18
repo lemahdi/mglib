@@ -1,0 +1,117 @@
+/* C++ version of calculator */
+
+%language "C++"
+%defines
+%locations
+
+%define parser_class_name "my_parser"
+
+%{
+#include <iostream>
+using namespace std;
+#include "genpricer/infra/nodes.h"
+#include "genpricer/infra/arg.h"
+
+#pragma warning(push)
+#pragma warning(disable:4065)
+#pragma warning(disable:4267)
+#pragma warning(disable:4512)
+#pragma warning(disable:4127)
+#pragma warning(disable:4702)
+
+%}
+
+%parse-param { MG::MG_TableWalker &walker }
+%parse-param { MG::MG_NodeManager &manager }
+%lex-param { MG::MG_TableWalker &walker }
+%lex-param { MG::MG_NodeManager &manager }
+
+%union {
+	MG::MG_Node* nval;
+	double dval;
+	char* cval;
+	int ival;
+	long lval;
+	unsigned int uval;
+}
+
+/* declare tokens */
+%token <dval> NUMBER
+%token <cval> NAME
+%token <lval> DATE
+%token EOL
+
+%nonassoc <uval> CMP
+%left '+' '-'
+%left '*' '/'
+%nonassoc '|' UMINUS
+
+%type <nval> exp
+%type <ival> index
+%type <nval> arglist
+
+%start calclist
+
+%{
+extern int yylex(yy::my_parser::semantic_type *yylval,
+	yy::my_parser::location_type* yyloc,
+	MG::MG_TableWalker &walker, MG::MG_NodeManager &manager);
+
+%}
+
+%initial-action {
+	// Filename for locations here
+	@$.begin.filename = @$.end.filename = new std::string("stdin");
+}
+
+%%
+	
+exp: exp '+' exp			{ $$ = manager.BuildNode(walker, ADD_NODE, $1, $3); }
+	| exp '-' exp			{ $$ = manager.BuildNode(walker, SUB_NODE, $1, $3); }
+	| exp '*' exp			{ $$ = manager.BuildNode(walker, MUL_NODE, $1, $3); }
+	| exp '/' exp			{ $$ = manager.BuildNode(walker, DIV_NODE, $1, $3); }
+	| '(' exp ')'			{ $$ = $2; }
+	| '-' exp %prec UMINUS	{ $$ = manager.BuildNode(walker, NEG_NODE, NULL, $2); }
+	| exp CMP exp			{ $$ = manager.BuildCmpNode(walker, CMP_NODE, $2, $1, $3); }
+	| NUMBER				{ $$ = manager.BuildNum(walker, $1); }
+	| DATE					{ $$ = manager.BuildDate(walker, $1); }
+	| NAME '[' index ']'	{ $$ = manager.BuildRef(walker, $1, $3); free($1); }
+	| NAME '(' arglist ')'	{ $$ = manager.BuildFunc(walker, $1, $3); free($1); }
+;
+
+index: NAME					{ if (manager.CheckIndex($1)) $$ = 0; }
+	| index '+' NUMBER		{ $$ = (int)$3; }
+	| index '-' NUMBER		{ $$ = -(int)$3; }
+;
+
+arglist:					{ $$ = NULL; }
+	| exp					{ $$ = manager.BuildArg(walker, $1, NULL); }
+	| exp ',' arglist		{ $$ = manager.BuildArg(walker, $1, $3); }
+;
+
+	// bison rules for the C++ parser
+calclist: /* nothing */
+	| calclist exp EOL {
+		cout << "= ";
+		cout << manager.Eval($2).Double();
+		walker.IncCurrentCol();
+		cout << endl << "> ";
+	}
+	| calclist EOL { /* blank line or a comment */
+		cout << "> ";
+	}
+;
+	
+%%
+
+// C++ code section of parser
+namespace yy {
+	void
+	my_parser::error(location const &loc, const std::string& s) {
+		std::cerr << "error at " << loc << ": " << s << std::endl;
+	}
+}
+
+#ifdef WIN32
+#pragma warning(pop)
+#endif
