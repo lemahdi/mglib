@@ -1,5 +1,5 @@
-#include "mginfra/func.h"
-#include "mginfra/arg.h"
+#include "mggenpricer/infra/func.h"
+#include "mggenpricer/infra/arg.h"
 #include "mggenpricer/genmod/irpricingmodel.h"
 
 #include <math.h>

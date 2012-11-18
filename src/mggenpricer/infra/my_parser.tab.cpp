@@ -34,12 +34,12 @@
 /* First part of user declarations.  */
 
 /* Line 310 of lalr1.cc  */
-#line 9 "src/mginfra/my_parser.ypp"
+#line 9 "src/mggenpricer/infra/my_parser.ypp"
 
 #include <iostream>
 using namespace std;
-#include "mginfra/nodes.h"
-#include "mginfra/arg.h"
+#include "mggenpricer/infra/nodes.h"
+#include "mggenpricer/infra/arg.h"
 
 #pragma warning(push)
 #pragma warning(disable:4065)
@@ -59,7 +59,7 @@ using namespace std;
 /* User implementation prologue.  */
 
 /* Line 316 of lalr1.cc  */
-#line 55 "src/mginfra/my_parser.ypp"
+#line 55 "src/mggenpricer/infra/my_parser.ypp"
 
 extern int yylex(yy::my_parser::semantic_type *yylval,
 	yy::my_parser::location_type* yyloc,
@@ -312,7 +312,7 @@ namespace yy {
     /* User initialization code.  */
     
 /* Line 552 of lalr1.cc  */
-#line 62 "src/mginfra/my_parser.ypp"
+#line 62 "src/mggenpricer/infra/my_parser.ypp"
 {
 	// Filename for locations here
 	yylloc.begin.filename = yylloc.end.filename = new std::string("stdin");
@@ -438,126 +438,126 @@ namespace yy {
 	  case 2:
 
 /* Line 677 of lalr1.cc  */
-#line 69 "src/mginfra/my_parser.ypp"
+#line 69 "src/mggenpricer/infra/my_parser.ypp"
     { (yyval.nval) = manager.BuildNode(walker, ADD_NODE, (yysemantic_stack_[(3) - (1)].nval), (yysemantic_stack_[(3) - (3)].nval)); }
     break;
 
   case 3:
 
 /* Line 677 of lalr1.cc  */
-#line 70 "src/mginfra/my_parser.ypp"
+#line 70 "src/mggenpricer/infra/my_parser.ypp"
     { (yyval.nval) = manager.BuildNode(walker, SUB_NODE, (yysemantic_stack_[(3) - (1)].nval), (yysemantic_stack_[(3) - (3)].nval)); }
     break;
 
   case 4:
 
 /* Line 677 of lalr1.cc  */
-#line 71 "src/mginfra/my_parser.ypp"
+#line 71 "src/mggenpricer/infra/my_parser.ypp"
     { (yyval.nval) = manager.BuildNode(walker, MUL_NODE, (yysemantic_stack_[(3) - (1)].nval), (yysemantic_stack_[(3) - (3)].nval)); }
     break;
 
   case 5:
 
 /* Line 677 of lalr1.cc  */
-#line 72 "src/mginfra/my_parser.ypp"
+#line 72 "src/mggenpricer/infra/my_parser.ypp"
     { (yyval.nval) = manager.BuildNode(walker, DIV_NODE, (yysemantic_stack_[(3) - (1)].nval), (yysemantic_stack_[(3) - (3)].nval)); }
     break;
 
   case 6:
 
 /* Line 677 of lalr1.cc  */
-#line 73 "src/mginfra/my_parser.ypp"
+#line 73 "src/mggenpricer/infra/my_parser.ypp"
     { (yyval.nval) = (yysemantic_stack_[(3) - (2)].nval); }
     break;
 
   case 7:
 
 /* Line 677 of lalr1.cc  */
-#line 74 "src/mginfra/my_parser.ypp"
+#line 74 "src/mggenpricer/infra/my_parser.ypp"
     { (yyval.nval) = manager.BuildNode(walker, NEG_NODE, NULL, (yysemantic_stack_[(2) - (2)].nval)); }
     break;
 
   case 8:
 
 /* Line 677 of lalr1.cc  */
-#line 75 "src/mginfra/my_parser.ypp"
+#line 75 "src/mggenpricer/infra/my_parser.ypp"
     { (yyval.nval) = manager.BuildCmpNode(walker, CMP_NODE, (yysemantic_stack_[(3) - (2)].uval), (yysemantic_stack_[(3) - (1)].nval), (yysemantic_stack_[(3) - (3)].nval)); }
     break;
 
   case 9:
 
 /* Line 677 of lalr1.cc  */
-#line 76 "src/mginfra/my_parser.ypp"
+#line 76 "src/mggenpricer/infra/my_parser.ypp"
     { (yyval.nval) = manager.BuildNum(walker, (yysemantic_stack_[(1) - (1)].dval)); }
     break;
 
   case 10:
 
 /* Line 677 of lalr1.cc  */
-#line 77 "src/mginfra/my_parser.ypp"
+#line 77 "src/mggenpricer/infra/my_parser.ypp"
     { (yyval.nval) = manager.BuildDate(walker, (yysemantic_stack_[(1) - (1)].lval)); }
     break;
 
   case 11:
 
 /* Line 677 of lalr1.cc  */
-#line 78 "src/mginfra/my_parser.ypp"
+#line 78 "src/mggenpricer/infra/my_parser.ypp"
     { (yyval.nval) = manager.BuildRef(walker, (yysemantic_stack_[(4) - (1)].cval), (yysemantic_stack_[(4) - (3)].ival)); free((yysemantic_stack_[(4) - (1)].cval)); }
     break;
 
   case 12:
 
 /* Line 677 of lalr1.cc  */
-#line 79 "src/mginfra/my_parser.ypp"
+#line 79 "src/mggenpricer/infra/my_parser.ypp"
     { (yyval.nval) = manager.BuildFunc(walker, (yysemantic_stack_[(4) - (1)].cval), (yysemantic_stack_[(4) - (3)].nval)); free((yysemantic_stack_[(4) - (1)].cval)); }
     break;
 
   case 13:
 
 /* Line 677 of lalr1.cc  */
-#line 82 "src/mginfra/my_parser.ypp"
+#line 82 "src/mggenpricer/infra/my_parser.ypp"
     { if (manager.CheckIndex((yysemantic_stack_[(1) - (1)].cval))) (yyval.ival) = 0; }
     break;
 
   case 14:
 
 /* Line 677 of lalr1.cc  */
-#line 83 "src/mginfra/my_parser.ypp"
+#line 83 "src/mggenpricer/infra/my_parser.ypp"
     { (yyval.ival) = (int)(yysemantic_stack_[(3) - (3)].dval); }
     break;
 
   case 15:
 
 /* Line 677 of lalr1.cc  */
-#line 84 "src/mginfra/my_parser.ypp"
+#line 84 "src/mggenpricer/infra/my_parser.ypp"
     { (yyval.ival) = -(int)(yysemantic_stack_[(3) - (3)].dval); }
     break;
 
   case 16:
 
 /* Line 677 of lalr1.cc  */
-#line 87 "src/mginfra/my_parser.ypp"
+#line 87 "src/mggenpricer/infra/my_parser.ypp"
     { (yyval.nval) = NULL; }
     break;
 
   case 17:
 
 /* Line 677 of lalr1.cc  */
-#line 88 "src/mginfra/my_parser.ypp"
+#line 88 "src/mggenpricer/infra/my_parser.ypp"
     { (yyval.nval) = manager.BuildArg(walker, (yysemantic_stack_[(1) - (1)].nval), NULL); }
     break;
 
   case 18:
 
 /* Line 677 of lalr1.cc  */
-#line 89 "src/mginfra/my_parser.ypp"
+#line 89 "src/mggenpricer/infra/my_parser.ypp"
     { (yyval.nval) = manager.BuildArg(walker, (yysemantic_stack_[(3) - (1)].nval), (yysemantic_stack_[(3) - (3)].nval)); }
     break;
 
   case 20:
 
 /* Line 677 of lalr1.cc  */
-#line 94 "src/mginfra/my_parser.ypp"
+#line 94 "src/mggenpricer/infra/my_parser.ypp"
     {
 		cout << "= ";
 		cout << manager.Eval((yysemantic_stack_[(3) - (2)].nval)).Double();
@@ -569,7 +569,7 @@ namespace yy {
   case 21:
 
 /* Line 677 of lalr1.cc  */
-#line 100 "src/mginfra/my_parser.ypp"
+#line 100 "src/mggenpricer/infra/my_parser.ypp"
     { /* blank line or a comment */
 		cout << "> ";
 	}
@@ -1024,7 +1024,7 @@ namespace yy {
 
 
 /* Line 1055 of lalr1.cc  */
-#line 105 "src/mginfra/my_parser.ypp"
+#line 105 "src/mggenpricer/infra/my_parser.ypp"
 
 
 // C++ code section of parser

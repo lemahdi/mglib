@@ -13,7 +13,7 @@
 
 #include "mgnova/glob/object.h"
 #include "mgnova/patterns/countedptr.hpp"
-#include "mggenpricer/gennumerics/mcmethod.h"
+#include "mggenpricer/numerics/mcmethod.h"
 
 
 MG_NAMESPACE_BEGIN

@@ -11,7 +11,7 @@
 #pragma once
 
 
-#include "mginfra/nodes.h"
+#include "mggenpricer/infra/nodes.h"
 
 
 MG_NAMESPACE_BEGIN

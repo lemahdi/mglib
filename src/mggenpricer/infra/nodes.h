@@ -26,7 +26,7 @@
 #endif
 
 #include "mgnova/patterns/singleton.hpp"
-#include "mginfra/func.h"
+#include "mggenpricer/infra/func.h"
 #include "mgnova/glob/date.h"
 
 

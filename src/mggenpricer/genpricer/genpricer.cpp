@@ -5,7 +5,7 @@
 #include "mggenpricer/genmod/irpricingmodel.h"
 
 #include "mgnova/numerical/distributions.h"
-#include "mginfra/arg.h"
+#include "mggenpricer/infra/arg.h"
 
 #include <math.h>
 

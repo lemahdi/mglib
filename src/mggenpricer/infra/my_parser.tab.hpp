@@ -109,7 +109,7 @@ namespace yy {
     {
 
 /* Line 34 of lalr1.cc  */
-#line 29 "src/mginfra/my_parser.ypp"
+#line 29 "src/mggenpricer/infra/my_parser.ypp"
 
 	MG::MG_Node* nval;
 	double dval;

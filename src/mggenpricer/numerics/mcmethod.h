@@ -11,7 +11,7 @@
 #pragma once
 
 
-#include "mggenpricer/gennumerics/nummethod.h"
+#include "mggenpricer/numerics/nummethod.h"
 #include "mgnova/patterns/countedptr.hpp"
 #include "mgnova/wrapper/matrix.h"
 

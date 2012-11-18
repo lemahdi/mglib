@@ -223,7 +223,7 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="gennumerics"
+			Name="numerics"
 			>
 			<File
 				RelativePath=".\gennumerics\mcmethod.cpp"
@@ -251,6 +251,58 @@
 			</File>
 			<File
 				RelativePath=".\genpricer\genpricer.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="infra"
+			>
+			<File
+				RelativePath=".\infra\arg.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\infra\arg.h"
+				>
+			</File>
+			<File
+				RelativePath=".\infra\func.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\infra\func.h"
+				>
+			</File>
+			<File
+				RelativePath=".\infra\lex.yy.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\infra\location.hh"
+				>
+			</File>
+			<File
+				RelativePath=".\infra\my_parser.tab.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\infra\my_parser.tab.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\infra\nodes.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\infra\nodes.h"
+				>
+			</File>
+			<File
+				RelativePath=".\infra\position.hh"
+				>
+			</File>
+			<File
+				RelativePath=".\infra\stack.hh"
 				>
 			</File>
 		</Filter>

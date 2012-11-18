@@ -1,6 +1,6 @@
 #include "mgnova/mginit.h"
 #include "mgnova/market/calendar.h"
-#include "mginfra/func.h"
+#include "mggenpricer/infra/func.h"
 
 
 using namespace MG;

@@ -1,7 +1,7 @@
 #include "mggenpricer/gensec/gensecurity.h"
 #pragma warning(push)
 #pragma warning(disable:4512)
-#include "mginfra/my_parser.tab.hpp"
+#include "mggenpricer/infra/my_parser.tab.hpp"
 #pragma warning(pop)
 
 

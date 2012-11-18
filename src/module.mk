@@ -21,13 +21,13 @@ depend_libs  :=
 #depend_libs  := $(addsuffix .so,$(depend_libs))
 
 
-scanner_file  := $(local_dir)/mginfra/my_scanner.l
-parser_file   := $(local_dir)/mginfra/my_parser.ypp
-out_scan_file := $(local_dir)/mginfra/lex.yy.cpp
+scanner_file  := $(local_dir)/mggenpricer/infra/my_scanner.l
+parser_file   := $(local_dir)/mggenpricer/infra/my_parser.ypp
+out_scan_file := $(local_dir)/mggenpricer/infra/lex.yy.cpp
 out_parse_f1  := $(basename $(parser_file)).tab.cpp
 out_parse_f2  := $(basename $(parser_file)).tab.hpp
 out_file      := $(out_scan_file) $(out_parse_f1) $(out_parse_f2)
-out_file      += $(addprefix $(local_dir)/mginfra/,position.hh location.hh stack.hh)
+out_file      += $(addprefix $(local_dir)/mggenpricer/infra/,position.hh location.hh stack.hh)
 
 
 # Targets
@@ -44,8 +44,8 @@ $(out_scan_file): $(scanner_file)
 $(out_parse_f1) $(out_parse_f2): $(parser_file)
 	@echo $<
 	@$(BISON) $<
-	@$(MV) *.tab.* src/mginfra
-	@$(MV) *.hh src/mginfra
+	@$(MV) *.tab.* src/mggenpricer/infra
+	@$(MV) *.hh src/mggenpricer/infra
 
 #local_src    := $(call module-sources,$(sub_dirs))
 local_src += $(out_scan_file) $(out_parse_f1)
