@@ -51,7 +51,7 @@ using namespace std;
 
 
 /* Line 310 of lalr1.cc  */
-#line 54 "my_parser.tab.cpp"
+#line 55 "my_parser.tab.cpp"
 
 
 #include "my_parser.tab.hpp"
@@ -59,7 +59,7 @@ using namespace std;
 /* User implementation prologue.  */
 
 /* Line 316 of lalr1.cc  */
-#line 54 "src/mginfra/my_parser.ypp"
+#line 55 "src/mginfra/my_parser.ypp"
 
 extern int yylex(yy::my_parser::semantic_type *yylval,
 	yy::my_parser::location_type* yyloc,
@@ -68,7 +68,7 @@ extern int yylex(yy::my_parser::semantic_type *yylval,
 
 
 /* Line 316 of lalr1.cc  */
-#line 71 "my_parser.tab.cpp"
+#line 72 "my_parser.tab.cpp"
 
 #ifndef YY_
 # if defined YYENABLE_NLS && YYENABLE_NLS
@@ -134,7 +134,7 @@ do {					\
 namespace yy {
 
 /* Line 379 of lalr1.cc  */
-#line 137 "my_parser.tab.cpp"
+#line 138 "my_parser.tab.cpp"
 #if YYERROR_VERBOSE
 
   /* Return YYSTR after stripping away unnecessary quotes and
@@ -312,14 +312,14 @@ namespace yy {
     /* User initialization code.  */
     
 /* Line 552 of lalr1.cc  */
-#line 61 "src/mginfra/my_parser.ypp"
+#line 62 "src/mginfra/my_parser.ypp"
 {
 	// Filename for locations here
 	yylloc.begin.filename = yylloc.end.filename = new std::string("stdin");
 }
 
 /* Line 552 of lalr1.cc  */
-#line 322 "my_parser.tab.cpp"
+#line 323 "my_parser.tab.cpp"
 
     /* Initialize the stacks.  The initial state will be pushed in
        yynewstate, since the latter expects the semantical and the
@@ -438,126 +438,126 @@ namespace yy {
 	  case 2:
 
 /* Line 677 of lalr1.cc  */
-#line 68 "src/mginfra/my_parser.ypp"
+#line 69 "src/mginfra/my_parser.ypp"
     { (yyval.nval) = manager.BuildNode(walker, ADD_NODE, (yysemantic_stack_[(3) - (1)].nval), (yysemantic_stack_[(3) - (3)].nval)); }
     break;
 
   case 3:
 
 /* Line 677 of lalr1.cc  */
-#line 69 "src/mginfra/my_parser.ypp"
+#line 70 "src/mginfra/my_parser.ypp"
     { (yyval.nval) = manager.BuildNode(walker, SUB_NODE, (yysemantic_stack_[(3) - (1)].nval), (yysemantic_stack_[(3) - (3)].nval)); }
     break;
 
   case 4:
 
 /* Line 677 of lalr1.cc  */
-#line 70 "src/mginfra/my_parser.ypp"
+#line 71 "src/mginfra/my_parser.ypp"
     { (yyval.nval) = manager.BuildNode(walker, MUL_NODE, (yysemantic_stack_[(3) - (1)].nval), (yysemantic_stack_[(3) - (3)].nval)); }
     break;
 
   case 5:
 
 /* Line 677 of lalr1.cc  */
-#line 71 "src/mginfra/my_parser.ypp"
+#line 72 "src/mginfra/my_parser.ypp"
     { (yyval.nval) = manager.BuildNode(walker, DIV_NODE, (yysemantic_stack_[(3) - (1)].nval), (yysemantic_stack_[(3) - (3)].nval)); }
     break;
 
   case 6:
 
 /* Line 677 of lalr1.cc  */
-#line 72 "src/mginfra/my_parser.ypp"
+#line 73 "src/mginfra/my_parser.ypp"
     { (yyval.nval) = (yysemantic_stack_[(3) - (2)].nval); }
     break;
 
   case 7:
 
 /* Line 677 of lalr1.cc  */
-#line 73 "src/mginfra/my_parser.ypp"
+#line 74 "src/mginfra/my_parser.ypp"
     { (yyval.nval) = manager.BuildNode(walker, NEG_NODE, NULL, (yysemantic_stack_[(2) - (2)].nval)); }
     break;
 
   case 8:
 
 /* Line 677 of lalr1.cc  */
-#line 74 "src/mginfra/my_parser.ypp"
+#line 75 "src/mginfra/my_parser.ypp"
     { (yyval.nval) = manager.BuildCmpNode(walker, CMP_NODE, (yysemantic_stack_[(3) - (2)].uval), (yysemantic_stack_[(3) - (1)].nval), (yysemantic_stack_[(3) - (3)].nval)); }
     break;
 
   case 9:
 
 /* Line 677 of lalr1.cc  */
-#line 75 "src/mginfra/my_parser.ypp"
+#line 76 "src/mginfra/my_parser.ypp"
     { (yyval.nval) = manager.BuildNum(walker, (yysemantic_stack_[(1) - (1)].dval)); }
     break;
 
   case 10:
 
 /* Line 677 of lalr1.cc  */
-#line 76 "src/mginfra/my_parser.ypp"
+#line 77 "src/mginfra/my_parser.ypp"
     { (yyval.nval) = manager.BuildDate(walker, (yysemantic_stack_[(1) - (1)].lval)); }
     break;
 
   case 11:
 
 /* Line 677 of lalr1.cc  */
-#line 77 "src/mginfra/my_parser.ypp"
+#line 78 "src/mginfra/my_parser.ypp"
     { (yyval.nval) = manager.BuildRef(walker, (yysemantic_stack_[(4) - (1)].cval), (yysemantic_stack_[(4) - (3)].ival)); free((yysemantic_stack_[(4) - (1)].cval)); }
     break;
 
   case 12:
 
 /* Line 677 of lalr1.cc  */
-#line 78 "src/mginfra/my_parser.ypp"
+#line 79 "src/mginfra/my_parser.ypp"
     { (yyval.nval) = manager.BuildFunc(walker, (yysemantic_stack_[(4) - (1)].cval), (yysemantic_stack_[(4) - (3)].nval)); free((yysemantic_stack_[(4) - (1)].cval)); }
     break;
 
   case 13:
 
 /* Line 677 of lalr1.cc  */
-#line 81 "src/mginfra/my_parser.ypp"
+#line 82 "src/mginfra/my_parser.ypp"
     { if (manager.CheckIndex((yysemantic_stack_[(1) - (1)].cval))) (yyval.ival) = 0; }
     break;
 
   case 14:
 
 /* Line 677 of lalr1.cc  */
-#line 82 "src/mginfra/my_parser.ypp"
+#line 83 "src/mginfra/my_parser.ypp"
     { (yyval.ival) = (int)(yysemantic_stack_[(3) - (3)].dval); }
     break;
 
   case 15:
 
 /* Line 677 of lalr1.cc  */
-#line 83 "src/mginfra/my_parser.ypp"
+#line 84 "src/mginfra/my_parser.ypp"
     { (yyval.ival) = -(int)(yysemantic_stack_[(3) - (3)].dval); }
     break;
 
   case 16:
 
 /* Line 677 of lalr1.cc  */
-#line 86 "src/mginfra/my_parser.ypp"
+#line 87 "src/mginfra/my_parser.ypp"
     { (yyval.nval) = NULL; }
     break;
 
   case 17:
 
 /* Line 677 of lalr1.cc  */
-#line 87 "src/mginfra/my_parser.ypp"
+#line 88 "src/mginfra/my_parser.ypp"
     { (yyval.nval) = manager.BuildArg(walker, (yysemantic_stack_[(1) - (1)].nval), NULL); }
     break;
 
   case 18:
 
 /* Line 677 of lalr1.cc  */
-#line 88 "src/mginfra/my_parser.ypp"
+#line 89 "src/mginfra/my_parser.ypp"
     { (yyval.nval) = manager.BuildArg(walker, (yysemantic_stack_[(3) - (1)].nval), (yysemantic_stack_[(3) - (3)].nval)); }
     break;
 
   case 20:
 
 /* Line 677 of lalr1.cc  */
-#line 93 "src/mginfra/my_parser.ypp"
+#line 94 "src/mginfra/my_parser.ypp"
     {
 		cout << "= ";
 		cout << manager.Eval((yysemantic_stack_[(3) - (2)].nval)).Double();
@@ -569,7 +569,7 @@ namespace yy {
   case 21:
 
 /* Line 677 of lalr1.cc  */
-#line 99 "src/mginfra/my_parser.ypp"
+#line 100 "src/mginfra/my_parser.ypp"
     { /* blank line or a comment */
 		cout << "> ";
 	}
@@ -578,7 +578,7 @@ namespace yy {
 
 
 /* Line 677 of lalr1.cc  */
-#line 581 "my_parser.tab.cpp"
+#line 582 "my_parser.tab.cpp"
 	default:
           break;
       }
@@ -928,9 +928,9 @@ namespace yy {
   const unsigned char
   my_parser::yyrline_[] =
   {
-         0,    68,    68,    69,    70,    71,    72,    73,    74,    75,
-      76,    77,    78,    81,    82,    83,    86,    87,    88,    92,
-      93,    99
+         0,    69,    69,    70,    71,    72,    73,    74,    75,    76,
+      77,    78,    79,    82,    83,    84,    87,    88,    89,    93,
+      94,   100
   };
 
   // Print the state stack on the debug stream.
@@ -1020,11 +1020,11 @@ namespace yy {
 } // yy
 
 /* Line 1053 of lalr1.cc  */
-#line 1023 "my_parser.tab.cpp"
+#line 1024 "my_parser.tab.cpp"
 
 
 /* Line 1055 of lalr1.cc  */
-#line 104 "src/mginfra/my_parser.ypp"
+#line 105 "src/mginfra/my_parser.ypp"
 
 
 // C++ code section of parser

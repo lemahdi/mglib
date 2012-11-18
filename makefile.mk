@@ -244,6 +244,11 @@ $(archives): $(objects)
 
 $(objects): $(generated)
 
+
+#> Only parser
+parser: $(generated)
+
+
 #> Cleaning
 .PHONY: clean
 clean: pclean lclean dclean oclean extra_clean

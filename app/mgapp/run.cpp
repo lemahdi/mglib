@@ -92,7 +92,7 @@ int main()
 
 	// Generic Pricer Test
 	TestGenPricer();
-	return 0;
+	//return 0;
 
 	// Deal Description
 	vector<string> vColNames;
