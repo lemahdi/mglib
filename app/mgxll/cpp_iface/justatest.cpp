@@ -7,8 +7,8 @@
 #include "mgnova/numerical/random.h"
 #include "mgmktdata/marketdata.h"
 #include "mgmodel/model.h"
-#include "vanilla/swapleg.h"
-#include "vanilla/callput.h"
+#include "vanilla/security/swapleg.h"
+#include "vanilla/security/callput.h"
 #include "mggenpricer/gensec/gensecurity.h"
 
 

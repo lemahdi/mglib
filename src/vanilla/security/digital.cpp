@@ -1,4 +1,4 @@
-#include "vanilla/callput.h"
+#include "vanilla/security/digital.h"
 #include "mgmodel/model.h"
 
 
@@ -6,21 +6,21 @@ using namespace std;
 using namespace MG;
 
 
-/* Call / Put option class */
-MG_CallPut::MG_CallPut(	const MG_CallPut& aRight)
+/* Forward Rate Agreement class */
+MG_Digital::MG_Digital	(	const MG_Digital& aRight)
 						:	MG_VanillaOption(aRight)
 						,	myMatDt		(aRight.myMatDt)
 						,	myCallPut	(aRight.myCallPut)
 {}
 
-void MG_CallPut::Swap(MG_CallPut& aRight)
+void MG_Digital::Swap(MG_Digital& aRight)
 {
 	MG_VanillaOption::Swap(aRight);
 	myMatDt.Swap(aRight.myMatDt);
 	std::swap(myCallPut, aRight.myCallPut);
 }
 
-MG_CallPut::MG_CallPut	(	const MG_GenericDate& aMatDt
+MG_Digital::MG_Digital	(	const MG_GenericDate& aMatDt
 						,	const MG_Security	& aUnderlying
 						,	const CALLPUT_NAME	& aCallPut
 						,	const double		& aStrike)
@@ -28,23 +28,23 @@ MG_CallPut::MG_CallPut	(	const MG_GenericDate& aMatDt
 						,	myMatDt		(aMatDt)
 						,	myCallPut	(aCallPut)
 {
-	myXLName = MG_CALLPUT_XL_NAME;
+	myXLName = MG_DIGITAL_XL_NAME;
 }
 
-MG_CallPut::MG_CallPut	(	const vector<MG_Date>	& aMatDts
+MG_Digital::MG_Digital	(	const vector<MG_Date>	& aMatDts
 						,	const MG_Security		& aUnderlying
 						,	const CALLPUT_NAME		& aCallPut
 						,	const double			& aStrike)
 						:	MG_VanillaOption(aMatDts, aUnderlying, aStrike)
 						,	myCallPut(aCallPut)
 {
-	myXLName = MG_CALLPUT_XL_NAME;
+	myXLName = MG_DIGITAL_XL_NAME;
 }
 
-MG_CallPut::~MG_CallPut()
+MG_Digital::~MG_Digital()
 {}
 
-void MG_CallPut::PrePricing(const MG_Model& aMdl)
+void MG_Digital::PrePricing(const MG_Model& aMdl)
 {
 	myUnderlying->PrePricing(aMdl);
 	const MG_Date& vAsOf = aMdl.GetAsOf();
@@ -70,12 +70,12 @@ void MG_CallPut::PrePricing(const MG_Model& aMdl)
 		myForwards[i] = vUndFwds[i];
 		const MG_Date& vMatDt = myMatDts[i];
 		vMat = (vMatDt.GetJulianDay() - vAsOfJul) / 365.;
-		myFlows[i] = aMdl.OptionPrice(myCallPut==K_CALL ? MG_CF::CALL : MG_CF::PUT, myForwards[i], 0., vMat);
+		myFlows[i] = aMdl.OptionPrice(myCallPut==K_CALL ? MG_CF::DIGITAL_CALL : MG_CF::DIGITAL_PUT, myForwards[i], 0., vMat);
 		myDfs[i] = aMdl.DiscountFactor(vMatDt);
 	}
 }
 
-double MG_CallPut::Price(void) const
+double MG_Digital::Price(void) const
 {
 	size_t vNbFlows = myForwards.size();
 
