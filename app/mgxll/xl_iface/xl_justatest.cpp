@@ -12,7 +12,7 @@
 #include <stdexcept>
 #include <xlw/XlOpenClose.h>
 #include <ctime>
-#include <mgnova/utils/utils.h>
+#include <nova/utils/utils.h>
 
 #include <xlw/cache/cached.h>
 

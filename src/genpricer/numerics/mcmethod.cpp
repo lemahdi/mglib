@@ -1,5 +1,5 @@
 #include "genpricer/numerics/mcmethod.h"
-#include "mgnova/numerical/distributions.h"
+#include "nova/numerical/distributions.h"
 
 
 using namespace std;

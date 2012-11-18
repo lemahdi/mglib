@@ -12,8 +12,8 @@
 
 
 #include "genpricer/numerics/nummethod.h"
-#include "mgnova/patterns/countedptr.hpp"
-#include "mgnova/wrapper/matrix.h"
+#include "nova/patterns/countedptr.hpp"
+#include "nova/wrapper/matrix.h"
 
 
 MG_NAMESPACE_BEGIN

@@ -12,7 +12,7 @@
 
 
 #include "genpricer/genmod/pricingmodel.h"
-#include "mgnova/patterns/countedptr.hpp"
+#include "nova/patterns/countedptr.hpp"
 
 #include <vector>
 

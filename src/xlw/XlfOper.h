@@ -27,8 +27,8 @@
 // $Id: XlfOper.h 538 2008-05-19 09:34:25Z ericehlers $
 
 #include <xlw/XlfOperImpl.h>
-#include "mgnova/glob/genericdate.h"
-#include "mgnova/patterns/countedptr.hpp"
+#include "nova/glob/genericdate.h"
+#include "nova/patterns/countedptr.hpp"
 
 #if defined(_MSC_VER)
 #pragma once

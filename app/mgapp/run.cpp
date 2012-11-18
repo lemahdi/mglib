@@ -1,18 +1,18 @@
-#include "mgnova/mginit.h"
+#include "nova/mginit.h"
 #include "genpricer/infra/nodes.h"
 #include "genpricer/infra/arg.h"
 #pragma warning(push)
 #pragma warning(disable:4512)
 #include "genpricer/infra/my_parser.tab.hpp"
 #pragma warning(pop)
-#include "mgnova/glob/date.h"
-#include "mgnova/market/calendar.h"
-#include "mgnova/wrapper/matrix.h"
-#include "mgnova/numerical/random.h"
-#include "mgnova/numerical/distributions.h"
-#include "mgnova/numerical/solver.h"
-#include "mgnova/numerical/regression.h"
-#include "mgnova/numerical/montecarlo.h"
+#include "nova/glob/date.h"
+#include "nova/market/calendar.h"
+#include "nova/wrapper/matrix.h"
+#include "nova/numerical/random.h"
+#include "nova/numerical/distributions.h"
+#include "nova/numerical/solver.h"
+#include "nova/numerical/regression.h"
+#include "nova/numerical/montecarlo.h"
 
 #include "gsl/gsl_rng.h"
 #include "gsl/gsl_qrng.h"

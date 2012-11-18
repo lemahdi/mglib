@@ -32,7 +32,7 @@ FOR A PARTICULAR PURPOSE.  See the license for more details.
 #include<memory>
 #include<string>
 
-#include "mgnova/mginit.h"
+#include "nova/mginit.h"
 
 
 xlw::Win32StreamBuf debuggerStreamBuf;

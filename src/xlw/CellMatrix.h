@@ -28,9 +28,9 @@
 #include <vector>
 #include <xlw/MyContainers.h>
 
-#include "mgnova/glob/object.h"
-#include "mgnova/glob/typedef.h"
-#include "mgnova/patterns/countedptr.hpp"
+#include "nova/glob/object.h"
+#include "nova/glob/typedef.h"
+#include "nova/patterns/countedptr.hpp"
 
 
 namespace xlw {

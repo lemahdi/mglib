@@ -11,8 +11,8 @@
 #pragma once
 
 
-#include "mgnova/patterns/countedptr.hpp"
-#include "mgnova/glob/date.h"
+#include "nova/patterns/countedptr.hpp"
+#include "nova/glob/date.h"
 
 #include <vector>
 

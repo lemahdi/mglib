@@ -11,9 +11,9 @@
 #pragma once
 
 
-#include "mgnova/glob/date.h"
-#include "mgnova/market/closedformulas.h"
-#include "mgnova/patterns/countedptr.hpp"
+#include "nova/glob/date.h"
+#include "nova/market/closedformulas.h"
+#include "nova/patterns/countedptr.hpp"
 #include "mgmktdata/robot.h"
 
 

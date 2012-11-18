@@ -14,9 +14,9 @@
 #include <vector>
 #include <map>
 
-#include "mgnova/glob/object.h"
-#include "mgnova/glob/typedef.h"
-#include "mgnova/patterns/singleton.hpp"
+#include "nova/glob/object.h"
+#include "nova/glob/typedef.h"
+#include "nova/patterns/singleton.hpp"
 
 
 MG_NAMESPACE_BEGIN

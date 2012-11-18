@@ -12,7 +12,7 @@
 #pragma once
 
 
-#include "mgnova/glob/object.h"
+#include "nova/glob/object.h"
 
 #include <vector>
 

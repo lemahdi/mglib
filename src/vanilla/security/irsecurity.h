@@ -11,7 +11,7 @@
 #pragma once
 
 
-#include "mgnova/market/schedule.h"
+#include "nova/market/schedule.h"
 #include "vanilla/security/security.h"
 
 

@@ -15,8 +15,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mgapp", "app\mgapp\mgapp.vc
 		{336ABAD6-64AC-4C7F-8CBB-52C70BF143E1} = {336ABAD6-64AC-4C7F-8CBB-52C70BF143E1}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mgnova", "src\mgnova\mgnova.vcproj", "{20E51C46-9C2E-4553-9A93-2633B8ADE536}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xlw", "src\xlw\xlw.vcproj", "{82FD4464-2A30-4A2E-8909-4C981CB87F38}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mgxll", "app\mgxll\mgxll.vcproj", "{BC4406A2-82D9-46E1-9432-EAABE9AEED88}"
@@ -42,6 +40,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vanilla", "src\vanilla\vani
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "genpricer", "src\genpricer\genpricer.vcproj", "{336ABAD6-64AC-4C7F-8CBB-52C70BF143E1}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "nova", "src\nova\nova.vcproj", "{20E51C46-9C2E-4553-9A93-2633B8ADE536}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug MT|Win32 = Debug MT|Win32
@@ -66,14 +66,6 @@ Global
 		{EE81CD37-E9CB-4730-A7A5-B49BA7E2E51B}.Release MT|Win32.Build.0 = Release|Win32
 		{EE81CD37-E9CB-4730-A7A5-B49BA7E2E51B}.Release|Win32.ActiveCfg = Release|Win32
 		{EE81CD37-E9CB-4730-A7A5-B49BA7E2E51B}.Release|Win32.Build.0 = Release|Win32
-		{20E51C46-9C2E-4553-9A93-2633B8ADE536}.Debug MT|Win32.ActiveCfg = Debug|Win32
-		{20E51C46-9C2E-4553-9A93-2633B8ADE536}.Debug MT|Win32.Build.0 = Debug|Win32
-		{20E51C46-9C2E-4553-9A93-2633B8ADE536}.Debug|Win32.ActiveCfg = Debug|Win32
-		{20E51C46-9C2E-4553-9A93-2633B8ADE536}.Debug|Win32.Build.0 = Debug|Win32
-		{20E51C46-9C2E-4553-9A93-2633B8ADE536}.Release MT|Win32.ActiveCfg = Release|Win32
-		{20E51C46-9C2E-4553-9A93-2633B8ADE536}.Release MT|Win32.Build.0 = Release|Win32
-		{20E51C46-9C2E-4553-9A93-2633B8ADE536}.Release|Win32.ActiveCfg = Release|Win32
-		{20E51C46-9C2E-4553-9A93-2633B8ADE536}.Release|Win32.Build.0 = Release|Win32
 		{82FD4464-2A30-4A2E-8909-4C981CB87F38}.Debug MT|Win32.ActiveCfg = Debug|Win32
 		{82FD4464-2A30-4A2E-8909-4C981CB87F38}.Debug MT|Win32.Build.0 = Debug|Win32
 		{82FD4464-2A30-4A2E-8909-4C981CB87F38}.Debug|Win32.ActiveCfg = Debug|Win32
@@ -122,6 +114,14 @@ Global
 		{336ABAD6-64AC-4C7F-8CBB-52C70BF143E1}.Release MT|Win32.Build.0 = Release|Win32
 		{336ABAD6-64AC-4C7F-8CBB-52C70BF143E1}.Release|Win32.ActiveCfg = Release|Win32
 		{336ABAD6-64AC-4C7F-8CBB-52C70BF143E1}.Release|Win32.Build.0 = Release|Win32
+		{20E51C46-9C2E-4553-9A93-2633B8ADE536}.Debug MT|Win32.ActiveCfg = Debug|Win32
+		{20E51C46-9C2E-4553-9A93-2633B8ADE536}.Debug MT|Win32.Build.0 = Debug|Win32
+		{20E51C46-9C2E-4553-9A93-2633B8ADE536}.Debug|Win32.ActiveCfg = Debug|Win32
+		{20E51C46-9C2E-4553-9A93-2633B8ADE536}.Debug|Win32.Build.0 = Debug|Win32
+		{20E51C46-9C2E-4553-9A93-2633B8ADE536}.Release MT|Win32.ActiveCfg = Release|Win32
+		{20E51C46-9C2E-4553-9A93-2633B8ADE536}.Release MT|Win32.Build.0 = Release|Win32
+		{20E51C46-9C2E-4553-9A93-2633B8ADE536}.Release|Win32.ActiveCfg = Release|Win32
+		{20E51C46-9C2E-4553-9A93-2633B8ADE536}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

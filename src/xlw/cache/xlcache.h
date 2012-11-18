@@ -11,7 +11,7 @@
 #pragma once
 
 
-#include "mgnova/glob/typedef.h"
+#include "nova/glob/typedef.h"
 
 
 MG_NAMESPACE_BEGIN

@@ -42,7 +42,7 @@
 #include <xlw/XlfOper.inl>
 #endif
 
-#include "mgnova/utils/utils.h"
+#include "nova/utils/utils.h"
 #include "xlw/cache/cached.h"
 
 /*!

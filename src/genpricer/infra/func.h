@@ -12,9 +12,9 @@
 #pragma once
 
 
-#include "mgnova/patterns/singleton.hpp"
-#include "mgnova/patterns/countedptr.hpp"
-#include "mgnova/glob/date.h"
+#include "nova/patterns/singleton.hpp"
+#include "nova/patterns/countedptr.hpp"
+#include "nova/glob/date.h"
 
 #include <vector>
 

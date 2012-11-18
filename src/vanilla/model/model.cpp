@@ -1,5 +1,5 @@
 #include "vanilla/model/model.h"
-#include "mgnova/glob/exception.h"
+#include "nova/glob/exception.h"
 
 
 using namespace std;

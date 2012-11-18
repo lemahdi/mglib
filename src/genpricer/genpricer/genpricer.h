@@ -11,8 +11,8 @@
 #pragma once
 
 
-#include "mgnova/glob/object.h"
-#include "mgnova/patterns/countedptr.hpp"
+#include "nova/glob/object.h"
+#include "nova/patterns/countedptr.hpp"
 
 
 MG_NAMESPACE_BEGIN

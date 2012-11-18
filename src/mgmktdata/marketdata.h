@@ -11,9 +11,9 @@
 #pragma once
 
 
-#include "mgnova/glob/date.h"
-#include "mgnova/numerical/interpolator.h"
-#include "mgnova/patterns/countedptr.hpp"
+#include "nova/glob/date.h"
+#include "nova/numerical/interpolator.h"
+#include "nova/patterns/countedptr.hpp"
 
 #include "gsl/gsl_interp.h"
 #include "gsl/gsl_spline.h"
