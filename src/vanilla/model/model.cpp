@@ -1,4 +1,4 @@
-#include "mgmodel/model.h"
+#include "vanilla/model/model.h"
 #include "mgnova/glob/exception.h"
 
 

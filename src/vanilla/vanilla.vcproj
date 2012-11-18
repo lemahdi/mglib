@@ -222,6 +222,18 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="model"
+			>
+			<File
+				RelativePath=".\model\model.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\model\model.h"
+				>
+			</File>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>

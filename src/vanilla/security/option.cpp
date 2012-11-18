@@ -1,5 +1,5 @@
 #include "vanilla/security/option.h"
-#include "mgmodel/model.h"
+#include "vanilla/model/model.h"
 
 
 using namespace std;

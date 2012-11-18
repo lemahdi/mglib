@@ -6,7 +6,7 @@
 #include "mgnova/market/termstructure.h"
 #include "mgnova/numerical/random.h"
 #include "mgmktdata/marketdata.h"
-#include "mgmodel/model.h"
+#include "vanilla/model/model.h"
 #include "vanilla/security/swapleg.h"
 #include "vanilla/security/callput.h"
 #include "mggenpricer/gensec/gensecurity.h"

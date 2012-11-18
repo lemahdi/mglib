@@ -1,6 +1,6 @@
 #include "vanilla/security/swaption.h"
 #include "vanilla/security/swapleg.h"
-#include "mgmodel/model.h"
+#include "vanilla/model/model.h"
 
 
 using namespace std;
