@@ -14,7 +14,7 @@
 #include "nova/glob/date.h"
 #include "nova/market/closedformulas.h"
 #include "nova/patterns/countedptr.hpp"
-#include "mgmktdata/robot.h"
+#include "mktdata/robot.h"
 
 
 MG_NAMESPACE_BEGIN

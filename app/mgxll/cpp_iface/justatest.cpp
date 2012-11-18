@@ -5,7 +5,7 @@
 #include "nova/glob/argconvdef.h"
 #include "nova/market/termstructure.h"
 #include "nova/numerical/random.h"
-#include "mgmktdata/marketdata.h"
+#include "mktdata/marketdata.h"
 #include "vanilla/model/model.h"
 #include "vanilla/security/swapleg.h"
 #include "vanilla/security/callput.h"

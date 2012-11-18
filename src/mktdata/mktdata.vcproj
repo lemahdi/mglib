@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="mgmktdata"
+	Name="mktdata"
 	ProjectGUID="{EB9FDB77-21BA-44A4-AE5A-27FFF8D60591}"
 	RootNamespace="mgmktdata"
 	Keyword="Win32Proj"

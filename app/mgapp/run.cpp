@@ -28,7 +28,7 @@
 #include "genpricer/numerics/mcmethod.h"
 #include "genpricer/genmod/blackscholes.h"
 #include "genpricer/genpricer/genpricer.h"
-#include "mgmktdata/marketdata.h"
+#include "mktdata/marketdata.h"
 
 
 using namespace std;
