@@ -1,0 +1,154 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{20E51C46-9C2E-4553-9A93-2633B8ADE536}</ProjectGuid>
+    <RootNamespace>mgnova</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">../../lib/win/$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">../../bin/win/$(ProjectName)/$(Configuration)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">../../lib/win/$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">../../bin/win/$(ProjectName)/$(Configuration)\</IntDir>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <BuildLog>
+      <Path>$(IntDir)BuildLog.htm</Path>
+    </BuildLog>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>../../src;../../src/gsl/win32/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ProgramDataBaseFileName>$(IntDir)vc80.pdb</ProgramDataBaseFileName>
+      <XMLDocumentationFileName>$(IntDir)</XMLDocumentationFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <Lib>
+      <OutputFile>../../lib/win/$(Configuration)/$(ProjectName).lib</OutputFile>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <BuildLog>
+      <Path>$(IntDir)BuildLog.htm</Path>
+    </BuildLog>
+    <ClCompile>
+      <AdditionalIncludeDirectories>../../src;../../src/gsl/win32/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ProgramDataBaseFileName>$(IntDir)vc80.pdb</ProgramDataBaseFileName>
+      <XMLDocumentationFileName>$(IntDir)</XMLDocumentationFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Lib>
+      <OutputFile>../../lib/win/$(Configuration)/$(ProjectName).lib</OutputFile>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="patterns\countedptr.hpp" />
+    <ClInclude Include="patterns\repository.hpp" />
+    <ClInclude Include="patterns\singleton.hpp" />
+    <ClInclude Include="utils\utils.h" />
+    <ClInclude Include="funcs\infrafunc.h" />
+    <ClInclude Include="wrapper\function.h" />
+    <ClInclude Include="wrapper\matrix.h" />
+    <ClInclude Include="wrapper\vector.h" />
+    <ClInclude Include="glob\argconv.h" />
+    <ClInclude Include="glob\argconvdef.h" />
+    <ClInclude Include="glob\date.h" />
+    <ClInclude Include="glob\exception.h" />
+    <ClInclude Include="glob\genericdate.h" />
+    <ClInclude Include="glob\object.h" />
+    <ClInclude Include="glob\typedef.h" />
+    <ClInclude Include="market\calendar.h" />
+    <ClInclude Include="market\closedformulas.h" />
+    <ClInclude Include="market\currency.h" />
+    <ClInclude Include="market\irindex.h" />
+    <ClInclude Include="market\schedule.h" />
+    <ClInclude Include="market\termstructure.h" />
+    <ClInclude Include="numerical\distributions.h" />
+    <ClInclude Include="numerical\interpolator.h" />
+    <ClInclude Include="numerical\minimizer.h" />
+    <ClInclude Include="numerical\montecarlo.h" />
+    <ClInclude Include="numerical\random.h" />
+    <ClInclude Include="numerical\regression.h" />
+    <ClInclude Include="numerical\solver.h" />
+    <ClInclude Include="mginit.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="utils\utils.cpp" />
+    <ClCompile Include="wrapper\function.cpp" />
+    <ClCompile Include="wrapper\matrix.cpp" />
+    <ClCompile Include="wrapper\vector.cpp" />
+    <ClCompile Include="glob\argconv.cpp" />
+    <ClCompile Include="glob\argconvdef.cpp" />
+    <ClCompile Include="glob\date.cpp" />
+    <ClCompile Include="glob\exception.cpp" />
+    <ClCompile Include="glob\genericdate.cpp" />
+    <ClCompile Include="glob\object.cpp" />
+    <ClCompile Include="market\calendar.cpp" />
+    <ClCompile Include="market\closedformulas.cpp" />
+    <ClCompile Include="market\currency.cpp" />
+    <ClCompile Include="market\irindex.cpp" />
+    <ClCompile Include="market\schedule.cpp" />
+    <ClCompile Include="market\termstructure.cpp" />
+    <ClCompile Include="numerical\distributions.cpp" />
+    <ClCompile Include="numerical\interpolator.cpp" />
+    <ClCompile Include="numerical\minimizer.cpp" />
+    <ClCompile Include="numerical\montecarlo.cpp" />
+    <ClCompile Include="numerical\random.cpp" />
+    <ClCompile Include="numerical\regression.cpp" />
+    <ClCompile Include="numerical\solver.cpp" />
+    <ClCompile Include="mginit.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

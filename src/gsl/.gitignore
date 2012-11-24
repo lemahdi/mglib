@@ -228,3 +228,7 @@
 /win32/test_rng.sln
 /win32/test_rng.suo
 /win32/test_rng.vcproj.Akkouh-Laptop.Akkouh.user
+/win32/gsl.vcxproj.user
+/win32/cblas.vcxproj.filters
+/win32/cblas.vcxproj.user
+/win32/gsl.vcxproj.filters
