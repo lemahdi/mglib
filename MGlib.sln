@@ -4,10 +4,16 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "app", "app", "{C376948D-85A5-41CA-9F3A-6A118A1FE6F9}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mgapp", "app\mgapp\mgapp.vcxproj", "{EE81CD37-E9CB-4730-A7A5-B49BA7E2E51B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{AE171437-275D-4E8E-841E-CCE1BC41C5FF} = {AE171437-275D-4E8E-841E-CCE1BC41C5FF}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xlw", "src\xlw\xlw.vcxproj", "{82FD4464-2A30-4A2E-8909-4C981CB87F38}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mgxll", "app\mgxll\mgxll.vcxproj", "{BC4406A2-82D9-46E1-9432-EAABE9AEED88}"
+	ProjectSection(ProjectDependencies) = postProject
+		{AE171437-275D-4E8E-841E-CCE1BC41C5FF} = {AE171437-275D-4E8E-841E-CCE1BC41C5FF}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vanilla", "src\vanilla\vanilla.vcxproj", "{63B84211-3C85-4455-8CCA-7A2FF246C304}"
 EndProject
@@ -16,6 +22,15 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "nova", "src\nova\nova.vcxproj", "{20E51C46-9C2E-4553-9A93-2633B8ADE536}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mktdata", "src\mktdata\mktdata.vcxproj", "{EB9FDB77-21BA-44A4-AE5A-27FFF8D60591}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "gsl", "gsl", "{D2B7B4FC-05EF-4730-BB1A-C5C4932C307B}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cblas", "src\gsl\VC\cblas\cblas.vcxproj", "{AED97E8F-F2FB-4FCE-9CED-C28B9A877BF4}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gsl", "src\gsl\VC\gsl\gsl.vcxproj", "{AE171437-275D-4E8E-841E-CCE1BC41C5FF}"
+	ProjectSection(ProjectDependencies) = postProject
+		{AED97E8F-F2FB-4FCE-9CED-C28B9A877BF4} = {AED97E8F-F2FB-4FCE-9CED-C28B9A877BF4}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,6 +96,22 @@ Global
 		{EB9FDB77-21BA-44A4-AE5A-27FFF8D60591}.Release MT|Win32.Build.0 = Release|Win32
 		{EB9FDB77-21BA-44A4-AE5A-27FFF8D60591}.Release|Win32.ActiveCfg = Release|Win32
 		{EB9FDB77-21BA-44A4-AE5A-27FFF8D60591}.Release|Win32.Build.0 = Release|Win32
+		{AED97E8F-F2FB-4FCE-9CED-C28B9A877BF4}.Debug MT|Win32.ActiveCfg = Debug|Win32
+		{AED97E8F-F2FB-4FCE-9CED-C28B9A877BF4}.Debug MT|Win32.Build.0 = Debug|Win32
+		{AED97E8F-F2FB-4FCE-9CED-C28B9A877BF4}.Debug|Win32.ActiveCfg = Debug|Win32
+		{AED97E8F-F2FB-4FCE-9CED-C28B9A877BF4}.Debug|Win32.Build.0 = Debug|Win32
+		{AED97E8F-F2FB-4FCE-9CED-C28B9A877BF4}.Release MT|Win32.ActiveCfg = Release|Win32
+		{AED97E8F-F2FB-4FCE-9CED-C28B9A877BF4}.Release MT|Win32.Build.0 = Release|Win32
+		{AED97E8F-F2FB-4FCE-9CED-C28B9A877BF4}.Release|Win32.ActiveCfg = Release|Win32
+		{AED97E8F-F2FB-4FCE-9CED-C28B9A877BF4}.Release|Win32.Build.0 = Release|Win32
+		{AE171437-275D-4E8E-841E-CCE1BC41C5FF}.Debug MT|Win32.ActiveCfg = Debug|Win32
+		{AE171437-275D-4E8E-841E-CCE1BC41C5FF}.Debug MT|Win32.Build.0 = Debug|Win32
+		{AE171437-275D-4E8E-841E-CCE1BC41C5FF}.Debug|Win32.ActiveCfg = Debug|Win32
+		{AE171437-275D-4E8E-841E-CCE1BC41C5FF}.Debug|Win32.Build.0 = Debug|Win32
+		{AE171437-275D-4E8E-841E-CCE1BC41C5FF}.Release MT|Win32.ActiveCfg = Release|Win32
+		{AE171437-275D-4E8E-841E-CCE1BC41C5FF}.Release MT|Win32.Build.0 = Release|Win32
+		{AE171437-275D-4E8E-841E-CCE1BC41C5FF}.Release|Win32.ActiveCfg = Release|Win32
+		{AE171437-275D-4E8E-841E-CCE1BC41C5FF}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -88,5 +119,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{EE81CD37-E9CB-4730-A7A5-B49BA7E2E51B} = {C376948D-85A5-41CA-9F3A-6A118A1FE6F9}
 		{BC4406A2-82D9-46E1-9432-EAABE9AEED88} = {C376948D-85A5-41CA-9F3A-6A118A1FE6F9}
+		{AED97E8F-F2FB-4FCE-9CED-C28B9A877BF4} = {D2B7B4FC-05EF-4730-BB1A-C5C4932C307B}
+		{AE171437-275D-4E8E-841E-CCE1BC41C5FF} = {D2B7B4FC-05EF-4730-BB1A-C5C4932C307B}
 	EndGlobalSection
 EndGlobal

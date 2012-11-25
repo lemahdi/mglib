@@ -1,0 +1,3 @@
+[submodule "src/gsl"]
+	path = src/gsl
+	url = C:/cygwin/home/Akkouh/gsl/121124_gsl-1.15/gsl
