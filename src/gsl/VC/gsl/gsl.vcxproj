@@ -1,0 +1,597 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\blas\blas.c" />
+    <ClCompile Include="..\..\block\block.c" />
+    <ClCompile Include="..\..\block\file.c" />
+    <ClCompile Include="..\..\block\init.c" />
+    <ClCompile Include="..\..\bspline\bspline.c" />
+    <ClCompile Include="..\..\cdf\beta.c" />
+    <ClCompile Include="..\..\cdf\betainv.c" />
+    <ClCompile Include="..\..\cdf\binomial.c" />
+    <ClCompile Include="..\..\cdf\cauchy.c" />
+    <ClCompile Include="..\..\cdf\cauchyinv.c" />
+    <ClCompile Include="..\..\cdf\chisq.c" />
+    <ClCompile Include="..\..\cdf\chisqinv.c" />
+    <ClCompile Include="..\..\cdf\exponential.c" />
+    <ClCompile Include="..\..\cdf\exponentialinv.c" />
+    <ClCompile Include="..\..\cdf\exppow.c" />
+    <ClCompile Include="..\..\cdf\fdist.c" />
+    <ClCompile Include="..\..\cdf\fdistinv.c" />
+    <ClCompile Include="..\..\cdf\flat.c" />
+    <ClCompile Include="..\..\cdf\flatinv.c" />
+    <ClCompile Include="..\..\cdf\gamma.c" />
+    <ClCompile Include="..\..\cdf\gammainv.c" />
+    <ClCompile Include="..\..\cdf\gauss.c" />
+    <ClCompile Include="..\..\cdf\gaussinv.c" />
+    <ClCompile Include="..\..\cdf\geometric.c" />
+    <ClCompile Include="..\..\cdf\gumbel1.c" />
+    <ClCompile Include="..\..\cdf\gumbel1inv.c" />
+    <ClCompile Include="..\..\cdf\gumbel2.c" />
+    <ClCompile Include="..\..\cdf\gumbel2inv.c" />
+    <ClCompile Include="..\..\cdf\hypergeometric.c" />
+    <ClCompile Include="..\..\cdf\laplace.c" />
+    <ClCompile Include="..\..\cdf\laplaceinv.c" />
+    <ClCompile Include="..\..\cdf\logistic.c" />
+    <ClCompile Include="..\..\cdf\logisticinv.c" />
+    <ClCompile Include="..\..\cdf\lognormal.c" />
+    <ClCompile Include="..\..\cdf\lognormalinv.c" />
+    <ClCompile Include="..\..\cdf\nbinomial.c" />
+    <ClCompile Include="..\..\cdf\pareto.c" />
+    <ClCompile Include="..\..\cdf\paretoinv.c" />
+    <ClCompile Include="..\..\cdf\pascal.c" />
+    <ClCompile Include="..\..\cdf\poisson.c" />
+    <ClCompile Include="..\..\cdf\rayleigh.c" />
+    <ClCompile Include="..\..\cdf\rayleighinv.c" />
+    <ClCompile Include="..\..\cdf\tdist.c" />
+    <ClCompile Include="..\..\cdf\tdistinv.c" />
+    <ClCompile Include="..\..\cdf\weibull.c" />
+    <ClCompile Include="..\..\cdf\weibullinv.c" />
+    <ClCompile Include="..\..\cheb\deriv.c" />
+    <ClCompile Include="..\..\cheb\eval.c" />
+    <ClCompile Include="..\..\cheb\init.c" />
+    <ClCompile Include="..\..\cheb\integ.c" />
+    <ClCompile Include="..\..\combination\combination.c" />
+    <ClCompile Include="..\..\combination\file.c" />
+    <ClCompile Include="..\..\combination\init.c" />
+    <ClCompile Include="..\..\combination\inline.c" />
+    <ClCompile Include="..\..\complex\inline.c" />
+    <ClCompile Include="..\..\complex\math.c" />
+    <ClCompile Include="..\..\deriv\deriv.c" />
+    <ClCompile Include="..\..\dht\dht.c" />
+    <ClCompile Include="..\..\diff\diff.c" />
+    <ClCompile Include="..\..\eigen\francis.c" />
+    <ClCompile Include="..\..\eigen\gen.c" />
+    <ClCompile Include="..\..\eigen\genherm.c" />
+    <ClCompile Include="..\..\eigen\genhermv.c" />
+    <ClCompile Include="..\..\eigen\gensymm.c" />
+    <ClCompile Include="..\..\eigen\gensymmv.c" />
+    <ClCompile Include="..\..\eigen\genv.c" />
+    <ClCompile Include="..\..\eigen\herm.c" />
+    <ClCompile Include="..\..\eigen\hermv.c" />
+    <ClCompile Include="..\..\eigen\jacobi.c" />
+    <ClCompile Include="..\..\eigen\nonsymm.c" />
+    <ClCompile Include="..\..\eigen\nonsymmv.c" />
+    <ClCompile Include="..\..\eigen\schur.c" />
+    <ClCompile Include="..\..\eigen\sort.c" />
+    <ClCompile Include="..\..\eigen\symm.c" />
+    <ClCompile Include="..\..\eigen\symmv.c" />
+    <ClCompile Include="..\..\err\error.c" />
+    <ClCompile Include="..\..\err\message.c" />
+    <ClCompile Include="..\..\err\stream.c" />
+    <ClCompile Include="..\..\err\strerror.c" />
+    <ClCompile Include="..\..\fft\dft.c" />
+    <ClCompile Include="..\..\fft\fft.c" />
+    <ClCompile Include="..\..\fft\signals.c" />
+    <ClCompile Include="..\..\fit\linear.c" />
+    <ClCompile Include="..\..\histogram\add.c" />
+    <ClCompile Include="..\..\histogram\add2d.c" />
+    <ClCompile Include="..\..\histogram\calloc_range.c" />
+    <ClCompile Include="..\..\histogram\calloc_range2d.c" />
+    <ClCompile Include="..\..\histogram\copy.c" />
+    <ClCompile Include="..\..\histogram\copy2d.c" />
+    <ClCompile Include="..\..\histogram\file.c" />
+    <ClCompile Include="..\..\histogram\file2d.c" />
+    <ClCompile Include="..\..\histogram\get.c" />
+    <ClCompile Include="..\..\histogram\get2d.c" />
+    <ClCompile Include="..\..\histogram\init.c" />
+    <ClCompile Include="..\..\histogram\init2d.c" />
+    <ClCompile Include="..\..\histogram\maxval.c" />
+    <ClCompile Include="..\..\histogram\maxval2d.c" />
+    <ClCompile Include="..\..\histogram\oper.c" />
+    <ClCompile Include="..\..\histogram\oper2d.c" />
+    <ClCompile Include="..\..\histogram\params.c" />
+    <ClCompile Include="..\..\histogram\params2d.c" />
+    <ClCompile Include="..\..\histogram\pdf.c" />
+    <ClCompile Include="..\..\histogram\pdf2d.c" />
+    <ClCompile Include="..\..\histogram\reset.c" />
+    <ClCompile Include="..\..\histogram\reset2d.c" />
+    <ClCompile Include="..\..\histogram\stat.c" />
+    <ClCompile Include="..\..\histogram\stat2d.c" />
+    <ClCompile Include="..\..\histogram\urand.c" />
+    <ClCompile Include="..\..\ieee-utils\env.c" />
+    <ClCompile Include="..\..\ieee-utils\fp.c" />
+    <ClCompile Include="..\..\ieee-utils\make_rep.c" />
+    <ClCompile Include="..\..\ieee-utils\print.c" />
+    <ClCompile Include="..\..\ieee-utils\read.c" />
+    <ClCompile Include="..\..\integration\cquad.c" />
+    <ClCompile Include="..\..\integration\glfixed.c" />
+    <ClCompile Include="..\..\integration\qag.c" />
+    <ClCompile Include="..\..\integration\qagp.c" />
+    <ClCompile Include="..\..\integration\qags.c" />
+    <ClCompile Include="..\..\integration\qawc.c" />
+    <ClCompile Include="..\..\integration\qawf.c" />
+    <ClCompile Include="..\..\integration\qawo.c" />
+    <ClCompile Include="..\..\integration\qaws.c" />
+    <ClCompile Include="..\..\integration\qcheb.c" />
+    <ClCompile Include="..\..\integration\qk.c" />
+    <ClCompile Include="..\..\integration\qk15.c" />
+    <ClCompile Include="..\..\integration\qk21.c" />
+    <ClCompile Include="..\..\integration\qk31.c" />
+    <ClCompile Include="..\..\integration\qk41.c" />
+    <ClCompile Include="..\..\integration\qk51.c" />
+    <ClCompile Include="..\..\integration\qk61.c" />
+    <ClCompile Include="..\..\integration\qmomo.c" />
+    <ClCompile Include="..\..\integration\qmomof.c" />
+    <ClCompile Include="..\..\integration\qng.c" />
+    <ClCompile Include="..\..\integration\workspace.c" />
+    <ClCompile Include="..\..\interpolation\accel.c" />
+    <ClCompile Include="..\..\interpolation\akima.c" />
+    <ClCompile Include="..\..\interpolation\cspline.c" />
+    <ClCompile Include="..\..\interpolation\inline.c" />
+    <ClCompile Include="..\..\interpolation\interp.c" />
+    <ClCompile Include="..\..\interpolation\linear.c" />
+    <ClCompile Include="..\..\interpolation\poly.c" />
+    <ClCompile Include="..\..\interpolation\spline.c" />
+    <ClCompile Include="..\..\linalg\balance.c" />
+    <ClCompile Include="..\..\linalg\balancemat.c" />
+    <ClCompile Include="..\..\linalg\bidiag.c" />
+    <ClCompile Include="..\..\linalg\cholesky.c" />
+    <ClCompile Include="..\..\linalg\choleskyc.c" />
+    <ClCompile Include="..\..\linalg\exponential.c" />
+    <ClCompile Include="..\..\linalg\hermtd.c" />
+    <ClCompile Include="..\..\linalg\hessenberg.c" />
+    <ClCompile Include="..\..\linalg\hesstri.c" />
+    <ClCompile Include="..\..\linalg\hh.c" />
+    <ClCompile Include="..\..\linalg\householder.c" />
+    <ClCompile Include="..\..\linalg\householdercomplex.c" />
+    <ClCompile Include="..\..\linalg\lq.c" />
+    <ClCompile Include="..\..\linalg\lu.c" />
+    <ClCompile Include="..\..\linalg\luc.c" />
+    <ClCompile Include="..\..\linalg\multiply.c" />
+    <ClCompile Include="..\..\linalg\ptlq.c" />
+    <ClCompile Include="..\..\linalg\qr.c" />
+    <ClCompile Include="..\..\linalg\qrpt.c" />
+    <ClCompile Include="..\..\linalg\svd.c" />
+    <ClCompile Include="..\..\linalg\symmtd.c" />
+    <ClCompile Include="..\..\linalg\tridiag.c" />
+    <ClCompile Include="..\..\matrix\copy.c" />
+    <ClCompile Include="..\..\matrix\file.c" />
+    <ClCompile Include="..\..\matrix\getset.c" />
+    <ClCompile Include="..\..\matrix\init.c" />
+    <ClCompile Include="..\..\matrix\matrix.c" />
+    <ClCompile Include="..\..\matrix\minmax.c" />
+    <ClCompile Include="..\..\matrix\oper.c" />
+    <ClCompile Include="..\..\matrix\prop.c" />
+    <ClCompile Include="..\..\matrix\rowcol.c" />
+    <ClCompile Include="..\..\matrix\submatrix.c" />
+    <ClCompile Include="..\..\matrix\swap.c" />
+    <ClCompile Include="..\..\matrix\view.c" />
+    <ClCompile Include="..\..\min\bracketing.c" />
+    <ClCompile Include="..\..\min\brent.c" />
+    <ClCompile Include="..\..\min\convergence.c" />
+    <ClCompile Include="..\..\min\fsolver.c" />
+    <ClCompile Include="..\..\min\golden.c" />
+    <ClCompile Include="..\..\min\quad_golden.c" />
+    <ClCompile Include="..\..\monte\miser.c" />
+    <ClCompile Include="..\..\monte\plain.c" />
+    <ClCompile Include="..\..\monte\vegas.c" />
+    <ClCompile Include="..\..\multifit\convergence.c" />
+    <ClCompile Include="..\..\multifit\covar.c" />
+    <ClCompile Include="..\..\multifit\fdfsolver.c" />
+    <ClCompile Include="..\..\multifit\fsolver.c" />
+    <ClCompile Include="..\..\multifit\gradient.c" />
+    <ClCompile Include="..\..\multifit\lmder.c" />
+    <ClCompile Include="..\..\multifit\multilinear.c" />
+    <ClCompile Include="..\..\multifit\work.c" />
+    <ClCompile Include="..\..\multimin\conjugate_fr.c" />
+    <ClCompile Include="..\..\multimin\conjugate_pr.c" />
+    <ClCompile Include="..\..\multimin\convergence.c" />
+    <ClCompile Include="..\..\multimin\diff.c" />
+    <ClCompile Include="..\..\multimin\fdfminimizer.c" />
+    <ClCompile Include="..\..\multimin\fminimizer.c" />
+    <ClCompile Include="..\..\multimin\linear_minimize.c" />
+    <ClCompile Include="..\..\multimin\simplex.c" />
+    <ClCompile Include="..\..\multimin\simplex2.c" />
+    <ClCompile Include="..\..\multimin\steepest_descent.c" />
+    <ClCompile Include="..\..\multimin\vector_bfgs.c" />
+    <ClCompile Include="..\..\multimin\vector_bfgs2.c" />
+    <ClCompile Include="..\..\multiroots\broyden.c" />
+    <ClCompile Include="..\..\multiroots\convergence.c" />
+    <ClCompile Include="..\..\multiroots\dnewton.c" />
+    <ClCompile Include="..\..\multiroots\fdfsolver.c" />
+    <ClCompile Include="..\..\multiroots\fdjac.c" />
+    <ClCompile Include="..\..\multiroots\fsolver.c" />
+    <ClCompile Include="..\..\multiroots\gnewton.c" />
+    <ClCompile Include="..\..\multiroots\hybrid.c" />
+    <ClCompile Include="..\..\multiroots\hybridj.c" />
+    <ClCompile Include="..\..\multiroots\newton.c" />
+    <ClCompile Include="..\..\multiset\file.c" />
+    <ClCompile Include="..\..\multiset\init.c" />
+    <ClCompile Include="..\..\multiset\inline.c" />
+    <ClCompile Include="..\..\multiset\multiset.c" />
+    <ClCompile Include="..\..\ntuple\ntuple.c" />
+    <ClCompile Include="..\..\ode-initval2\bsimp.c" />
+    <ClCompile Include="..\..\ode-initval2\control.c" />
+    <ClCompile Include="..\..\ode-initval2\cscal.c" />
+    <ClCompile Include="..\..\ode-initval2\cstd.c" />
+    <ClCompile Include="..\..\ode-initval2\driver.c" />
+    <ClCompile Include="..\..\ode-initval2\evolve.c" />
+    <ClCompile Include="..\..\ode-initval2\msadams.c" />
+    <ClCompile Include="..\..\ode-initval2\msbdf.c" />
+    <ClCompile Include="..\..\ode-initval2\rk1imp.c" />
+    <ClCompile Include="..\..\ode-initval2\rk2.c" />
+    <ClCompile Include="..\..\ode-initval2\rk2imp.c" />
+    <ClCompile Include="..\..\ode-initval2\rk4.c" />
+    <ClCompile Include="..\..\ode-initval2\rk4imp.c" />
+    <ClCompile Include="..\..\ode-initval2\rk8pd.c" />
+    <ClCompile Include="..\..\ode-initval2\rkck.c" />
+    <ClCompile Include="..\..\ode-initval2\rkf45.c" />
+    <ClCompile Include="..\..\ode-initval2\step.c" />
+    <ClCompile Include="..\..\ode-initval\bsimp.c" />
+    <ClCompile Include="..\..\ode-initval\control.c" />
+    <ClCompile Include="..\..\ode-initval\cscal.c" />
+    <ClCompile Include="..\..\ode-initval\cstd.c" />
+    <ClCompile Include="..\..\ode-initval\evolve.c" />
+    <ClCompile Include="..\..\ode-initval\gear1.c" />
+    <ClCompile Include="..\..\ode-initval\gear2.c" />
+    <ClCompile Include="..\..\ode-initval\rk2.c" />
+    <ClCompile Include="..\..\ode-initval\rk2imp.c" />
+    <ClCompile Include="..\..\ode-initval\rk2simp.c" />
+    <ClCompile Include="..\..\ode-initval\rk4.c" />
+    <ClCompile Include="..\..\ode-initval\rk4imp.c" />
+    <ClCompile Include="..\..\ode-initval\rk8pd.c" />
+    <ClCompile Include="..\..\ode-initval\rkck.c" />
+    <ClCompile Include="..\..\ode-initval\rkf45.c" />
+    <ClCompile Include="..\..\ode-initval\step.c" />
+    <ClCompile Include="..\..\permutation\canonical.c" />
+    <ClCompile Include="..\..\permutation\file.c" />
+    <ClCompile Include="..\..\permutation\init.c" />
+    <ClCompile Include="..\..\permutation\inline.c" />
+    <ClCompile Include="..\..\permutation\permutation.c" />
+    <ClCompile Include="..\..\permutation\permute.c" />
+    <ClCompile Include="..\..\poly\dd.c" />
+    <ClCompile Include="..\..\poly\deriv.c" />
+    <ClCompile Include="..\..\poly\eval.c" />
+    <ClCompile Include="..\..\poly\solve_cubic.c" />
+    <ClCompile Include="..\..\poly\solve_quadratic.c" />
+    <ClCompile Include="..\..\poly\zsolve.c" />
+    <ClCompile Include="..\..\poly\zsolve_cubic.c" />
+    <ClCompile Include="..\..\poly\zsolve_init.c" />
+    <ClCompile Include="..\..\poly\zsolve_quadratic.c" />
+    <ClCompile Include="..\..\qrng\halton.c" />
+    <ClCompile Include="..\..\qrng\inline.c" />
+    <ClCompile Include="..\..\qrng\niederreiter-2.c" />
+    <ClCompile Include="..\..\qrng\qrng.c" />
+    <ClCompile Include="..\..\qrng\reversehalton.c" />
+    <ClCompile Include="..\..\qrng\sobol.c" />
+    <ClCompile Include="..\..\randist\bernoulli.c" />
+    <ClCompile Include="..\..\randist\beta.c" />
+    <ClCompile Include="..\..\randist\bigauss.c" />
+    <ClCompile Include="..\..\randist\binomial.c" />
+    <ClCompile Include="..\..\randist\binomial_tpe.c" />
+    <ClCompile Include="..\..\randist\cauchy.c" />
+    <ClCompile Include="..\..\randist\chisq.c" />
+    <ClCompile Include="..\..\randist\dirichlet.c" />
+    <ClCompile Include="..\..\randist\discrete.c" />
+    <ClCompile Include="..\..\randist\erlang.c" />
+    <ClCompile Include="..\..\randist\exponential.c" />
+    <ClCompile Include="..\..\randist\exppow.c" />
+    <ClCompile Include="..\..\randist\fdist.c" />
+    <ClCompile Include="..\..\randist\flat.c" />
+    <ClCompile Include="..\..\randist\gamma.c" />
+    <ClCompile Include="..\..\randist\gauss.c" />
+    <ClCompile Include="..\..\randist\gausstail.c" />
+    <ClCompile Include="..\..\randist\gausszig.c" />
+    <ClCompile Include="..\..\randist\geometric.c" />
+    <ClCompile Include="..\..\randist\gumbel.c" />
+    <ClCompile Include="..\..\randist\hyperg.c" />
+    <ClCompile Include="..\..\randist\landau.c" />
+    <ClCompile Include="..\..\randist\laplace.c" />
+    <ClCompile Include="..\..\randist\levy.c" />
+    <ClCompile Include="..\..\randist\logarithmic.c" />
+    <ClCompile Include="..\..\randist\logistic.c" />
+    <ClCompile Include="..\..\randist\lognormal.c" />
+    <ClCompile Include="..\..\randist\multinomial.c" />
+    <ClCompile Include="..\..\randist\nbinomial.c" />
+    <ClCompile Include="..\..\randist\pareto.c" />
+    <ClCompile Include="..\..\randist\pascal.c" />
+    <ClCompile Include="..\..\randist\poisson.c" />
+    <ClCompile Include="..\..\randist\rayleigh.c" />
+    <ClCompile Include="..\..\randist\shuffle.c" />
+    <ClCompile Include="..\..\randist\sphere.c" />
+    <ClCompile Include="..\..\randist\tdist.c" />
+    <ClCompile Include="..\..\randist\weibull.c" />
+    <ClCompile Include="..\..\rng\borosh13.c" />
+    <ClCompile Include="..\..\rng\cmrg.c" />
+    <ClCompile Include="..\..\rng\coveyou.c" />
+    <ClCompile Include="..\..\rng\default.c" />
+    <ClCompile Include="..\..\rng\file.c" />
+    <ClCompile Include="..\..\rng\fishman18.c" />
+    <ClCompile Include="..\..\rng\fishman20.c" />
+    <ClCompile Include="..\..\rng\fishman2x.c" />
+    <ClCompile Include="..\..\rng\gfsr4.c" />
+    <ClCompile Include="..\..\rng\inline.c" />
+    <ClCompile Include="..\..\rng\knuthran.c" />
+    <ClCompile Include="..\..\rng\knuthran2.c" />
+    <ClCompile Include="..\..\rng\knuthran2002.c" />
+    <ClCompile Include="..\..\rng\lecuyer21.c" />
+    <ClCompile Include="..\..\rng\minstd.c" />
+    <ClCompile Include="..\..\rng\mrg.c" />
+    <ClCompile Include="..\..\rng\mt.c" />
+    <ClCompile Include="..\..\rng\r250.c" />
+    <ClCompile Include="..\..\rng\ran0.c" />
+    <ClCompile Include="..\..\rng\ran1.c" />
+    <ClCompile Include="..\..\rng\ran2.c" />
+    <ClCompile Include="..\..\rng\ran3.c" />
+    <ClCompile Include="..\..\rng\rand.c" />
+    <ClCompile Include="..\..\rng\rand48.c" />
+    <ClCompile Include="..\..\rng\random.c" />
+    <ClCompile Include="..\..\rng\randu.c" />
+    <ClCompile Include="..\..\rng\ranf.c" />
+    <ClCompile Include="..\..\rng\ranlux.c" />
+    <ClCompile Include="..\..\rng\ranlxd.c" />
+    <ClCompile Include="..\..\rng\ranlxs.c" />
+    <ClCompile Include="..\..\rng\ranmar.c" />
+    <ClCompile Include="..\..\rng\rng.c" />
+    <ClCompile Include="..\..\rng\slatec.c" />
+    <ClCompile Include="..\..\rng\taus.c" />
+    <ClCompile Include="..\..\rng\taus113.c" />
+    <ClCompile Include="..\..\rng\transputer.c" />
+    <ClCompile Include="..\..\rng\tt.c" />
+    <ClCompile Include="..\..\rng\types.c" />
+    <ClCompile Include="..\..\rng\uni.c" />
+    <ClCompile Include="..\..\rng\uni32.c" />
+    <ClCompile Include="..\..\rng\vax.c" />
+    <ClCompile Include="..\..\rng\waterman14.c" />
+    <ClCompile Include="..\..\rng\zuf.c" />
+    <ClCompile Include="..\..\roots\bisection.c" />
+    <ClCompile Include="..\..\roots\brent.c" />
+    <ClCompile Include="..\..\roots\convergence.c" />
+    <ClCompile Include="..\..\roots\falsepos.c" />
+    <ClCompile Include="..\..\roots\fdfsolver.c" />
+    <ClCompile Include="..\..\roots\fsolver.c" />
+    <ClCompile Include="..\..\roots\newton.c" />
+    <ClCompile Include="..\..\roots\secant.c" />
+    <ClCompile Include="..\..\roots\steffenson.c" />
+    <ClCompile Include="..\..\siman\siman.c" />
+    <ClCompile Include="..\..\sort\sort.c" />
+    <ClCompile Include="..\..\sort\sortind.c" />
+    <ClCompile Include="..\..\sort\sortvec.c" />
+    <ClCompile Include="..\..\sort\sortvecind.c" />
+    <ClCompile Include="..\..\sort\subset.c" />
+    <ClCompile Include="..\..\sort\subsetind.c" />
+    <ClCompile Include="..\..\specfunc\airy.c" />
+    <ClCompile Include="..\..\specfunc\airy_der.c" />
+    <ClCompile Include="..\..\specfunc\airy_zero.c" />
+    <ClCompile Include="..\..\specfunc\atanint.c" />
+    <ClCompile Include="..\..\specfunc\bessel.c" />
+    <ClCompile Include="..\..\specfunc\bessel_amp_phase.c" />
+    <ClCompile Include="..\..\specfunc\bessel_i.c" />
+    <ClCompile Include="..\..\specfunc\bessel_I0.c" />
+    <ClCompile Include="..\..\specfunc\bessel_I1.c" />
+    <ClCompile Include="..\..\specfunc\bessel_In.c" />
+    <ClCompile Include="..\..\specfunc\bessel_Inu.c" />
+    <ClCompile Include="..\..\specfunc\bessel_j.c" />
+    <ClCompile Include="..\..\specfunc\bessel_J0.c" />
+    <ClCompile Include="..\..\specfunc\bessel_J1.c" />
+    <ClCompile Include="..\..\specfunc\bessel_Jn.c" />
+    <ClCompile Include="..\..\specfunc\bessel_Jnu.c" />
+    <ClCompile Include="..\..\specfunc\bessel_k.c" />
+    <ClCompile Include="..\..\specfunc\bessel_K0.c" />
+    <ClCompile Include="..\..\specfunc\bessel_K1.c" />
+    <ClCompile Include="..\..\specfunc\bessel_Kn.c" />
+    <ClCompile Include="..\..\specfunc\bessel_Knu.c" />
+    <ClCompile Include="..\..\specfunc\bessel_olver.c" />
+    <ClCompile Include="..\..\specfunc\bessel_sequence.c" />
+    <ClCompile Include="..\..\specfunc\bessel_temme.c" />
+    <ClCompile Include="..\..\specfunc\bessel_y.c" />
+    <ClCompile Include="..\..\specfunc\bessel_Y0.c" />
+    <ClCompile Include="..\..\specfunc\bessel_Y1.c" />
+    <ClCompile Include="..\..\specfunc\bessel_Yn.c" />
+    <ClCompile Include="..\..\specfunc\bessel_Ynu.c" />
+    <ClCompile Include="..\..\specfunc\bessel_zero.c" />
+    <ClCompile Include="..\..\specfunc\beta.c" />
+    <ClCompile Include="..\..\specfunc\beta_inc.c" />
+    <ClCompile Include="..\..\specfunc\clausen.c" />
+    <ClCompile Include="..\..\specfunc\coulomb.c" />
+    <ClCompile Include="..\..\specfunc\coulomb_bound.c" />
+    <ClCompile Include="..\..\specfunc\coupling.c" />
+    <ClCompile Include="..\..\specfunc\dawson.c" />
+    <ClCompile Include="..\..\specfunc\debye.c" />
+    <ClCompile Include="..\..\specfunc\dilog.c" />
+    <ClCompile Include="..\..\specfunc\elementary.c" />
+    <ClCompile Include="..\..\specfunc\ellint.c" />
+    <ClCompile Include="..\..\specfunc\elljac.c" />
+    <ClCompile Include="..\..\specfunc\erfc.c" />
+    <ClCompile Include="..\..\specfunc\exp.c" />
+    <ClCompile Include="..\..\specfunc\expint.c" />
+    <ClCompile Include="..\..\specfunc\expint3.c" />
+    <ClCompile Include="..\..\specfunc\fermi_dirac.c" />
+    <ClCompile Include="..\..\specfunc\gamma.c" />
+    <ClCompile Include="..\..\specfunc\gamma_inc.c" />
+    <ClCompile Include="..\..\specfunc\gegenbauer.c" />
+    <ClCompile Include="..\..\specfunc\hyperg.c" />
+    <ClCompile Include="..\..\specfunc\hyperg_0F1.c" />
+    <ClCompile Include="..\..\specfunc\hyperg_1F1.c" />
+    <ClCompile Include="..\..\specfunc\hyperg_2F0.c" />
+    <ClCompile Include="..\..\specfunc\hyperg_2F1.c" />
+    <ClCompile Include="..\..\specfunc\hyperg_U.c" />
+    <ClCompile Include="..\..\specfunc\laguerre.c" />
+    <ClCompile Include="..\..\specfunc\lambert.c" />
+    <ClCompile Include="..\..\specfunc\legendre_con.c" />
+    <ClCompile Include="..\..\specfunc\legendre_H3d.c" />
+    <ClCompile Include="..\..\specfunc\legendre_poly.c" />
+    <ClCompile Include="..\..\specfunc\legendre_Qn.c" />
+    <ClCompile Include="..\..\specfunc\log.c" />
+    <ClCompile Include="..\..\specfunc\mathieu_angfunc.c" />
+    <ClCompile Include="..\..\specfunc\mathieu_charv.c" />
+    <ClCompile Include="..\..\specfunc\mathieu_coeff.c" />
+    <ClCompile Include="..\..\specfunc\mathieu_radfunc.c" />
+    <ClCompile Include="..\..\specfunc\mathieu_workspace.c" />
+    <ClCompile Include="..\..\specfunc\poch.c" />
+    <ClCompile Include="..\..\specfunc\pow_int.c" />
+    <ClCompile Include="..\..\specfunc\psi.c" />
+    <ClCompile Include="..\..\specfunc\result.c" />
+    <ClCompile Include="..\..\specfunc\shint.c" />
+    <ClCompile Include="..\..\specfunc\sinint.c" />
+    <ClCompile Include="..\..\specfunc\synchrotron.c" />
+    <ClCompile Include="..\..\specfunc\transport.c" />
+    <ClCompile Include="..\..\specfunc\trig.c" />
+    <ClCompile Include="..\..\specfunc\zeta.c" />
+    <ClCompile Include="..\..\statistics\absdev.c" />
+    <ClCompile Include="..\..\statistics\covariance.c" />
+    <ClCompile Include="..\..\statistics\kurtosis.c" />
+    <ClCompile Include="..\..\statistics\lag1.c" />
+    <ClCompile Include="..\..\statistics\mean.c" />
+    <ClCompile Include="..\..\statistics\median.c" />
+    <ClCompile Include="..\..\statistics\minmax.c" />
+    <ClCompile Include="..\..\statistics\p_variance.c" />
+    <ClCompile Include="..\..\statistics\quantiles.c" />
+    <ClCompile Include="..\..\statistics\skew.c" />
+    <ClCompile Include="..\..\statistics\ttest.c" />
+    <ClCompile Include="..\..\statistics\variance.c" />
+    <ClCompile Include="..\..\statistics\wabsdev.c" />
+    <ClCompile Include="..\..\statistics\wkurtosis.c" />
+    <ClCompile Include="..\..\statistics\wmean.c" />
+    <ClCompile Include="..\..\statistics\wskew.c" />
+    <ClCompile Include="..\..\statistics\wvariance.c" />
+    <ClCompile Include="..\..\sum\levin_u.c" />
+    <ClCompile Include="..\..\sum\levin_utrunc.c" />
+    <ClCompile Include="..\..\sum\work_u.c" />
+    <ClCompile Include="..\..\sum\work_utrunc.c" />
+    <ClCompile Include="..\..\sys\coerce.c" />
+    <ClCompile Include="..\..\sys\expm1.c" />
+    <ClCompile Include="..\..\sys\fcmp.c" />
+    <ClCompile Include="..\..\sys\fdiv.c" />
+    <ClCompile Include="..\..\sys\hypot.c" />
+    <ClCompile Include="..\..\sys\infnan.c" />
+    <ClCompile Include="..\..\sys\invhyp.c" />
+    <ClCompile Include="..\..\sys\ldfrexp.c" />
+    <ClCompile Include="..\..\sys\log1p.c" />
+    <ClCompile Include="..\..\sys\minmax.c" />
+    <ClCompile Include="..\..\sys\pow_int.c" />
+    <ClCompile Include="..\..\sys\prec.c" />
+    <ClCompile Include="..\..\utils\memcpy.c" />
+    <ClCompile Include="..\..\utils\memmove.c" />
+    <ClCompile Include="..\..\utils\placeholder.c" />
+    <ClCompile Include="..\..\utils\strdup.c" />
+    <ClCompile Include="..\..\utils\strtoul.c" />
+    <ClCompile Include="..\..\vector\copy.c" />
+    <ClCompile Include="..\..\vector\file.c" />
+    <ClCompile Include="..\..\vector\init.c" />
+    <ClCompile Include="..\..\vector\minmax.c" />
+    <ClCompile Include="..\..\vector\oper.c" />
+    <ClCompile Include="..\..\vector\prop.c" />
+    <ClCompile Include="..\..\vector\reim.c" />
+    <ClCompile Include="..\..\vector\subvector.c" />
+    <ClCompile Include="..\..\vector\swap.c" />
+    <ClCompile Include="..\..\vector\vector.c" />
+    <ClCompile Include="..\..\vector\view.c" />
+    <ClCompile Include="..\..\wavelet\bspline.c" />
+    <ClCompile Include="..\..\wavelet\daubechies.c" />
+    <ClCompile Include="..\..\wavelet\dwt.c" />
+    <ClCompile Include="..\..\wavelet\haar.c" />
+    <ClCompile Include="..\..\wavelet\wavelet.c" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{AE171437-275D-4E8E-841E-CCE1BC41C5FF}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>gsl</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <OutDir>../../../../lib/win/$(Configuration)\</OutDir>
+    <IntDir>../../../../bin/win/$(Configuration)/$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>../../../../lib/win/$(Configuration)\</OutDir>
+    <IntDir>../../../../bin/win/$(Configuration)/$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>../include;../..;../../utils;../../sys</AdditionalIncludeDirectories>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
+      <CompileAs>Default</CompileAs>
+      <ObjectFileName>$(IntDir)/dummy/dummy/%(RelativeDir)</ObjectFileName>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>../include;../..;../../utils;../../sys</AdditionalIncludeDirectories>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
+      <CompileAs>Default</CompileAs>
+      <ObjectFileName>$(IntDir)/dummy/dummy/%(RelativeDir)</ObjectFileName>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

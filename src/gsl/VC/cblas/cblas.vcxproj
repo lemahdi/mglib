@@ -1,0 +1,546 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\cblas\caxpy.c" />
+    <ClCompile Include="..\..\cblas\ccopy.c" />
+    <ClCompile Include="..\..\cblas\cdotc_sub.c" />
+    <ClCompile Include="..\..\cblas\cdotu_sub.c" />
+    <ClCompile Include="..\..\cblas\cgbmv.c" />
+    <ClCompile Include="..\..\cblas\cgemm.c" />
+    <ClCompile Include="..\..\cblas\cgemv.c" />
+    <ClCompile Include="..\..\cblas\cgerc.c" />
+    <ClCompile Include="..\..\cblas\cgeru.c" />
+    <ClCompile Include="..\..\cblas\chbmv.c" />
+    <ClCompile Include="..\..\cblas\chemm.c" />
+    <ClCompile Include="..\..\cblas\chemv.c" />
+    <ClCompile Include="..\..\cblas\cher.c" />
+    <ClCompile Include="..\..\cblas\cher2.c" />
+    <ClCompile Include="..\..\cblas\cher2k.c" />
+    <ClCompile Include="..\..\cblas\cherk.c" />
+    <ClCompile Include="..\..\cblas\chpmv.c" />
+    <ClCompile Include="..\..\cblas\chpr.c" />
+    <ClCompile Include="..\..\cblas\chpr2.c" />
+    <ClCompile Include="..\..\cblas\cscal.c" />
+    <ClCompile Include="..\..\cblas\csscal.c" />
+    <ClCompile Include="..\..\cblas\cswap.c" />
+    <ClCompile Include="..\..\cblas\csymm.c" />
+    <ClCompile Include="..\..\cblas\csyr2k.c" />
+    <ClCompile Include="..\..\cblas\csyrk.c" />
+    <ClCompile Include="..\..\cblas\ctbmv.c" />
+    <ClCompile Include="..\..\cblas\ctbsv.c" />
+    <ClCompile Include="..\..\cblas\ctpmv.c" />
+    <ClCompile Include="..\..\cblas\ctpsv.c" />
+    <ClCompile Include="..\..\cblas\ctrmm.c" />
+    <ClCompile Include="..\..\cblas\ctrmv.c" />
+    <ClCompile Include="..\..\cblas\ctrsm.c" />
+    <ClCompile Include="..\..\cblas\ctrsv.c" />
+    <ClCompile Include="..\..\cblas\dasum.c" />
+    <ClCompile Include="..\..\cblas\daxpy.c" />
+    <ClCompile Include="..\..\cblas\dcopy.c" />
+    <ClCompile Include="..\..\cblas\ddot.c" />
+    <ClCompile Include="..\..\cblas\dgbmv.c" />
+    <ClCompile Include="..\..\cblas\dgemm.c" />
+    <ClCompile Include="..\..\cblas\dgemv.c" />
+    <ClCompile Include="..\..\cblas\dger.c" />
+    <ClCompile Include="..\..\cblas\dnrm2.c" />
+    <ClCompile Include="..\..\cblas\drot.c" />
+    <ClCompile Include="..\..\cblas\drotg.c" />
+    <ClCompile Include="..\..\cblas\drotm.c" />
+    <ClCompile Include="..\..\cblas\drotmg.c" />
+    <ClCompile Include="..\..\cblas\dsbmv.c" />
+    <ClCompile Include="..\..\cblas\dscal.c" />
+    <ClCompile Include="..\..\cblas\dsdot.c" />
+    <ClCompile Include="..\..\cblas\dspmv.c" />
+    <ClCompile Include="..\..\cblas\dspr.c" />
+    <ClCompile Include="..\..\cblas\dspr2.c" />
+    <ClCompile Include="..\..\cblas\dswap.c" />
+    <ClCompile Include="..\..\cblas\dsymm.c" />
+    <ClCompile Include="..\..\cblas\dsymv.c" />
+    <ClCompile Include="..\..\cblas\dsyr.c" />
+    <ClCompile Include="..\..\cblas\dsyr2.c" />
+    <ClCompile Include="..\..\cblas\dsyr2k.c" />
+    <ClCompile Include="..\..\cblas\dsyrk.c" />
+    <ClCompile Include="..\..\cblas\dtbmv.c" />
+    <ClCompile Include="..\..\cblas\dtbsv.c" />
+    <ClCompile Include="..\..\cblas\dtpmv.c" />
+    <ClCompile Include="..\..\cblas\dtpsv.c" />
+    <ClCompile Include="..\..\cblas\dtrmm.c" />
+    <ClCompile Include="..\..\cblas\dtrmv.c" />
+    <ClCompile Include="..\..\cblas\dtrsm.c" />
+    <ClCompile Include="..\..\cblas\dtrsv.c" />
+    <ClCompile Include="..\..\cblas\dzasum.c" />
+    <ClCompile Include="..\..\cblas\dznrm2.c" />
+    <ClCompile Include="..\..\cblas\icamax.c" />
+    <ClCompile Include="..\..\cblas\idamax.c" />
+    <ClCompile Include="..\..\cblas\isamax.c" />
+    <ClCompile Include="..\..\cblas\izamax.c" />
+    <ClCompile Include="..\..\cblas\sasum.c" />
+    <ClCompile Include="..\..\cblas\saxpy.c" />
+    <ClCompile Include="..\..\cblas\scasum.c" />
+    <ClCompile Include="..\..\cblas\scnrm2.c" />
+    <ClCompile Include="..\..\cblas\scopy.c" />
+    <ClCompile Include="..\..\cblas\sdot.c" />
+    <ClCompile Include="..\..\cblas\sdsdot.c" />
+    <ClCompile Include="..\..\cblas\sgbmv.c" />
+    <ClCompile Include="..\..\cblas\sgemm.c" />
+    <ClCompile Include="..\..\cblas\sgemv.c" />
+    <ClCompile Include="..\..\cblas\sger.c" />
+    <ClCompile Include="..\..\cblas\snrm2.c" />
+    <ClCompile Include="..\..\cblas\srot.c" />
+    <ClCompile Include="..\..\cblas\srotg.c" />
+    <ClCompile Include="..\..\cblas\srotm.c" />
+    <ClCompile Include="..\..\cblas\srotmg.c" />
+    <ClCompile Include="..\..\cblas\ssbmv.c" />
+    <ClCompile Include="..\..\cblas\sscal.c" />
+    <ClCompile Include="..\..\cblas\sspmv.c" />
+    <ClCompile Include="..\..\cblas\sspr.c" />
+    <ClCompile Include="..\..\cblas\sspr2.c" />
+    <ClCompile Include="..\..\cblas\sswap.c" />
+    <ClCompile Include="..\..\cblas\ssymm.c" />
+    <ClCompile Include="..\..\cblas\ssymv.c" />
+    <ClCompile Include="..\..\cblas\ssyr.c" />
+    <ClCompile Include="..\..\cblas\ssyr2.c" />
+    <ClCompile Include="..\..\cblas\ssyr2k.c" />
+    <ClCompile Include="..\..\cblas\ssyrk.c" />
+    <ClCompile Include="..\..\cblas\stbmv.c" />
+    <ClCompile Include="..\..\cblas\stbsv.c" />
+    <ClCompile Include="..\..\cblas\stpmv.c" />
+    <ClCompile Include="..\..\cblas\stpsv.c" />
+    <ClCompile Include="..\..\cblas\strmm.c" />
+    <ClCompile Include="..\..\cblas\strmv.c" />
+    <ClCompile Include="..\..\cblas\strsm.c" />
+    <ClCompile Include="..\..\cblas\strsv.c" />
+    <ClCompile Include="..\..\cblas\xerbla.c" />
+    <ClCompile Include="..\..\cblas\zaxpy.c" />
+    <ClCompile Include="..\..\cblas\zcopy.c" />
+    <ClCompile Include="..\..\cblas\zdotc_sub.c" />
+    <ClCompile Include="..\..\cblas\zdotu_sub.c" />
+    <ClCompile Include="..\..\cblas\zdscal.c" />
+    <ClCompile Include="..\..\cblas\zgbmv.c" />
+    <ClCompile Include="..\..\cblas\zgemm.c" />
+    <ClCompile Include="..\..\cblas\zgemv.c" />
+    <ClCompile Include="..\..\cblas\zgerc.c" />
+    <ClCompile Include="..\..\cblas\zgeru.c" />
+    <ClCompile Include="..\..\cblas\zhbmv.c" />
+    <ClCompile Include="..\..\cblas\zhemm.c" />
+    <ClCompile Include="..\..\cblas\zhemv.c" />
+    <ClCompile Include="..\..\cblas\zher.c" />
+    <ClCompile Include="..\..\cblas\zher2.c" />
+    <ClCompile Include="..\..\cblas\zher2k.c" />
+    <ClCompile Include="..\..\cblas\zherk.c" />
+    <ClCompile Include="..\..\cblas\zhpmv.c" />
+    <ClCompile Include="..\..\cblas\zhpr.c" />
+    <ClCompile Include="..\..\cblas\zhpr2.c" />
+    <ClCompile Include="..\..\cblas\zscal.c" />
+    <ClCompile Include="..\..\cblas\zswap.c" />
+    <ClCompile Include="..\..\cblas\zsymm.c" />
+    <ClCompile Include="..\..\cblas\zsyr2k.c" />
+    <ClCompile Include="..\..\cblas\zsyrk.c" />
+    <ClCompile Include="..\..\cblas\ztbmv.c" />
+    <ClCompile Include="..\..\cblas\ztbsv.c" />
+    <ClCompile Include="..\..\cblas\ztpmv.c" />
+    <ClCompile Include="..\..\cblas\ztpsv.c" />
+    <ClCompile Include="..\..\cblas\ztrmm.c" />
+    <ClCompile Include="..\..\cblas\ztrmv.c" />
+    <ClCompile Include="..\..\cblas\ztrsm.c" />
+    <ClCompile Include="..\..\cblas\ztrsv.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\cblas\cblas.h" />
+    <ClInclude Include="..\..\cblas\error_cblas.h" />
+    <ClInclude Include="..\..\cblas\error_cblas_l2.h" />
+    <ClInclude Include="..\..\cblas\error_cblas_l3.h" />
+    <ClInclude Include="..\..\cblas\gsl_cblas.h" />
+    <ClInclude Include="..\..\cblas\source_asum_c.h" />
+    <ClInclude Include="..\..\cblas\source_asum_r.h" />
+    <ClInclude Include="..\..\cblas\source_axpy_c.h" />
+    <ClInclude Include="..\..\cblas\source_axpy_r.h" />
+    <ClInclude Include="..\..\cblas\source_copy_c.h" />
+    <ClInclude Include="..\..\cblas\source_copy_r.h" />
+    <ClInclude Include="..\..\cblas\source_dot_c.h" />
+    <ClInclude Include="..\..\cblas\source_dot_r.h" />
+    <ClInclude Include="..\..\cblas\source_gbmv_c.h" />
+    <ClInclude Include="..\..\cblas\source_gbmv_r.h" />
+    <ClInclude Include="..\..\cblas\source_gemm_c.h" />
+    <ClInclude Include="..\..\cblas\source_gemm_r.h" />
+    <ClInclude Include="..\..\cblas\source_gemv_c.h" />
+    <ClInclude Include="..\..\cblas\source_gemv_r.h" />
+    <ClInclude Include="..\..\cblas\source_ger.h" />
+    <ClInclude Include="..\..\cblas\source_gerc.h" />
+    <ClInclude Include="..\..\cblas\source_geru.h" />
+    <ClInclude Include="..\..\cblas\source_hbmv.h" />
+    <ClInclude Include="..\..\cblas\source_hemm.h" />
+    <ClInclude Include="..\..\cblas\source_hemv.h" />
+    <ClInclude Include="..\..\cblas\source_her.h" />
+    <ClInclude Include="..\..\cblas\source_her2.h" />
+    <ClInclude Include="..\..\cblas\source_her2k.h" />
+    <ClInclude Include="..\..\cblas\source_herk.h" />
+    <ClInclude Include="..\..\cblas\source_hpmv.h" />
+    <ClInclude Include="..\..\cblas\source_hpr.h" />
+    <ClInclude Include="..\..\cblas\source_hpr2.h" />
+    <ClInclude Include="..\..\cblas\source_iamax_c.h" />
+    <ClInclude Include="..\..\cblas\source_iamax_r.h" />
+    <ClInclude Include="..\..\cblas\source_nrm2_c.h" />
+    <ClInclude Include="..\..\cblas\source_nrm2_r.h" />
+    <ClInclude Include="..\..\cblas\source_rot.h" />
+    <ClInclude Include="..\..\cblas\source_rotg.h" />
+    <ClInclude Include="..\..\cblas\source_rotm.h" />
+    <ClInclude Include="..\..\cblas\source_rotmg.h" />
+    <ClInclude Include="..\..\cblas\source_sbmv.h" />
+    <ClInclude Include="..\..\cblas\source_scal_c.h" />
+    <ClInclude Include="..\..\cblas\source_scal_c_s.h" />
+    <ClInclude Include="..\..\cblas\source_scal_r.h" />
+    <ClInclude Include="..\..\cblas\source_spmv.h" />
+    <ClInclude Include="..\..\cblas\source_spr.h" />
+    <ClInclude Include="..\..\cblas\source_spr2.h" />
+    <ClInclude Include="..\..\cblas\source_swap_c.h" />
+    <ClInclude Include="..\..\cblas\source_swap_r.h" />
+    <ClInclude Include="..\..\cblas\source_symm_c.h" />
+    <ClInclude Include="..\..\cblas\source_symm_r.h" />
+    <ClInclude Include="..\..\cblas\source_symv.h" />
+    <ClInclude Include="..\..\cblas\source_syr.h" />
+    <ClInclude Include="..\..\cblas\source_syr2.h" />
+    <ClInclude Include="..\..\cblas\source_syr2k_c.h" />
+    <ClInclude Include="..\..\cblas\source_syr2k_r.h" />
+    <ClInclude Include="..\..\cblas\source_syrk_c.h" />
+    <ClInclude Include="..\..\cblas\source_syrk_r.h" />
+    <ClInclude Include="..\..\cblas\source_tbmv_c.h" />
+    <ClInclude Include="..\..\cblas\source_tbmv_r.h" />
+    <ClInclude Include="..\..\cblas\source_tbsv_c.h" />
+    <ClInclude Include="..\..\cblas\source_tbsv_r.h" />
+    <ClInclude Include="..\..\cblas\source_tpmv_c.h" />
+    <ClInclude Include="..\..\cblas\source_tpmv_r.h" />
+    <ClInclude Include="..\..\cblas\source_tpsv_c.h" />
+    <ClInclude Include="..\..\cblas\source_tpsv_r.h" />
+    <ClInclude Include="..\..\cblas\source_trmm_c.h" />
+    <ClInclude Include="..\..\cblas\source_trmm_r.h" />
+    <ClInclude Include="..\..\cblas\source_trmv_c.h" />
+    <ClInclude Include="..\..\cblas\source_trmv_r.h" />
+    <ClInclude Include="..\..\cblas\source_trsm_c.h" />
+    <ClInclude Include="..\..\cblas\source_trsm_r.h" />
+    <ClInclude Include="..\..\cblas\source_trsv_c.h" />
+    <ClInclude Include="..\..\cblas\source_trsv_r.h" />
+    <ClInclude Include="..\..\config.h" />
+    <ClInclude Include="..\include\gsl\gsl_blas.h" />
+    <ClInclude Include="..\include\gsl\gsl_blas_types.h" />
+    <ClInclude Include="..\include\gsl\gsl_block.h" />
+    <ClInclude Include="..\include\gsl\gsl_block_char.h" />
+    <ClInclude Include="..\include\gsl\gsl_block_complex_double.h" />
+    <ClInclude Include="..\include\gsl\gsl_block_complex_float.h" />
+    <ClInclude Include="..\include\gsl\gsl_block_complex_long_double.h" />
+    <ClInclude Include="..\include\gsl\gsl_block_double.h" />
+    <ClInclude Include="..\include\gsl\gsl_block_float.h" />
+    <ClInclude Include="..\include\gsl\gsl_block_int.h" />
+    <ClInclude Include="..\include\gsl\gsl_block_long.h" />
+    <ClInclude Include="..\include\gsl\gsl_block_long_double.h" />
+    <ClInclude Include="..\include\gsl\gsl_block_short.h" />
+    <ClInclude Include="..\include\gsl\gsl_block_uchar.h" />
+    <ClInclude Include="..\include\gsl\gsl_block_uint.h" />
+    <ClInclude Include="..\include\gsl\gsl_block_ulong.h" />
+    <ClInclude Include="..\include\gsl\gsl_block_ushort.h" />
+    <ClInclude Include="..\include\gsl\gsl_bspline.h" />
+    <ClInclude Include="..\include\gsl\gsl_cblas.h" />
+    <ClInclude Include="..\include\gsl\gsl_cdf.h" />
+    <ClInclude Include="..\include\gsl\gsl_chebyshev.h" />
+    <ClInclude Include="..\include\gsl\gsl_check_range.h" />
+    <ClInclude Include="..\include\gsl\gsl_combination.h" />
+    <ClInclude Include="..\include\gsl\gsl_complex.h" />
+    <ClInclude Include="..\include\gsl\gsl_complex_math.h" />
+    <ClInclude Include="..\include\gsl\gsl_const.h" />
+    <ClInclude Include="..\include\gsl\gsl_const_cgs.h" />
+    <ClInclude Include="..\include\gsl\gsl_const_cgsm.h" />
+    <ClInclude Include="..\include\gsl\gsl_const_mks.h" />
+    <ClInclude Include="..\include\gsl\gsl_const_mksa.h" />
+    <ClInclude Include="..\include\gsl\gsl_const_num.h" />
+    <ClInclude Include="..\include\gsl\gsl_deriv.h" />
+    <ClInclude Include="..\include\gsl\gsl_dft_complex.h" />
+    <ClInclude Include="..\include\gsl\gsl_dft_complex_float.h" />
+    <ClInclude Include="..\include\gsl\gsl_dht.h" />
+    <ClInclude Include="..\include\gsl\gsl_diff.h" />
+    <ClInclude Include="..\include\gsl\gsl_eigen.h" />
+    <ClInclude Include="..\include\gsl\gsl_errno.h" />
+    <ClInclude Include="..\include\gsl\gsl_fft.h" />
+    <ClInclude Include="..\include\gsl\gsl_fft_complex.h" />
+    <ClInclude Include="..\include\gsl\gsl_fft_complex_float.h" />
+    <ClInclude Include="..\include\gsl\gsl_fft_halfcomplex.h" />
+    <ClInclude Include="..\include\gsl\gsl_fft_halfcomplex_float.h" />
+    <ClInclude Include="..\include\gsl\gsl_fft_real.h" />
+    <ClInclude Include="..\include\gsl\gsl_fft_real_float.h" />
+    <ClInclude Include="..\include\gsl\gsl_fit.h" />
+    <ClInclude Include="..\include\gsl\gsl_heapsort.h" />
+    <ClInclude Include="..\include\gsl\gsl_histogram.h" />
+    <ClInclude Include="..\include\gsl\gsl_histogram2d.h" />
+    <ClInclude Include="..\include\gsl\gsl_ieee_utils.h" />
+    <ClInclude Include="..\include\gsl\gsl_inline.h" />
+    <ClInclude Include="..\include\gsl\gsl_integration.h" />
+    <ClInclude Include="..\include\gsl\gsl_interp.h" />
+    <ClInclude Include="..\include\gsl\gsl_linalg.h" />
+    <ClInclude Include="..\include\gsl\gsl_machine.h" />
+    <ClInclude Include="..\include\gsl\gsl_math.h" />
+    <ClInclude Include="..\include\gsl\gsl_matrix.h" />
+    <ClInclude Include="..\include\gsl\gsl_matrix_char.h" />
+    <ClInclude Include="..\include\gsl\gsl_matrix_complex_double.h" />
+    <ClInclude Include="..\include\gsl\gsl_matrix_complex_float.h" />
+    <ClInclude Include="..\include\gsl\gsl_matrix_complex_long_double.h" />
+    <ClInclude Include="..\include\gsl\gsl_matrix_double.h" />
+    <ClInclude Include="..\include\gsl\gsl_matrix_float.h" />
+    <ClInclude Include="..\include\gsl\gsl_matrix_int.h" />
+    <ClInclude Include="..\include\gsl\gsl_matrix_long.h" />
+    <ClInclude Include="..\include\gsl\gsl_matrix_long_double.h" />
+    <ClInclude Include="..\include\gsl\gsl_matrix_short.h" />
+    <ClInclude Include="..\include\gsl\gsl_matrix_uchar.h" />
+    <ClInclude Include="..\include\gsl\gsl_matrix_uint.h" />
+    <ClInclude Include="..\include\gsl\gsl_matrix_ulong.h" />
+    <ClInclude Include="..\include\gsl\gsl_matrix_ushort.h" />
+    <ClInclude Include="..\include\gsl\gsl_message.h" />
+    <ClInclude Include="..\include\gsl\gsl_min.h" />
+    <ClInclude Include="..\include\gsl\gsl_minmax.h" />
+    <ClInclude Include="..\include\gsl\gsl_mode.h" />
+    <ClInclude Include="..\include\gsl\gsl_monte.h" />
+    <ClInclude Include="..\include\gsl\gsl_monte_miser.h" />
+    <ClInclude Include="..\include\gsl\gsl_monte_plain.h" />
+    <ClInclude Include="..\include\gsl\gsl_monte_vegas.h" />
+    <ClInclude Include="..\include\gsl\gsl_multifit.h" />
+    <ClInclude Include="..\include\gsl\gsl_multifit_nlin.h" />
+    <ClInclude Include="..\include\gsl\gsl_multimin.h" />
+    <ClInclude Include="..\include\gsl\gsl_multiroots.h" />
+    <ClInclude Include="..\include\gsl\gsl_multiset.h" />
+    <ClInclude Include="..\include\gsl\gsl_nan.h" />
+    <ClInclude Include="..\include\gsl\gsl_ntuple.h" />
+    <ClInclude Include="..\include\gsl\gsl_odeiv.h" />
+    <ClInclude Include="..\include\gsl\gsl_odeiv2.h" />
+    <ClInclude Include="..\include\gsl\gsl_permutation.h" />
+    <ClInclude Include="..\include\gsl\gsl_permute.h" />
+    <ClInclude Include="..\include\gsl\gsl_permute_char.h" />
+    <ClInclude Include="..\include\gsl\gsl_permute_complex_double.h" />
+    <ClInclude Include="..\include\gsl\gsl_permute_complex_float.h" />
+    <ClInclude Include="..\include\gsl\gsl_permute_complex_long_double.h" />
+    <ClInclude Include="..\include\gsl\gsl_permute_double.h" />
+    <ClInclude Include="..\include\gsl\gsl_permute_float.h" />
+    <ClInclude Include="..\include\gsl\gsl_permute_int.h" />
+    <ClInclude Include="..\include\gsl\gsl_permute_long.h" />
+    <ClInclude Include="..\include\gsl\gsl_permute_long_double.h" />
+    <ClInclude Include="..\include\gsl\gsl_permute_short.h" />
+    <ClInclude Include="..\include\gsl\gsl_permute_uchar.h" />
+    <ClInclude Include="..\include\gsl\gsl_permute_uint.h" />
+    <ClInclude Include="..\include\gsl\gsl_permute_ulong.h" />
+    <ClInclude Include="..\include\gsl\gsl_permute_ushort.h" />
+    <ClInclude Include="..\include\gsl\gsl_permute_vector.h" />
+    <ClInclude Include="..\include\gsl\gsl_permute_vector_char.h" />
+    <ClInclude Include="..\include\gsl\gsl_permute_vector_complex_double.h" />
+    <ClInclude Include="..\include\gsl\gsl_permute_vector_complex_float.h" />
+    <ClInclude Include="..\include\gsl\gsl_permute_vector_complex_long_double.h" />
+    <ClInclude Include="..\include\gsl\gsl_permute_vector_double.h" />
+    <ClInclude Include="..\include\gsl\gsl_permute_vector_float.h" />
+    <ClInclude Include="..\include\gsl\gsl_permute_vector_int.h" />
+    <ClInclude Include="..\include\gsl\gsl_permute_vector_long.h" />
+    <ClInclude Include="..\include\gsl\gsl_permute_vector_long_double.h" />
+    <ClInclude Include="..\include\gsl\gsl_permute_vector_short.h" />
+    <ClInclude Include="..\include\gsl\gsl_permute_vector_uchar.h" />
+    <ClInclude Include="..\include\gsl\gsl_permute_vector_uint.h" />
+    <ClInclude Include="..\include\gsl\gsl_permute_vector_ulong.h" />
+    <ClInclude Include="..\include\gsl\gsl_permute_vector_ushort.h" />
+    <ClInclude Include="..\include\gsl\gsl_poly.h" />
+    <ClInclude Include="..\include\gsl\gsl_pow_int.h" />
+    <ClInclude Include="..\include\gsl\gsl_precision.h" />
+    <ClInclude Include="..\include\gsl\gsl_qrng.h" />
+    <ClInclude Include="..\include\gsl\gsl_randist.h" />
+    <ClInclude Include="..\include\gsl\gsl_rng.h" />
+    <ClInclude Include="..\include\gsl\gsl_roots.h" />
+    <ClInclude Include="..\include\gsl\gsl_sf.h" />
+    <ClInclude Include="..\include\gsl\gsl_sf_airy.h" />
+    <ClInclude Include="..\include\gsl\gsl_sf_bessel.h" />
+    <ClInclude Include="..\include\gsl\gsl_sf_clausen.h" />
+    <ClInclude Include="..\include\gsl\gsl_sf_coulomb.h" />
+    <ClInclude Include="..\include\gsl\gsl_sf_coupling.h" />
+    <ClInclude Include="..\include\gsl\gsl_sf_dawson.h" />
+    <ClInclude Include="..\include\gsl\gsl_sf_debye.h" />
+    <ClInclude Include="..\include\gsl\gsl_sf_dilog.h" />
+    <ClInclude Include="..\include\gsl\gsl_sf_elementary.h" />
+    <ClInclude Include="..\include\gsl\gsl_sf_ellint.h" />
+    <ClInclude Include="..\include\gsl\gsl_sf_elljac.h" />
+    <ClInclude Include="..\include\gsl\gsl_sf_erf.h" />
+    <ClInclude Include="..\include\gsl\gsl_sf_exp.h" />
+    <ClInclude Include="..\include\gsl\gsl_sf_expint.h" />
+    <ClInclude Include="..\include\gsl\gsl_sf_fermi_dirac.h" />
+    <ClInclude Include="..\include\gsl\gsl_sf_gamma.h" />
+    <ClInclude Include="..\include\gsl\gsl_sf_gegenbauer.h" />
+    <ClInclude Include="..\include\gsl\gsl_sf_hyperg.h" />
+    <ClInclude Include="..\include\gsl\gsl_sf_laguerre.h" />
+    <ClInclude Include="..\include\gsl\gsl_sf_lambert.h" />
+    <ClInclude Include="..\include\gsl\gsl_sf_legendre.h" />
+    <ClInclude Include="..\include\gsl\gsl_sf_log.h" />
+    <ClInclude Include="..\include\gsl\gsl_sf_mathieu.h" />
+    <ClInclude Include="..\include\gsl\gsl_sf_pow_int.h" />
+    <ClInclude Include="..\include\gsl\gsl_sf_psi.h" />
+    <ClInclude Include="..\include\gsl\gsl_sf_result.h" />
+    <ClInclude Include="..\include\gsl\gsl_sf_synchrotron.h" />
+    <ClInclude Include="..\include\gsl\gsl_sf_transport.h" />
+    <ClInclude Include="..\include\gsl\gsl_sf_trig.h" />
+    <ClInclude Include="..\include\gsl\gsl_sf_zeta.h" />
+    <ClInclude Include="..\include\gsl\gsl_siman.h" />
+    <ClInclude Include="..\include\gsl\gsl_sort.h" />
+    <ClInclude Include="..\include\gsl\gsl_sort_char.h" />
+    <ClInclude Include="..\include\gsl\gsl_sort_double.h" />
+    <ClInclude Include="..\include\gsl\gsl_sort_float.h" />
+    <ClInclude Include="..\include\gsl\gsl_sort_int.h" />
+    <ClInclude Include="..\include\gsl\gsl_sort_long.h" />
+    <ClInclude Include="..\include\gsl\gsl_sort_long_double.h" />
+    <ClInclude Include="..\include\gsl\gsl_sort_short.h" />
+    <ClInclude Include="..\include\gsl\gsl_sort_uchar.h" />
+    <ClInclude Include="..\include\gsl\gsl_sort_uint.h" />
+    <ClInclude Include="..\include\gsl\gsl_sort_ulong.h" />
+    <ClInclude Include="..\include\gsl\gsl_sort_ushort.h" />
+    <ClInclude Include="..\include\gsl\gsl_sort_vector.h" />
+    <ClInclude Include="..\include\gsl\gsl_sort_vector_char.h" />
+    <ClInclude Include="..\include\gsl\gsl_sort_vector_double.h" />
+    <ClInclude Include="..\include\gsl\gsl_sort_vector_float.h" />
+    <ClInclude Include="..\include\gsl\gsl_sort_vector_int.h" />
+    <ClInclude Include="..\include\gsl\gsl_sort_vector_long.h" />
+    <ClInclude Include="..\include\gsl\gsl_sort_vector_long_double.h" />
+    <ClInclude Include="..\include\gsl\gsl_sort_vector_short.h" />
+    <ClInclude Include="..\include\gsl\gsl_sort_vector_uchar.h" />
+    <ClInclude Include="..\include\gsl\gsl_sort_vector_uint.h" />
+    <ClInclude Include="..\include\gsl\gsl_sort_vector_ulong.h" />
+    <ClInclude Include="..\include\gsl\gsl_sort_vector_ushort.h" />
+    <ClInclude Include="..\include\gsl\gsl_specfunc.h" />
+    <ClInclude Include="..\include\gsl\gsl_spline.h" />
+    <ClInclude Include="..\include\gsl\gsl_statistics.h" />
+    <ClInclude Include="..\include\gsl\gsl_statistics_char.h" />
+    <ClInclude Include="..\include\gsl\gsl_statistics_double.h" />
+    <ClInclude Include="..\include\gsl\gsl_statistics_float.h" />
+    <ClInclude Include="..\include\gsl\gsl_statistics_int.h" />
+    <ClInclude Include="..\include\gsl\gsl_statistics_long.h" />
+    <ClInclude Include="..\include\gsl\gsl_statistics_long_double.h" />
+    <ClInclude Include="..\include\gsl\gsl_statistics_short.h" />
+    <ClInclude Include="..\include\gsl\gsl_statistics_uchar.h" />
+    <ClInclude Include="..\include\gsl\gsl_statistics_uint.h" />
+    <ClInclude Include="..\include\gsl\gsl_statistics_ulong.h" />
+    <ClInclude Include="..\include\gsl\gsl_statistics_ushort.h" />
+    <ClInclude Include="..\include\gsl\gsl_sum.h" />
+    <ClInclude Include="..\include\gsl\gsl_sys.h" />
+    <ClInclude Include="..\include\gsl\gsl_test.h" />
+    <ClInclude Include="..\include\gsl\gsl_types.h" />
+    <ClInclude Include="..\include\gsl\gsl_vector.h" />
+    <ClInclude Include="..\include\gsl\gsl_vector_char.h" />
+    <ClInclude Include="..\include\gsl\gsl_vector_complex.h" />
+    <ClInclude Include="..\include\gsl\gsl_vector_complex_double.h" />
+    <ClInclude Include="..\include\gsl\gsl_vector_complex_float.h" />
+    <ClInclude Include="..\include\gsl\gsl_vector_complex_long_double.h" />
+    <ClInclude Include="..\include\gsl\gsl_vector_double.h" />
+    <ClInclude Include="..\include\gsl\gsl_vector_float.h" />
+    <ClInclude Include="..\include\gsl\gsl_vector_int.h" />
+    <ClInclude Include="..\include\gsl\gsl_vector_long.h" />
+    <ClInclude Include="..\include\gsl\gsl_vector_long_double.h" />
+    <ClInclude Include="..\include\gsl\gsl_vector_short.h" />
+    <ClInclude Include="..\include\gsl\gsl_vector_uchar.h" />
+    <ClInclude Include="..\include\gsl\gsl_vector_uint.h" />
+    <ClInclude Include="..\include\gsl\gsl_vector_ulong.h" />
+    <ClInclude Include="..\include\gsl\gsl_vector_ushort.h" />
+    <ClInclude Include="..\include\gsl\gsl_version.h" />
+    <ClInclude Include="..\include\gsl\gsl_wavelet.h" />
+    <ClInclude Include="..\include\gsl\gsl_wavelet2d.h" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{AED97E8F-F2FB-4FCE-9CED-C28B9A877BF4}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>cblas</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <OutDir>../../../../lib/win/$(Configuration)\</OutDir>
+    <IntDir>../../../../bin/win/$(Configuration)/$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>../../../../lib/win/$(Configuration)\</OutDir>
+    <IntDir>../../../../bin/win/$(Configuration)/$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>../..;../include</AdditionalIncludeDirectories>
+      <CompileAs>Default</CompileAs>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
+      <ObjectFileName>$(IntDir)/dummy/dummy/%(RelativeDir)</ObjectFileName>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <PreBuildEvent>
+      <Command>COPY "..\..\gsl_*.h" "..\include\gsl" /Y
+set DIRS=blas block bspline cblas cdf cheb combination complex const deriv dht diff eigen err fft fit gsl histogram ieee-utils integration interpolation linalg matrix min monte multifit multimin multiroots multiset ntuple ode-initval ode-initval2 permutation poly qrng randist rng roots siman sort specfunc statistics sum sys test utils vector wavelet
+for %%f in (%DIRS%) do COPY "..\..\%%f\gsl_*.h" "..\include\gsl"</Command>
+      <Message>Copying include file</Message>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>../..;../include</AdditionalIncludeDirectories>
+      <CompileAs>Default</CompileAs>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
+      <ObjectFileName>$(IntDir)/dummy/dummy/%(RelativeDir)</ObjectFileName>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <PreBuildEvent>
+      <Command>COPY "..\..\gsl_*.h" "..\include\gsl" /Y
+set DIRS=blas block bspline cblas cdf cheb combination complex const deriv dht diff eigen err fft fit gsl histogram ieee-utils integration interpolation linalg matrix min monte multifit multimin multiroots multiset ntuple ode-initval ode-initval2 permutation poly qrng randist rng roots siman sort specfunc statistics sum sys test utils vector wavelet
+for %%f in (%DIRS%) do COPY "..\..\%%f\gsl_*.h" "..\include\gsl"</Command>
+      <Message>Copying include file</Message>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
