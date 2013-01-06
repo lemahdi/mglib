@@ -41,13 +41,15 @@ class MG_FileError
 	template<class T> friend class Singleton;
 
 private:
-	MG_FileError(void) {}
+	MG_FileError(void);
 
 public:
+	virtual ~MG_FileError(void);
 	void Init(void);
 
 private:
 	std::ofstream myFile;
+	std::streambuf* mySavedCerr;
 };
 typedef Singleton<MG_FileError> MG_SFileError;
 

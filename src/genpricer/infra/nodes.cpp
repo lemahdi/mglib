@@ -13,6 +13,14 @@ using namespace MG;
 template<>
 MG_FileErrorPtr MG_SFileError::myInstance = MG_FileErrorPtr(NULL);
 
+MG_FileError::MG_FileError() : mySavedCerr(NULL)
+{}
+
+MG_FileError::~MG_FileError()
+{
+	cerr.rdbuf(mySavedCerr);
+}
+
 void MG_FileError::Init()
 {
 	myFile.open(ERROR_FILE);
