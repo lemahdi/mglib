@@ -56,8 +56,6 @@ public:
 
 	/* Constructors / Destructor */
 	COPY_CTOR_DECL(MG_Interpolator)
-		
-	ASSIGN_OPERATOR(MG_Interpolator)
 	SWAP_DECL(MG_Interpolator)
 	
 	virtual ~MG_Interpolator(void);

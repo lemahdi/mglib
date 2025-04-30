@@ -39,8 +39,6 @@ class MG_XLObject : public MG_Object
 public:
 	MG_XLObject(void);
 	COPY_CTOR_DECL(MG_XLObject)
-
-	ASSIGN_OPERATOR(MG_XLObject)
 	SWAP_DECL(MG_XLObject)
 
 protected:

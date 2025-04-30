@@ -25,9 +25,6 @@ class MG_VanillaOption : public MG_Security
 public:
 	/* Constructors / Destructor */
 	COPY_CTOR_DECL(MG_VanillaOption)
-
-	ASSIGN_OPERATOR(MG_VanillaOption)
-	//CLONE_METHOD(MG_VanillaOption)
 	SWAP_DECL(MG_VanillaOption)
 
 	virtual ~MG_VanillaOption(void);

@@ -28,8 +28,6 @@ class MG_MarketData : public MG_XLObject
 public:
 	/* Constructors / Destructor */
 	COPY_CTOR_DECL(MG_MarketData)
-
-	ASSIGN_OPERATOR(MG_MarketData)
 	SWAP_DECL(MG_MarketData)
 
 	MG_MarketData	(	const MG_Date		& aAsOf
@@ -61,6 +59,7 @@ protected:
 class MG_EmptyMD : public MG_MarketData
 {
 public:
+	ASSIGN_OPERATOR(MG_EmptyMD)
 	CLONE_METHOD(MG_EmptyMD)
 
 	MG_EmptyMD(const std::string& aType, const std::string& aCcy, const std::string& aUnderIndex);
@@ -107,8 +106,6 @@ class MG_VolatilityCurve : public MG_MarketData
 public:
 	/* Constructors / Destructor */
 	COPY_CTOR_DECL(MG_VolatilityCurve)
-
-	ASSIGN_OPERATOR(MG_VolatilityCurve)
 	SWAP_DECL(MG_VolatilityCurve)
 
 	MG_VolatilityCurve	(	const MG_Date		& aAsOf

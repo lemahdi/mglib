@@ -45,8 +45,6 @@ public:
 	/* Constructors / Destructor */
 	COPY_CTOR_DECL(MG_MonteCarlo)
 
-	ASSIGN_OPERATOR(MG_MonteCarlo)
-	//CLONE_METHOD(MG_MonteCarlo)
 	SWAP_DECL(MG_MonteCarlo)
 
 	MG_MonteCarlo(const size_t& aDim);

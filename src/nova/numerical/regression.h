@@ -30,8 +30,6 @@ class MG_Regression : public MG_XLObject
 public:
 	/* Constructors / Destructor */
 	COPY_CTOR_DECL(MG_Regression)
-
-	ASSIGN_OPERATOR(MG_Regression)
 	SWAP_DECL(MG_Regression)
 
 	MG_Regression(const size_t& aSize, const MG_Vector& aY, const MG_Vector& aW);

@@ -117,8 +117,6 @@ class MG_FFunction : public MG_Function
 public:
 	/* Constructors / Destructor */
 	COPY_CTOR_DECL(MG_FFunction)
-
-	ASSIGN_OPERATOR(MG_FFunction)
 	SWAP_DECL(MG_FFunction)
 
 	MG_FFunction(void);
@@ -139,8 +137,6 @@ class MG_FDfFunction : public MG_Function
 public:
 	/* Constructors / Destructor */
 	COPY_CTOR_DECL(MG_FDfFunction)
-
-	ASSIGN_OPERATOR(MG_FDfFunction)
 	SWAP_DECL(MG_FDfFunction)
 
 	MG_FDfFunction(void);

@@ -28,8 +28,6 @@ class MG_Solver : public MG_XLObject
 public:
 	/* Constructors / Destructor */
 	COPY_CTOR_DECL(MG_Solver)
-
-	ASSIGN_OPERATOR(MG_Solver)
 	SWAP_DECL(MG_Solver)
 
 	MG_Solver(const double& aEpsAbs, const double& aEpsRel, const size_t& aMaxIter, const std::string& aName = "");

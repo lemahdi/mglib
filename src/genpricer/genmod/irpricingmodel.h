@@ -32,9 +32,7 @@ public:
 	/* Constructors / Destructor */
 	COPY_CTOR_DECL(MG_IRPricingModel)
 
-	ASSIGN_OPERATOR(MG_IRPricingModel)
 	SWAP_DECL(MG_IRPricingModel)
-	//CLONE_METHOD(MG_IRPricingModel)
 
 	MG_IRPricingModel(const MG_ZeroCurvePtr& aZC);
 
