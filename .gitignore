@@ -1,4 +1,13 @@
 gitignore
+
+# CMake build artifacts
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+build/
+*.cmake
+!CMakeLists.txt
 MG.suo
 MGlib.ncb
 MGlib.suo

@@ -35,7 +35,6 @@ public:
 	// self-generated copy-constructor is enough
 	virtual ~MG_Model(void);
 
-	ASSIGN_OPERATOR(MG_Model)
 	//CLONE_METHOD(MG_Model)
 	SWAP_DECL(MG_Model)
 

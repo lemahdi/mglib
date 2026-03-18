@@ -12,7 +12,7 @@
 
 using namespace std;
 using namespace MG;
-#ifndef __CYGWIN__
+#ifndef MG_SKIP_XLW
 using namespace xlw;
 #endif
 
@@ -101,7 +101,7 @@ namespace MG_utils
 		return vRes;
 	}
 
-#ifndef __CYGWIN__
+#ifndef MG_SKIP_XLW
 	/* converting a CellMatrix to a std::vector<double> */
 	vector<double> FromCellMatrixToVectorDouble(const CellMatrix& aCM, const size_t& aIndex)
 	{
@@ -205,7 +205,8 @@ namespace MG_utils
 		return vInterpolTypesInt;
 	}
 #endif
-	
+
+#ifndef MG_SKIP_XLW
 	/* converting a CellMatrix to a MG_Vector */
 	MG_Vector FromCellMatrixToMGVectorDouble(const CellMatrix& aCM, const size_t& aIndex)
 	{
@@ -256,6 +257,7 @@ namespace MG_utils
 			vRes[i] = FromXLDateToJulianDay(aCM(aIndex, i).NumericValue());
 		return vRes;
 	}
+#endif
 
 	/* spliting a xM to x and M */
 	void SplitFrequency(const string& aTimesFreq, int& aTimes, string& aFreq)

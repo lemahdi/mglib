@@ -1,4 +1,7 @@
 #include "nova/glob/argconv.h"
+#include "nova/glob/exception.h"
+
+#include <sstream>
 
 
 using namespace std;
@@ -16,8 +19,11 @@ int MG_ArgConv::operator[] (const string& vKey) const
 {
 	ArgConvMap::const_iterator itMap = myMap.find(vKey);
 	if (itMap == myMap.end())
-		//throw
-		return -1;
+	{
+		std::ostringstream vMsg;
+		vMsg << "ArgConv[" << myDesc << "]: key '" << vKey << "' not found.";
+		MG_THROW(vMsg.str());
+	}
 	return itMap->second;
 }
 
@@ -45,8 +51,11 @@ string MG_ArgConvReverse::operator[] (const int& vKey) const
 {
 	ArgConvReverseMap::const_iterator itMap = myMap.find(vKey);
 	if (itMap == myMap.end())
-		//throw
-		return "";
+	{
+		std::ostringstream vMsg;
+		vMsg << "ArgConvReverse[" << myDesc << "]: key " << vKey << " not found.";
+		MG_THROW(vMsg.str());
+	}
 	return itMap->second;
 }
 
