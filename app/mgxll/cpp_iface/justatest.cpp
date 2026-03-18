@@ -136,7 +136,7 @@ DividendsTable_Create	(	const MG_Date		& aAsOf
 						,	const string		& aUnderIndex
 						,	const MG_XLObjectPtr& aZC)
 {
-	if (aExDivDates.Size() != aExDivDates.Size())
+	if (aExDivDates.Size() != aPaymentDates.Size())
 		MG_THROW("Ex dividends dates and payments days should be equal");
 
 	vector<MG_Date> vExDivDates		= FromCellMatrixToVectorDate(aExDivDates, 0);
