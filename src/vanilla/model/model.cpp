@@ -44,6 +44,8 @@ void MG_DfModel::Swap(MG_DfModel& aRight)
 void MG_DfModel::Register(MG_RobotPtr& aRbt)
 {
 	myZC = std::dynamic_pointer_cast<MG_ZeroCurve>(aRbt->GetMktData("ZERO", "EUR", "EURIB"));
+	if (!myZC)
+		MG_THROW("DfModel: market data 'ZERO' is not of type MG_ZeroCurve.");
 }
 
 double MG_DfModel::DiscountFactor(const MG_Date& aMaturity) const
@@ -95,6 +97,10 @@ void MG_BSModel::Register(MG_RobotPtr& aRbt)
 {
 	myZC     = std::dynamic_pointer_cast<MG_ZeroCurve>(aRbt->GetMktData("ZERO", "EUR", "EURIB"));
 	myAtmVol = std::dynamic_pointer_cast<MG_VolatilityCurve>(aRbt->GetMktData("IRVOL", "EUR", "EURIB"));
+	if (!myZC)
+		MG_THROW("BSModel: market data 'ZERO' is not of type MG_ZeroCurve.");
+	if (!myAtmVol)
+		MG_THROW("BSModel: market data 'IRVOL' is not of type MG_VolatilityCurve.");
 }
 
 double MG_BSModel::DiscountFactor(const MG_Date& aMaturity) const

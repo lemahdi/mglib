@@ -81,6 +81,8 @@ MG_Minimizer::~MG_Minimizer()
 void MG_Minimizer::Load(const MG_FunctionPtr& aFunc, const MinimizerBounds& aBds, const bool& aWithValues)
 {
 	myFunc = std::dynamic_pointer_cast<MG_FFunction>(aFunc);
+	if (!myFunc)
+		MG_THROW("Minimizer: function is not of type MG_FFunction.");
 	if (aWithValues)
 		gsl_min_fminimizer_set_with_values	(	myMinimizer, myFunc->GetFunc()
 											,	aBds.myMinimum, aBds.myFMinimum
