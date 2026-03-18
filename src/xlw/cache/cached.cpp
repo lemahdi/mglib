@@ -133,7 +133,8 @@ bool MG_Cache::PersistentGet(const string& aRefObj, MG_XLObjectPtr& aXLObj, stri
 
 bool MG_Cache::IsMGObjectDescriptor(const string &aDescriptor)
 {
-	if (aDescriptor.size() == 14)
+	// Minimum valid descriptor: "XXXXX_1_HH:MM:SS" = 16 chars
+	if (aDescriptor.size() < 16)
 		return false;
 
 	if (aDescriptor.at(5) != '_')
