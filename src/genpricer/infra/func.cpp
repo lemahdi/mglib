@@ -1,6 +1,7 @@
 #include "genpricer/infra/func.h"
 #include "genpricer/infra/arg.h"
 #include "genpricer/genmod/irpricingmodel.h"
+#include "nova/glob/exception.h"
 
 #include <math.h>
 
@@ -269,6 +270,8 @@ MG_Arg MG_LiborFunc::Eval(const vector<MG_Arg>& aArgs, const vector<double>& aSt
 void MG_LiborFunc::SetModel(const MG_PricingModelPtr& aMdl)
 {
 	myModel = std::dynamic_pointer_cast<MG_IRPricingModel>(aMdl);
+	if (!myModel)
+		MG_THROW("LiborFunc: model is not of type MG_IRPricingModel.");
 }
 
 template <>
