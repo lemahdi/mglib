@@ -1,6 +1,6 @@
 
 /*
-Copyright (C) 1998, 1999, 2001, 2002 Jérôme Lecomte
+Copyright (C) 1998, 1999, 2001, 2002 Jï¿½rï¿½me Lecomte
 Copyright (C) 2006 Mark Joshi
 Copyright (C) 2009 Narinder S Claire
 
@@ -38,6 +38,14 @@ FOR A PARTICULAR PURPOSE.  See the license for more details.
 xlw::Win32StreamBuf debuggerStreamBuf;
 std::streambuf * oldStreamBuf;
 
+// Forward declaration of TLS_Action defined in mgw/TLS.cpp
+BOOL TLS_Action(DWORD DllMainCallReason);
+
+BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
+{
+	return TLS_Action(fdwReason);
+}
+
 extern "C"
 {
 
@@ -48,7 +56,7 @@ extern "C"
 		char theDLLPathChar [MAX_PATH + 1] = "";
 		DWORD dwRet = 0;
 		const int bufferSize=4096;
-		std::auto_ptr<char> originalPathValue;
+		std::unique_ptr<char[]> originalPathValue;
 		bool ok=true;
 		try {
 
@@ -65,10 +73,10 @@ extern "C"
 				xlw::XlfExcel::Instance().SendMessage(theDLLPathChar);
 
 				originalPathValue.reset(new char[bufferSize]);
-				dwRet = GetEnvironmentVariable("Path", originalPathValue.get(),  bufferSize);
+				dwRet = GetEnvironmentVariable("Path", originalPathValue.get(), bufferSize);
 				if(bufferSize < dwRet)
 				{
-					originalPathValue.reset( new char[dwRet]);   
+					originalPathValue.reset(new char[dwRet]);   
 					dwRet = GetEnvironmentVariable("Path", originalPathValue.get(), dwRet);
 					if(!dwRet)
 					{
