@@ -77,7 +77,7 @@ void MG_CallPut::PrePricing(const MG_Model& aMdl)
 	}
 }
 
-double MG_CallPut::Price(void) const
+double MG_CallPut::Price() const
 {
 	vector<double> vFlowsPV = myFlows;
 	double vPrice = VectorSumProduct(vFlowsPV, myDfs);

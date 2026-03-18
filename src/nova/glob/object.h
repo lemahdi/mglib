@@ -23,12 +23,12 @@ MG_NAMESPACE_BEGIN
 class MG_Object
 {
 public:
-	MG_Object(void) {}
+	MG_Object() {}
 	// self-generated copy-constructor is enough
-	virtual ~MG_Object(void) {}
+	virtual ~MG_Object() {}
 
 	MG_Object& operator= (const MG_Object& /*aRight*/) { return *this; }
-	virtual MG_Object* Clone(void) const = 0;
+	virtual MG_Object* Clone() const = 0;
 
 };
 
@@ -37,7 +37,7 @@ class MG_XLObject : public MG_Object
 	friend class MG_Cache;
 
 public:
-	MG_XLObject(void);
+	MG_XLObject();
 	COPY_CTOR_DECL(MG_XLObject)
 
 	SWAP_DECL(MG_XLObject)

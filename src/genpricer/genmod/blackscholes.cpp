@@ -21,7 +21,7 @@ MG_BlackScholes::MG_BlackScholes(	const MG_BlackScholes& aRight)
 void MG_BlackScholes::Swap(MG_BlackScholes& aRight)
 {
 	MG_IRPricingModel::Swap(aRight);
-	myVol.Swap(aRight.myVol);
+	myVol.swap(aRight.myVol);
 }
 
 MG_BlackScholes::MG_BlackScholes(	const MG_ZeroCurvePtr& aZC

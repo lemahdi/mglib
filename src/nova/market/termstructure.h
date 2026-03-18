@@ -29,7 +29,7 @@ public:
 	CLONE_METHOD(MG_TermStructure)
 	SWAP_DECL(MG_TermStructure)
 
-	virtual ~MG_TermStructure(void);
+	virtual ~MG_TermStructure();
 
 	MG_TermStructure(const double& aVal);
 	MG_TermStructure(	const std::vector<MG_Date>	& aPayDates
@@ -38,8 +38,8 @@ public:
 
 public:
 	/* State */
-	inline const std::vector<MG_Date>	& GetPayDates	(void) const { return myOriginPayDates; }
-	inline const std::vector<double>	& GetValues		(void) const { return myOriginValues; }
+	inline const std::vector<MG_Date>	& GetPayDates	() const { return myOriginPayDates; }
+	inline const std::vector<double>	& GetValues		() const { return myOriginValues; }
 
 	/* Engine */
 	double CptValue(const MG_Date& aPayDt) const;

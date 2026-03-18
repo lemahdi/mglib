@@ -29,9 +29,9 @@ public:
 	SWAP_DECL(MG_ModelParam)
 	CLONE_METHOD(MG_ModelParam)
 
-	MG_ModelParam(void);
+	MG_ModelParam();
 
-	virtual ~MG_ModelParam(void);
+	virtual ~MG_ModelParam();
 
 private:
 	MODELPARAM_TYPE myType;

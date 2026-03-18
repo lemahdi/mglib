@@ -27,7 +27,7 @@ MG_Model::~MG_Model()
 /* Discount Factor Model class */
 MG_DfModel::MG_DfModel	(	const MG_Date &aAsOf)
 						:	MG_Model(aAsOf)
-						,	myZC(NULL)
+						,	myZC(nullptr)
 {
 	myXLName = MG_DFMODEL_XL_NAME;
 }
@@ -38,12 +38,12 @@ MG_DfModel::~MG_DfModel()
 void MG_DfModel::Swap(MG_DfModel& aRight)
 {
 	MG_Model::Swap(aRight);
-	myZC.Swap(aRight.myZC);
+	myZC.swap(aRight.myZC);
 }
 
 void MG_DfModel::Register(MG_RobotPtr& aRbt)
 {
-	myZC = aRbt->GetMktData("ZERO", "EUR", "EURIB");
+	myZC = std::dynamic_pointer_cast<MG_ZeroCurve>(aRbt->GetMktData("ZERO", "EUR", "EURIB"));
 }
 
 double MG_DfModel::DiscountFactor(const MG_Date& aMaturity) const
@@ -75,8 +75,8 @@ double MG_DfModel::OptionPrice	(	const MG_CF::OPTION_TYPE& //aOptType
 /* Black & Scholes Model class */
 MG_BSModel::MG_BSModel	(	const MG_Date &aAsOf)
 						:	MG_Model(aAsOf)
-						,	myZC	(NULL)
-						,	myAtmVol(NULL)
+						,	myZC	(nullptr)
+						,	myAtmVol(nullptr)
 {
 	myXLName = MG_BSMODEL_XL_NAME;
 }
@@ -87,14 +87,14 @@ MG_BSModel::~MG_BSModel()
 void MG_BSModel::Swap(MG_BSModel& aRight)
 {
 	MG_Model::Swap(aRight);
-	myZC.Swap(aRight.myZC);
-	myAtmVol.Swap(aRight.myAtmVol);
+	myZC.swap(aRight.myZC);
+	myAtmVol.swap(aRight.myAtmVol);
 }
 
 void MG_BSModel::Register(MG_RobotPtr& aRbt)
 {
-	myZC = aRbt->GetMktData("ZERO", "EUR", "EURIB");
-	myAtmVol = aRbt->GetMktData("IRVOL", "EUR", "EURIB");
+	myZC     = std::dynamic_pointer_cast<MG_ZeroCurve>(aRbt->GetMktData("ZERO", "EUR", "EURIB"));
+	myAtmVol = std::dynamic_pointer_cast<MG_VolatilityCurve>(aRbt->GetMktData("IRVOL", "EUR", "EURIB"));
 }
 
 double MG_BSModel::DiscountFactor(const MG_Date& aMaturity) const

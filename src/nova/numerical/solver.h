@@ -13,7 +13,6 @@
 
 #include "nova/glob/typedef.h"
 #include "nova/glob/object.h"
-#include "nova/patterns/countedptr.hpp"
 #include "nova/wrapper/function.h"
 
 #include "gsl/gsl_roots.h"
@@ -33,15 +32,15 @@ public:
 
 	MG_Solver(const double& aEpsAbs, const double& aEpsRel, const size_t& aMaxIter, const std::string& aName = "");
 
-	virtual ~MG_Solver(void);
+	virtual ~MG_Solver();
 
 	/* State */
 	virtual void Load(const MG_FunctionPtr& aFunc) = 0;
-	inline int		GetStatus(void) const { return myStatus; }
-	inline size_t	GetNbIter(void) const { return myNbIter; }
+	inline int		GetStatus() const { return myStatus; }
+	inline size_t	GetNbIter() const { return myNbIter; }
 
 	/* Engine */
-	virtual double Solve(void) = 0;
+	virtual double Solve() = 0;
 
 protected:
 	std::string		myName;
@@ -72,17 +71,17 @@ public:
 
 	MG_FSolver(const FSOLVER_TYPE& aType, const double& aMin, const double& aMax, const double& aEpsAbs, const double& aEpsRel, const size_t& aMaxIter);
 
-	virtual ~MG_FSolver(void);
+	virtual ~MG_FSolver();
 
 	/* State */
 	inline void SetEpsilons	(const double& aEpsAbs, const double& aEpsRel) { myEpsAbs = aEpsAbs; myEpsRel = aEpsRel; }
 	inline void SetMaxIter	(const size_t& aMaxIter) { myMaxIter = aMaxIter; }
 	
-	void Load	(const MG_FunctionPtr& aFunc);
+	void Load	(const MG_FunctionPtr& aFunc) override;
 	void Reload	(const double& aMin, const double& aMax);
 
 	/* Engine */
-	double Solve(void);
+	double Solve() override;
 
 private:
 	gsl_root_fsolver* mySolver;
@@ -109,14 +108,14 @@ public:
 
 	MG_FDfSolver(const FDFSOLVER_TYPE& aType, const double& aGuess, const double& aEpsAbs, const double& aEpsRel, const size_t& aMaxIter);
 
-	virtual ~MG_FDfSolver(void);
+	virtual ~MG_FDfSolver();
 
 	/* State */
-	void Load	(const MG_FunctionPtr& aFunc);
+	void Load	(const MG_FunctionPtr& aFunc) override;
 	void Reload	(const double& aGuess);
 
 	/* Engine */
-	double Solve(void);
+	double Solve() override;
 
 private:
 	gsl_root_fdfsolver* mySolver;

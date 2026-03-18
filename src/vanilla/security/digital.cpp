@@ -77,7 +77,7 @@ void MG_Digital::PrePricing(const MG_Model& aMdl)
 	}
 }
 
-double MG_Digital::Price(void) const
+double MG_Digital::Price() const
 {
 	vector<double> vFlowsPV = myFlows;
 	double vPrice = VectorSumProduct(vFlowsPV, myDfs);

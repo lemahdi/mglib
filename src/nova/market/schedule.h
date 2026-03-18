@@ -35,7 +35,7 @@ public:
 	CLONE_METHOD(MG_Schedule)
 	SWAP_DECL(MG_Schedule)
 
-	MG_Schedule(void) {}
+	MG_Schedule() {}
 	MG_Schedule	(	const MG_Date		& aStDt
 				,	const MG_Date		& aEdDt
 				,	const MG_IRIndex	& aIRIndex
@@ -53,25 +53,25 @@ public:
 				,	const bool			& aIsDecompound	= true
 				);
 
-	virtual ~MG_Schedule(void);
+	virtual ~MG_Schedule();
 
 	/* State */
-	inline size_t							NbFlows					(void) const { return myNbOfFlows; }
-	inline const MG_IRIndex					& GetIRIndex			(void) const { return myIRIndex; }
-	inline const MG_Date					& GetStartDate			(void) const { return myStDt; }
-	inline const MG_Date					& GetEndDate			(void) const { return myEdDt; }
-	inline const std::vector<MG_Date>		& GetResetDates			(void) const { return myResetDates; }
-	inline const std::vector<MG_Date>		& GetIntStartDates		(void) const { return myIntStartDates; }
-	inline const std::vector<MG_Date>		& GetIntEndDates		(void) const { return myIntEndDates; }
-	inline const std::vector<MG_Date>		& GetPayDates			(void) const { return myPayDates; }
-	inline const std::vector<unsigned int>	& GetIntDays			(void) const { return myIntDays; }
-	inline const std::vector<double>		& GetIntTerms			(void) const { return myIntTerms; }
-	inline const std::vector<MG_Date>		& GetFwdRateStartDates	(void) const { return myFwdRateStartDates; }
-	inline const std::vector<MG_Date>		& GetFwdRateEndDates	(void) const { return myFwdRateEndDates; }
+	inline size_t							NbFlows					() const { return myNbOfFlows; }
+	inline const MG_IRIndex					& GetIRIndex			() const { return myIRIndex; }
+	inline const MG_Date					& GetStartDate			() const { return myStDt; }
+	inline const MG_Date					& GetEndDate			() const { return myEdDt; }
+	inline const std::vector<MG_Date>		& GetResetDates			() const { return myResetDates; }
+	inline const std::vector<MG_Date>		& GetIntStartDates		() const { return myIntStartDates; }
+	inline const std::vector<MG_Date>		& GetIntEndDates		() const { return myIntEndDates; }
+	inline const std::vector<MG_Date>		& GetPayDates			() const { return myPayDates; }
+	inline const std::vector<unsigned int>	& GetIntDays			() const { return myIntDays; }
+	inline const std::vector<double>		& GetIntTerms			() const { return myIntTerms; }
+	inline const std::vector<MG_Date>		& GetFwdRateStartDates	() const { return myFwdRateStartDates; }
+	inline const std::vector<MG_Date>		& GetFwdRateEndDates	() const { return myFwdRateEndDates; }
 
 	/* Engine */
 	void InterpretDates(const MG_Date& aAsOf);
-	void GenerateDates(void);
+	void GenerateDates();
 
 private:
 	MG_GenericDate	myGenStDt;

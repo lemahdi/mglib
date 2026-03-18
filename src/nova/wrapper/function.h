@@ -94,9 +94,9 @@ public:
 	/* Constructors / Destructor */
 	SWAP_DECL(MG_Function)
 
-	MG_Function(void) {}
+	MG_Function() {}
 
-	virtual ~MG_Function(void) {}
+	virtual ~MG_Function() {}
 
 public:
 	/* Engine */
@@ -120,12 +120,12 @@ public:
 
 	SWAP_DECL(MG_FFunction)
 
-	MG_FFunction(void);
+	MG_FFunction();
 
-	virtual ~MG_FFunction(void);
+	virtual ~MG_FFunction();
 
 	/* Accessors */
-	inline gsl_function* GetFunc(void) { return &myFunc; }
+	inline gsl_function* GetFunc() { return &myFunc; }
 
 private:
 	gsl_function myFunc;
@@ -141,12 +141,12 @@ public:
 
 	SWAP_DECL(MG_FDfFunction)
 
-	MG_FDfFunction(void);
+	MG_FDfFunction();
 
-	virtual ~MG_FDfFunction(void);
+	virtual ~MG_FDfFunction();
 
 	/* Accessors */
-	inline gsl_function_fdf* GetFunc(void) { return &myFunc; }
+	inline gsl_function_fdf* GetFunc() { return &myFunc; }
 
 private:
 	gsl_function_fdf myFunc;

@@ -12,7 +12,6 @@
 
 
 #include "nova/glob/object.h"
-#include "nova/patterns/countedptr.hpp"
 
 
 MG_NAMESPACE_BEGIN
@@ -27,7 +26,7 @@ class MG_GenPricer : public MG_XLObject
 {
 public:
 	/* Constructors / Destructor */
-	virtual ~MG_GenPricer(void);
+	virtual ~MG_GenPricer();
 
 	ASSIGN_OPERATOR(MG_GenPricer)
 	CLONE_METHOD(MG_GenPricer)
@@ -36,7 +35,7 @@ public:
 	MG_GenPricer(const MG_GenSecurityPtr& aGenSec, const MG_PricingModelPtr& aPricingMdl);
 
 	/* Engine */
-	void Price(void) const;
+	void Price() const;
 
 private:
 	MG_GenSecurityPtr	myGenSec;

@@ -63,11 +63,11 @@ double Interpolate_Surface	(	const vector<gsl_spline*>	& a1stInterp
 	else if (aY >= a1stInterp[vIdxY]->x[vSizeY-1])
 		vFUpY = a1stInterp[vIdxY]->y[vSizeY-1];
 	else
-		vFUpY = gsl_spline_eval(a1stInterp[vIdxY], aY, NULL);
+		vFUpY = gsl_spline_eval(a1stInterp[vIdxY], aY, nullptr);
 	if (vIdxY==0 || aX>=a2ndAxe.Back() || a2ndAxe[vIdxY]==aX)
 		return vFUpY;
 
-	double vFDownY	= gsl_spline_eval(a1stInterp[vIdxY-1], aY, NULL);
+	double vFDownY	= gsl_spline_eval(a1stInterp[vIdxY-1], aY, nullptr);
 	double vXs[2], vYs[2];
 	vXs[0] = a2ndAxe[vIdxY-1];
 	vXs[1] = a2ndAxe[vIdxY];
@@ -75,7 +75,7 @@ double Interpolate_Surface	(	const vector<gsl_spline*>	& a1stInterp
 	vYs[1] = vFUpY;
 
 	gsl_interp_init(a2ndInterp, vXs, vYs, 2);
-	return gsl_interp_eval(a2ndInterp, vXs, vYs, aX, NULL);
+	return gsl_interp_eval(a2ndInterp, vXs, vYs, aX, nullptr);
 }
 
 
@@ -157,7 +157,7 @@ MG_Interpolator::GetGSLInterpolType(int& aInterpolCode)
 		return gsl_interp_akima;
 
 
-	default: return NULL;
+	default: return nullptr;
 	}
 }
 
@@ -230,7 +230,7 @@ MG_Interpolator::GetStepWiseFunc(int& aInterpolCode)
 	case (interpoltypeConstant):
 		return &Interpolate_Constant;
 
-	default: return NULL;
+	default: return nullptr;
 	}
 }
 
@@ -251,28 +251,28 @@ void MG_Interpolator::Swap(MG_Interpolator& aRight)
 MG_Interpolator::~MG_Interpolator()
 {}
 
-MG_Interpolator::MG_Interpolator(void)	:	myInterpolTypes(interpoltypeNone)
-										,	myStepWiseFunc	(NULL)
+MG_Interpolator::MG_Interpolator()	:	myInterpolTypes(interpoltypeNone)
+										,	myStepWiseFunc	(nullptr)
 {}
 
 MG_Interpolator::MG_Interpolator(	const MG_Matrix	& aOrd
 								,	const int		& aInterpolType)
 								:	myOrd			(aOrd)
-								,	myStepWiseFunc	(NULL)
+								,	myStepWiseFunc	(nullptr)
 								,	myInterpolTypes	(aInterpolType)
 {}
 
 MG_Interpolator::MG_Interpolator(	const MG_Vector	& aOrd
 								,	const int		& aInterpolType)
 								:	myOrd			(aOrd)
-								,	myStepWiseFunc	(NULL)
+								,	myStepWiseFunc	(nullptr)
 								,	myInterpolTypes	(aInterpolType)
 {}
 
 MG_Interpolator::MG_Interpolator(	const vector<double>& aOrd
 								,	const int			& aInterpolType)
 								:	myOrd			(aOrd)
-								,	myStepWiseFunc	(NULL)
+								,	myStepWiseFunc	(nullptr)
 								,	myInterpolTypes	(aInterpolType)
 {}
 
@@ -280,7 +280,7 @@ MG_Interpolator::MG_Interpolator(	const vector<double>& aOrd
 MG_1DInterpolator::MG_1DInterpolator(	const MG_1DInterpolator& aRight)
 									:	MG_Interpolator(aRight)
 									,	myAbsc	(aRight.myAbsc)
-									,	myInterp(NULL)
+									,	myInterp(nullptr)
 {
 	if (myStepWiseFunc)
 		return;
@@ -301,7 +301,7 @@ MG_1DInterpolator::~MG_1DInterpolator()
 	gsl_spline_free(myInterp);
 }
 
-MG_1DInterpolator::MG_1DInterpolator(void) : MG_Interpolator(), myInterp(NULL)
+MG_1DInterpolator::MG_1DInterpolator() : MG_Interpolator(), myInterp(nullptr)
 {}
 
 MG_1DInterpolator::MG_1DInterpolator(	const MG_Vector	& aAbsc
@@ -309,7 +309,7 @@ MG_1DInterpolator::MG_1DInterpolator(	const MG_Vector	& aAbsc
 									,	const int		& aInterpolType)
 									:	MG_Interpolator(aOrd, aInterpolType)
 									,	myAbsc	(aAbsc)
-									,	myInterp(NULL)
+									,	myInterp(nullptr)
 {
 	int vInterpolType(myInterpolTypes);
 	bool vExist = MG_Interpolator::LoadGSLSplineInterp(myInterp, vInterpolType, myAbsc, myOrd);
@@ -326,7 +326,7 @@ MG_1DInterpolator::MG_1DInterpolator(	const MG_Vector	& aAbsc
 									,	const int		& aInterpolType)
 									:	MG_Interpolator(aOrd, aInterpolType)
 									,	myAbsc	(aAbsc)
-									,	myInterp(NULL)
+									,	myInterp(nullptr)
 {
 	int vInterpolType(myInterpolTypes);
 	bool vExist = MG_Interpolator::LoadGSLSplineInterp(myInterp, vInterpolType, myAbsc, myOrd);
@@ -343,7 +343,7 @@ MG_1DInterpolator::MG_1DInterpolator(	const vector<double>& aAbsc
 									,	const int			& aInterpolType)
 									:	MG_Interpolator(aOrd, aInterpolType)
 									,	myAbsc	(aAbsc)
-									,	myInterp(NULL)
+									,	myInterp(nullptr)
 {
 	int vInterpolType(myInterpolTypes);
 	bool vExist = MG_Interpolator::LoadGSLSplineInterp(myInterp, vInterpolType, myAbsc, myOrd);
@@ -360,7 +360,7 @@ MG_1DInterpolator::MG_1DInterpolator(	const vector<MG_Date>	& aAbsc
 									,	const int				& aInterpolType)
 									:	MG_Interpolator(aOrd, aInterpolType)
 									,	myAbsc	(aAbsc)
-									,	myInterp(NULL)
+									,	myInterp(nullptr)
 {
 	vector<double> vAbsc(aAbsc.size());
 	for(size_t i=0; i<aAbsc.size(); ++i)
@@ -386,7 +386,7 @@ double MG_1DInterpolator::Eval(const double& aX) const
 	if (vOntheLeft || aX>myAbsc.Back())
 		return Extrapolate(aX, vOntheLeft);
 
-	return gsl_spline_eval(myInterp, aX, NULL);
+	return gsl_spline_eval(myInterp, aX, nullptr);
 }
 
 double MG_1DInterpolator::Extrapolate(const double& aX, const bool& aOnTheLeft) const
@@ -401,7 +401,7 @@ MG_2DInterpolator::MG_2DInterpolator(	const MG_2DInterpolator& aRight)
 									:	MG_Interpolator(aRight)
 									,	myAbsc1D		(aRight.myAbsc1D)
 									,	myAbsc2D		(aRight.myAbsc2D)
-									,	my1DInterp		(NULL)
+									,	my1DInterp		(nullptr)
 {
 	if (myStepWiseFunc)
 		return;
@@ -430,8 +430,8 @@ MG_2DInterpolator::~MG_2DInterpolator()
 		gsl_spline_free(my2DInterps[i]);
 }
 
-MG_2DInterpolator::MG_2DInterpolator(void)	:	MG_Interpolator()
-											,	my1DInterp(NULL)
+MG_2DInterpolator::MG_2DInterpolator()	:	MG_Interpolator()
+											,	my1DInterp(nullptr)
 {}
 
 MG_2DInterpolator::MG_2DInterpolator(	const MG_Vector	& aAbsc1D
@@ -441,7 +441,7 @@ MG_2DInterpolator::MG_2DInterpolator(	const MG_Vector	& aAbsc1D
 									:	MG_Interpolator(aOrd, aInterpolType)
 									,	myAbsc1D		(aAbsc1D)
 									,	myAbsc2D		(aAbsc2D)
-									,	my1DInterp		(NULL)
+									,	my1DInterp		(nullptr)
 {
 	int vInterpolType(myInterpolTypes);
 	bool vExist = LoadGSLSplineInterp(my2DInterps, vInterpolType, myAbsc2D,  myOrd);
@@ -461,7 +461,7 @@ MG_2DInterpolator::MG_2DInterpolator(	const vector<double>& aAbsc1D
 									:	MG_Interpolator(aOrd, aInterpolType)
 									,	myAbsc1D		(aAbsc1D)
 									,	myAbsc2D		(aAbsc2D)
-									,	my1DInterp		(NULL)
+									,	my1DInterp		(nullptr)
 {
 	int vInterpolType(myInterpolTypes);
 	bool vExist = LoadGSLSplineInterp(my2DInterps, vInterpolType, myAbsc2D,  myOrd);

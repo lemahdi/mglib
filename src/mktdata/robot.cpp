@@ -43,7 +43,7 @@ MG_MarketDataPtr MG_Robot::GetMktData(const string& aType, const string& aCcy, c
 	MG_EmptyMD vEmpty(aType, aCcy, aUnderIndex);
 	string vKey = CreateKey(vEmpty);
 	
-	MG_MarketDataPtr vMktData(NULL);
+	MG_MarketDataPtr vMktData(nullptr);
 	mapStrMkt::iterator vIt = myKeyData.find(vKey);
 	if (vIt != myKeyData.end())
 		vMktData = vIt->second;

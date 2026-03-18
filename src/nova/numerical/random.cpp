@@ -89,7 +89,7 @@ const gsl_rng_type* MG_Random::From_MGType_To_GSLType(const RAND_TYPE& aType)
 	case VAX				: return gsl_rng_vax; // VAX
 	case WATERMAN14			: return gsl_rng_waterman14; // Knuth
 	case ZUF				: return gsl_rng_zuf;
-	default					: return NULL;
+	default					: return nullptr;
 	}
 }
 
@@ -117,12 +117,12 @@ MG_Random::MG_Random(const RAND_TYPE& aType) : MG_AbstractRandom()
 	myName = string(gsl_rng_name(myGen));
 }
 
-MG_Random::~MG_Random(void)
+MG_Random::~MG_Random()
 {
 	gsl_rng_free(myGen);
 }
 
-void MG_Random::Reset(void)
+void MG_Random::Reset()
 {
 	SetSeed(myInitialSeed);
 }
@@ -153,7 +153,7 @@ const gsl_qrng_type* MG_QuasiRandom::From_MGType_To_GSLType(const QUASIRAND_TYPE
 	case SOBOL: return gsl_qrng_sobol;
 	case HALTON: return gsl_qrng_halton;
 	case REVERSEHALTON: return gsl_qrng_reversehalton;
-	default: return NULL;
+	default: return nullptr;
 	}
 }
 
@@ -183,12 +183,12 @@ MG_QuasiRandom::MG_QuasiRandom	(	const QUASIRAND_TYPE& aType
 	myName = string(gsl_qrng_name(myGen));
 }
 
-MG_QuasiRandom::~MG_QuasiRandom(void)
+MG_QuasiRandom::~MG_QuasiRandom()
 {
 	gsl_qrng_free(myGen);
 }
 
-void MG_QuasiRandom::Reset(void)
+void MG_QuasiRandom::Reset()
 {
 	gsl_qrng_init(myGen);
 }

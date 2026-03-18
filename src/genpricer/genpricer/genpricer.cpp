@@ -19,8 +19,8 @@ using namespace MG;
 void MG_GenPricer::Swap(MG_GenPricer& aRight)
 {
 	MG_XLObject::Swap(aRight);
-	myGenSec.Swap(aRight.myGenSec);
-	myPricingModel.Swap(aRight.myPricingModel);
+	myGenSec.swap(aRight.myGenSec);
+	myPricingModel.swap(aRight.myPricingModel);
 }
 
 MG_GenPricer::MG_GenPricer	(	const MG_GenSecurityPtr& aGenSec

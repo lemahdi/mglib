@@ -30,24 +30,24 @@ public:
 	CLONE_METHOD(MG_GenericDate)
 	SWAP_DECL(MG_GenericDate)
 	
-	~MG_GenericDate(void);
+	~MG_GenericDate();
 	
-    //MG_GenericDate(void);
-	MG_GenericDate(void);
+    //MG_GenericDate();
+	MG_GenericDate();
 	MG_GenericDate(const std::string& aStart);
 	MG_GenericDate(const std::string& aRefStart, const std::string& aStart);
 	MG_GenericDate(const MG_GenericDate& aRefStart, const std::string& aStart);
 	explicit MG_GenericDate(const MG_Date& aDt);
 
 	/* Accessors */
-	inline const MG_Date& GetDate	(void) const { return myDate; }
-	inline bool	IsGenDate			(void) const { return myIsGenDate; }
-	inline int GetTimes				(void) const { return myTimes; }
+	inline const MG_Date& GetDate	() const { return myDate; }
+	inline bool	IsGenDate			() const { return myIsGenDate; }
+	inline int GetTimes				() const { return myTimes; }
 
 	inline void SetRefDate(const MG_GenericDate& aRefDt) { myRefDate = new MG_GenericDate(aRefDt); }
 
 	/* Cast */
-	inline operator const MG_Date& (void) const { return myDate; }
+	inline operator const MG_Date& () const { return myDate; }
 
 public:
 	/* State */

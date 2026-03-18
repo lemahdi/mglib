@@ -13,9 +13,9 @@
 
 
 #include <iostream>
+#include <memory>
 
 #include "nova/glob/typedef.h"
-#include "nova/patterns/countedptr.hpp"
 
 
 MG_NAMESPACE_BEGIN
@@ -25,19 +25,19 @@ template<class T>
 class Singleton
 {
 private:
-	Singleton(void) {}
+	Singleton() {}
 
 public:
-	inline static CountedPtr< T > Instance(void)
+	inline static std::shared_ptr<T> Instance()
 	{
 		if (!myInstance)
-			Singleton::myInstance = CountedPtr< T >(new T);
+			myInstance = std::shared_ptr<T>(new T());
 
-		return Singleton::myInstance;
+		return myInstance;
 	}
 
 private:
-	static CountedPtr< T > myInstance;
+	static std::shared_ptr<T> myInstance;
 };
 
 

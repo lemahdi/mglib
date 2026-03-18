@@ -29,7 +29,7 @@ public:
 
 	MG_HW1F(const MG_ZeroCurvePtr& aZC);
 
-	virtual ~MG_HW1F(void);
+	virtual ~MG_HW1F();
 
 private:
 };

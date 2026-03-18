@@ -268,11 +268,11 @@ MG_Arg MG_LiborFunc::Eval(const vector<MG_Arg>& aArgs, const vector<double>& aSt
 
 void MG_LiborFunc::SetModel(const MG_PricingModelPtr& aMdl)
 {
-	myModel = aMdl;
+	myModel = std::dynamic_pointer_cast<MG_IRPricingModel>(aMdl);
 }
 
 template <>
-MG_FuncBuilderPtr MG_SFuncBuilder::myInstance = MG_FuncBuilderPtr(NULL);
+MG_FuncBuilderPtr MG_SFuncBuilder::myInstance = nullptr;
 
 void MG_FuncBuilder::Init()
 {
@@ -294,5 +294,5 @@ MG_FuncPtr MG_FuncBuilder::GetFunc(const std::string &aFuncName)
 	NameFuncMap::const_iterator vIt = myFuncs.find(aFuncName);
 	if (vIt != myFuncs.end())
 		return vIt->second;
-	return MG_FuncPtr(NULL);
+	return nullptr;
 }

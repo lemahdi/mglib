@@ -14,8 +14,8 @@ using namespace MG;
  */
 double MG_MonteCarlo::MCDensity::Aire(double* aX, size_t aDim, void* aParams)
 {
-	MCDensity* vDensity = (MCDensity*)(aParams);
-	return vDensity->AireFunction(aX, aDim, NULL);
+	MCDensity* vDensity = static_cast<MCDensity*>(aParams);
+	return vDensity->AireFunction(aX, aDim, nullptr);
 }
 
 void MG_MonteCarlo::MCDensity::Swap(MCDensity& aRight)
@@ -43,8 +43,8 @@ void MG_MonteCarlo::Swap(MG_MonteCarlo& aRight)
 {
 	MG_XLObject::Swap(aRight);
 	swap(myDim, aRight.myDim);
-	myDensity.Swap(aRight.myDensity);
-	myRandGen.Swap(aRight.myRandGen);
+	myDensity.swap(aRight.myDensity);
+	myRandGen.swap(aRight.myRandGen);
 }
 
 MG_MonteCarlo::~MG_MonteCarlo()

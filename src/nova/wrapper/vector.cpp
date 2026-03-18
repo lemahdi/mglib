@@ -12,7 +12,7 @@ using namespace MG;
  * Constructors / Destructor
  */
 MG_Vector::MG_Vector()	:	MG_Object()
-						,	mySize(0), myVect(NULL)
+						,	mySize(0), myVect(nullptr)
 {}
 
 MG_Vector::MG_Vector(	const size_t& aSize
@@ -48,7 +48,7 @@ MG_Vector::MG_Vector(	const vector<MG_Date>& aDates)
 MG_Vector::MG_Vector(	const MG_Vector& aRight)
 					:	MG_Object(aRight)
 					,	mySize(aRight.mySize)
-					,	myVect(NULL)
+					,	myVect(nullptr)
 {
 	if (mySize)
 	{
@@ -129,13 +129,13 @@ MG_Vector& MG_Vector::operator /=(const MG_Vector& aRight)
  * Arithmetic operators
  * Prefix
  */
-MG_Vector& MG_Vector::operator ++(void)
+MG_Vector& MG_Vector::operator ++()
 {
 	gsl_vector_add_constant(myVect, 1.);
 	return *this;
 }
 
-MG_Vector& MG_Vector::operator --(void)
+MG_Vector& MG_Vector::operator --()
 {
 	gsl_vector_add_constant(myVect, -1.);
 	return *this;
@@ -162,7 +162,7 @@ MG_Vector MG_Vector::operator --(int)
 /*
  * Arithmetic functions
  */
-double MG_Vector::Sum(void) const
+double MG_Vector::Sum() const
 {
 	double vSum(0.);
 	const double* vElts = gsl_vector_const_ptr(myVect, 0);
@@ -186,7 +186,7 @@ void MG_Vector::Clear()
 {
 	gsl_vector_free(myVect);
 	mySize = 0;
-	myVect = NULL;
+	myVect = nullptr;
 }
 
 void MG_Vector::Resize(const size_t& aSize, const double& aVal)

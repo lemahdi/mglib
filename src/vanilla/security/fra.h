@@ -28,7 +28,7 @@ public:
 	CLONE_METHOD(MG_Fra)
 	SWAP_DECL(MG_Fra)
 
-	virtual ~MG_Fra(void);
+	virtual ~MG_Fra();
 
 	MG_Fra	(	const MG_GenericDate& aSt
 			,	const MG_GenericDate& aEd
@@ -38,14 +38,14 @@ public:
 
 public:
 	/* State */
-	inline const MG_IRIndex& GetIRIndex(void) const { return mySchedule.GetIRIndex(); }
+	inline const MG_IRIndex& GetIRIndex() const { return mySchedule.GetIRIndex(); }
 
 	/* Engine */
 	double	ImpliedSpread	(const MG_Model& , const size_t& , const double& ) const { return 0.; }
 	double	ImpliedRate		(const MG_Model& , const size_t& , const double& ) const { return 0.; }
 
 	void	PrePricing		(const MG_Model& aMdl);
-	double	Price			(void) const;
+	double	Price			() const;
 
 private:
 	RCVPAY_NAME	myRcvPay;

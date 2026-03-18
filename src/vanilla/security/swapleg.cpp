@@ -100,7 +100,7 @@ void MG_SwapLeg::PrePricing(const MG_Model& aMdl)
 	}
 }
 
-double MG_SwapLeg::Price(void) const
+double MG_SwapLeg::Price() const
 {
 	vector<double> vDeltaFwdNot(myRawFwd);
 	const vector<double>& vDelta(mySchedule.GetIntTerms());

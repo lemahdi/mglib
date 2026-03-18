@@ -30,7 +30,7 @@ public:
 	CLONE_METHOD(MG_Swaption)
 	SWAP_DECL(MG_Swaption)
 
-	virtual ~MG_Swaption(void);
+	virtual ~MG_Swaption();
 
 	MG_Swaption	(	const MG_GenericDate& aMatDt
 				,	const MG_SwapPtr	& aUnderlying
@@ -39,10 +39,10 @@ public:
 
 public:
 	/* State */
-	MG_SwapPtr Swap(void) { return myUnderlying; }
+	MG_SwapPtr Swap() { return std::dynamic_pointer_cast<MG_Swap>(myUnderlying); }
 	/* Engine */
 	void	PrePricing	(const MG_Model& aMdl);
-	double	Price		(void) const;
+	double	Price		() const;
 
 private:
 	MG_GenericDate myMatDt;

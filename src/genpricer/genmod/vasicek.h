@@ -36,7 +36,7 @@ public:
 
 	MG_Vasicek(const MG_ZeroCurvePtr& aZC);
 
-	virtual ~MG_Vasicek(void);
+	virtual ~MG_Vasicek();
 
 public:
 	//==> Underlying

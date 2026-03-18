@@ -31,7 +31,7 @@ public:
 
 	MG_Robot(const MG_Date& aAsOf, const std::vector<MG_MarketDataPtr>& aMktData);
 
-	virtual ~MG_Robot(void);
+	virtual ~MG_Robot();
 
 public:
 	/* Engine */

@@ -41,11 +41,11 @@ class MG_FileError
 	template<class T> friend class Singleton;
 
 private:
-	MG_FileError(void);
+	MG_FileError();
 
 public:
-	virtual ~MG_FileError(void);
-	void Init(void);
+	virtual ~MG_FileError();
+	void Init();
 
 private:
 	std::ofstream myFile;
@@ -61,24 +61,24 @@ typedef Singleton<MG_FileError> MG_SFileError;
 class MG_TableWalker
 {
 public:
-	MG_TableWalker(void);
+	MG_TableWalker();
 	MG_TableWalker(const std::vector<std::string>& aColNames, const std::vector<std::string>& aFlows);
-	virtual ~MG_TableWalker(void) {}
+	virtual ~MG_TableWalker() {}
 
 	SWAP_DECL(MG_TableWalker)
 
 public:
 	/* accessors */
-	inline unsigned int				GetCurrentRow	(void) const { return myCurrentRow; }
-	inline unsigned int				GetCurrentCol	(void) const { return myCurrentCol; }
-	inline std::vector<std::string>	GetColumnNames	(void) const { return myColumnNames; }
-	inline size_t					GetRows			(void) const { return myRows; }
-	inline size_t					GetCols			(void) const { return myCols; }
+	inline unsigned int				GetCurrentRow	() const { return myCurrentRow; }
+	inline unsigned int				GetCurrentCol	() const { return myCurrentCol; }
+	inline std::vector<std::string>	GetColumnNames	() const { return myColumnNames; }
+	inline size_t					GetRows			() const { return myRows; }
+	inline size_t					GetCols			() const { return myCols; }
 
-	inline unsigned int				IncCurrentRow	(void) { assert(myCurrentRow<myRows); return ++myCurrentRow; }
-	inline unsigned int				IncCurrentCol	(void) { assert(myCurrentCol<myCols); ++myCurrentCol; myCurrentCol%=myCols; return myCurrentCol; }
-	inline unsigned int				DecCurrentRow	(void) { assert(myCurrentRow>=0); return --myCurrentRow; }
-	inline unsigned int				DecCurrentCol	(void) { assert(myCurrentCol>=0); return --myCurrentCol; }
+	inline unsigned int				IncCurrentRow	() { assert(myCurrentRow<myRows); return ++myCurrentRow; }
+	inline unsigned int				IncCurrentCol	() { assert(myCurrentCol<myCols); ++myCurrentCol; myCurrentCol%=myCols; return myCurrentCol; }
+	inline unsigned int				DecCurrentRow	() { assert(myCurrentRow>=0); return --myCurrentRow; }
+	inline unsigned int				DecCurrentCol	() { assert(myCurrentCol>=0); return --myCurrentCol; }
 
 	unsigned int GetColumn(const std::string& aColName) const;
 
@@ -99,17 +99,17 @@ private:
 class MG_Node
 {
 public:
-	MG_Node(void);
+	MG_Node();
 	MG_Node	(	const NODE_TYPE& aNodeType
 			,	const Coord& aC
-			,	MG_Node* aL = NULL
-			,	MG_Node* aR = NULL);
-	virtual ~MG_Node(void);
+			,	MG_Node* aL = nullptr
+			,	MG_Node* aR = nullptr);
+	virtual ~MG_Node();
 
-	inline NODE_TYPE		GetNodeType	(void) const { return myNodeType; }
-	inline Coord			GetCoord	(void) const { return myCoord; }
-	inline MG_Node*			GetL		(void) const { return myL; }
-	inline MG_Node*			GetR		(void) const { return myR; }
+	inline NODE_TYPE		GetNodeType	() const { return myNodeType; }
+	inline Coord			GetCoord	() const { return myCoord; }
+	inline MG_Node*			GetL		() const { return myL; }
+	inline MG_Node*			GetR		() const { return myR; }
 
 protected:
 	NODE_TYPE		myNodeType;
@@ -133,10 +133,10 @@ public:
 	MG_CmpNode	(	const NODE_TYPE& aNodeType
 				,	const Coord& aC
 				,	const COMPARISON_OP& aCmpOp
-				,	MG_Node* aL = NULL
-				,	MG_Node* aR = NULL);
+				,	MG_Node* aL = nullptr
+				,	MG_Node* aR = nullptr);
 
-	inline COMPARISON_OP GetOperator(void) const { return myOperator; }
+	inline COMPARISON_OP GetOperator() const { return myOperator; }
 
 protected:
 	COMPARISON_OP myOperator;
@@ -150,7 +150,7 @@ class MG_NumNode : public MG_Node
 public:
 	MG_NumNode(const Coord& aC, const double& aVal);
 
-	inline double GetValue(void) const { return myValue; }
+	inline double GetValue() const { return myValue; }
 
 protected:
 	double myValue;
@@ -164,7 +164,7 @@ class MG_DateNode : public MG_Node
 public:
 	MG_DateNode(const Coord& aC, const long& aJD);
 
-	inline MG_Date GetDate(void) const { return myDate; }
+	inline MG_Date GetDate() const { return myDate; }
 
 protected:
 	MG_Date myDate;
@@ -180,10 +180,10 @@ public:
 				,	MG_Node* aN
 				,	const Coord& aCC
 				,	const NODE_DIRECTION& aD = NODIR_NODE);
-	virtual ~MG_RefNode(void);
+	virtual ~MG_RefNode();
 
-	inline Coord			GetChildCoord	(void) const { return myChildCoord; }
-	inline NODE_DIRECTION	GetDirection	(void) const { return myDirection; }
+	inline Coord			GetChildCoord	() const { return myChildCoord; }
+	inline NODE_DIRECTION	GetDirection	() const { return myDirection; }
 
 	void Refresh(MG_Node* vN);
 
@@ -200,7 +200,7 @@ class MG_ArgNode : public MG_Node
 public:
 	MG_ArgNode(const Coord& aC, MG_Node* aN, MG_Node* aArgN);
 
-	inline double	GetValue(void) const { return myValue; }
+	inline double	GetValue() const { return myValue; }
 	inline void		SetValue(const double& vVal) { myValue = vVal; }
 
 private:
@@ -215,7 +215,7 @@ class MG_FuncNode : public MG_Node
 public:
 	MG_FuncNode(const Coord& aC, MG_FuncPtr aF, MG_Node* aArgN);
 
-	inline MG_FuncPtr Func(void) const { return myFunc; }
+	inline MG_FuncPtr Func() const { return myFunc; }
 
 private:
 	MG_FuncPtr myFunc;
@@ -232,8 +232,8 @@ class MG_NodeManager
 {
 public:
 	// self-generated copy-constructor is enough
-	MG_NodeManager(void) {}
-	virtual ~MG_NodeManager(void);
+	MG_NodeManager() {}
+	virtual ~MG_NodeManager();
 
 public:
 	/* Accessing */
@@ -245,11 +245,11 @@ public:
 	long				ToJulianDay	(const char* aDate);
 
 	/* Building */
-	MG_Node* BuildNode		(const MG_TableWalker& walker, const NODE_TYPE& aNodeType, MG_Node* aL = NULL, MG_Node* aR = NULL);
+	MG_Node* BuildNode		(const MG_TableWalker& walker, const NODE_TYPE& aNodeType, MG_Node* aL = nullptr, MG_Node* aR = nullptr);
 	MG_Node* BuildCmpNode	(	const MG_TableWalker& walker
 							,	const NODE_TYPE& aNodeType
 							,	const unsigned int& aCmpOp
-							,	MG_Node* aL = NULL, MG_Node* aR = NULL);
+							,	MG_Node* aL = nullptr, MG_Node* aR = nullptr);
 	MG_Node* BuildNum		(const MG_TableWalker& walker, const double& aNum);
 	MG_Node* BuildDate		(const MG_TableWalker& walker, const long& aJD);
 	MG_Node* BuildRef		(const MG_TableWalker& walker, const char* aRef, const int& aIdx);
@@ -257,7 +257,7 @@ public:
 	MG_Node* BuildFunc		(const MG_TableWalker& walker, const char* aRef, MG_Node* aArgN);
 
 	/* Rebuilding References */
-	void PostProcess(void);
+	void PostProcess();
 
 	/* Propagating Model */
 	void ModelProcess(const MG_PricingModelPtr& aMdl);

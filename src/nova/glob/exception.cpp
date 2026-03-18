@@ -17,6 +17,6 @@ MG_Exception::MG_Exception(const std::string& aFile, const unsigned int& aLine, 
 }
 
 #ifdef __CYGWIN__
-MG_Exception::~MG_Exception() throw()
+MG_Exception::~MG_Exception() noexcept
 {}
 #endif

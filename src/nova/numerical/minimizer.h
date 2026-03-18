@@ -13,7 +13,6 @@
 
 #include "nova/glob/typedef.h"
 #include "nova/glob/object.h"
-#include "nova/patterns/countedptr.hpp"
 #include "nova/wrapper/function.h"
 
 #include "gsl/gsl_min.h"
@@ -47,12 +46,12 @@ public:
 
 	MG_Minimizer(const MINIMIZER_TYPE& aType, const double& aEpsAbs, const double& aEpsRel, const size_t& aMaxIter);
 
-	virtual ~MG_Minimizer(void);
+	virtual ~MG_Minimizer();
 
 	/* State */
 	void Load(const MG_FunctionPtr& aFunc, const MinimizerBounds& aBds, const bool& aWithValues = false);
-	inline int		GetStatus(void) const { return myStatus; }
-	inline size_t	GetNbIter(void) const { return myNbIter; }
+	inline int		GetStatus() const { return myStatus; }
+	inline size_t	GetNbIter() const { return myNbIter; }
 
 	/* Engine */
 	double Minimize(MinimizerBounds& aBds);

@@ -32,7 +32,7 @@ public:
 	CLONE_METHOD(MG_Digital)
 	SWAP_DECL(MG_Digital)
 
-	virtual ~MG_Digital(void);
+	virtual ~MG_Digital();
 
 	MG_Digital	(	const MG_GenericDate& aMatDt
 				,	const MG_SecurityPtr& aUnderlying
@@ -46,7 +46,7 @@ public:
 public:
 	/* Engine */
 	void	PrePricing	(const MG_Model& aMdl);
-	double	Price		(void) const;
+	double	Price		() const;
 
 private:
 	MG_GenericDate myMatDt;
