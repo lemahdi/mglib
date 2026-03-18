@@ -50,7 +50,7 @@ void yy_delete_buffer (YY_BUFFER_STATE b  );
 #define FAKE_ASSIGN_OPERATOR(CLASS)									\
 	inline CLASS& operator= (const CLASS& )							\
 	{																\
-		assert("Assignement operator not allowed for this class");	\
+		assert("Assignment operator not allowed for this class");	\
 		return *this;												\
 	}
 
