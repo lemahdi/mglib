@@ -29,7 +29,6 @@
 #include "nova/glob/genericdate.h"
 #include "nova/wrapper/vector.h"
 #include "nova/wrapper/matrix.h"
-#include "nova/patterns/countedptr.hpp"
 
 
 namespace MG_utils

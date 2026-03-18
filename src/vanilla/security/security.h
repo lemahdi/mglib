@@ -31,21 +31,21 @@ public:
 	/* Constructors / Destructor */
 	MG_Security(const MG_TermStructure& aNotional = MG_TermStructure(100.));
 	// self-generated copy-constructor is enough
-	virtual ~MG_Security(void);
+	virtual ~MG_Security();
 
 	//CLONE_METHOD(MG_Security)
 	SWAP_DECL(MG_Security)
 
 public:
 	/* Accessors */
-	inline const std::vector<double>& Forwards(void) const { return myForwards; }
-	inline const std::vector<double>& Flows(void) const { return myFlows; }
-	inline const std::vector<double>& Dfs(void) const { return myDfs; }
-	inline const std::vector<double>& Notionals(void) const { return myNotionals; }
+	inline const std::vector<double>& Forwards() const { return myForwards; }
+	inline const std::vector<double>& Flows() const { return myFlows; }
+	inline const std::vector<double>& Dfs() const { return myDfs; }
+	inline const std::vector<double>& Notionals() const { return myNotionals; }
 
 	/* Engine */
 	virtual void	PrePricing	(const MG_Model& aMdl)	= 0;
-	virtual double	Price		(void) const			= 0;
+	virtual double	Price		() const			= 0;
 
 protected:
 	std::vector<double> myForwards;

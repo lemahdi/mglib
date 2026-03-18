@@ -13,7 +13,6 @@
 
 #include "nova/glob/typedef.h"
 #include "nova/glob/object.h"
-#include "nova/patterns/countedptr.hpp"
 #include "nova/wrapper/function.h"
 
 #include "gsl/gsl_monte_plain.h"
@@ -24,7 +23,6 @@
 MG_NAMESPACE_BEGIN
 
 
-#define MCDensityPtr CountedPtr<MG_MonteCarlo::MCDensity>
 class MG_Random;
 
 
@@ -39,9 +37,12 @@ public:
 		void Load(const size_t& aDim);
 		static double Aire(double* aX, size_t aDim, void* aParams);
 		virtual double AireFunction(double* aX, size_t aDim, void* aParams) = 0;
+		virtual ~MCDensity() = default;
 
 		gsl_monte_function myFunc;
 	};
+	using MCDensityPtr = std::shared_ptr<MCDensity>;
+
 	/* Constructors / Destructor */
 	COPY_CTOR_DECL(MG_MonteCarlo)
 
@@ -50,7 +51,7 @@ public:
 
 	MG_MonteCarlo(const size_t& aDim);
 
-	virtual ~MG_MonteCarlo(void);
+	virtual ~MG_MonteCarlo();
 
 	/* State */
 	void Load(const MCDensityPtr& aDensity, const MG_RandomPtr& aRandGen);
@@ -81,10 +82,10 @@ public:
 
 	MG_PlainMC(const size_t& aDim);
 
-	virtual ~MG_PlainMC(void);
+	virtual ~MG_PlainMC();
 
 	/* Engine */
-	double Integrate(double aLow[], double aUp[], double& aErr, const size_t& aCalls = 100);
+	double Integrate(double aLow[], double aUp[], double& aErr, const size_t& aCalls = 100) override;
 
 private:
 	gsl_monte_plain_state* myWorkSpace;
@@ -106,10 +107,10 @@ public:
 
 	MG_MiserMC(const size_t& aDim);
 
-	virtual ~MG_MiserMC(void);
+	virtual ~MG_MiserMC();
 
 	/* Engine */
-	double Integrate(double aLow[], double aUp[], double& aErr, const size_t& aCalls = 100);
+	double Integrate(double aLow[], double aUp[], double& aErr, const size_t& aCalls = 100) override;
 
 private:
 	gsl_monte_miser_state* myWorkSpace;
@@ -130,10 +131,10 @@ public:
 
 	MG_VegasMC(const size_t& aDim);
 
-	virtual ~MG_VegasMC(void);
+	virtual ~MG_VegasMC();
 
 	/* Engine */
-	double Integrate(double aLow[], double aUp[], double& aErr, const size_t& aCalls = 100);
+	double Integrate(double aLow[], double aUp[], double& aErr, const size_t& aCalls = 100) override;
 
 private:
 	gsl_monte_vegas_state* myWorkSpace;

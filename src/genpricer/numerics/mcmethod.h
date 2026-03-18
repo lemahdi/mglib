@@ -12,7 +12,6 @@
 
 
 #include "genpricer/numerics/nummethod.h"
-#include "nova/patterns/countedptr.hpp"
 #include "nova/wrapper/matrix.h"
 
 
@@ -37,15 +36,15 @@ public:
 						,	const size_t		& aSimulNb
 						,	const MG_RandDistPtr& aDist);
 
-	virtual ~MG_MonteCarloMethod(void);
+	virtual ~MG_MonteCarloMethod();
 
 	/* accessors */
-	inline size_t TimeSteps(void) const { return myTimeSteps; }
-	inline size_t SimulNb(void) const { return mySimulNb; }
-	inline const MG_Matrix Simulations(void) const { return mySimulations; }
+	inline size_t TimeSteps() const { return myTimeSteps; }
+	inline size_t SimulNb() const { return mySimulNb; }
+	inline const MG_Matrix Simulations() const { return mySimulations; }
 
 	/* engine */
-	void Simulate(void);
+	void Simulate();
 
 private:
 	size_t myTimeSteps;

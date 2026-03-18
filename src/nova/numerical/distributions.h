@@ -18,7 +18,6 @@
 #include <vector>
 
 #include "nova/glob/object.h"
-#include "nova/patterns/countedptr.hpp"
 #include "nova/numerical/random.h"
 
 #include "gsl/gsl_randist.h"
@@ -39,7 +38,7 @@ public:
 
 	MG_RandDist(const MG_RandomPtr& aRandGen);
 
-	virtual ~MG_RandDist(void) {}
+	virtual ~MG_RandDist() {}
 
 public:
 	/* Engine */
@@ -47,7 +46,7 @@ public:
 	virtual double DensityTail	(const double& aX, const double& aLimit)	= 0;
 	virtual double Cdf			(const double& aX)							= 0;
 	virtual double InvCdf		(const double& aP)							= 0;
-	virtual double Draw			(void)										= 0;
+	virtual double Draw			()										= 0;
 	virtual double DrawTail		(const double& aLimit)						= 0;
 
 protected:
@@ -73,16 +72,16 @@ public:
 
 	MG_NormalDist(const MG_RandomPtr& aRandGen, const NOR_METH& aMeth = NONE, const double& aSigma = 1);
 
-	virtual ~MG_NormalDist(void);
+	virtual ~MG_NormalDist();
 
 public:
 	/* Engine */
-	double Density		(const double& aX);
-	double DensityTail	(const double& aX, const double& aLimit);
-	double Cdf			(const double& aX);
-	double InvCdf		(const double& aP);
-	double Draw			(void);
-	double DrawTail		(const double& aLimit);
+	double Density		(const double& aX) override;
+	double DensityTail	(const double& aX, const double& aLimit) override;
+	double Cdf			(const double& aX) override;
+	double InvCdf		(const double& aP) override;
+	double Draw			() override;
+	double DrawTail		(const double& aLimit) override;
 
 	static double DensityFunc	(const double& aX);
 	static double CdfFunc		(const double& aX);
@@ -109,16 +108,16 @@ public:
 
 	MG_UniformDist(const MG_RandomPtr& aRandGen, const double& aA = 0., const double& aB = 1.);
 
-	virtual ~MG_UniformDist(void) {}
+	virtual ~MG_UniformDist() {}
 
 public:
 	/* Engine */
-	double Density		(const double& aX);
-	double DensityTail	(const double& aX, const double& aLimit) { return Density(aX); }
-	double Cdf			(const double& aX);
-	double InvCdf		(const double& aP);
-	double Draw			(void);
-	double DrawTail		(const double& aLimit) { return Draw(); }
+	double Density		(const double& aX) override;
+	double DensityTail	(const double& aX, const double& aLimit) override { return Density(aX); }
+	double Cdf			(const double& aX) override;
+	double InvCdf		(const double& aP) override;
+	double Draw			() override;
+	double DrawTail		(const double& aLimit) override { return Draw(); }
 
 private:
 	double myA;
@@ -140,16 +139,16 @@ public:
 
 	MG_LogNormalDist(const MG_RandomPtr& aRandGen, const double& aZeta, const double& aSigma);
 
-	virtual ~MG_LogNormalDist(void) {}
+	virtual ~MG_LogNormalDist() {}
 
 public:
 	/* Engine */
-	double Density		(const double& aX);
-	double DensityTail	(const double& aX, const double& aLimit) { return Density(aX); }
-	double Cdf			(const double& aX);
-	double InvCdf		(const double& aP);
-	double Draw			(void);
-	double DrawTail		(const double& aLimit) { return Draw(); }
+	double Density		(const double& aX) override;
+	double DensityTail	(const double& aX, const double& aLimit) override { return Density(aX); }
+	double Cdf			(const double& aX) override;
+	double InvCdf		(const double& aP) override;
+	double Draw			() override;
+	double DrawTail		(const double& aLimit) override { return Draw(); }
 
 private:
 	double myZeta;

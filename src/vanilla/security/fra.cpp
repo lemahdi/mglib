@@ -63,7 +63,7 @@ void MG_Fra::PrePricing(const MG_Model& aMdl)
 	myFlows[0] = vPayoff;
 }
 
-double MG_Fra::Price(void) const
+double MG_Fra::Price() const
 {
 	return myDfs[0] * myFlows[0];
 }

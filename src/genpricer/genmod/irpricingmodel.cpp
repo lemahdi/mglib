@@ -17,7 +17,7 @@ MG_IRPricingModel::MG_IRPricingModel(	const MG_IRPricingModel& aRight)
 void MG_IRPricingModel::Swap(MG_IRPricingModel& aRight)
 {
 	MG_PricingModel::Swap(aRight);
-	myZC.Swap(aRight.myZC);
+	myZC.swap(aRight.myZC);
 }
 
 MG_IRPricingModel::MG_IRPricingModel(const MG_ZeroCurvePtr& aZC) : MG_PricingModel(), myZC(aZC)
@@ -26,8 +26,8 @@ MG_IRPricingModel::MG_IRPricingModel(const MG_ZeroCurvePtr& aZC) : MG_PricingMod
 MG_IRPricingModel::~MG_IRPricingModel()
 {}
 
-const MG_Date& MG_IRPricingModel::AsOf(void) const { return myZC->AsOf(); }
-const MG_ZeroCurvePtr& MG_IRPricingModel::ZcCurve(void) const { return myZC; }
+const MG_Date& MG_IRPricingModel::AsOf() const { return myZC->AsOf(); }
+const MG_ZeroCurvePtr& MG_IRPricingModel::ZcCurve() const { return myZC; }
 
 double MG_IRPricingModel::Libor(const MG_Date& aStDt, const MG_Date& aEdDt, const MG_Date& /*aPayDt*/, const double& aDelta)
 {

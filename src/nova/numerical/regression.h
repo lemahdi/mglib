@@ -34,15 +34,15 @@ public:
 	SWAP_DECL(MG_Regression)
 
 	MG_Regression(const size_t& aSize, const MG_Vector& aY, const MG_Vector& aW);
-	virtual ~MG_Regression(void) {}
+	virtual ~MG_Regression() {}
 
 	/* Accessors */
 
 	/* Support */
 
 	/* Engine */
-	virtual void ProcessLinearReg	(void) = 0;
-	virtual void ProcessWLinearReg	(void) = 0;
+	virtual void ProcessLinearReg	() = 0;
+	virtual void ProcessWLinearReg	() = 0;
 
 protected:
 	const MG_Vector myY;
@@ -66,7 +66,7 @@ public:
 	SWAP_DECL(MG_LinearReg)
 	CLONE_METHOD(MG_LinearReg)
 
-	virtual ~MG_LinearReg(void) {}
+	virtual ~MG_LinearReg() {}
 
 	MG_LinearReg(const MG_Vector& aX, const MG_Vector& aY, const MG_Vector& aW = MG_Vector());
 
@@ -75,8 +75,8 @@ public:
 	/* Support */
 
 	/* Engine */
-	void ProcessLinearReg	(void);
-	void ProcessWLinearReg	(void);
+	void ProcessLinearReg	() override;
+	void ProcessWLinearReg	() override;
 
 	double Estimate(const double& aX);
 
@@ -98,7 +98,7 @@ public:
 	SWAP_DECL(MG_MultiReg)
 	CLONE_METHOD(MG_MultiReg)
 
-	virtual ~MG_MultiReg(void);
+	virtual ~MG_MultiReg();
 
 	MG_MultiReg(const MG_Matrix& aX, const MG_Vector& aY, const MG_Vector& aW = MG_Vector());
 
@@ -107,11 +107,11 @@ public:
 	/* Support */
 
 	/* Engine */
-	void ProcessLinearReg	(void);
-	void ProcessWLinearReg	(void);
+	void ProcessLinearReg	() override;
+	void ProcessWLinearReg	() override;
 
 	double Estimate(const MG_Vector& aX);
-	MG_Vector Residuals(void);
+	MG_Vector Residuals();
 
 protected:
 	const size_t myFeaturesNb;

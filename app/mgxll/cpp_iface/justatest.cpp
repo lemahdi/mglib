@@ -42,7 +42,7 @@ Price(MG_XLObjectPtr& aSec, MG_XLObjectPtr& aMdl)
 MG_XLObjectPtr
 Robot(const MG_Date& aAsOf, CellMatrix& aMktData)
 {
-	MG_MarketDataPtr vMktData(NULL);
+	MG_MarketDataPtr vMktData(nullptr);
 	size_t vSize = aMktData.RowsInStructure();
 	string vDesc;
 	vector<MG_MarketDataPtr> vMDVect(vSize);
@@ -175,7 +175,7 @@ RandGen_Create(const string& aType, const int& aDim)
 {
 	bool vIsRand	= RandGenConvertor.Exist(aType);
 	bool vIsQRand	= QuasiRandGenConvertor.Exist(aType);
-	MG_AbstractRandom* vRandGen(NULL);
+	MG_AbstractRandom* vRandGen(nullptr);
 
 	if (vIsRand)
 	{

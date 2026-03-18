@@ -29,7 +29,7 @@ public:
 	CLONE_METHOD(MG_CallPut)
 	SWAP_DECL(MG_CallPut)
 
-	virtual ~MG_CallPut(void);
+	virtual ~MG_CallPut();
 
 	MG_CallPut	(	const MG_GenericDate& aMatDt
 				,	const MG_SecurityPtr& aUnderlying
@@ -43,7 +43,7 @@ public:
 public:
 	/* Engine */
 	void	PrePricing	(const MG_Model& aMdl);
-	double	Price		(void) const;
+	double	Price		() const;
 
 private:
 	MG_GenericDate myMatDt;

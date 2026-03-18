@@ -21,7 +21,7 @@ MG_NAMESPACE_BEGIN
 class MG_Initializator
 {
 public:
-	static void Init(void);
+	static void Init();
 
 };
 

@@ -54,7 +54,7 @@ void MG_Swaption::PrePricing(const MG_Model& aMdl)
 	myDfs[0] = aMdl.DiscountFactor(myMatDts[0]);
 }
 
-double MG_Swaption::Price(void) const
+double MG_Swaption::Price() const
 {
 	double vPrice = myFlows[0] * myDfs[0];
 	return vPrice;

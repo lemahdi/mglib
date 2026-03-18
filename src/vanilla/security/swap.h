@@ -28,7 +28,7 @@ public:
 	CLONE_METHOD(MG_Swap)
 	SWAP_DECL(MG_Swap)
 
-	virtual ~MG_Swap(void);
+	virtual ~MG_Swap();
 
 	MG_Swap	(	const MG_SwapLeg	& aLeg1
 			,	const MG_SwapLeg	& aLeg2
@@ -36,10 +36,10 @@ public:
 
 public:
 	/* State */
-	inline const MG_SwapLeg& Leg1(void) const { return myLeg1; }
-	inline const MG_SwapLeg& Leg2(void) const { return myLeg2; }
-	const MG_SwapLeg& FixedLeg(void) const;
-	const MG_SwapLeg& FloatLeg(void) const;
+	inline const MG_SwapLeg& Leg1() const { return myLeg1; }
+	inline const MG_SwapLeg& Leg2() const { return myLeg2; }
+	const MG_SwapLeg& FixedLeg() const;
+	const MG_SwapLeg& FloatLeg() const;
 
 	/* Engine */
 	double SwapRate			(const MG_Model& aMdl) const;
@@ -47,7 +47,7 @@ public:
 	double ImpliedRate		(const MG_Model& aMdl, const size_t& aLegId, const double& aPrice = 0.) const;
 
 	void	PrePricing	(const MG_Model& aMdl);
-	double	Price		(void) const;
+	double	Price		() const;
 
 private:
 	RCVPAY_NAME	myRcvPay;

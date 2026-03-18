@@ -35,9 +35,9 @@ class MG_Date : public MG_Object
 {
 public:
 	/* Constructors / Destructor */
-    MG_Date(void);
+    MG_Date();
     COPY_CTOR_DECL(MG_Date)
-	~MG_Date(void);
+	~MG_Date();
 
 	ASSIGN_OPERATOR(MG_Date)
 	CLONE_METHOD(MG_Date)
@@ -56,8 +56,8 @@ public:
 
 	/* Arithmetic operators */
 	/* Prefix */
-	MG_Date& operator++ (void);
-	MG_Date& operator-- (void);
+	MG_Date& operator++ ();
+	MG_Date& operator-- ();
 	/* Postfix */
 	MG_Date operator++ (int);
 	MG_Date operator-- (int);
@@ -71,18 +71,18 @@ public:
 	bool operator>=	(const MG_Date& aRight) const;
 
 	/* Accessors */
-	inline long			GetJulianDay	(void) const { return myJulianDay; }
-	inline unsigned int	GetDay			(void) const { return myDay; }
-	inline unsigned int	GetMonth		(void) const { return myMonth; }
-	inline int			GetYear			(void) const { return myYear; }
-	inline bool			IsLeapYear		(void) const { return myIsLeapYear; }
-	inline unsigned int	GetDayOfWeek	(void) const { return myDayOfWeek; }
-	inline unsigned int	GetDayOfWorkWeek(void) const { return myDayOfWorkWeek; }
-	inline unsigned int	GetDayOfYear	(void) const { return myDayOfYear; }
+	inline long			GetJulianDay	() const { return myJulianDay; }
+	inline unsigned int	GetDay			() const { return myDay; }
+	inline unsigned int	GetMonth		() const { return myMonth; }
+	inline int			GetYear			() const { return myYear; }
+	inline bool			IsLeapYear		() const { return myIsLeapYear; }
+	inline unsigned int	GetDayOfWeek	() const { return myDayOfWeek; }
+	inline unsigned int	GetDayOfWorkWeek() const { return myDayOfWorkWeek; }
+	inline unsigned int	GetDayOfYear	() const { return myDayOfYear; }
 
 	/* String function */
 	std::string ToString(const char& aSeparator, const DATE_DISPLAY& aDD = FR_DATE) const;
-	std::string ToString(void) const;
+	std::string ToString() const;
 
 	/* Calendars functions */
 	MG_Date& NextBusinessDay		(size_t aDays, const CALENDAR_NAME& aCal);
@@ -104,7 +104,7 @@ public:
 
 private:
 	/* Update */
-	void Rebuild(void);
+	void Rebuild();
 
 private:
     long			myJulianDay;

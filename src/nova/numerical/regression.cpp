@@ -125,7 +125,7 @@ MG_MultiReg::MG_MultiReg(	const MG_MultiReg& aRight)
 MG_MultiReg::~MG_MultiReg()
 {
 	gsl_multifit_linear_free(myWorkSpace);
-	myWorkSpace = NULL;
+	myWorkSpace = nullptr;
 }
 
 void MG_MultiReg::Swap(MG_MultiReg& aRight)

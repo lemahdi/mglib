@@ -13,7 +13,6 @@
 
 #include "nova/glob/date.h"
 #include "nova/market/closedformulas.h"
-#include "nova/patterns/countedptr.hpp"
 #include "mktdata/robot.h"
 
 
@@ -31,9 +30,9 @@ class MG_Model : public MG_XLObject
 {
 public:
 	/* Constructors / Destructor */
-	MG_Model(void);
+	MG_Model();
 	// self-generated copy-constructor is enough
-	virtual ~MG_Model(void);
+	virtual ~MG_Model();
 
 	//CLONE_METHOD(MG_Model)
 	SWAP_DECL(MG_Model)
@@ -42,7 +41,7 @@ public:
 
 public:
 	/* State */
-	inline const MG_Date& GetAsOf(void) const { return myAsOf; }
+	inline const MG_Date& GetAsOf() const { return myAsOf; }
 
 	/* Market Data */
 	virtual void Register(MG_RobotPtr& aRbt) = 0;
@@ -73,7 +72,7 @@ public:
 	SWAP_DECL(MG_DfModel)
 	CLONE_METHOD(MG_DfModel)
 
-	virtual ~MG_DfModel(void);
+	virtual ~MG_DfModel();
 
 	MG_DfModel(const MG_Date& aAsOf);
 
@@ -82,7 +81,7 @@ public:
 	void Register(MG_RobotPtr& aRbt);
 
 	/* Engine */
-	double DiscountFactor(const MG_Date& aMaturity) const;
+	double DiscountFactor(const MG_Date& aMaturity) const override;
 	double Libor(	const MG_Date		& aStDt
 				,	const MG_Date		& aEdDt
 				,	const DAYCOUNT_NAME	& aDayCount
@@ -108,7 +107,7 @@ public:
 	SWAP_DECL(MG_BSModel)
 	CLONE_METHOD(MG_BSModel)
 
-	virtual ~MG_BSModel(void);
+	virtual ~MG_BSModel();
 
 	MG_BSModel(const MG_Date& aAsOf);
 
@@ -117,7 +116,7 @@ public:
 	void Register(MG_RobotPtr& aRbt);
 
 	/* Engine */
-	double DiscountFactor(const MG_Date& aMaturity) const;
+	double DiscountFactor(const MG_Date& aMaturity) const override;
 	double Libor(	const MG_Date		& aStDt
 				,	const MG_Date		& aEdDt
 				,	const DAYCOUNT_NAME	& aDayCount

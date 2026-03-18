@@ -12,7 +12,6 @@
 
 
 #include "nova/glob/date.h"
-#include "nova/patterns/countedptr.hpp"
 #include "vanilla/security/security.h"
 
 
@@ -29,7 +28,7 @@ public:
 	//CLONE_METHOD(MG_VanillaOption)
 	SWAP_DECL(MG_VanillaOption)
 
-	virtual ~MG_VanillaOption(void);
+	virtual ~MG_VanillaOption();
 
 	MG_VanillaOption(	const std::vector<MG_Date>	& aMatDts
 					,	const MG_SecurityPtr		& aUnd

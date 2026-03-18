@@ -12,7 +12,6 @@
 
 
 #include "genpricer/genmod/pricingmodel.h"
-#include "nova/patterns/countedptr.hpp"
 
 #include <vector>
 
@@ -37,11 +36,11 @@ public:
 
 	MG_IRPricingModel(const MG_ZeroCurvePtr& aZC);
 
-	virtual ~MG_IRPricingModel(void);
+	virtual ~MG_IRPricingModel();
 
 	//==> Accessors
-	const MG_Date& AsOf(void) const;
-	const MG_ZeroCurvePtr& ZcCurve(void) const;
+	const MG_Date& AsOf() const;
+	const MG_ZeroCurvePtr& ZcCurve() const;
 
 public:
 	//==> Underlying

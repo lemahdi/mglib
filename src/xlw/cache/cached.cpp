@@ -16,7 +16,7 @@ UnCacheMap MG_Cache::ourGlobalUnCache = UnCacheMap();
 
 /* Singleton initializations */
 template<>
-MG_CachePtr MG_SCache::myInstance = MG_CachePtr(NULL);
+MG_CachePtr MG_SCache::myInstance = nullptr;
 
 /* Constructors */
 MG_Cache::MG_Cache() : myCounter(0)

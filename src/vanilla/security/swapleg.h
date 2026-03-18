@@ -30,7 +30,7 @@ public:
 	CLONE_METHOD(MG_SwapLeg)
 	SWAP_DECL(MG_SwapLeg)
 
-	virtual ~MG_SwapLeg(void);
+	virtual ~MG_SwapLeg();
 
 	MG_SwapLeg	(	const MG_GenericDate	& aSt
 				,	const MG_GenericDate	& aEd
@@ -47,9 +47,9 @@ public:
 
 public:
 	/* State */
-	inline const MG_IRIndex& GetIRIndex(void) const { return myIRIndex; }
-	inline bool IsFixed(void) const { return myIRIndex.GetIndexName() == K_FIXED; }
-	inline bool IsFloat(void) const { return myIRIndex.GetIndexName() != K_FIXED; }
+	inline const MG_IRIndex& GetIRIndex() const { return myIRIndex; }
+	inline bool IsFixed() const { return myIRIndex.GetIndexName() == K_FIXED; }
+	inline bool IsFloat() const { return myIRIndex.GetIndexName() != K_FIXED; }
 	inline void Spread(const double& aSpread) { mySpreadOrRate = aSpread; }
 
 	/* Engine */
@@ -59,7 +59,7 @@ public:
 	double	ImpliedRate		(const MG_Model& , const size_t& , const double& ) const { return 0.; }
 
 	void	PrePricing		(const MG_Model& aMdl);
-	double	Price			(void) const;
+	double	Price			() const;
 
 
 private:

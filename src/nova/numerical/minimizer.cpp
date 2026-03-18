@@ -24,14 +24,14 @@ const gsl_min_fminimizer_type* MG_Minimizer::From_MGType_To_GSLType(const MINIMI
 	case QUAD_GOLDEN:
 		return gsl_min_fminimizer_quad_golden;
 
-	default: return NULL;
+	default: return nullptr;
 	}
 }
 
 MG_Minimizer::MG_Minimizer	(	const MG_Minimizer& aRight)
 							:	MG_XLObject(aRight)
 							,	myName		(aRight.myName)
-							,	myMinimizer	(NULL)
+							,	myMinimizer	(nullptr)
 							,	myType		(aRight.myType)
 							,	myStatus(aRight.myStatus)
 							,	myEpsAbs(aRight.myEpsAbs), myEpsRel(aRight.myEpsRel)
@@ -57,9 +57,9 @@ MG_Minimizer::MG_Minimizer	(	const MINIMIZER_TYPE& aType
 							,	const double		& aEpsRel
 							,	const size_t		& aMaxIter)
 							:	MG_XLObject()
-							,	myMinimizer	(NULL)
+							,	myMinimizer	(nullptr)
 							,	myType		(aType)
-							,	myFunc		(NULL)
+							,	myFunc		(nullptr)
 							,	myEpsAbs(aEpsAbs), myEpsRel(aEpsRel)
 							,	myMaxIter(aMaxIter), myNbIter(0), myStatus(GSL_EOF)
 {
@@ -80,7 +80,7 @@ MG_Minimizer::~MG_Minimizer()
 
 void MG_Minimizer::Load(const MG_FunctionPtr& aFunc, const MinimizerBounds& aBds, const bool& aWithValues)
 {
-	myFunc = aFunc;
+	myFunc = std::dynamic_pointer_cast<MG_FFunction>(aFunc);
 	if (aWithValues)
 		gsl_min_fminimizer_set_with_values	(	myMinimizer, myFunc->GetFunc()
 											,	aBds.myMinimum, aBds.myFMinimum

@@ -13,7 +13,7 @@ using namespace MG;
  */
 MG_Solver::MG_Solver(	const MG_Solver& aRight)
 					:	MG_XLObject(aRight)
-					,	myName(aRight.myName), myFunc(NULL)
+					,	myName(aRight.myName), myFunc(nullptr)
 					,	myStatus(aRight.myStatus)
 					,	myEpsAbs(aRight.myEpsAbs), myEpsRel(aRight.myEpsRel)
 					,	myMaxIter(aRight.myMaxIter), myNbIter(aRight.myNbIter)
@@ -38,7 +38,7 @@ MG_Solver::MG_Solver(	const double& aEpsAbs
 					:	MG_XLObject()
 					,	myEpsAbs(aEpsAbs), myEpsRel(aEpsRel)
 					,	myMaxIter(aMaxIter), myNbIter(0)
-					,	myName(aName), myFunc(NULL), myStatus(GSL_EOF)
+					,	myName(aName), myFunc(nullptr), myStatus(GSL_EOF)
 {}
 
 MG_Solver::~MG_Solver()
@@ -61,13 +61,13 @@ const gsl_root_fsolver_type* MG_FSolver::From_MGType_To_GSLType(const FSOLVER_TY
 	case BRENT:
 		return gsl_root_fsolver_brent;
 
-	default: return NULL;
+	default: return nullptr;
 	}
 }
 
 MG_FSolver::MG_FSolver	(	const MG_FSolver& aRight)
 						:	MG_Solver(aRight)
-						,	mySolver(NULL), myType(aRight.myType)
+						,	mySolver(nullptr), myType(aRight.myType)
 						,	myMin(aRight.myMin), myMax(aRight.myMax)
 {
 	if (aRight.mySolver)
@@ -93,7 +93,7 @@ MG_FSolver::MG_FSolver	(	const FSOLVER_TYPE& aType
 						,	const double& aEpsRel
 						,	const size_t& aMaxIter)
 						:	MG_Solver(aEpsAbs, aEpsRel, aMaxIter)
-						,	mySolver(NULL), myType(aType)
+						,	mySolver(nullptr), myType(aType)
 						,	myMin(aMin), myMax(aMax)
 {
 	myXLName = MG_FSOLVER_XL_NAME;
@@ -161,13 +161,13 @@ const gsl_root_fdfsolver_type* MG_FDfSolver::From_MGType_To_GSLType(const FDFSOL
 	case STEFFENSON:
 		return gsl_root_fdfsolver_steffenson;
 
-	default: return NULL;
+	default: return nullptr;
 	}
 }
 
 MG_FDfSolver::MG_FDfSolver	(	const MG_FDfSolver& aRight)
 							:	MG_Solver(aRight)
-							,	mySolver(NULL), myType(aRight.myType)
+							,	mySolver(nullptr), myType(aRight.myType)
 							,	myGuess(aRight.myGuess)
 {
 	if (aRight.mySolver)
@@ -191,7 +191,7 @@ MG_FDfSolver::MG_FDfSolver	(	const FDFSOLVER_TYPE& aType
 							,	const double& aEpsRel
 							,	const size_t& aMaxIter)
 							:	MG_Solver(aEpsAbs, aEpsRel, aMaxIter)
-							,	mySolver(NULL), myType(aType)
+							,	mySolver(nullptr), myType(aType)
 							,	myGuess	(aGuess)
 {
 	myXLName = MG_FDFSOLVER_XL_NAME;

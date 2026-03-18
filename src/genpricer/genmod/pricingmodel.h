@@ -12,7 +12,6 @@
 
 
 #include "nova/glob/object.h"
-#include "nova/patterns/countedptr.hpp"
 #include "genpricer/numerics/mcmethod.h"
 
 
@@ -30,12 +29,12 @@ public:
 	SWAP_DECL(MG_PricingModel)
 	CLONE_METHOD(MG_PricingModel)
 
-	MG_PricingModel(void);
+	MG_PricingModel();
 
-	virtual ~MG_PricingModel(void);
+	virtual ~MG_PricingModel();
 
 	/* accessors */
-	inline const MG_NumericalMethodPtr& NumMethod(void) const { return myNumMethod; }
+	inline const MG_NumericalMethodPtr& NumMethod() const { return myNumMethod; }
 	inline void NumMethod(const MG_NumericalMethodPtr& aNumMethod) { myNumMethod = aNumMethod; }
 
 private:

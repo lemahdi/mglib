@@ -10,7 +10,7 @@ using namespace MG;
 MG_VanillaOption::MG_VanillaOption	(	const MG_VanillaOption& aRight)
 									:	MG_Security(aRight)
 									,	myMatDts	(aRight.myMatDts)
-									,	myUnderlying((MG_Security*)aRight.myUnderlying->Clone())
+									,	myUnderlying(static_cast<MG_Security*>(aRight.myUnderlying->Clone()))
 									,	myStrike	(aRight.myStrike)
 {}
 
@@ -18,7 +18,7 @@ void MG_VanillaOption::Swap(MG_VanillaOption& aRight)
 {
 	MG_Security::Swap(aRight);
 	myMatDts.swap(aRight.myMatDts);
-	myUnderlying.Swap(aRight.myUnderlying);
+	myUnderlying.swap(aRight.myUnderlying);
 	std::swap(myStrike, aRight.myStrike);
 }
 
@@ -27,7 +27,7 @@ MG_VanillaOption::MG_VanillaOption	(	const vector<MG_Date>	& aMatDts
 									,	const double			& aStrike)
 									:	MG_Security()
 									,	myMatDts	(aMatDts)
-									,	myUnderlying((MG_Security*)aUnd->Clone())
+									,	myUnderlying(static_cast<MG_Security*>(aUnd->Clone()))
 									,	myStrike	(aStrike)
 {}
 

@@ -36,10 +36,10 @@ public:
 
 	MG_BlackScholes(const MG_ZeroCurvePtr& aZC, const MG_VolatilityCurvePtr& aVol);
 
-	virtual ~MG_BlackScholes(void);
+	virtual ~MG_BlackScholes();
 
 	//==> Accessors
-	inline const MG_VolatilityCurvePtr& VolCurve(void) const { return myVol; }
+	inline const MG_VolatilityCurvePtr& VolCurve() const { return myVol; }
 
 public:
 	//==> Underlying

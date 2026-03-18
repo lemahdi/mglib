@@ -30,7 +30,7 @@ public:
 	CLONE_METHOD(MG_IRIndex)
 	SWAP_DECL(MG_IRIndex)
 
-	virtual ~MG_IRIndex(void);
+	virtual ~MG_IRIndex();
 
 	MG_IRIndex	(	const INDEX_NAME	& aIndexName	= INDEX_NAME_DEF
 				,	const MG_Currency	& aCcy			= MG_Currency(CURRENCY_NAME_DEF)
@@ -45,16 +45,16 @@ public:
 
 public:
 	/* State */
-	inline const INDEX_NAME&	GetIndexName	(void) const { return myIndexName; }
-	inline const MG_Currency&	GetCurrency		(void) const { return myCcy; }
-	inline const DAYCOUNT_NAME&	GetDayCount		(void) const { return myDayCount; }
-	inline const ADJRULE_NAME&	GetAdjRule		(void) const { return myAdjRule; }
-	inline const TIMING_NAME&	GetResetTiming	(void) const { return myRstTiming; }
-	inline const TIMING_NAME&	GetPayTiming	(void) const { return myPayTiming; }
-	inline const int&			GetResetGap		(void) const { return myRstGap; }
-	inline const int&			GetPayGap		(void) const { return myPayGap; }
-	inline const CALENDAR_NAME&	GetResetCalendar(void) const { return myRstCal; }
-	inline const CALENDAR_NAME&	GetPayCalendar	(void) const { return myPayCal; }
+	inline const INDEX_NAME&	GetIndexName	() const { return myIndexName; }
+	inline const MG_Currency&	GetCurrency		() const { return myCcy; }
+	inline const DAYCOUNT_NAME&	GetDayCount		() const { return myDayCount; }
+	inline const ADJRULE_NAME&	GetAdjRule		() const { return myAdjRule; }
+	inline const TIMING_NAME&	GetResetTiming	() const { return myRstTiming; }
+	inline const TIMING_NAME&	GetPayTiming	() const { return myPayTiming; }
+	inline const int&			GetResetGap		() const { return myRstGap; }
+	inline const int&			GetPayGap		() const { return myPayGap; }
+	inline const CALENDAR_NAME&	GetResetCalendar() const { return myRstCal; }
+	inline const CALENDAR_NAME&	GetPayCalendar	() const { return myPayCal; }
 
 private:
 	INDEX_NAME		myIndexName;

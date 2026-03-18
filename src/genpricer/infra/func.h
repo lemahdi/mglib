@@ -13,7 +13,6 @@
 
 
 #include "nova/patterns/singleton.hpp"
-#include "nova/patterns/countedptr.hpp"
 #include "nova/glob/date.h"
 
 #include <vector>
@@ -30,8 +29,8 @@ class MG_IRPricingModel;
 class MG_Func
 {
 public:
-	MG_Func(void);
-	virtual ~MG_Func(void);
+	MG_Func();
+	virtual ~MG_Func();
 
 	virtual MG_Arg Eval(const std::vector<MG_Arg>& aArgs) = 0;
 	virtual MG_Arg Eval(const std::vector<MG_Arg>& aArgs, const std::vector<double>& aStates);
@@ -42,7 +41,7 @@ public:
 class MG_MaxFunc : public MG_Func
 {
 public:
-	MG_MaxFunc(void);
+	MG_MaxFunc();
 
 	MG_Arg Eval(const std::vector<MG_Arg>& aArgs);
 };
@@ -50,7 +49,7 @@ public:
 class MG_MinFunc : public MG_Func
 {
 public:
-	MG_MinFunc(void);
+	MG_MinFunc();
 
 	MG_Arg Eval(const std::vector<MG_Arg>& aArgs);
 };
@@ -58,7 +57,7 @@ public:
 class MG_AbsFunc : public MG_Func
 {
 public:
-	MG_AbsFunc(void);
+	MG_AbsFunc();
 
 	MG_Arg Eval(const std::vector<MG_Arg>& aArgs);
 };
@@ -66,7 +65,7 @@ public:
 class MG_ExpFunc : public MG_Func
 {
 public:
-	MG_ExpFunc(void);
+	MG_ExpFunc();
 
 	MG_Arg Eval(const std::vector<MG_Arg>& aArgs);
 };
@@ -74,7 +73,7 @@ public:
 class MG_LogFunc : public MG_Func
 {
 public:
-	MG_LogFunc(void);
+	MG_LogFunc();
 
 	MG_Arg Eval(const std::vector<MG_Arg>& aArgs);
 };
@@ -82,7 +81,7 @@ public:
 class MG_PowFunc : public MG_Func
 {
 public:
-	MG_PowFunc(void);
+	MG_PowFunc();
 
 	MG_Arg Eval(const std::vector<MG_Arg>& aArgs);
 };
@@ -90,7 +89,7 @@ public:
 class MG_IfFunc : public MG_Func
 {
 public:
-	MG_IfFunc(void);
+	MG_IfFunc();
 
 	MG_Arg Eval(const std::vector<MG_Arg>& aArgs);
 };
@@ -98,7 +97,7 @@ public:
 class MG_LiborFunc : public MG_Func
 {
 public:
-	MG_LiborFunc(void);
+	MG_LiborFunc();
 
 	MG_Arg Eval(const std::vector<MG_Arg>& aArgs);
 	MG_Arg Eval(const std::vector<MG_Arg>& aArgs, const std::vector<double>& aStates);
@@ -114,13 +113,13 @@ class MG_FuncBuilder
 	template<class T> friend class Singleton;
 
 private:
-	MG_FuncBuilder(void) {}
+	MG_FuncBuilder() {}
 
 public:
-	virtual ~MG_FuncBuilder(void) {}
+	virtual ~MG_FuncBuilder() {}
 
 public:
-	void Init(void);
+	void Init();
 
 	MG_FuncPtr GetFunc(const std::string& aFuncName);
 

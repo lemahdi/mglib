@@ -35,7 +35,7 @@ public:
 template<class T,class U>
 void CopyCountedPtr::CopyOperator(const CountedPtr<T>& aTo, const CountedPtr<U>& aFrom)
 {
-	T* vTmp = (T*)aFrom.myPtr;
+	T* vTmp = static_cast<T*>(aFrom.myPtr);
 	if (aTo.myPtr == vTmp)
 		return;
 
@@ -54,8 +54,8 @@ class CountedPtr
 	friend class CopyCountedPtr;
 
 public:
-	CountedPtr(void) : myPtr(NULL), myCount(new long(1)) {}
-	~CountedPtr(void)
+	CountedPtr() : myPtr(nullptr), myCount(new long(1)) {}
+	~CountedPtr()
 	{
 		Release();
 	}
@@ -74,7 +74,7 @@ public:
 	}
 
 	template<class U>
-	CountedPtr(const CountedPtr<U>& aCPtr) : myPtr(NULL), myCount(new long(1))
+	CountedPtr(const CountedPtr<U>& aCPtr) : myPtr(nullptr), myCount(new long(1))
 	{
 		CopyCountedPtr::CopyOperator(*this, aCPtr);
 	}
@@ -98,22 +98,22 @@ public:
 		std::swap(myPtr, aRight.myPtr);
 	}
 
-	T* operator-> (void)
+	T* operator->()
 	{
 		return myPtr;
 	}
 
-	T* operator-> (void) const
+	T* operator->() const
 	{
 		return myPtr;
 	}
 
-	T& operator* (void)
+	T& operator*()
 	{
 		return *myPtr;
 	}
 
-	T& operator* (void) const
+	T& operator*() const
 	{
 		return *myPtr;
 	}
@@ -128,23 +128,18 @@ public:
 		return myPtr!=aCPtr.myPtr;
 	}
 
-	/*bool IsNull(void)
-	{
-		return myPtr==NULL ? true : false;
-	}*/
-
-	bool operator() (void)
+	bool operator()()
 	{
 		return myPtr ? true : false;
 	}
 
-	bool operator! (void)
+	bool operator!()
 	{
 		return myPtr ? false : true;
 	}
 
 private:
-	void Release(void) const
+	void Release() const
 	{
 		if (myCount && --*myCount==0)
 		{

@@ -28,7 +28,7 @@ public:
 	//CLONE_METHOD(MG_IRSecurity)
 	SWAP_DECL(MG_IRSecurity)
 
-	virtual ~MG_IRSecurity(void);
+	virtual ~MG_IRSecurity();
 
 	MG_IRSecurity	(	const NX_NAME& aNX = K_NX_NONE
 					,	const MG_TermStructure& aNotional = MG_TermStructure(100.));
@@ -38,9 +38,9 @@ public:
 
 public:
 	/* State */
-	inline const MG_Schedule& GetSchedule	(void) const { return mySchedule; }
-	inline const MG_Date& GetStartDate		(void) const { return mySchedule.GetStartDate(); }
-	inline const MG_Date& GetEndDate		(void) const { return mySchedule.GetEndDate(); }
+	inline const MG_Schedule& GetSchedule	() const { return mySchedule; }
+	inline const MG_Date& GetStartDate		() const { return mySchedule.GetStartDate(); }
+	inline const MG_Date& GetEndDate		() const { return mySchedule.GetEndDate(); }
 
 	/* Engine */
 	void GenerateSchedule(const MG_GenericDate& aStDt, const MG_GenericDate& aEdDt, const MG_IRIndex& aIdx);
