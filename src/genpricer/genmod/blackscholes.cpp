@@ -1,5 +1,6 @@
 #include "genpricer/genmod/blackscholes.h"
 #include "mktdata/marketdata.h"
+#include "nova/market/schedule.h"
 #include "nova/utils/utils.h"
 
 #include <math.h>
@@ -121,13 +122,61 @@ MG_StdVectDblPtr MG_BlackScholes::Cap(const MG_Date& aMatDt
 								,	const MG_Schedule& aSched, const double& aTenor, const vector<double>& aSpread
 								,	const double& aStrike, const vector<double>& aStates)
 {
-	return MG_StdVectDblPtr();
+	size_t vNbFlows  = aSched.NbFlows();
+	size_t vNbStates = aStates.size();
+	MG_StdVectDblPtr vCapPVPtr(new vector<double>(vNbStates, 0.));
+	vector<double>& vCapPV = *vCapPVPtr;
+
+	double vAsOfJul = myZC->AsOf().GetJulianDay();
+	for(size_t k=0; k<vNbFlows; ++k)
+	{
+		const MG_Date& vRstDt = aSched.GetResetDates()[k];
+		const MG_Date& vStDt  = aSched.GetIntStartDates()[k];
+		const MG_Date& vEdDt  = aSched.GetIntEndDates()[k];
+		const MG_Date& vPayDt = aSched.GetPayDates()[k];
+		double vDelta  = aSched.GetIntTerms()[k];
+		double vSpread = aSpread.empty() ? 0. : (k < aSpread.size() ? aSpread[k] : 0.);
+
+		MG_StdVectDblPtr vCapletPtr = Caplet(aMatDt, vRstDt, vStDt, vEdDt, vPayDt,
+											  vDelta, aTenor, vSpread, aStrike, aStates);
+		const vector<double>& vCaplet = *vCapletPtr;
+
+		double vPayMat = (vPayDt.GetJulianDay() - vAsOfJul) / 365.;
+		double vDf = myZC->DiscountFactor(vPayMat);
+		for(size_t i=0; i<vNbStates; ++i)
+			vCapPV[i] += vDelta * vDf * vCaplet[i];
+	}
+	return vCapPVPtr;
 }
 MG_StdVectDblPtr MG_BlackScholes::Floor(const MG_Date& aMatDt
 								,	const MG_Schedule& aSched, const double& aTenor, const vector<double>& aSpread
 								,	const double& aStrike, const vector<double>& aStates)
 {
-	return MG_StdVectDblPtr();
+	size_t vNbFlows  = aSched.NbFlows();
+	size_t vNbStates = aStates.size();
+	MG_StdVectDblPtr vFloorPVPtr(new vector<double>(vNbStates, 0.));
+	vector<double>& vFloorPV = *vFloorPVPtr;
+
+	double vAsOfJul = myZC->AsOf().GetJulianDay();
+	for(size_t k=0; k<vNbFlows; ++k)
+	{
+		const MG_Date& vRstDt = aSched.GetResetDates()[k];
+		const MG_Date& vStDt  = aSched.GetIntStartDates()[k];
+		const MG_Date& vEdDt  = aSched.GetIntEndDates()[k];
+		const MG_Date& vPayDt = aSched.GetPayDates()[k];
+		double vDelta  = aSched.GetIntTerms()[k];
+		double vSpread = aSpread.empty() ? 0. : (k < aSpread.size() ? aSpread[k] : 0.);
+
+		MG_StdVectDblPtr vFloorletPtr = Floorlet(aMatDt, vRstDt, vStDt, vEdDt, vPayDt,
+												   vDelta, aTenor, vSpread, aStrike, aStates);
+		const vector<double>& vFloorlet = *vFloorletPtr;
+
+		double vPayMat = (vPayDt.GetJulianDay() - vAsOfJul) / 365.;
+		double vDf = myZC->DiscountFactor(vPayMat);
+		for(size_t i=0; i<vNbStates; ++i)
+			vFloorPV[i] += vDelta * vDf * vFloorlet[i];
+	}
+	return vFloorPVPtr;
 }
 
 //==> Other

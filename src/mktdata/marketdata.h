@@ -29,7 +29,6 @@ public:
 	/* Constructors / Destructor */
 	COPY_CTOR_DECL(MG_MarketData)
 
-	ASSIGN_OPERATOR(MG_MarketData)
 	SWAP_DECL(MG_MarketData)
 
 	MG_MarketData	(	const MG_Date		& aAsOf
@@ -108,7 +107,6 @@ public:
 	/* Constructors / Destructor */
 	COPY_CTOR_DECL(MG_VolatilityCurve)
 
-	ASSIGN_OPERATOR(MG_VolatilityCurve)
 	SWAP_DECL(MG_VolatilityCurve)
 
 	MG_VolatilityCurve	(	const MG_Date		& aAsOf

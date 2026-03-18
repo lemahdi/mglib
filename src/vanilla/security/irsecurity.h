@@ -25,7 +25,6 @@ public:
 	/* Constructors / Destructor */
 	COPY_CTOR_DECL(MG_IRSecurity)
 
-	ASSIGN_OPERATOR(MG_IRSecurity)
 	//CLONE_METHOD(MG_IRSecurity)
 	SWAP_DECL(MG_IRSecurity)
 

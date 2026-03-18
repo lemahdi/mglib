@@ -1,10 +1,14 @@
 #include "nova/mginit.h"
 #include "genpricer/infra/nodes.h"
 #include "genpricer/infra/arg.h"
-#pragma warning(push)
-#pragma warning(disable:4512)
+#ifdef _MSC_VER
+#  pragma warning(push)
+#  pragma warning(disable:4512)
+#endif
 #include "genpricer/infra/my_parser.tab.hpp"
-#pragma warning(pop)
+#ifdef _MSC_VER
+#  pragma warning(pop)
+#endif
 #include "nova/glob/date.h"
 #include "nova/market/calendar.h"
 #include "nova/wrapper/matrix.h"
@@ -279,7 +283,7 @@ int main()
 		MG_FDfSolver vSolver(MG_FDfSolver::NEWTON, 1., 0., 1e-3, 100);
 		vSolver.Load(vFunc);
 		double vSol = vSolver.Solve();
-		cout << "Newton Solver Exp(x)-x²: " << vSol << endl;
+		cout << "Newton Solver Exp(x)-xï¿½: " << vSol << endl;
 	}
 
 	cin >> ch;
@@ -302,10 +306,15 @@ int main()
 		size_t vCount = 100;
 		while (--vCount) cout << vRand.DrawOne() << ":" << vRand.DrawUniform() << endl;
 
+#ifdef _WIN32
 		FILE* stream(NULL);
 		errno_t vErr = fopen_s(&stream, "C:\\cygwin\\home\\Akkouh\\random_state.txt", "w");
-		vRand.ToString(stream);
-		fclose(stream);
+		if (!vErr && stream)
+		{
+			vRand.ToString(stream);
+			fclose(stream);
+		}
+#endif
 
 		const gsl_rng_type **t, **t0;
 		t0 = gsl_rng_types_setup();
@@ -325,10 +334,15 @@ int main()
 		MG_QuasiRandom vRand(SOBOL, 1);
 		while (--vCount) cout << vRand.DrawOne() << ":" << vRand.DrawUniform() << endl;
 
+#ifdef _WIN32
 		FILE* stream(NULL);
 		errno_t vErr = fopen_s(&stream, "C:\\cygwin\\home\\Akkouh\\quasirandom_state.txt", "w");
-		vRand.ToString(stream);
-		fclose(stream);
+		if (!vErr && stream)
+		{
+			vRand.ToString(stream);
+			fclose(stream);
+		}
+#endif
 
 		cout << "GSL Quasi Random Generators" << endl;
 	}

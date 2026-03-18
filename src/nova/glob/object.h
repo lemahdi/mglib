@@ -27,7 +27,7 @@ public:
 	// self-generated copy-constructor is enough
 	virtual ~MG_Object(void) {}
 
-	MG_Object& operator= (const MG_Object& /*aRight*/) {}
+	MG_Object& operator= (const MG_Object& /*aRight*/) { return *this; }
 	virtual MG_Object* Clone(void) const = 0;
 
 };
@@ -40,7 +40,6 @@ public:
 	MG_XLObject(void);
 	COPY_CTOR_DECL(MG_XLObject)
 
-	ASSIGN_OPERATOR(MG_XLObject)
 	SWAP_DECL(MG_XLObject)
 
 protected:

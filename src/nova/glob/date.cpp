@@ -1,15 +1,17 @@
 #include "nova/glob/date.h"
 #include "nova/market/calendar.h"
+#include "nova/glob/exception.h"
 #include "nova/utils/utils.h"
 
 #include <time.h>
 #include <assert.h>
 #include <sstream>
+#include <stdexcept>
 
 
-#ifdef WIN32
+#ifdef _WIN32
 //#define itoa _itoa_s
-#define localtime localtime_s
+//#define localtime localtime_s
 #endif
 
 
@@ -23,19 +25,19 @@ using namespace MG_utils;
  */
 MG_Date::MG_Date() : MG_Object(), myJulianDay(0L)
 {
-#ifdef WIN32
+#ifdef _WIN32
 	time_t vSysTime;
 	time(&vSysTime);
 	struct tm vTm;
-	errno_t vErr = localtime(&vTm, &vSysTime);vErr;
+	localtime_s(&vTm, &vSysTime);
 
 	myYear		= vTm.tm_year + 1900;
 	myMonth		= vTm.tm_mon + 1;
 	myDay		= vTm.tm_mday;
 #else
-	struct tm* vTm;
 	time_t vSysTime;
-	vTm = localtime(&vSysTime);
+	time(&vSysTime);
+	struct tm* vTm = localtime(&vSysTime);
 
 	myYear		= vTm->tm_year + 1900;
 	myMonth		= vTm->tm_mon + 1;
@@ -106,9 +108,7 @@ MG_Date::MG_Date(	const string& aDate
 	{
 		ostringstream os;
 		os << __FILE__ << "-" << __LINE__ << ": bad separator.";
-#ifndef __CYGWIN__
-		throw exception(os.str().c_str());
-#endif
+		MG_THROW(os.str());
 	}
 
 	size_t vPos1 = aDate.find(aSeparator, 0);
@@ -408,9 +408,7 @@ long MG_Date::ToJulianDay(const char* aDate, char aSeparator, const DATE_DISPLAY
 	{
 		ostringstream os;
 		os << __FILE__ << "-" << __LINE__ << ": bad separator.";
-#ifndef __CYGWIN__
-		throw exception(os.str().c_str());
-#endif
+		MG_THROW(os.str());
 	}
 
 	size_t vPos1 = vDate.find(aSeparator, 0);

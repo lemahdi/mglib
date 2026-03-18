@@ -17,13 +17,19 @@
 #include <string>
 #include <vector>
 
-#ifndef __CYGWIN__
+#ifndef _WIN32
+/* xlw headers are Windows-only (Excel XLL interface) */
+#define MG_SKIP_XLW
+#endif
+
+#ifndef MG_SKIP_XLW
 #include "xlw/CellMatrix.h"
 #endif
 
 #include "nova/glob/genericdate.h"
 #include "nova/wrapper/vector.h"
 #include "nova/wrapper/matrix.h"
+#include "nova/patterns/countedptr.hpp"
 
 
 namespace MG_utils
@@ -41,7 +47,7 @@ extern double FromJulianDayToXLDate(const long& aJulianDay);
 
 extern std::vector<double> DoublePtrAsVector(const double* aDbl, const size_t& aSize);
 
-#ifndef __CYGWIN__
+#ifndef MG_SKIP_XLW
 extern std::vector<double> FromCellMatrixToVectorDouble(const xlw::CellMatrix& aCM, const size_t& aIndex);
 
 extern xlw::MJMatrix FromCellMatrixToMJMatrix(const xlw::CellMatrix& aCM);
@@ -53,11 +59,13 @@ extern std::vector<MG::MG_Date> FromCellMatrixToVectorDate(const xlw::CellMatrix
 extern std::vector<int> FromCellMatrixToInterpolVector(const xlw::CellMatrix& aCM);
 #endif
 
+#ifndef MG_SKIP_XLW
 extern MG::MG_Vector FromCellMatrixToMGVectorDouble(const xlw::CellMatrix& aCM, const size_t& aIndex);
 
 extern MG::MG_Matrix FromCellMatrixToMGMatrix(const xlw::CellMatrix& aCM);
 
 extern MG::MG_Vector FromCellMatrixToMGVectorDate(const xlw::CellMatrix& aCM, const size_t& aIndex);
+#endif
 
 extern void SplitFrequency(const std::string& aTimesFreq, int& aTimes, std::string& aFreq);
 
