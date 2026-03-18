@@ -118,7 +118,6 @@ public:
 	/* Constructors / Destructor */
 	COPY_CTOR_DECL(MG_FFunction)
 
-	ASSIGN_OPERATOR(MG_FFunction)
 	SWAP_DECL(MG_FFunction)
 
 	MG_FFunction(void);
@@ -140,7 +139,6 @@ public:
 	/* Constructors / Destructor */
 	COPY_CTOR_DECL(MG_FDfFunction)
 
-	ASSIGN_OPERATOR(MG_FDfFunction)
 	SWAP_DECL(MG_FDfFunction)
 
 	MG_FDfFunction(void);

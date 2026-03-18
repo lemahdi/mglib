@@ -41,12 +41,14 @@ using namespace std;
 #include "genpricer/infra/nodes.h"
 #include "genpricer/infra/arg.h"
 
+#ifdef _MSC_VER
 #pragma warning(push)
 #pragma warning(disable:4065)
 #pragma warning(disable:4267)
 #pragma warning(disable:4512)
 #pragma warning(disable:4127)
 #pragma warning(disable:4702)
+#endif
 
 
 
@@ -1035,6 +1037,6 @@ namespace yy {
 	}
 }
 
-#ifdef WIN32
+#ifdef _MSC_VER
 #pragma warning(pop)
 #endif

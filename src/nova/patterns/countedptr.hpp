@@ -13,6 +13,7 @@
 
 
 #include <iostream>
+#include <utility>
 
 #include "nova/glob/typedef.h"
 
@@ -93,8 +94,8 @@ public:
 
 	void Swap(CountedPtr<T>& aRight)
 	{
-		swap(myCount, aRight.myCount);
-		swap(myPtr, aRight.myPtr);
+		std::swap(myCount, aRight.myCount);
+		std::swap(myPtr, aRight.myPtr);
 	}
 
 	T* operator-> (void)

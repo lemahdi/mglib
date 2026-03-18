@@ -33,7 +33,6 @@ public:
 	/* Constructors / Destructor */
 	COPY_CTOR_DECL(MG_AbstractRandom)
 
-	ASSIGN_OPERATOR(MG_AbstractRandom)
 	SWAP_DECL(MG_AbstractRandom)
 
 	MG_AbstractRandom(const std::string& aName = "");

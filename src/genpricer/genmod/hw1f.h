@@ -24,7 +24,6 @@ public:
 	/* Constructors / Destructor */
 	COPY_CTOR_DECL(MG_HW1F)
 
-	ASSIGN_OPERATOR(MG_HW1F)
 	SWAP_DECL(MG_HW1F)
 	//CLONE_METHOD(MG_HW1F)
 

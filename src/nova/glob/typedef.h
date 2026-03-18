@@ -41,16 +41,17 @@ void yy_delete_buffer (YY_BUFFER_STATE b  );
 
 /* Some useful functions */
 #define ASSIGN_OPERATOR(CLASS)					\
-	inline CLASS& CLASS::operator= (CLASS aFrom)		\
+	inline CLASS& operator= (CLASS aFrom)		\
 	{											\
 		Swap(aFrom);							\
 		return *this;							\
 	}
 
 #define FAKE_ASSIGN_OPERATOR(CLASS)									\
-	inline CLASS& CLASS::operator= (const CLASS& )							\
+	inline CLASS& operator= (const CLASS& )							\
 	{																\
-		assert("Assignement operator not allowed for this class");	\
+		assert("Assignment operator not allowed for this class");	\
+		return *this;												\
 	}
 
 #define CLONE_METHOD(CLASS) \
@@ -67,15 +68,15 @@ void yy_delete_buffer (YY_BUFFER_STATE b  );
 
 #define MG_FRIEND_ARITH_OP_LEFT(CLASS,OP,SCALAR)					\
 	friend CLASS operator OP (CLASS aLeft, const SCALAR& aRight)	\
-	{ return aLeft OP= aRight; }
+	{ aLeft OP##= aRight; return aLeft; }
 
 #define MG_FRIEND_ARITH_OP_RIGHT(CLASS,OP,SCALAR)					\
 	friend CLASS operator OP (const SCALAR& aLeft, CLASS aRight)	\
-	{ return aRight OP= aLeft; }
+	{ aRight OP##= aLeft; return aRight; }
 
 #define MG_FRIEND_ARITH_OP(CLASS,OP)							\
 	friend CLASS operator OP (const CLASS& aLeft, CLASS aRight)	\
-	{ return aRight OP= aLeft; }
+	{ aRight OP##= aLeft; return aRight; }
 
 
 /* Coord is is a pair.

@@ -35,7 +35,6 @@ public:
 	/* Constructors / Destructor */
 	COPY_CTOR_DECL(MG_RandDist)
 
-	ASSIGN_OPERATOR(MG_RandDist)
 	SWAP_DECL(MG_RandDist)
 
 	MG_RandDist(const MG_RandomPtr& aRandGen);

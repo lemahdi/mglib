@@ -33,7 +33,6 @@ public:
 	// self-generated copy-constructor is enough
 	virtual ~MG_Security(void);
 
-	ASSIGN_OPERATOR(MG_Security)
 	//CLONE_METHOD(MG_Security)
 	SWAP_DECL(MG_Security)
 

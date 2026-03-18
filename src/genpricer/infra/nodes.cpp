@@ -3,6 +3,7 @@
 #include "genpricer/infra/arg.h"
 
 #include <algorithm>
+#include <cstring>
 
 
 using namespace std;
