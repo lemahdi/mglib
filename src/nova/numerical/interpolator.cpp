@@ -3,6 +3,8 @@
 #include "nova/glob/argconvdef.h"
 #include "nova/glob/exception.h"
 
+#include <algorithm>
+
 
 using namespace std;
 using namespace MG_utils;
@@ -234,6 +236,26 @@ MG_Interpolator::GetStepWiseFunc(int& aInterpolCode)
 	}
 }
 
+/* Map a 1-D interpolation type code to the nearest native 2-D GSL type.
+ * LINEAR  → bilinear;  CUBICSPLINE / AKIMA → bicubic. */
+const gsl_interp2d_type*
+MG_Interpolator::GetGSL2DInterpType(int aInterpolCode)
+{
+	int vInterpolCode = aInterpolCode & interpoltypeMask;
+
+	switch(vInterpolCode)
+	{
+	case (interpoltypeLinear):
+		return gsl_interp2d_bilinear;
+
+	case (interpoltypeCubicSpline):
+	case (interpoltypeAkima):
+		return gsl_interp2d_bicubic;
+
+	default: return nullptr;
+	}
+}
+
 /* Interpolator Class */
 MG_Interpolator::MG_Interpolator(	const MG_Interpolator& aRight)
 								:	myOrd			(aRight.myOrd)
@@ -397,21 +419,42 @@ double MG_1DInterpolator::Extrapolate(const double& aX, const bool& aOnTheLeft) 
 }
 
 /* 2D Interpolator */
+
+/*
+ * Build a flat z-array suitable for gsl_spline2d_init.
+ * Data layout required by GSL: zarr[j * nx + i] = z(xa[i], ya[j])
+ * where xa = myAbsc1D (rows of myOrd, size nx) and ya = myAbsc2D (cols, size ny).
+ * In the ordinate matrix: myOrd(i, j) = z(xa[i], ya[j]).
+ */
+static void Build2DZarr(const gsl_matrix* aOrd, size_t aNx, size_t aNy,
+                        vector<double>& aZarr)
+{
+	aZarr.resize(aNx * aNy);
+	for (size_t i = 0; i < aNx; ++i)
+		for (size_t j = 0; j < aNy; ++j)
+			aZarr[j * aNx + i] = gsl_matrix_get(aOrd, i, j);
+}
+
 MG_2DInterpolator::MG_2DInterpolator(	const MG_2DInterpolator& aRight)
 									:	MG_Interpolator(aRight)
-									,	myAbsc1D		(aRight.myAbsc1D)
-									,	myAbsc2D		(aRight.myAbsc2D)
-									,	my1DInterp		(nullptr)
+									,	myAbsc1D	(aRight.myAbsc1D)
+									,	myAbsc2D	(aRight.myAbsc2D)
+									,	my2DSpline	(nullptr)
 {
-	if (myStepWiseFunc)
+	if (myStepWiseFunc || !aRight.my2DSpline)
 		return;
 
-	int vInterpolTypes(myInterpolTypes);
-
-	LoadGSLInterp(my1DInterp, vInterpolTypes);
-
-	if (aRight.my2DInterps.size() > 0)
-		MG_Interpolator::LoadGSLSplineInterp(my2DInterps, vInterpolTypes, myAbsc2D, myOrd);
+	size_t nx = myAbsc1D.Size();
+	size_t ny = myAbsc2D.Size();
+	const gsl_interp2d_type* vType = MG_Interpolator::GetGSL2DInterpType(myInterpolTypes);
+	if (vType)
+	{
+		vector<double> zarr;
+		Build2DZarr(myOrd.GetPtr(), nx, ny, zarr);
+		my2DSpline = gsl_spline2d_alloc(vType, nx, ny);
+		gsl_spline2d_init(my2DSpline, myAbsc1D.GetPtr()->data, myAbsc2D.GetPtr()->data,
+		                  zarr.data(), nx, ny);
+	}
 }
 
 void MG_2DInterpolator::Swap(MG_2DInterpolator& aRight)
@@ -419,19 +462,17 @@ void MG_2DInterpolator::Swap(MG_2DInterpolator& aRight)
 	MG_Interpolator::Swap(aRight);
 	myAbsc1D.Swap(aRight.myAbsc1D);
 	myAbsc2D.Swap(aRight.myAbsc2D);
-	swap(my1DInterp, aRight.my1DInterp);
-	my2DInterps.swap(aRight.my2DInterps);
+	swap(my2DSpline, aRight.my2DSpline);
 }
 
 MG_2DInterpolator::~MG_2DInterpolator()
 {
-	gsl_interp_free(my1DInterp);
-	for(size_t i=0; i<my2DInterps.size(); ++i)
-		gsl_spline_free(my2DInterps[i]);
+	gsl_spline2d_free(my2DSpline);
 }
 
-MG_2DInterpolator::MG_2DInterpolator()	:	MG_Interpolator()
-											,	my1DInterp(nullptr)
+MG_2DInterpolator::MG_2DInterpolator()
+	: MG_Interpolator()
+	, my2DSpline(nullptr)
 {}
 
 MG_2DInterpolator::MG_2DInterpolator(	const MG_Vector	& aAbsc1D
@@ -439,17 +480,24 @@ MG_2DInterpolator::MG_2DInterpolator(	const MG_Vector	& aAbsc1D
 									,	const MG_Matrix	& aOrd
 									,	const int		& aInterpolType)
 									:	MG_Interpolator(aOrd, aInterpolType)
-									,	myAbsc1D		(aAbsc1D)
-									,	myAbsc2D		(aAbsc2D)
-									,	my1DInterp		(nullptr)
+									,	myAbsc1D	(aAbsc1D)
+									,	myAbsc2D	(aAbsc2D)
+									,	my2DSpline	(nullptr)
 {
-	int vInterpolType(myInterpolTypes);
-	bool vExist = LoadGSLSplineInterp(my2DInterps, vInterpolType, myAbsc2D,  myOrd);
-	vExist = MG_Interpolator::LoadGSLInterp(my1DInterp, vInterpolType);
-
-	if (!vExist)
+	size_t nx = myAbsc1D.Size();
+	size_t ny = myAbsc2D.Size();
+	const gsl_interp2d_type* vType = MG_Interpolator::GetGSL2DInterpType(myInterpolTypes);
+	if (vType)
 	{
-		vInterpolType = myInterpolTypes;
+		vector<double> zarr;
+		Build2DZarr(myOrd.GetPtr(), nx, ny, zarr);
+		my2DSpline = gsl_spline2d_alloc(vType, nx, ny);
+		gsl_spline2d_init(my2DSpline, myAbsc1D.GetPtr()->data, myAbsc2D.GetPtr()->data,
+		                  zarr.data(), nx, ny);
+	}
+	else
+	{
+		int vInterpolType = myInterpolTypes;
 		myStepWiseFunc = MG_Interpolator::GetStepWiseFunc(vInterpolType);
 	}
 }
@@ -459,23 +507,36 @@ MG_2DInterpolator::MG_2DInterpolator(	const vector<double>& aAbsc1D
 									,	const MG_Matrix		& aOrd
 									,	const int			& aInterpolType)
 									:	MG_Interpolator(aOrd, aInterpolType)
-									,	myAbsc1D		(aAbsc1D)
-									,	myAbsc2D		(aAbsc2D)
-									,	my1DInterp		(nullptr)
+									,	myAbsc1D	(aAbsc1D)
+									,	myAbsc2D	(aAbsc2D)
+									,	my2DSpline	(nullptr)
 {
-	int vInterpolType(myInterpolTypes);
-	bool vExist = LoadGSLSplineInterp(my2DInterps, vInterpolType, myAbsc2D,  myOrd);
-	vExist = vExist && MG_Interpolator::LoadGSLInterp(my1DInterp, vInterpolType);
-
-	/*if (!vExist)
+	size_t nx = myAbsc1D.Size();
+	size_t ny = myAbsc2D.Size();
+	const gsl_interp2d_type* vType = MG_Interpolator::GetGSL2DInterpType(myInterpolTypes);
+	if (vType)
 	{
-		vInterpolType = myInterpolTypes;
+		vector<double> zarr;
+		Build2DZarr(myOrd.GetPtr(), nx, ny, zarr);
+		my2DSpline = gsl_spline2d_alloc(vType, nx, ny);
+		gsl_spline2d_init(my2DSpline, myAbsc1D.GetPtr()->data, myAbsc2D.GetPtr()->data,
+		                  zarr.data(), nx, ny);
+	}
+	else
+	{
+		int vInterpolType = myInterpolTypes;
 		myStepWiseFunc = MG_Interpolator::GetStepWiseFunc(vInterpolType);
-	}*/
+	}
 }
 
 double MG_2DInterpolator::Eval(const double& aX, const double& aY) const
 {
-	return Interpolate_Surface(my2DInterps, my1DInterp, myAbsc1D, aX, aY);
+	if (myStepWiseFunc)
+		return myStepWiseFunc(myOrd, 0, myAbsc1D, aX);
+
+	// Clamp to grid boundaries (flat extrapolation, consistent with 1-D behaviour)
+	double x = std::max(myAbsc1D.Front(), std::min(myAbsc1D.Back(), aX));
+	double y = std::max(myAbsc2D.Front(), std::min(myAbsc2D.Back(), aY));
+	return gsl_spline2d_eval(my2DSpline, x, y, nullptr, nullptr);
 }
 

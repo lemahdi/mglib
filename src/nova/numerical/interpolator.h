@@ -19,6 +19,7 @@
 
 #include "gsl/gsl_interp.h"
 #include "gsl/gsl_spline.h"
+#include "gsl/gsl_spline2d.h"
 
 #include <vector>
 
@@ -92,6 +93,8 @@ protected:
 									,	const MG_Vector			& aAbsc
 									,	const MG_Matrix			& aOrd);
 
+	static const gsl_interp2d_type* GetGSL2DInterpType(int aInterpolCode);
+
 	static MG_StepWiseFunc GetStepWiseFunc(int& aInterpolCode);
 };
 
@@ -161,11 +164,10 @@ public:
 	double Eval(const double& aX, const double& aY) const;
 
 private:
-	MG_Vector					myAbsc1D;
-	MG_Vector					myAbsc2D;
+	MG_Vector		myAbsc1D;
+	MG_Vector		myAbsc2D;
 
-	gsl_interp*					my1DInterp;
-	std::vector<gsl_spline*>	my2DInterps;
+	gsl_spline2d*	my2DSpline;
 
 };
 
