@@ -36,9 +36,10 @@ MG_Solver::MG_Solver(	const double& aEpsAbs
 					,	const size_t& aMaxIter
 					,	const string& aName)
 					:	MG_XLObject()
+					,	myName(aName), myFunc(nullptr)
+					,	myStatus(GSL_EOF)
 					,	myEpsAbs(aEpsAbs), myEpsRel(aEpsRel)
 					,	myMaxIter(aMaxIter), myNbIter(0)
-					,	myName(aName), myFunc(nullptr), myStatus(GSL_EOF)
 {}
 
 MG_Solver::~MG_Solver()

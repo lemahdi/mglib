@@ -52,7 +52,7 @@ MG_Matrix::MG_Matrix(	const MG_Matrix& aRight)
 					,	myCols(aRight.myCols)
 					,	myMatrix(nullptr)
 {
-	if (myRows*myCols)
+	if (myRows != 0 && myCols != 0)
 	{
 		myMatrix = gsl_matrix_calloc(myRows, myCols);
 		gsl_matrix_memcpy(myMatrix, aRight.myMatrix);

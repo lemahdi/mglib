@@ -46,6 +46,10 @@ void MG_Currency::FillProperties()
 	case K_GBP:
 		mySpotDays = 2;
 		break;
+
+	case NB_CURRENCIES:
+	default:
+		break;
 	};
 }
 

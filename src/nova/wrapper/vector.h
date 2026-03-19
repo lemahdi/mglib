@@ -47,8 +47,8 @@ public:
 	/* Accessors */
 	inline double&					operator []	(const size_t& aIdx)	const	{ return *gsl_vector_ptr(myVect, aIdx); }
 	inline size_t					Size		()					const	{ return mySize; }
-	inline const gsl_vector* const	GetPtr		()					const	{ return myVect; }
-	inline gsl_vector* const		GetPtr		()							{ return myVect; }
+	inline const gsl_vector*	GetPtr()	const	{ return myVect; }
+	inline gsl_vector*			GetPtr()			{ return myVect; }
 
 public:
 	/* Assignment operators */
@@ -84,8 +84,8 @@ public:
 	void Resize(const size_t& aSize, const double& aVal = 0.);
 
 private:
-	gsl_vector*	myVect;
 	size_t		mySize;
+	gsl_vector*	myVect;
 
 public:
 	/* friend functions */

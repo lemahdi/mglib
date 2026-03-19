@@ -22,6 +22,7 @@ class MG_GenSecurity : public MG_XLObject
 {
 public:
 	/* Constructors / Destructor */
+	MG_GenSecurity(const MG_GenSecurity&) = default;
 	// self-generated copy-constructor is enough
 	virtual ~MG_GenSecurity();
 

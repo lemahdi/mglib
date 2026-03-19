@@ -60,8 +60,9 @@ MG_Minimizer::MG_Minimizer	(	const MINIMIZER_TYPE& aType
 							,	myMinimizer	(nullptr)
 							,	myType		(aType)
 							,	myFunc		(nullptr)
+							,	myStatus(GSL_EOF)
 							,	myEpsAbs(aEpsAbs), myEpsRel(aEpsRel)
-							,	myMaxIter(aMaxIter), myNbIter(0), myStatus(GSL_EOF)
+							,	myMaxIter(aMaxIter), myNbIter(0)
 {
 	myXLName = MG_MINIMIZER_XL_NAME;
 

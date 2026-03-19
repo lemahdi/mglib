@@ -1,8 +1,12 @@
 #include "genpricer/gensec/gensecurity.h"
-#pragma warning(push)
-#pragma warning(disable:4512)
+#ifdef _MSC_VER
+#  pragma warning(push)
+#  pragma warning(disable:4512)
+#endif
 #include "genpricer/infra/my_parser.tab.hpp"
-#pragma warning(pop)
+#ifdef _MSC_VER
+#  pragma warning(pop)
+#endif
 
 
 using namespace std;

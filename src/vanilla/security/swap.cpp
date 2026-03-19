@@ -43,7 +43,7 @@ const MG_SwapLeg& MG_Swap::FixedLeg() const
 {
 	bool vLeg1IsFix = myLeg1.IsFixed();
 	bool vLeg2IsFix = myLeg2.IsFixed();
-	if (vLeg2IsFix == vLeg2IsFix)
+	if (vLeg1IsFix == vLeg2IsFix)
 		MG_THROW("Swap: both legs are fixed/float.");
 
 	if (vLeg1IsFix)

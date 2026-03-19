@@ -54,9 +54,9 @@ MG_Date::MG_Date() : MG_Object(), myJulianDay(0L)
 MG_Date::MG_Date(	const MG_Date& aRight)
 				:	MG_Object(aRight)
 				,	myJulianDay		(aRight.myJulianDay)
-				,	myYear			(aRight.myYear)
-				,	myMonth			(aRight.myMonth)
 				,	myDay			(aRight.myDay)
+				,	myMonth			(aRight.myMonth)
+				,	myYear			(aRight.myYear)
 				,	myIsLeapYear	(aRight.myIsLeapYear)
 				,	myDayOfWeek		(aRight.myDayOfWeek)
 				,	myDayOfWorkWeek	(aRight.myDayOfWorkWeek)
@@ -79,7 +79,7 @@ void MG_Date::Swap(MG_Date& aRight)
  * Constructor YYYY MM DD
  */
 MG_Date::MG_Date(	const int& aY, const unsigned int& aM, const unsigned int& aD)
-				:	MG_Object(), myYear(aY), myMonth(aM), myDay(aD)
+				:	MG_Object(), myDay(aD), myMonth(aM), myYear(aY)
 {
 	myJulianDay = MG_Date::YmdToJd(myYear, myMonth, myDay);
 	Rebuild();
@@ -586,6 +586,10 @@ double MG_Date::BetweenDays	(	const MG_Date		& aDt
 			vFrac = 252.;
 		}
 		break;
+
+	case NB_DAYCOUNT:
+	default:
+		break;
 	};
 
 	if (!aIsFrac)
@@ -642,6 +646,7 @@ MG_Date& MG_Date::AddPeriod	(	const int			& aFreq
 	switch (aFreq)
 	{
 	case K_DAILY: vDays = 1;
+		[[fallthrough]];
 	case K_WEEKLY: vDays = vDays==0?7:vDays;
 		{
 			switch (aAdjRule)
@@ -691,14 +696,22 @@ MG_Date& MG_Date::AddPeriod	(	const int			& aFreq
 						NextBusinessDay(1, aCal);
 				}
 				break;
+
+			case NB_ADJRULE:
+			default:
+				break;
 			}
 			break;
 		}
 
 	case K_MONTHLY: vMonths = 1;
+		[[fallthrough]];
 	case K_BIMONTHLY: vMonths = vMonths==0?2:vMonths;
+		[[fallthrough]];
 	case K_QUARTERLY: vMonths = vMonths==0?3:vMonths;
+		[[fallthrough]];
 	case K_SEMESTERLY: vMonths = vMonths==0?6:vMonths;
+		[[fallthrough]];
 	case K_YEARLY: vMonths = vMonths==0?12:vMonths;
 		{
 			AddMonths(vMonths, aTimes, aEndOfMonth);
@@ -746,6 +759,10 @@ MG_Date& MG_Date::AddPeriod	(	const int			& aFreq
 							NextBusinessDay(1, aCal);
 					}
 				}
+				break;
+
+			case NB_ADJRULE:
+			default:
 				break;
 			}
 		}
