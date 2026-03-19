@@ -34,7 +34,6 @@
 //============================================================================
 //============================================================================
 #include <windows.h>
-#pragma warning (disable : 4311)
 #include "xlw/mgw/cpp_xloper.h"
 
 #if _MSC_VER > 1200 // Later than Visual Studio 6.0
@@ -171,7 +170,7 @@ xloper * __stdcall ThreadSafeFunction(xloper *pTrigger, xloper *pLoopCount)
 	xloper *p_rtn_op = RetVal.ExtractXloper();
 // Set the value of the fourth element to the address of this xltypeMulti oper
 	p_rtn_op->val.array.lparray[3].xltype = xltypeNum;
-	p_rtn_op->val.array.lparray[3].val.num = (double)(DWORD)p_rtn_op;
+	p_rtn_op->val.array.lparray[3].val.num = (double)(ULONG_PTR)p_rtn_op;
 	return p_rtn_op;
 }
 
@@ -221,7 +220,7 @@ xloper12 * __stdcall ThreadSafeFunction12(xloper12 *pTrigger, xloper12 *pLoopCou
 			j++;
 	}
 	p_ret_oper->val.array.lparray[2].val.num = get_system_time_C(0);
-	p_ret_oper->val.array.lparray[3].val.num = (double)(DWORD)p_ret_oper;
+	p_ret_oper->val.array.lparray[3].val.num = (double)(ULONG_PTR)p_ret_oper;
 	return p_ret_oper;
 }
 //============================================================

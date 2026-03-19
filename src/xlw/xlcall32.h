@@ -25,11 +25,18 @@
 #endif
 #include "windows.h"
 
+/* Define pascal calling convention if not already defined (not available in x64 builds) */
+#ifndef pascal
+#define pascal __stdcall
+#endif
+
 /*
 ** XL 12 Basic Datatypes
 **/
 
+#ifndef BOOL
 typedef INT32 BOOL;            /* Boolean */
+#endif
 typedef WCHAR XCHAR;        /* Wide Character */
 typedef INT32 RW;            /* XL 12 Row */
 typedef INT32 COL;            /* XL 12 Column */
