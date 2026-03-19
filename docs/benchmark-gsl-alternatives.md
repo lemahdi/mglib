@@ -23,12 +23,11 @@ MGlib actually relies on.
 
 ## Candidate Libraries
 
-### 1. GSL (current — v2.7.1)
+### 1. GSL (current — 2.8)
 
 - **License**: GNU GPL v3 (copyleft)  
 - **Language**: C API, header-only C++ wrappers exist (`gsl_vector`, etc.)
-- **Version in use**: 2.7.1 (Ubuntu 24.04 default); latest known stable release is **2.8**
-  — verify the current latest at https://www.gnu.org/software/gsl/
+- **Version in use**: 2.8 (built from source in CI); check https://www.gnu.org/software/gsl/ for the current latest version
 - **Coverage**: All areas above in a single library
 - **Maturity**: ~25 years; widely used in scientific computing
 - **Downsides**: C API requires manual memory management (`gsl_rng_alloc`/`gsl_rng_free`);
@@ -151,7 +150,7 @@ MGlib actually relies on.
 
 ## Head-to-Head Feature Matrix
 
-| Feature | GSL 2.7 | Boost.Math | Eigen 3 | Armadillo | oneMKL | QuantLib |
+| Feature | GSL 2.8 | Boost.Math | Eigen 3 | Armadillo | oneMKL | QuantLib |
 |---|:---:|:---:|:---:|:---:|:---:|:---:|
 | RNG (40+ types) | ✅ | ✅ partial | ❌ | ❌ | ✅ | ✅ partial |
 | Quasi-random (Sobol) | ✅ | ✅ | ❌ | ❌ | ✅ | ✅ |
@@ -174,7 +173,7 @@ MGlib actually relies on.
 The following numbers are indicative order-of-magnitude comparisons based on published
 benchmarks and community results. They are **not** measurements run on this codebase.
 
-| Operation | GSL 2.7 | Boost.Math | Eigen 3 | oneMKL |
+| Operation | GSL 2.8 | Boost.Math | Eigen 3 | oneMKL |
 |---|---|---|---|---|
 | 1M Gaussian draws (MT19937) | baseline | ~1× | — | ~3-5× (vectorised VSL) |
 | Normal CDF (scalar loop 1M) | baseline | ~0.9× | — | ~2× |

@@ -15,19 +15,31 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Install dependencies
+      - name: Install build tools
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends \
             cmake ninja-build g++ \
-            libgsl-dev \
             flex bison
+
+      # Ubuntu 24.04 ships GSL 2.7.1; MGlib requires 2.8.
+      # Build from source and install to $HOME/.local so CMake can find it.
+      - name: Build and install GSL 2.8 from source
+        run: |
+          cd /tmp
+          wget -q https://ftp.gnu.org/gnu/gsl/gsl-2.8.tar.gz
+          tar xf gsl-2.8.tar.gz
+          cd gsl-2.8
+          ./configure --prefix="$HOME/.local" --quiet
+          make -j$(nproc)
+          make install
 
       - name: Configure (Release)
         run: |
           cmake -B build \
                 -G Ninja \
-                -DCMAKE_BUILD_TYPE=Release
+                -DCMAKE_BUILD_TYPE=Release \
+                -DCMAKE_PREFIX_PATH="$HOME/.local"
 
       - name: Build
         run: cmake --build build --parallel

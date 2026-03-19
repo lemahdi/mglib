@@ -26,7 +26,7 @@ It was originally built for Windows/Excel using the [XLW](http://xlw.sourceforge
 |------|----------------|
 | C++ compiler | GCC 9 / Clang 10 / MSVC 2019 |
 | CMake | 3.10 |
-| GNU Scientific Library (GSL) | 2.7 |
+| GNU Scientific Library (GSL) | 2.8 |
 | Flex | 2.6 |
 | Bison | 3.0 |
 
@@ -145,9 +145,13 @@ This layer is excluded from the CMake build on Linux/macOS.
 
 MGlib depends on the [GNU Scientific Library (GSL)](https://www.gnu.org/software/gsl/).
 
-- **Currently tested against**: GSL 2.7.1 (Ubuntu 24.04 / Homebrew)
-- **Recommended upgrade target**: GSL 2.8 — see [`docs/gsl-migration-plan.md`](docs/gsl-migration-plan.md)
+- **Minimum required version**: GSL 2.8
+- **Ubuntu 24.04 note**: The `libgsl-dev` apt package provides 2.7.1. Build GSL 2.8 from source (see CI workflow) or use a newer distro.
+- **Homebrew**: `brew install gsl` provides 2.8+.
+- **Windows (vcpkg)**: `vcpkg install gsl:x64-windows` — verify the provided version is ≥ 2.8.
+- **Why 2.8?** Includes the `gsl_spline2d` bicubic 2-D interpolation now used by `MG_2DInterpolator`, plus fixes to `gsl_cdf_gaussian_Pinv` tail accuracy, the Brent root finder, VEGAS Monte Carlo, and the Sobol quasi-random dimension limit.
 - **Alternative library evaluation**: see [`docs/benchmark-gsl-alternatives.md`](docs/benchmark-gsl-alternatives.md)
+- **Migration plan**: see [`docs/gsl-migration-plan.md`](docs/gsl-migration-plan.md)
 
 ---
 

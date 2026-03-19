@@ -13,9 +13,9 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 # ── Dependencies ──────────────────────────────────────────────────────────────
-# GSL 2.7 is the minimum required version (Ubuntu 24.04 ships 2.7.1).
-# GSL 2.8+ is the recommended upgrade target — see docs/gsl-migration-plan.md.
-find_package(GSL 2.7 REQUIRED)   # provides GSL::gsl GSL::gslcblas
+# GSL 2.8 (2023-07-27) is the minimum required version.
+# Ubuntu 24.04 ships 2.7.1; the CI builds 2.8 from source — see docs/gsl-migration-plan.md.
+find_package(GSL 2.8 REQUIRED)   # provides GSL::gsl GSL::gslcblas
 find_package(FLEX  REQUIRED)
 find_package(BISON REQUIRED)
 
