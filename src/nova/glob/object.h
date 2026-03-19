@@ -24,6 +24,7 @@ class MG_Object
 {
 public:
 	MG_Object() {}
+	MG_Object(const MG_Object&) = default;
 	// self-generated copy-constructor is enough
 	virtual ~MG_Object() {}
 

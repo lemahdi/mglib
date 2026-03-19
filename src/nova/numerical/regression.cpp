@@ -67,10 +67,10 @@ MG_LinearReg::MG_LinearReg	(	const MG_Vector& aX
 void MG_LinearReg::ProcessLinearReg()
 {
 	double vC0, vC1, vCov00, vCov01, vCov11;
-	int vRet = gsl_fit_linear	(	myX.GetPtr()->data, 1
-								,	myY.GetPtr()->data, 1
-								,	mySize
-								,	&vC0, &vC1, &vCov00, &vCov01, &vCov11, &myChiSquared);
+	gsl_fit_linear	(	myX.GetPtr()->data, 1
+					,	myY.GetPtr()->data, 1
+					,	mySize
+					,	&vC0, &vC1, &vCov00, &vCov01, &vCov11, &myChiSquared);
 	
 	myTheta[0] = vC0;
 	myTheta[1] = vC1;
@@ -88,11 +88,11 @@ void MG_LinearReg::ProcessLinearReg()
 void MG_LinearReg::ProcessWLinearReg()
 {
 	double vC0, vC1, vCov00, vCov01, vCov11;
-	int vRet = gsl_fit_wlinear	(	myX.GetPtr()->data, 1
-								,	myW.GetPtr()->data, 1
-								,	myY.GetPtr()->data, 1
-								,	mySize
-								,	&vC0, &vC1, &vCov00, &vCov01, &vCov11, &myChiSquared);
+	gsl_fit_wlinear	(	myX.GetPtr()->data, 1
+					,	myW.GetPtr()->data, 1
+					,	myY.GetPtr()->data, 1
+					,	mySize
+					,	&vC0, &vC1, &vCov00, &vCov01, &vCov11, &myChiSquared);
 	
 	myTheta[0] = vC0;
 	myTheta[1] = vC1;
@@ -107,7 +107,7 @@ void MG_LinearReg::ProcessWLinearReg()
 double MG_LinearReg::Estimate(const double& aX)
 {
 	double vY, vStdDev;
-	int vRet = gsl_fit_linear_est(aX, myTheta[0], myTheta[1], myCov.Elt(0, 0), myCov.Elt(0, 1), myCov.Elt(1, 1), &vY, &vStdDev);
+	gsl_fit_linear_est(aX, myTheta[0], myTheta[1], myCov.Elt(0, 0), myCov.Elt(0, 1), myCov.Elt(1, 1), &vY, &vStdDev);
 	return vY;
 }
 
@@ -155,13 +155,13 @@ MG_MultiReg::MG_MultiReg(	const MG_Matrix& aX
  */
 void MG_MultiReg::ProcessLinearReg()
 {
-	int vRet = gsl_multifit_linear	(	myX.GetPtr()
-									,	myY.GetPtr()
-									,	myTheta.GetPtr()
-									,	myCov.GetPtr()
-									,	&myChiSquared, myWorkSpace);
+	gsl_multifit_linear	(	myX.GetPtr()
+						,	myY.GetPtr()
+						,	myTheta.GetPtr()
+						,	myCov.GetPtr()
+						,	&myChiSquared, myWorkSpace);
 
-	// the coefficient of determination can be computed from the expression R²=1-ChiSqr/TSS,
+	// the coefficient of determination can be computed from the expression Rï¿½=1-ChiSqr/TSS,
 	// where TSS is total sum of squares of the observations Y, see gsl_stats_tss
 }
 
@@ -171,14 +171,14 @@ void MG_MultiReg::ProcessLinearReg()
  */
 void MG_MultiReg::ProcessWLinearReg()
 {
-	int vRet = gsl_multifit_wlinear	(	myX.GetPtr()
-									,	myW.GetPtr()
-									,	myY.GetPtr()
-									,	myTheta.GetPtr()
-									,	myCov.GetPtr()
-									,	&myChiSquared, myWorkSpace);
+	gsl_multifit_wlinear	(	myX.GetPtr()
+							,	myW.GetPtr()
+							,	myY.GetPtr()
+							,	myTheta.GetPtr()
+							,	myCov.GetPtr()
+							,	&myChiSquared, myWorkSpace);
 
-	// the coefficient of determination can be computed from the expression R²=1-ChiSqr/WTSS,
+	// the coefficient of determination can be computed from the expression Rï¿½=1-ChiSqr/WTSS,
 	// where WTSS is weighted total sum of squares of the observations Y, see gsl_stats_wtss
 }
 
@@ -188,7 +188,7 @@ void MG_MultiReg::ProcessWLinearReg()
 double MG_MultiReg::Estimate(const MG_Vector& aX)
 {
 	double vY, vStdDev;
-	int vRet = gsl_multifit_linear_est(aX.GetPtr(), myTheta.GetPtr(), myCov.GetPtr(), &vY, &vStdDev);
+	gsl_multifit_linear_est(aX.GetPtr(), myTheta.GetPtr(), myCov.GetPtr(), &vY, &vStdDev);
 	return vY;
 }
 

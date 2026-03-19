@@ -72,10 +72,10 @@ MG_GenericDate::MG_GenericDate	(	const MG_GenericDate& aRefStart
 }
 
 MG_GenericDate::MG_GenericDate	(	const MG_Date& aDt)
-								:	myDate		(aDt)
-								,	myTimes		(0)
+								:	myTimes		(0)
 								,	myFreq		(NB_FREQUENCIES)
 								,	myRefDate	(nullptr)
+								,	myDate		(aDt)
 								,	myIsGenDate	(false)
 {}
 

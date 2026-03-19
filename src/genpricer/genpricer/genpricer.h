@@ -26,6 +26,7 @@ class MG_GenPricer : public MG_XLObject
 {
 public:
 	/* Constructors / Destructor */
+	MG_GenPricer(const MG_GenPricer&) = default;
 	virtual ~MG_GenPricer();
 
 	ASSIGN_OPERATOR(MG_GenPricer)

@@ -66,7 +66,7 @@ class MG_DfModel : public MG_Model
 {
 public:
 	/* Constructors / Destructor */
-	//COPY_CTOR_DECL(MG_DfModel)
+	MG_DfModel(const MG_DfModel&) = default;
 
 	ASSIGN_OPERATOR(MG_DfModel)
 	SWAP_DECL(MG_DfModel)
@@ -101,7 +101,7 @@ class MG_BSModel : public MG_Model
 {
 public:
 	/* Constructors / Destructor */
-	//COPY_CTOR_DECL(MG_BSModel)
+	MG_BSModel(const MG_BSModel&) = default;
 
 	ASSIGN_OPERATOR(MG_BSModel)
 	SWAP_DECL(MG_BSModel)

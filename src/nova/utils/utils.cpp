@@ -26,7 +26,7 @@ namespace MG_utils
 		vector<char> vInts;
 		while(vTmp != 0)
 		{
-			vInts.push_back((const char)(vTmp%10) + '0');
+			vInts.push_back(static_cast<char>(vTmp%10) + '0');
 			vTmp /= 10;
 		}
 		size_t vSize = vInts.size();
@@ -38,7 +38,7 @@ namespace MG_utils
 			vIntStr[0] = '-';
 		}
 		vIntStr.resize(vSize+vNeg);
-		for(size_t i=vSize-1; i>=0&&i<vSize; i--)
+		for(size_t i=vSize-1; i<vSize; i--)
 			vIntStr[i] = vInts[vSize-1+vNeg-i];
 
 		return vIntStr;
@@ -360,7 +360,7 @@ namespace MG_utils
 		/* adding a scalar to a vector */
 		void VectorPlus(vector<double>& aDest, const double& aVal)
 		{
-			transform(aDest.begin(), aDest.end(), aDest.begin(), bind1st(plus<double>(), aVal));
+			transform(aDest.begin(), aDest.end(), aDest.begin(), [aVal](double x){ return x + aVal; });
 		}
 
 		/* substracting vectors */
@@ -376,7 +376,7 @@ namespace MG_utils
 		/* substracting a scalar from a vector */
 		void VectorMinus(vector<double>& aDest, const double& aVal)
 		{
-			transform(aDest.begin(), aDest.end(), aDest.begin(), bind1st(minus<double>(), aVal));
+			transform(aDest.begin(), aDest.end(), aDest.begin(), [aVal](double x){ return x - aVal; });
 		}
 
 		/* myltiplying vectors */
@@ -392,7 +392,7 @@ namespace MG_utils
 		/* myltiplying a vector by a scalar */
 		void VectorMult(vector<double>& aDest, const double& aVal)
 		{
-			transform(aDest.begin(), aDest.end(), aDest.begin(), bind1st(multiplies<double>(), aVal));
+			transform(aDest.begin(), aDest.end(), aDest.begin(), [aVal](double x){ return x * aVal; });
 		}
 
 		/* dividing vectors */
@@ -408,7 +408,7 @@ namespace MG_utils
 		/* dividing a vector by a scalar */
 		void VectorDiv(vector<double>& aDest, const double& aVal)
 		{
-			transform(aDest.begin(), aDest.end(), aDest.begin(), bind1st(divides<double>(), aVal));
+			transform(aDest.begin(), aDest.end(), aDest.begin(), [aVal](double x){ return x / aVal; });
 		}
 
 		/* sum */

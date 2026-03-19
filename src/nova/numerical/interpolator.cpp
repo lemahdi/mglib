@@ -258,22 +258,22 @@ MG_Interpolator::MG_Interpolator()	:	myInterpolTypes(interpoltypeNone)
 MG_Interpolator::MG_Interpolator(	const MG_Matrix	& aOrd
 								,	const int		& aInterpolType)
 								:	myOrd			(aOrd)
-								,	myStepWiseFunc	(nullptr)
 								,	myInterpolTypes	(aInterpolType)
+								,	myStepWiseFunc	(nullptr)
 {}
 
 MG_Interpolator::MG_Interpolator(	const MG_Vector	& aOrd
 								,	const int		& aInterpolType)
 								:	myOrd			(aOrd)
-								,	myStepWiseFunc	(nullptr)
 								,	myInterpolTypes	(aInterpolType)
+								,	myStepWiseFunc	(nullptr)
 {}
 
 MG_Interpolator::MG_Interpolator(	const vector<double>& aOrd
 								,	const int			& aInterpolType)
 								:	myOrd			(aOrd)
-								,	myStepWiseFunc	(nullptr)
 								,	myInterpolTypes	(aInterpolType)
+								,	myStepWiseFunc	(nullptr)
 {}
 
 /* 1D Interpolator Class */

@@ -8,12 +8,12 @@ using namespace MG;
 /* IR Descriptor class */
 MG_IRIndex::MG_IRIndex	(	const MG_IRIndex& aRight)
 						:	MG_XLObject(aRight)
-						,	myCcy(aRight.myCcy), myIndexName(aRight.myIndexName)
-						,	myRstCal(aRight.myRstCal), myPayCal(aRight.myPayCal)
+						,	myIndexName(aRight.myIndexName), myCcy(aRight.myCcy)
 						,	myDayCount(aRight.myDayCount)
 						,	myAdjRule(aRight.myAdjRule)
 						,	myRstTiming(aRight.myRstTiming), myPayTiming(aRight.myPayTiming)
 						,	myRstGap(aRight.myRstGap), myPayGap(aRight.myPayGap)
+						,	myRstCal(aRight.myRstCal), myPayCal(aRight.myPayCal)
 {}
 
 void MG_IRIndex::Swap(MG_IRIndex& aRight)
@@ -46,8 +46,8 @@ MG_IRIndex::MG_IRIndex	(	const INDEX_NAME	& aIdxNm
 						,	myDayCount(aDayCount)
 						,	myAdjRule(aAdjRule)
 						,	myRstTiming(aRstTiming), myPayTiming(aPayTiming)
-						,	myRstCal(aRstCal), myPayCal(aPayCal)
 						,	myRstGap(aRstGap), myPayGap(aPayGap)
+						,	myRstCal(aRstCal), myPayCal(aPayCal)
 {
 	myXLName = MG_IRINDEX_XL_NAME;
 }

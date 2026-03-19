@@ -47,8 +47,8 @@ public:
 	inline size_t Size() const { return myRows*myCols; }
 	inline double Last() const { return *gsl_matrix_ptr(myMatrix, myRows-1, myCols-1); }
 	
-	inline const gsl_matrix* const	GetPtr() const	{ return myMatrix; }
-	inline gsl_matrix* const		GetPtr()		{ return myMatrix; }
+	inline const gsl_matrix*	GetPtr() const	{ return myMatrix; }
+	inline gsl_matrix*			GetPtr()		{ return myMatrix; }
 
 	void Transpose(MG_Matrix& aDest) const;
 
@@ -72,9 +72,9 @@ public:
 	MG_Matrix operator --(int);
 
 private:
-	gsl_matrix*	myMatrix;
 	size_t		myRows;
 	size_t		myCols;
+	gsl_matrix*	myMatrix;
 
 public:
 	/* friend functions */

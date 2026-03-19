@@ -50,7 +50,7 @@ MG_Node::MG_Node(	const NODE_TYPE& aNodeType
 				,	const Coord& aC
 				,	MG_Node* aL
 				,	MG_Node* aR)
-	: myNodeType(aNodeType), myL(aL), myR(aR), myCoord(aC)
+	: myNodeType(aNodeType), myCoord(aC), myL(aL), myR(aR)
 {
 #ifdef MEMORY_CONTROL_MODE
 	MG_Node::ourCounter++;
@@ -212,8 +212,7 @@ MG_Node* MG_NodeManager::GetChildNode(const MG_TableWalker& walker, const char* 
 	unsigned int vCIdx = walker.GetColumn(string(aRef));
 	if (vCIdx != MAX_DESC_TABLE_COLUMNS)
 	{
-		int vRIdx = walker.GetCurrentRow() + aIdx;
-		assert(vRIdx >= 0);
+		assert(static_cast<int>(walker.GetCurrentRow()) + aIdx >= 0);
 		Coord vC(walker.GetCurrentRow() + aIdx, vCIdx);
 		MG_Node* vN = GetNode(vC);
 		return vN;
@@ -596,6 +595,10 @@ MG_Arg MG_NodeManager::Eval(MG_Node *aN, const vector<double>& aStates)
 			}
 			return MG_Arg(vVArithOpPtr);
 		}
+
+		case NODEF_NODE:
+		default:
+			break;
 	}
 
 	return MG_Arg();
@@ -620,11 +623,11 @@ void MG_TableWalker::Swap(MG_TableWalker& aRight)
 
 MG_TableWalker::MG_TableWalker	(	const vector<string>& aColNames
 								,	const vector<string>& aFlows)
-								:	myColumnNames	(aColNames)
+								:	myCurrentRow	(0)
+								,	myCurrentCol	(0)
+								,	myColumnNames	(aColNames)
 								,	myFlows			(aFlows)
 								,	myCols			(aColNames.size())
-								,	myCurrentCol	(0)
-								,	myCurrentRow	(0)
 {
 	myRows = aFlows.size() / myCols;
 	assert(aFlows.size() % myCols == 0);
