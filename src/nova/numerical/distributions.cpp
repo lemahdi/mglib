@@ -127,6 +127,7 @@ double MG_NormalDist::Density(const double& aX)
 double MG_NormalDist::DensityTail(const double& aX, const double& aLimit)
 {
 	// Density of the upper tail N(0,sigma) conditioned on X >= aLimit
+	if (aX < aLimit) return 0.0;
 	double tail_prob = 0.5 * std::erfc(aLimit / (mySigma * K_ROOTTWO));
 	return Density(aX) / tail_prob;
 }
@@ -148,10 +149,17 @@ double MG_NormalDist::Draw()
 
 double MG_NormalDist::DrawTail(const double& aLimit)
 {
-	// Rejection sampling: draw until sample >= aLimit
-	double z;
-	do { z = Draw(); } while (z < aLimit);
-	return z;
+	// Use inverse CDF method for efficiency: sample uniformly on [Cdf(aLimit), 1)
+	// then apply InvCdf to get a sample from the upper tail.
+	double p_min = Cdf(aLimit);
+	// Fall back to rejection sampling when double precision cannot represent (1 - p_min)
+	if (p_min >= 1.0) {
+		double z;
+		do { z = Draw(); } while (z < aLimit);
+		return z;
+	}
+	double u = p_min + (1.0 - p_min) * myRandGen->DrawUniform();
+	return InvCdf(u);
 }
 
 double MG_NormalDist::DensityFunc(const double& aX)
