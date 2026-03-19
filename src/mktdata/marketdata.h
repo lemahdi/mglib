@@ -13,7 +13,6 @@
 
 #include "nova/glob/date.h"
 #include "nova/numerical/interpolator.h"
-#include "nova/patterns/countedptr.hpp"
 
 #include "gsl/gsl_interp.h"
 #include "gsl/gsl_spline.h"
@@ -36,15 +35,15 @@ public:
 					,	const std::string	& aCcy
 					,	const std::string	& aUnderIndex);
 
-	virtual ~MG_MarketData(void);
+	virtual ~MG_MarketData();
 
 public:
 	virtual double ComputeValue(const double& aX = 0, const double& aY = 0, const double& aZ = 0) const = 0;
 
-	inline const MG_Date& AsOf		(void) const { return myAsOf; }
-	inline std::string GetType		(void) const { return myType; }
-	inline std::string GetCurrency	(void) const { return myCurrency; }
-	inline std::string GetUnderIndex(void) const { return myUnderIndex; }
+	inline const MG_Date& AsOf		() const { return myAsOf; }
+	inline std::string GetType		() const { return myType; }
+	inline std::string GetCurrency	() const { return myCurrency; }
+	inline std::string GetUnderIndex() const { return myUnderIndex; }
 
 protected:
 	MG_Date		myAsOf;
@@ -86,7 +85,7 @@ public:
 				,	const std::string			& aUnderIndex
 				,	const int					& aInterpolType);
 
-	virtual ~MG_ZeroCurve(void);
+	virtual ~MG_ZeroCurve();
 
 public:
 	virtual double ComputeValue(const double& aMaturity = 0, const double& aY = 0, const double& aZ = 0) const;
@@ -114,7 +113,7 @@ public:
 						,	const std::string	& aCcy
 						,	const std::string	& aUnderIndex);
 
-	virtual ~MG_VolatilityCurve(void);
+	virtual ~MG_VolatilityCurve();
 
 protected:
 	MG_2DInterpolator myInterpolator;
@@ -139,7 +138,7 @@ public:
 					,	const std::string	& aCcy
 					,	const std::string	& aUnderIndex);
 
-	virtual ~MG_FlatVolCurve(void);
+	virtual ~MG_FlatVolCurve();
 	double ComputeValue(const double& aMaturity = 0, const double& aY = 0, const double& aZ = 0) const;
 
 public:

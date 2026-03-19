@@ -20,7 +20,7 @@ void MG_MonteCarloMethod::Swap(MG_MonteCarloMethod& aRight)
 	MG_NumericalMethod::Swap(aRight);
 	std::swap(myTimeSteps, aRight.myTimeSteps);
 	std::swap(mySimulNb, aRight.mySimulNb);
-	myDist.Swap(aRight.myDist);
+	myDist.swap(aRight.myDist);
 	mySimulations.Swap(aRight.mySimulations);
 }
 
@@ -37,7 +37,7 @@ MG_MonteCarloMethod::MG_MonteCarloMethod(	const size_t		& aTimeSteps
 MG_MonteCarloMethod::~MG_MonteCarloMethod()
 {}
 
-void MG_MonteCarloMethod::Simulate(void)
+void MG_MonteCarloMethod::Simulate()
 {
 	for(size_t i=0; i<mySimulNb; ++i)
 		for(size_t j=0; j<myTimeSteps; ++j)

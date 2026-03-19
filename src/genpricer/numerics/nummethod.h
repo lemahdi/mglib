@@ -28,9 +28,9 @@ public:
 	SWAP_DECL(MG_NumericalMethod)
 	CLONE_METHOD(MG_NumericalMethod)
 
-	MG_NumericalMethod(void);
+	MG_NumericalMethod();
 
-	virtual ~MG_NumericalMethod(void);
+	virtual ~MG_NumericalMethod();
 };
 
 

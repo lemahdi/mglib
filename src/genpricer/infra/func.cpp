@@ -1,6 +1,7 @@
 #include "genpricer/infra/func.h"
 #include "genpricer/infra/arg.h"
 #include "genpricer/genmod/irpricingmodel.h"
+#include "nova/glob/exception.h"
 
 #include <math.h>
 
@@ -268,11 +269,10 @@ MG_Arg MG_LiborFunc::Eval(const vector<MG_Arg>& aArgs, const vector<double>& aSt
 
 void MG_LiborFunc::SetModel(const MG_PricingModelPtr& aMdl)
 {
-	myModel = aMdl;
+	myModel = std::dynamic_pointer_cast<MG_IRPricingModel>(aMdl);
+	if (!myModel)
+		MG_THROW("LiborFunc: model is not of type MG_IRPricingModel.");
 }
-
-template <>
-MG_FuncBuilderPtr MG_SFuncBuilder::myInstance = MG_FuncBuilderPtr(NULL);
 
 void MG_FuncBuilder::Init()
 {
@@ -294,5 +294,5 @@ MG_FuncPtr MG_FuncBuilder::GetFunc(const std::string &aFuncName)
 	NameFuncMap::const_iterator vIt = myFuncs.find(aFuncName);
 	if (vIt != myFuncs.end())
 		return vIt->second;
-	return MG_FuncPtr(NULL);
+	return nullptr;
 }

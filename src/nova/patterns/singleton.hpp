@@ -5,17 +5,16 @@
  * Purpose				: Singleton is an implementation of the singleton
  *						design pattern
  * Author				: MM Akkouh
- * Notes				: 
+ * Notes				: Uses the Meyers' Singleton pattern (C++11 guaranteed
+ *						  thread-safe local static initialization).
+ *						  Returns T* to preserve existing call-site syntax.
  */
 
 
 #pragma once
 
 
-#include <iostream>
-
 #include "nova/glob/typedef.h"
-#include "nova/patterns/countedptr.hpp"
 
 
 MG_NAMESPACE_BEGIN
@@ -25,19 +24,14 @@ template<class T>
 class Singleton
 {
 private:
-	Singleton(void) {}
+	Singleton() {}
 
 public:
-	inline static CountedPtr< T > Instance(void)
+	static T* Instance()
 	{
-		if (!myInstance)
-			Singleton::myInstance = CountedPtr< T >(new T);
-
-		return Singleton::myInstance;
+		static T instance;
+		return &instance;
 	}
-
-private:
-	static CountedPtr< T > myInstance;
 };
 
 

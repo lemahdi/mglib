@@ -57,7 +57,7 @@ void MG_Swap::PrePricing(const MG_Model& aMdl)
 	myLeg2.PrePricing(aMdl);
 }
 
-double MG_Swap::Price(void) const
+double MG_Swap::Price() const
 {
 	double vLeg1 = myLeg1.Price();
 	double vLeg2 = myLeg2.Price();

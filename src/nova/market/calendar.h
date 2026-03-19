@@ -30,7 +30,7 @@ struct MG_Calendar
 
 	static std::map< CALENDAR_NAME , CalPpty > ourCalPpty;
 
-	static bool LoadCalendars(void);
+	static bool LoadCalendars();
 	static bool IsBusinessDay(const CALENDAR_NAME& aCal, const MG_Date& aDate);
 	static bool IsWeekEnd(const CALENDAR_NAME& aCal, const MG_Date& aDate);
 

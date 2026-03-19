@@ -23,7 +23,7 @@ class MG_GenSecurity : public MG_XLObject
 public:
 	/* Constructors / Destructor */
 	// self-generated copy-constructor is enough
-	virtual ~MG_GenSecurity(void);
+	virtual ~MG_GenSecurity();
 
 	ASSIGN_OPERATOR(MG_GenSecurity)
 	CLONE_METHOD(MG_GenSecurity)
@@ -32,8 +32,8 @@ public:
 	MG_GenSecurity(const std::vector<std::string>& aDealDesc, const size_t& aCols);
 
 	/* Accessors */
-	inline const MG_TableWalker& Walker(void) const { return myWalker; }
-	inline MG_NodeManager& Manager(void) { return myManager; }
+	inline const MG_TableWalker& Walker() const { return myWalker; }
+	inline MG_NodeManager& Manager() { return myManager; }
 
 	/* Engine */
 	void PropagateModel(const MG_PricingModelPtr& aMdl);

@@ -37,18 +37,18 @@ public:
 
 	MG_AbstractRandom(const std::string& aName = "");
 
-	virtual ~MG_AbstractRandom(void) {}
+	virtual ~MG_AbstractRandom() {}
 
 	/* Accessors */
-	inline std::string GetName(void) const { return myName; }
+	inline std::string GetName() const { return myName; }
 
 	/* Support */
-	virtual void Reset		(void)				= 0;
+	virtual void Reset		()				= 0;
 	virtual void ToString	(FILE* aFile) const	= 0;
 
 	/* Engine */
-	virtual double	DrawOne		(void)					= 0;
-	virtual double	DrawUniform	(void)					= 0;
+	virtual double	DrawOne		()					= 0;
+	virtual double	DrawUniform	()					= 0;
 	virtual void	Draw		(MG_Vector& aValues)	= 0;
 
 protected:
@@ -71,26 +71,26 @@ public:
 
 	MG_Random(const RAND_TYPE& aType);
 
-	virtual ~MG_Random(void);
+	virtual ~MG_Random();
 
 	/* Accessors */
-	inline size_t			GetMin		(void) const { return gsl_rng_min(myGen); }
-	inline size_t			GetMax		(void) const { return gsl_rng_max(myGen); }
-	inline gsl_rng*			GetGenerator(void) const { return myGen; }
+	inline size_t			GetMin		() const { return gsl_rng_min(myGen); }
+	inline size_t			GetMax		() const { return gsl_rng_max(myGen); }
+	inline gsl_rng*			GetGenerator() const { return myGen; }
 
 	inline void				SetSeed		(const size_t& aSeed) { myInitialSeed = aSeed; gsl_rng_set(myGen, aSeed); }
 
 	/* Support */
-	void Reset(void);
-	void ToString(FILE* aFile) const;
+	void Reset() override;
+	void ToString(FILE* aFile) const override;
 
 	/* Engine */
-	double	DrawOne			(void)					{ return gsl_rng_get(myGen); }
+	double	DrawOne			()					override { return gsl_rng_get(myGen); }
 	size_t	DrawOne			(const size_t& aMax)	{ return gsl_rng_uniform_int(myGen, aMax); }
-	double	DrawUniform		(void)					{ return gsl_rng_uniform(myGen); }
-	double	DrawUniformPos	(void)					{ return gsl_rng_uniform_pos(myGen); }
+	double	DrawUniform		()					override { return gsl_rng_uniform(myGen); }
+	double	DrawUniformPos	()					{ return gsl_rng_uniform_pos(myGen); }
 	size_t	DrawUniformInt	(const size_t& aMax)	{ return gsl_rng_uniform_int(myGen, aMax); }
-	void	Draw			(MG_Vector& aValues);
+	void	Draw			(MG_Vector& aValues) override;
 
 private:
 	size_t		myInitialSeed;
@@ -113,20 +113,20 @@ public:
 
 	MG_QuasiRandom(const QUASIRAND_TYPE& aType, const size_t& aDim);
 
-	virtual ~MG_QuasiRandom(void);
+	virtual ~MG_QuasiRandom();
 
 	/* Accessors */
-	inline size_t			GetSize		(void) const { return gsl_qrng_size(myGen); }
-	inline const gsl_qrng*	GetGenerator(void) const { return myGen; }
+	inline size_t			GetSize		() const { return gsl_qrng_size(myGen); }
+	inline const gsl_qrng*	GetGenerator() const { return myGen; }
 
 	/* Support */
-	void Reset(void);
-	void ToString(FILE* aFile) const;
+	void Reset() override;
+	void ToString(FILE* aFile) const override;
 
 	/* Engine */
-	double	DrawOne		(void) { return DrawUniform(); }
-	double	DrawUniform	(void);
-	void	Draw		(MG_Vector& aValues);
+	double	DrawOne		() override { return DrawUniform(); }
+	double	DrawUniform	() override;
+	void	Draw		(MG_Vector& aValues) override;
 
 private:
 	gsl_qrng* myGen;

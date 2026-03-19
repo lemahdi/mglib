@@ -13,17 +13,17 @@ void MG_Function::Swap(MG_Function& )
 	
 double MG_Function::F(double aX, void* aEngine)
 {
-	return ((MG_Function*)aEngine)->F_Func(aX);
+	return static_cast<MG_Function*>(aEngine)->F_Func(aX);
 }
 
 double MG_Function::Df(double aX, void* aEngine)
 {
-	return ((MG_Function*)aEngine)->Df_Func(aX);
+	return static_cast<MG_Function*>(aEngine)->Df_Func(aX);
 }
 
 void MG_Function::FDf(double aX, void* aEngine, double* aF, double* aDf)
 {
-	((MG_Function*)aEngine)->FDf_Func(aX, *aF, *aDf);
+	static_cast<MG_Function*>(aEngine)->FDf_Func(aX, *aF, *aDf);
 }
 
 

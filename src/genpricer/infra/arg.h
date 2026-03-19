@@ -11,7 +11,6 @@
 #pragma once
 
 
-#include "nova/patterns/countedptr.hpp"
 #include "nova/glob/date.h"
 
 #include <vector>
@@ -26,7 +25,7 @@ public:
 	enum TYPE { ARG_ERR, ARG_DOUBLE, ARG_STRING, ARG_DATE, ARG_V_DOUBLE, ARG_BOOL, ARG_V_BOOL };
 
 	//==> ctor & dtor
-	MG_Arg(void);
+	MG_Arg();
 	MG_Arg(const double				& aDbl);
 	MG_Arg(const std::string		& aStr);
 	MG_Arg(const MG_Date			& aDt);
@@ -34,16 +33,16 @@ public:
 	MG_Arg(const bool				& aBool);
 	MG_Arg(const MG_StdVectBoolPtr	& aVBool);
 
-	virtual ~MG_Arg(void) {}
+	virtual ~MG_Arg() {}
 
 	//==> accessors
-	inline const TYPE&					Type	(void) const { return myType; }
-	inline double						Double	(void) const { return myDouble; }
-	inline const std::string&			String	(void) const { return myString; }
-	inline const MG_Date&				Date	(void) const { return myDate; }
-	inline const MG_StdVectDblPtr&		VDouble	(void) const { return myVDouble; }
-	inline bool							Bool	(void) const { return myBool; }
-	inline const MG_StdVectBoolPtr&		VBool	(void) const { return myVBool; }
+	inline const TYPE&					Type	() const { return myType; }
+	inline double						Double	() const { return myDouble; }
+	inline const std::string&			String	() const { return myString; }
+	inline const MG_Date&				Date	() const { return myDate; }
+	inline const MG_StdVectDblPtr&		VDouble	() const { return myVDouble; }
+	inline bool							Bool	() const { return myBool; }
+	inline const MG_StdVectBoolPtr&		VBool	() const { return myVBool; }
 
 	//==> support
 	friend std::ostream& operator<< (std::ostream& aOs, const MG_Arg& aArg)

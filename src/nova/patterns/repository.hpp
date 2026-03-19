@@ -28,23 +28,21 @@ private:
 	struct CleanMap
 	{
 		std::map<T,U*> myMap;
-		std::map<T,U*>& Map(void) { return myMap; }
-		~CleanMap(void)
+		std::map<T,U*>& Map() { return myMap; }
+		~CleanMap()
 		{
-			std::map<T,U*>::iterator itMap = myMap.begin();
-			while (itMap != myMap.end())
+			for (auto& kv : myMap)
 			{
-				delete itMap->second;
-				itMap->second = NULL;
-				++itMap;
+				delete kv.second;
+				kv.second = nullptr;
 			}
 		}
 	};
 
-	Repository(void) {}
+	Repository() {}
 
 public:
-	static void Init(void)
+	static void Init()
 	{
 		U::Init();
 	}
@@ -54,8 +52,7 @@ public:
 		if (myInstance.Map().find(aKey) == myInstance.Map().end())
 		{
 			U* vSingle = new U(aKey);
-			std::pair<T,U*> vPair(aKey, vSingle);
-			Repository::myInstance.Map().insert(vPair);
+			myInstance.Map().insert(std::pair<T,U*>(aKey, vSingle));
 		}
 
 		return Repository::myInstance.Map()[aKey];

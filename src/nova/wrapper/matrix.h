@@ -25,7 +25,7 @@ class MG_Matrix : public MG_Object
 {
 public:
 	/* Constructors / Destructor */
-	MG_Matrix(void);
+	MG_Matrix();
 	MG_Matrix(const size_t& aRows, const size_t& aCols, const double& aVal = 0.);
 	MG_Matrix(const MG_Vector& aVect);
 	MG_Matrix(const std::vector<double>& aVect);
@@ -35,20 +35,20 @@ public:
 	CLONE_METHOD(MG_Matrix)
 	SWAP_DECL(MG_Matrix)
 
-	virtual ~MG_Matrix(void);
+	virtual ~MG_Matrix();
 
 public:
 	/* Accessors */
 	inline double&	Elt	(const size_t& aI, const size_t& aJ)	const { return *gsl_matrix_ptr(myMatrix, aI, aJ); }
 	inline double&	operator ()(const size_t& aI, const size_t& aJ)	const { return *gsl_matrix_ptr(myMatrix, aI, aJ); }
 
-	inline size_t Rows(void) const { return myRows; }
-	inline size_t Cols(void) const { return myCols; }
-	inline size_t Size(void) const { return myRows*myCols; }
-	inline double Last(void) const { return *gsl_matrix_ptr(myMatrix, myRows-1, myCols-1); }
+	inline size_t Rows() const { return myRows; }
+	inline size_t Cols() const { return myCols; }
+	inline size_t Size() const { return myRows*myCols; }
+	inline double Last() const { return *gsl_matrix_ptr(myMatrix, myRows-1, myCols-1); }
 	
-	inline const gsl_matrix* const	GetPtr(void) const	{ return myMatrix; }
-	inline gsl_matrix* const		GetPtr(void)		{ return myMatrix; }
+	inline const gsl_matrix* const	GetPtr() const	{ return myMatrix; }
+	inline gsl_matrix* const		GetPtr()		{ return myMatrix; }
 
 	void Transpose(MG_Matrix& aDest) const;
 
@@ -65,8 +65,8 @@ public:
 
 	/* Arithmetic operators */
 	/* Prefix */
-	MG_Matrix& operator ++(void);
-	MG_Matrix& operator --(void);
+	MG_Matrix& operator ++();
+	MG_Matrix& operator --();
 	/* Postfix */
 	MG_Matrix operator ++(int);
 	MG_Matrix operator --(int);

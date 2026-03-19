@@ -11,7 +11,7 @@ using namespace MG;
  * Constructors / Destructor
  */
 MG_Matrix::MG_Matrix()	:	MG_Object()
-						,	myRows(0), myCols(0), myMatrix(NULL)
+						,	myRows(0), myCols(0), myMatrix(nullptr)
 {}
 
 MG_Matrix::MG_Matrix(	const size_t& aRows
@@ -50,7 +50,7 @@ MG_Matrix::MG_Matrix(	const MG_Matrix& aRight)
 					:	MG_Object(aRight)
 					,	myRows(aRight.myRows)
 					,	myCols(aRight.myCols)
-					,	myMatrix(NULL)
+					,	myMatrix(nullptr)
 {
 	if (myRows*myCols)
 	{
@@ -132,13 +132,13 @@ MG_Matrix& MG_Matrix::operator /=(const MG_Matrix& aRight)
  * Arithmetic operators
  * Prefix
  */
-MG_Matrix& MG_Matrix::operator ++(void)
+MG_Matrix& MG_Matrix::operator ++()
 {
 	gsl_matrix_add_constant(myMatrix, 1.);
 	return *this;
 }
 
-MG_Matrix& MG_Matrix::operator --(void)
+MG_Matrix& MG_Matrix::operator --()
 {
 	gsl_matrix_add_constant(myMatrix, -1.);
 	return *this;

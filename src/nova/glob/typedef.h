@@ -12,6 +12,10 @@
 
 
 #include <iostream>
+#include <map>
+#include <memory>
+#include <string>
+#include <vector>
 
 
 /* Some pre-declarations from the parser */
@@ -24,15 +28,15 @@ void yy_delete_buffer (YY_BUFFER_STATE b  );
 
 
 /* Some useful math constant definitions */
-#define K_PI						3.141592653589793
-#define K_ROOTTWO					1.4142135623730951
-#define K_ONEOVERROOTTWOPI			0.3989422804014327
-#define K_ONEOVERROOTPI				0.56418958354775628
-#define K_ROOTTWOPI					2.5066282746310002
-#define K_LOGROOTTWOPI				0.918938533204672
-#define K_NORMALCUMULATIVEBOUND		7.
-#define K_INFTY						1.e+20
-#define	K_EPS						1.e-12
+constexpr double K_PI					= 3.141592653589793;
+constexpr double K_ROOTTWO				= 1.4142135623730951;
+constexpr double K_ONEOVERROOTTWOPI	= 0.3989422804014327;
+constexpr double K_ONEOVERROOTPI		= 0.56418958354775628;
+constexpr double K_ROOTTWOPI			= 2.5066282746310002;
+constexpr double K_LOGROOTTWOPI		= 0.918938533204672;
+constexpr double K_NORMALCUMULATIVEBOUND= 7.;
+constexpr double K_INFTY				= 1.e+20;
+constexpr double K_EPS					= 1.e-12;
 
 
 /* Error file for Lexer and Parser */
@@ -55,7 +59,7 @@ void yy_delete_buffer (YY_BUFFER_STATE b  );
 	}
 
 #define CLONE_METHOD(CLASS) \
-	inline MG_Object* Clone(void) const { return new CLASS(*this); }
+	inline MG_Object* Clone() const override { return new CLASS(*this); }
 
 #define SWAP_DECL(CLASS)	\
 	void Swap(CLASS& aRight);
@@ -83,9 +87,9 @@ void yy_delete_buffer (YY_BUFFER_STATE b  );
  * This pair is the coordinates for a cell in a table.
  * The first element coordinates are (0,0).
  */
-#define Coord std::pair<unsigned int,unsigned int>
-#define PairCoord std::pair< Coord,Coord >
-#define MMCoord std::multimap< Coord,Coord >
+using Coord     = std::pair<unsigned int, unsigned int>;
+using PairCoord = std::pair<Coord, Coord>;
+using MMCoord   = std::multimap<Coord, Coord>;
 
 /* Coord / Node */
 #define CoordNode std::pair<Coord,MG_Node*>
@@ -149,37 +153,68 @@ void yy_delete_buffer (YY_BUFFER_STATE b  );
 #define MG_GENPRICER_XL_NAME	"GENPR"
 
 
-/* CountedPtr definitions */
-#define MG_StdVectDblPtr				CountedPtr< std::vector<double> >
-#define MG_StdVectBoolPtr				CountedPtr< std::vector<bool> >
-#define MG_CachePtr						CountedPtr<MG::MG_Cache>
-#define MG_FileErrorPtr					CountedPtr<MG::MG_FileError>
-#define MG_ObjectPtr					CountedPtr<MG::MG_Object>
-#define MG_XLObjectPtr					CountedPtr<MG::MG_XLObject>
-#define MG_FuncPtr						CountedPtr<MG::MG_Func>
-#define MG_FuncBuilderPtr				CountedPtr<MG::MG_FuncBuilder>
-#define MG_GenSecurityPtr				CountedPtr<MG::MG_GenSecurity>
-#define MG_RandomPtr					CountedPtr<MG::MG_Random>
-#define MG_RandDistPtr					CountedPtr<MG::MG_RandDist>
-#define MG_CdfNormalPtr					CountedPtr<MG::MG_CdfNormal>
-#define MG_NumericalMethodPtr			CountedPtr<MG::MG_NumericalMethod>
-#define MG_MonteCarloMethodPtr			CountedPtr<MG::MG_MonteCarloMethod>
-#define MG_PricingModelPtr				CountedPtr<MG::MG_PricingModel>
-#define MG_IRPricingModelPtr			CountedPtr<MG::MG_IRPricingModel>
-#define MG_MonteCarloPtr				CountedPtr<MG::MG_MonteCarlo>
-#define MG_UnaryFuncPtr					CountedPtr<MG::MG_UnaryFunc>
-#define MG_RobotPtr						CountedPtr<MG::MG_Robot>
-#define MG_MarketDataPtr				CountedPtr<MG::MG_MarketData>
-#define MG_ZeroCurvePtr					CountedPtr<MG::MG_ZeroCurve>
-#define MG_VolatilityCurvePtr			CountedPtr<MG::MG_VolatilityCurve>
-#define MG_IRVolatilityCurvePtr			CountedPtr<MG::MG_IRVolatilityCurve>
-#define MG_InterpolatorPtr				CountedPtr<MG::MG_Interpolator>
-#define MG_LinearInterpolatorPtr		CountedPtr<MG::MG_LinearInterpolator>
-#define MG_FunctionPtr					CountedPtr<MG::MG_Function>
-#define MG_FFunctionPtr					CountedPtr<MG::MG_FFunction>
-#define MG_SecurityPtr					CountedPtr<MG::MG_Security>
-#define MG_SwapLegPtr					CountedPtr<MG::MG_SwapLeg>
-#define MG_SwapPtr						CountedPtr<MG::MG_Swap>
+/* CountedPtr definitions – now using std::shared_ptr */
+namespace MG {
+	class MG_Cache;
+	class MG_FileError;
+	class MG_Object;
+	class MG_XLObject;
+	class MG_Func;
+	class MG_FuncBuilder;
+	class MG_GenSecurity;
+	class MG_Random;
+	class MG_RandDist;
+	class MG_CdfNormal;
+	class MG_NumericalMethod;
+	class MG_MonteCarloMethod;
+	class MG_PricingModel;
+	class MG_IRPricingModel;
+	class MG_MonteCarlo;
+	class MG_UnaryFunc;
+	class MG_Robot;
+	class MG_MarketData;
+	class MG_ZeroCurve;
+	class MG_VolatilityCurve;
+	class MG_IRVolatilityCurve;
+	class MG_Interpolator;
+	class MG_LinearInterpolator;
+	class MG_Function;
+	class MG_FFunction;
+	class MG_Security;
+	class MG_SwapLeg;
+	class MG_Swap;
+
+	using MG_StdVectDblPtr         = std::shared_ptr<std::vector<double>>;
+	using MG_StdVectBoolPtr        = std::shared_ptr<std::vector<bool>>;
+	using MG_CachePtr              = std::shared_ptr<MG_Cache>;
+	using MG_FileErrorPtr          = std::shared_ptr<MG_FileError>;
+	using MG_ObjectPtr             = std::shared_ptr<MG_Object>;
+	using MG_XLObjectPtr           = std::shared_ptr<MG_XLObject>;
+	using MG_FuncPtr               = std::shared_ptr<MG_Func>;
+	using MG_FuncBuilderPtr        = std::shared_ptr<MG_FuncBuilder>;
+	using MG_GenSecurityPtr        = std::shared_ptr<MG_GenSecurity>;
+	using MG_RandomPtr             = std::shared_ptr<MG_Random>;
+	using MG_RandDistPtr           = std::shared_ptr<MG_RandDist>;
+	using MG_CdfNormalPtr          = std::shared_ptr<MG_CdfNormal>;
+	using MG_NumericalMethodPtr    = std::shared_ptr<MG_NumericalMethod>;
+	using MG_MonteCarloMethodPtr   = std::shared_ptr<MG_MonteCarloMethod>;
+	using MG_PricingModelPtr       = std::shared_ptr<MG_PricingModel>;
+	using MG_IRPricingModelPtr     = std::shared_ptr<MG_IRPricingModel>;
+	using MG_MonteCarloPtr         = std::shared_ptr<MG_MonteCarlo>;
+	using MG_UnaryFuncPtr          = std::shared_ptr<MG_UnaryFunc>;
+	using MG_RobotPtr              = std::shared_ptr<MG_Robot>;
+	using MG_MarketDataPtr         = std::shared_ptr<MG_MarketData>;
+	using MG_ZeroCurvePtr          = std::shared_ptr<MG_ZeroCurve>;
+	using MG_VolatilityCurvePtr    = std::shared_ptr<MG_VolatilityCurve>;
+	using MG_IRVolatilityCurvePtr  = std::shared_ptr<MG_IRVolatilityCurve>;
+	using MG_InterpolatorPtr       = std::shared_ptr<MG_Interpolator>;
+	using MG_LinearInterpolatorPtr = std::shared_ptr<MG_LinearInterpolator>;
+	using MG_FunctionPtr           = std::shared_ptr<MG_Function>;
+	using MG_FFunctionPtr          = std::shared_ptr<MG_FFunction>;
+	using MG_SecurityPtr           = std::shared_ptr<MG_Security>;
+	using MG_SwapLegPtr            = std::shared_ptr<MG_SwapLeg>;
+	using MG_SwapPtr               = std::shared_ptr<MG_Swap>;
+}
 
 
 /* enum for node direction */

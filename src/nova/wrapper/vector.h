@@ -31,7 +31,7 @@ class MG_Vector : public MG_Object
 {
 public:
 	/* Constructors / Destructor */
-	MG_Vector(void);
+	MG_Vector();
 	MG_Vector(const size_t& aSize, const double& aVal = 0.);
 	MG_Vector(const std::vector<double>& aVals);
 	MG_Vector(const std::vector<MG_Date>& aDates);
@@ -41,14 +41,14 @@ public:
 	CLONE_METHOD(MG_Vector)
 	SWAP_DECL(MG_Vector)
 	
-	virtual ~MG_Vector(void);
+	virtual ~MG_Vector();
 
 public:
 	/* Accessors */
 	inline double&					operator []	(const size_t& aIdx)	const	{ return *gsl_vector_ptr(myVect, aIdx); }
-	inline size_t					Size		(void)					const	{ return mySize; }
-	inline const gsl_vector* const	GetPtr		(void)					const	{ return myVect; }
-	inline gsl_vector* const		GetPtr		(void)							{ return myVect; }
+	inline size_t					Size		()					const	{ return mySize; }
+	inline const gsl_vector* const	GetPtr		()					const	{ return myVect; }
+	inline gsl_vector* const		GetPtr		()							{ return myVect; }
 
 public:
 	/* Assignment operators */
@@ -63,24 +63,24 @@ public:
 
 	/* Arithmetic operators */
 	/* Prefix */
-	MG_Vector& operator ++(void);
-	MG_Vector& operator --(void);
+	MG_Vector& operator ++();
+	MG_Vector& operator --();
 	/* Postfix */
 	MG_Vector operator ++(int);
 	MG_Vector operator --(int);
 
 	/* Arithmetic functions */
-	double Sum(void) const;
+	double Sum() const;
 	double SumProduct(const MG_Vector& aRight) const;
 
 	/* Comparison */
 
 	/* Utility Functions */
-	inline double		& Front	(void)			{ return *gsl_vector_ptr(myVect, 0); }
-	inline const double	& Front	(void) const	{ return *gsl_vector_ptr(myVect, 0); }
-	inline double		& Back	(void)			{ return *gsl_vector_ptr(myVect, mySize-1); }
-	inline const double	& Back	(void) const	{ return *gsl_vector_ptr(myVect, mySize-1); }
-	void Clear(void);
+	inline double		& Front	()			{ return *gsl_vector_ptr(myVect, 0); }
+	inline const double	& Front	() const	{ return *gsl_vector_ptr(myVect, 0); }
+	inline double		& Back	()			{ return *gsl_vector_ptr(myVect, mySize-1); }
+	inline const double	& Back	() const	{ return *gsl_vector_ptr(myVect, mySize-1); }
+	void Clear();
 	void Resize(const size_t& aSize, const double& aVal = 0.);
 
 private:

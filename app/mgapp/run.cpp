@@ -38,7 +38,7 @@
 using namespace std;
 using namespace MG;
 
-void TestGenPricer(void)
+void TestGenPricer()
 {
 	MG_Date vAsOf(2010, 2, 15);
 
@@ -196,7 +196,7 @@ int main()
 				return exp(aX[0]);
 			}
 		};
-		MCDensityPtr vFunc(new MG_TestFunc);
+		MG_MonteCarlo::MCDensityPtr vFunc(std::make_shared<MG_TestFunc>());
 		MG_RandomPtr vRand(new MG_Random(MT19937));
 		size_t vDim(1);
 		MG_MiserMC vIntegral(vDim);
@@ -307,7 +307,7 @@ int main()
 		while (--vCount) cout << vRand.DrawOne() << ":" << vRand.DrawUniform() << endl;
 
 #ifdef _WIN32
-		FILE* stream(NULL);
+		FILE* stream(nullptr);
 		errno_t vErr = fopen_s(&stream, "C:\\cygwin\\home\\Akkouh\\random_state.txt", "w");
 		if (!vErr && stream)
 		{
@@ -319,7 +319,7 @@ int main()
 		const gsl_rng_type **t, **t0;
 		t0 = gsl_rng_types_setup();
 		cout << "Available Generators:" << endl;
-		for(t=t0; *t!=NULL; ++t)
+		for(t=t0; *t!=nullptr; ++t)
 			cout << (*t)->name << endl;
 
 		cout << "GSL Random Generators" << endl;
@@ -335,7 +335,7 @@ int main()
 		while (--vCount) cout << vRand.DrawOne() << ":" << vRand.DrawUniform() << endl;
 
 #ifdef _WIN32
-		FILE* stream(NULL);
+		FILE* stream(nullptr);
 		errno_t vErr = fopen_s(&stream, "C:\\cygwin\\home\\Akkouh\\quasirandom_state.txt", "w");
 		if (!vErr && stream)
 		{

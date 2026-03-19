@@ -29,9 +29,9 @@ public:
 	typedef std::pair<std::string,int>	ArgConvPair;
 
 public:
-	MG_ArgConv(void) {}
+	MG_ArgConv() {}
 	MG_ArgConv(const std::string& aDesc, const ArgConvPair vPairs[], const size_t& aSize);
-	virtual ~MG_ArgConv(void) {}
+	virtual ~MG_ArgConv() {}
 
 	int operator[] (const std::string& vKey) const;
 	bool Exist(const std::string& vKey) const;
@@ -49,9 +49,9 @@ public:
 	typedef std::pair<int,std::string>	ArgConvReversePair;
 
 public:
-	MG_ArgConvReverse(void) {}
+	MG_ArgConvReverse() {}
 	MG_ArgConvReverse(const std::string& aDesc, const ArgConvPair vPairs[], const size_t& aSize);
-	virtual ~MG_ArgConvReverse(void) {}
+	virtual ~MG_ArgConvReverse() {}
 
 	std::string operator[] (const int& vKey) const;
 	bool Exist(const int& vKey) const;

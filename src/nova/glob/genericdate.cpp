@@ -15,7 +15,7 @@ MG_GenericDate::MG_GenericDate	(	const MG_GenericDate& aRight)
 								,	myTerm			(aRight.myTerm)
 								,	myTimes			(aRight.myTimes)
 								,	myFreq			(aRight.myFreq)
-								,	myRefDate		(aRight.myRefDate?(MG_GenericDate*)aRight.myRefDate->Clone():NULL)
+								,	myRefDate		(aRight.myRefDate?static_cast<MG_GenericDate*>(aRight.myRefDate->Clone()):nullptr)
 								,	myDate			(aRight.myDate)
 								,	myIsGenDate		(aRight.myIsGenDate)
 {}
@@ -36,12 +36,12 @@ MG_GenericDate::~MG_GenericDate()
 	delete myRefDate;
 }
 
-MG_GenericDate::MG_GenericDate() : myTimes(0), myFreq(NB_FREQUENCIES), myRefDate(NULL), myIsGenDate(true)
+MG_GenericDate::MG_GenericDate() : myTimes(0), myFreq(NB_FREQUENCIES), myRefDate(nullptr), myIsGenDate(true)
 {}
 
 MG_GenericDate::MG_GenericDate	(	const string& aStart)
 								:	myStart		(aStart)
-								,	myRefDate	(NULL)
+								,	myRefDate	(nullptr)
 								,	myIsGenDate	(true)
 {
 	string vFreqS;
@@ -75,7 +75,7 @@ MG_GenericDate::MG_GenericDate	(	const MG_Date& aDt)
 								:	myDate		(aDt)
 								,	myTimes		(0)
 								,	myFreq		(NB_FREQUENCIES)
-								,	myRefDate	(NULL)
+								,	myRefDate	(nullptr)
 								,	myIsGenDate	(false)
 {}
 

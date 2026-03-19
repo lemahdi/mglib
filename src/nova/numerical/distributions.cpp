@@ -14,7 +14,7 @@ MG_RandDist::MG_RandDist(const MG_RandDist& aRight) : MG_XLObject(aRight)
 void MG_RandDist::Swap(MG_RandDist& aRight)
 {
 	MG_XLObject::Swap(aRight);
-	myRandGen.Swap(aRight.myRandGen);
+	myRandGen.swap(aRight.myRandGen);
 }
 
 MG_RandDist::MG_RandDist(	const MG_RandomPtr& aRandGen)
@@ -63,7 +63,7 @@ MG_NormalDist::MG_NormalDist(	const MG_RandomPtr	& aRandGen
 
 MG_NormalDist::~MG_NormalDist()
 {
-	myFunc = NULL;
+	myFunc = nullptr;
 }
 
 double MG_NormalDist::Density(const double& aX)

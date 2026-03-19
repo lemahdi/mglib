@@ -34,12 +34,12 @@ public:
 	MG_Currency	(const std::string& aCcyNm);
 	MG_Currency	(const CURRENCY_NAME& aCcyNm);
 
-	virtual ~MG_Currency(void);
+	virtual ~MG_Currency();
 
 	/* State */
-	inline std::string GetCcyNm(void) const { return CurrenciesNameRevertor[myCcyNm]; }
+	inline std::string GetCcyNm() const { return CurrenciesNameRevertor[myCcyNm]; }
 private:
-	void FillProperties(void);
+	void FillProperties();
 
 	/* Engine */
 

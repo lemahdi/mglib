@@ -14,10 +14,6 @@ using namespace MG;
 CacheMap MG_Cache::ourGlobalCache = CacheMap();
 UnCacheMap MG_Cache::ourGlobalUnCache = UnCacheMap();
 
-/* Singleton initializations */
-template<>
-MG_CachePtr MG_SCache::myInstance = MG_CachePtr(NULL);
-
 /* Constructors */
 MG_Cache::MG_Cache() : myCounter(0)
 {}

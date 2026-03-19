@@ -59,9 +59,9 @@ public:
 		
 	SWAP_DECL(MG_Interpolator)
 	
-	virtual ~MG_Interpolator(void);
+	virtual ~MG_Interpolator();
 
-	MG_Interpolator(void);
+	MG_Interpolator();
 	MG_Interpolator	(	const MG_Matrix	& aOrd
 					,	const int		& aInterpolType);
 	MG_Interpolator	(	const MG_Vector	& aOrd
@@ -106,9 +106,9 @@ public:
 	CLONE_METHOD(MG_1DInterpolator)
 	SWAP_DECL(MG_1DInterpolator)
 	
-	virtual ~MG_1DInterpolator(void);
+	virtual ~MG_1DInterpolator();
 
-	MG_1DInterpolator(void);
+	MG_1DInterpolator();
 	MG_1DInterpolator	(	const MG_Vector	& aAbsc
 						,	const MG_Matrix	& aOrd
 						,	const int		& aInterpolType);
@@ -144,9 +144,9 @@ public:
 	CLONE_METHOD(MG_2DInterpolator)
 	SWAP_DECL(MG_2DInterpolator)
 	
-	virtual ~MG_2DInterpolator(void);
+	virtual ~MG_2DInterpolator();
 
-	MG_2DInterpolator(void);
+	MG_2DInterpolator();
 	MG_2DInterpolator	(	const MG_Vector	& aAbsc1D
 						,	const MG_Vector	& aAbsc2D
 						,	const MG_Matrix	& aOrd

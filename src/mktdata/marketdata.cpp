@@ -212,7 +212,7 @@ void MG_DividendsTable::Swap(MG_DividendsTable& aRight)
 	myExDivDates.swap(aRight.myExDivDates);
 	myPaymentDates.swap(aRight.myPaymentDates);
 	myCurve.swap(aRight.myCurve);
-	myZeroCurve.Swap(aRight.myZeroCurve);
+	myZeroCurve.swap(aRight.myZeroCurve);
 }
 
 MG_DividendsTable::MG_DividendsTable(	const MG_Date			& aAsOf

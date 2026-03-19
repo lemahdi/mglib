@@ -11,10 +11,7 @@ using namespace MG;
 
 
 /* class MG_FileError */
-template<>
-MG_FileErrorPtr MG_SFileError::myInstance = MG_FileErrorPtr(NULL);
-
-MG_FileError::MG_FileError() : mySavedCerr(NULL)
+MG_FileError::MG_FileError() : mySavedCerr(nullptr)
 {}
 
 MG_FileError::~MG_FileError()
@@ -39,7 +36,7 @@ void MG_FileError::Init()
 int MG_Node::ourCounter = 0;
 #endif
 
-MG_Node::MG_Node(void) : myNodeType(NODEF_NODE), myL(NULL), myR(NULL)
+MG_Node::MG_Node() : myNodeType(NODEF_NODE), myL(nullptr), myR(nullptr)
 {
 #ifdef MEMORY_CONTROL_MODE
 	MG_Node::ourCounter++;
@@ -101,7 +98,7 @@ MG_RefNode::MG_RefNode(const Coord& aC, MG_Node* aN, const Coord& aCC, const NOD
 MG_RefNode::~MG_RefNode()
 {
 	// myL is already referenced in AllNodes
-	myL = NULL;
+	myL = nullptr;
 }
 
 void MG_RefNode::Refresh(MG_Node* aN)
@@ -195,7 +192,7 @@ long MG_NodeManager::ToJulianDay(const char* aDate)
 
 MG_Node* MG_NodeManager::GetNode(const Coord& aC)
 {
-	MG_Node* vN = NULL;
+	MG_Node* vN = nullptr;
 	unsigned int vHash = Hash(aC)%NHASH;
 
 	CoordNodeMap::iterator itMap = AllNodes.find(vHash);
@@ -219,7 +216,7 @@ MG_Node* MG_NodeManager::GetChildNode(const MG_TableWalker& walker, const char* 
 		return vN;
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 /* Building */
@@ -291,8 +288,8 @@ MG_Node* MG_NodeManager::BuildFunc(const MG_TableWalker& walker, const char* aFu
 
 void MG_NodeManager::PostProcess()
 {
-	MG_RefNode* vRefN = NULL;
-	MG_Node* vN = NULL;
+	MG_RefNode* vRefN = nullptr;
+	MG_Node* vN = nullptr;
 
 	Coord vParentC, vChildC;
 	PairCoord vParentChild;
