@@ -5,15 +5,14 @@
  * Purpose				: Singleton is an implementation of the singleton
  *						design pattern
  * Author				: MM Akkouh
- * Notes				: 
+ * Notes				: Uses the Meyers' Singleton pattern (C++11 guaranteed
+ *						  thread-safe local static initialization).
+ *						  Returns T* to preserve existing call-site syntax.
  */
 
 
 #pragma once
 
-
-#include <iostream>
-#include <memory>
 
 #include "nova/glob/typedef.h"
 
@@ -28,16 +27,11 @@ private:
 	Singleton() {}
 
 public:
-	inline static std::shared_ptr<T> Instance()
+	static T* Instance()
 	{
-		if (!myInstance)
-			myInstance = std::shared_ptr<T>(new T());
-
-		return myInstance;
+		static T instance;
+		return &instance;
 	}
-
-private:
-	static std::shared_ptr<T> myInstance;
 };
 
 

@@ -11,9 +11,6 @@ using namespace MG;
 
 
 /* class MG_FileError */
-template<>
-MG_FileErrorPtr MG_SFileError::myInstance = nullptr;
-
 MG_FileError::MG_FileError() : mySavedCerr(nullptr)
 {}
 
