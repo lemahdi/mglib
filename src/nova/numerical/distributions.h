@@ -8,19 +8,20 @@
  *
  * Updates				: 13 MAR 2011 by G El Boury - more consistent cumulative function
  *						: 22 AUG 2011 by MM Akkouh - replacing old functions by GSL functions
- *						: 2026 - replaced GSL distribution functions with C++17 <cmath> implementations
  */
 
 
 #pragma once
 
 
-#include <cmath>
 #include <iostream>
 #include <vector>
 
 #include "nova/glob/object.h"
 #include "nova/numerical/random.h"
+
+#include "gsl/gsl_randist.h"
+#include "gsl/gsl_cdf.h"
 
 
 MG_NAMESPACE_BEGIN
@@ -58,8 +59,8 @@ protected:
 class MG_NormalDist : public MG_RandDist
 {
 public:
-	/* Sampling algorithm hint (kept for API compatibility; all map to the polar method) */
 	enum NOR_METH { NONE, ZIGGURAT, RATIO };
+	typedef double (*MG_GaussRandFunc) (const gsl_rng* aGSLRndFunc, double aSigma);
 
 public:
 	/* Constructors / Destructor */
@@ -71,7 +72,7 @@ public:
 
 	MG_NormalDist(const MG_RandomPtr& aRandGen, const NOR_METH& aMeth = NONE, const double& aSigma = 1);
 
-	virtual ~MG_NormalDist() {}
+	virtual ~MG_NormalDist();
 
 public:
 	/* Engine */
@@ -87,8 +88,9 @@ public:
 	static double InvCdfFunc	(const double& aP);
 
 private:
-	NOR_METH	myMeth;
-	double		mySigma;
+	NOR_METH			myMeth;
+	double				mySigma;
+	MG_GaussRandFunc	myFunc;
 
 };
 

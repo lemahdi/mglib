@@ -20,6 +20,8 @@
 
 #include "gsl/gsl_rng.h"
 #include "gsl/gsl_qrng.h"
+#include "gsl/gsl_randist.h"
+#include "gsl/gsl_cdf.h"
 #include "gsl/gsl_interp.h"
 #include "gsl/gsl_nan.h"
 #include "gsl/gsl_sys.h"

@@ -26,7 +26,7 @@ It was originally built for Windows/Excel using the [XLW](http://xlw.sourceforge
 |------|----------------|
 | C++ compiler | GCC 9 / Clang 10 / MSVC 2019 |
 | CMake | 3.10 |
-| GNU Scientific Library (GSL) | 2.0 |
+| GNU Scientific Library (GSL) | 2.7 |
 | Flex | 2.6 |
 | Bison | 3.0 |
 
@@ -138,6 +138,16 @@ Supported functions: `MAX`, `MIN`, `ABS`, `EXP`, `LOG`, `POW`, `IF`, `LIBOR`
 
 The `src/xlw/` and `app/mgxll/` directories contain the Excel XLL integration built with the XLW library.
 This layer is excluded from the CMake build on Linux/macOS.
+
+---
+
+## GSL dependency
+
+MGlib depends on the [GNU Scientific Library (GSL)](https://www.gnu.org/software/gsl/).
+
+- **Currently tested against**: GSL 2.7.1 (Ubuntu 24.04 / Homebrew)
+- **Recommended upgrade target**: GSL 2.8 — see [`docs/gsl-migration-plan.md`](docs/gsl-migration-plan.md)
+- **Alternative library evaluation**: see [`docs/benchmark-gsl-alternatives.md`](docs/benchmark-gsl-alternatives.md)
 
 ---
 
