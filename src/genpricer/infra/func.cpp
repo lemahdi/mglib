@@ -274,9 +274,6 @@ void MG_LiborFunc::SetModel(const MG_PricingModelPtr& aMdl)
 		MG_THROW("LiborFunc: model is not of type MG_IRPricingModel.");
 }
 
-template <>
-MG_FuncBuilderPtr MG_SFuncBuilder::myInstance = nullptr;
-
 void MG_FuncBuilder::Init()
 {
 	// Basic functions
