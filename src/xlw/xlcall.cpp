@@ -27,7 +27,14 @@
 */
 
 #define cxloper12Max 255
+
+/* In 64-bit Excel the callback entry point is MdCallBack12Ex;
+   in 32-bit Excel it is MdCallBack12.  Both have the same signature. */
+#ifdef _WIN64
+#define EXCEL12ENTRYPT "MdCallBack12Ex"
+#else
 #define EXCEL12ENTRYPT "MdCallBack12"
+#endif
 
 typedef int (PASCAL *EXCEL12PROC) (int xlfn, int coper, LPXLOPER12 *rgpxloper12, LPXLOPER12 xloper12Res);
 
@@ -52,13 +59,6 @@ void FetchExcel12EntryPt(void)
 
 int _cdecl Excel12(int xlfn, LPXLOPER12 operRes, int count, ...)
 {
-
-#ifdef _WIN64
-
-    return(xlretFailed);
-
-#else
-
     LPXLOPER12 rgxloper12[cxloper12Max];
     va_list ap;
     int ioper;
@@ -84,18 +84,10 @@ int _cdecl Excel12(int xlfn, LPXLOPER12 operRes, int count, ...)
         }
     }
     return(mdRet);
-
-#endif
 }
 
 int pascal Excel12v(int xlfn, LPXLOPER12 operRes, int count, LPXLOPER12 opers[])
 {
-#ifdef _WIN64
-
-    return(xlretFailed);
-
-#else
-
     int mdRet;
 
     FetchExcel12EntryPt();
@@ -108,6 +100,4 @@ int pascal Excel12v(int xlfn, LPXLOPER12 operRes, int count, LPXLOPER12 opers[])
         mdRet = (pexcel12)(xlfn, count, &opers[0], operRes);
     }
     return(mdRet);
-
-#endif
 }

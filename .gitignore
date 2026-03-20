@@ -81,3 +81,4 @@ app/mgxll/xl_iface/Book7.xlsx
 /src/xlw/xlw.vcxproj.user
 /ipch
 MGlib.opensdf
+tests/__pycache__

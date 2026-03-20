@@ -1,6 +1,6 @@
 
 /*
- Copyright (C) 1998, 1999, 2001, 2002, 2003, 2004 Jérôme Lecomte
+ Copyright (C) 1998, 1999, 2001, 2002, 2003, 2004 Jï¿½rï¿½me Lecomte
  Copyright (C) 2007, 2008 Eric Ehlers
  Copyright (C) 2009 Narinder S Claire
 
@@ -287,7 +287,7 @@ namespace {
 //! Needed by IsCalledByFuncWiz.
 typedef struct _EnumStruct {
     bool bFuncWiz;
-    short hwndXLMain;
+    HWND hwndXLMain;
 }
 EnumStruct, FAR * LPEnumStruct;
 
@@ -298,13 +298,13 @@ bool CALLBACK EnumProc(HWND hwnd, LPEnumStruct pEnum) {
     // first check the class of the window.  Will be szXLDialogClass
     // if function wizard dialog is up in Excel
     char rgsz[CLASS_NAME_BUFFER];
-    GetClassName(hwnd, (LPSTR)rgsz, CLASS_NAME_BUFFER);
-    if (2 == CompareString(MAKELCID(MAKELANGID(LANG_ENGLISH,
+    GetClassNameA(hwnd, (LPSTR)rgsz, CLASS_NAME_BUFFER);
+    if (2 == CompareStringA(MAKELCID(MAKELANGID(LANG_ENGLISH,
         SUBLANG_ENGLISH_US),SORT_DEFAULT), NORM_IGNORECASE,
-        (LPSTR)rgsz,  (lstrlen((LPSTR)rgsz)>lstrlen("bosa_sdm_XL"))
-        ? lstrlen("bosa_sdm_XL"):-1, "bosa_sdm_XL", -1)) {
+        (LPSTR)rgsz,  (lstrlenA((LPSTR)rgsz)>lstrlenA("bosa_sdm_XL"))
+        ? lstrlenA("bosa_sdm_XL"):-1, "bosa_sdm_XL", -1)) {
 
-        if(LOWORD( GetParent(hwnd)) == pEnum->hwndXLMain) {
+        if(GetParent(hwnd) == pEnum->hwndXLMain) {
             pEnum->bFuncWiz = TRUE;
             return false;
         }
@@ -316,16 +316,28 @@ bool CALLBACK EnumProc(HWND hwnd, LPEnumStruct pEnum) {
 } // empty namespace
 
 bool xlw::XlfExcel::IsCalledByFuncWiz() const {
-    XLOPER xHwndMain;
     EnumStruct enm;
+    enm.bFuncWiz = false;
+    enm.hwndXLMain = NULL;
 
-    if (Excel4_(xlGetHwnd, &xHwndMain, 0) == xlretSuccess) {
-        enm.bFuncWiz = false;
-        enm.hwndXLMain = xHwndMain.val.w;
-        EnumWindows((WNDENUMPROC) EnumProc,
-            (LPARAM) ((LPEnumStruct)  &enm));
-        return enm.bFuncWiz;
+    if (excel12_) {
+        XLOPER12 xHwndMain12;
+        if (Excel12(xlGetHwnd, &xHwndMain12, 0) == xlretSuccess) {
+            enm.hwndXLMain = (HWND)(LONG_PTR)xHwndMain12.val.w;
+        } else {
+            return false;
+        }
+    } else {
+        XLOPER xHwndMain;
+        if (Excel4_(xlGetHwnd, &xHwndMain, 0) == xlretSuccess) {
+            enm.hwndXLMain = (HWND)(LONG_PTR)(WORD)xHwndMain.val.w;
+        } else {
+            return false;
+        }
     }
-    return false;    //safe case: Return false if not sure
+
+    EnumWindows((WNDENUMPROC) EnumProc,
+        (LPARAM) ((LPEnumStruct)  &enm));
+    return enm.bFuncWiz;
 }
 
