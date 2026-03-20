@@ -1,0 +1,17 @@
+; xlcall32.def – module-definition file for generating an x64 stub import library
+; for xlcall32.dll (the Excel C API helper DLL shipped with Excel).
+;
+; Usage (run from repository root during Windows CI):
+;   lib.exe /DEF:lib\win\x64\xlcall32.def /MACHINE:X64 /OUT:lib\win\x64\xlcall32.lib /NOLOGO
+;
+; The resulting lib satisfies the linker when building the 64-bit XLL.
+; At runtime Excel provides the real XLCALL32.DLL; the XLW framework
+; also loads it explicitly via LoadLibrary/GetProcAddress in XlfExcel::InitLibrary.
+
+LIBRARY XLCall32
+
+EXPORTS
+    Excel4
+    Excel4v
+    LPenHelper
+    XLCallVer

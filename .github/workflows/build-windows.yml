@@ -1,0 +1,85 @@
+name: Build and Validate Windows XLL
+
+on:
+  push:
+    branches: [ "master", "main", "copilot/**" ]
+  pull_request:
+    branches: [ "master", "main" ]
+
+jobs:
+  build-xll:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      # ── toolchain ───────────────────────────────────────────────────────────
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      # ── x64 stub xlcall32.lib ───────────────────────────────────────────────
+      # The bundled lib/win/xlcall32.lib is Win32.  For the x64 build we generate
+      # a stub import library from a .def file using the MSVC lib.exe tool.
+      - name: Generate x64 xlcall32.lib
+        shell: pwsh
+        run: |
+          # Locate lib.exe (x64-host variant) from the VS installation
+          $libExe = & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" `
+              -latest -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 `
+              -find "VC\Tools\MSVC\**\bin\Hostx64\x64\lib.exe" | Select-Object -First 1
+          if (-not $libExe) {
+              # Fallback: use lib.exe from PATH (set by setup-msbuild)
+              $libExe = (Get-Command lib.exe -ErrorAction SilentlyContinue).Source
+          }
+          if (-not $libExe) { Write-Error "lib.exe not found"; exit 1 }
+          Write-Host "Using lib.exe: $libExe"
+
+          New-Item -ItemType Directory -Force -Path lib\win\x64 | Out-Null
+          & $libExe /DEF:lib\win\x64\xlcall32.def /MACHINE:X64 /OUT:lib\win\x64\xlcall32.lib /NOLOGO
+          if ($LASTEXITCODE -ne 0) { Write-Error "lib.exe failed (exit $LASTEXITCODE)"; exit 1 }
+          Write-Host "Generated lib\win\x64\xlcall32.lib"
+
+      # ── Win32 build ─────────────────────────────────────────────────────────
+      # The PreBuildEvent in mgxll.vcxproj runs xlwIfaceGen.exe to regenerate
+      # xl_justatest.cpp from justatest.h.  The pre-generated file is already
+      # committed, so a non-zero exit from the generator is not fatal.
+      - name: Build XLL – Release|Win32
+        shell: pwsh
+        run: |
+          msbuild MGlib.sln /t:mgxll /p:Configuration=Release /p:Platform=Win32 `
+              /m /nologo /verbosity:minimal
+          if ($LASTEXITCODE -ne 0) { Write-Error "Win32 build failed"; exit 1 }
+
+      # ── x64 build ───────────────────────────────────────────────────────────
+      - name: Build XLL – Release|x64
+        shell: pwsh
+        run: |
+          msbuild MGlib.sln /t:mgxll /p:Configuration=Release /p:Platform=x64 `
+              /m /nologo /verbosity:minimal
+          if ($LASTEXITCODE -ne 0) { Write-Error "x64 build failed"; exit 1 }
+
+      # ── validation ──────────────────────────────────────────────────────────
+      - name: Validate Win32 XLL
+        shell: pwsh
+        run: python tests/validate_xll.py --xll bin\win\Release\mgxll.xll
+
+      - name: Validate x64 XLL
+        shell: pwsh
+        run: python tests/validate_xll.py --xll bin\win\x64\Release\mgxll.xll
+
+      # ── artifacts ───────────────────────────────────────────────────────────
+      - name: Upload Win32 XLL
+        uses: actions/upload-artifact@v4
+        with:
+          name: mgxll-win32-release
+          path: bin\win\Release\mgxll.xll
+          retention-days: 30
+
+      - name: Upload x64 XLL
+        uses: actions/upload-artifact@v4
+        with:
+          name: mgxll-x64-release
+          path: bin\win\x64\Release\mgxll.xll
+          retention-days: 30

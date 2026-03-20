@@ -149,7 +149,7 @@
     <Link>
       <AdditionalDependencies>xlcall32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>../../bin/win/x64/$(Configuration)/$(ProjectName).xll</OutputFile>
-      <AdditionalLibraryDirectories>../../lib/win;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../lib/win/x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
@@ -215,7 +215,7 @@
     <Link>
       <AdditionalDependencies>xlcall32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>../../bin/win/x64/$(Configuration)/$(ProjectName).xll</OutputFile>
-      <AdditionalLibraryDirectories>../../lib/win;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../lib/win/x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
