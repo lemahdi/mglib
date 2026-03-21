@@ -1,0 +1,14 @@
+{
+  "recommendations": [
+    // C++ language support and IntelliSense
+    "ms-vscode.cpptools",
+    // CMake language support (syntax highlighting, hover)
+    "twxs.cmake",
+    // CMake Tools: configure, build, debug from the status bar
+    "ms-vscode.cmake-tools",
+    // Flex / Bison grammar file highlighting
+    "faustinoaq.lex-flex-yacc-bison",
+    // Spell-checker for comments and documentation
+    "streetsidesoftware.code-spell-checker"
+  ]
+}
