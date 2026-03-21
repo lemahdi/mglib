@@ -4,7 +4,7 @@
  Copyright (C) 2007, 2008 Eric Ehlers
 
  This file is part of XLW, a free-software/open-source C++ wrapper of the
- Excel C API - http://xlw.sourceforge.net/
+ Excel C API - https://xlw.github.io/
 
  XLW is free software: you can redistribute it and/or modify it under the
  terms of the XLW license.  You should have received a copy of the
@@ -20,16 +20,12 @@
 \brief Implements the XlfArgDesc class.
 */
 
-// $Id: XlfArgDesc.cpp 474 2008-03-05 15:40:40Z ericehlers $
+// $Id$
 
 #include <xlw/XlfArgDesc.h>
 #include <xlw/XlfExcel.h>
 #include <iostream>
 #include <xlw/macros.h>
-// Stop header precompilation
-#ifdef _MSC_VER
-#pragma hdrstop
-#endif
 
 void xlw::XlfArgDesc::CheckNameLength()
 {
@@ -37,14 +33,6 @@ void xlw::XlfArgDesc::CheckNameLength()
         std::cerr << XLW__HERE__ << "Argument name \"" << name_.c_str()
         << "\" may be too long to fit the in the function wizard" << std::endl;
 };
-
-void xlw::XlfArgDesc::CheckDescEnd()
-{
-    std::string::size_type n = comment_.length();
-    static std::string mandatoryEnding(". ");
-    if (comment_.length() < 2 || comment_.substr(n-2) != mandatoryEnding)
-        comment_ += mandatoryEnding;
-}
 
 xlw::XlfArgDesc::XlfArgDesc()
 {}
@@ -61,7 +49,6 @@ xlw::XlfArgDesc::XlfArgDesc(const std::string& name,
     : name_(name), comment_(comment), type_(type)
 {
     CheckNameLength();
-    CheckDescEnd();
 }
 
 xlw::XlfArgDesc::~XlfArgDesc()
@@ -81,7 +68,6 @@ const std::string& xlw::XlfArgDesc::GetName() const
 void xlw::XlfArgDesc::SetComment(const std::string& comment)
 {
     comment_ = comment;
-    CheckDescEnd();
 }
 
 const std::string& xlw::XlfArgDesc::GetComment() const
@@ -97,6 +83,8 @@ std::string xlw::XlfArgDesc::GetType() const
         return XlfExcel::Instance().xlfXloperType();
     } else if (type_ == "XLW_WSTR") {
         return XlfExcel::Instance().wStrType();
+    } else if (type_ == "XLW_FP") {
+        return XlfExcel::Instance().fpType();
     } else {
         return type_;
     }

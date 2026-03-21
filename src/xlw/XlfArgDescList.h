@@ -4,7 +4,7 @@
  Copyright (C) 2007, 2008 Eric Ehlers
 
  This file is part of XLW, a free-software/open-source C++ wrapper of the
- Excel C API - http://xlw.sourceforge.net/
+ Excel C API - https://xlw.github.io/
 
  XLW is free software: you can redistribute it and/or modify it under the
  terms of the XLW license.  You should have received a copy of the
@@ -23,7 +23,7 @@
 \brief Class XlfArgDescList - Encapsulates an argument list
 */
 
-// $Id: XlfArgDescList.h 474 2008-03-05 15:40:40Z ericehlers $
+// $Id$
 
 #include <xlw/XlfArgDesc.h>
 #include <list>

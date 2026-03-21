@@ -4,7 +4,7 @@
  Copyright (C) 2009 Narinder S Claire
 
  This file is part of XLW, a free-software/open-source C++ wrapper of the
- Excel C API - http://xlw.sourceforge.net/
+ Excel C API - https://xlw.github.io/
 
  XLW is free software: you can redistribute it and/or modify it under the
  terms of the XLW license.  You should have received a copy of the
@@ -23,11 +23,12 @@
 \brief Some macros to consolidate XLW code.
 */
 
-// $Id: macros.h 514 2008-04-03 15:08:41Z ericehlers $
+// $Id$
 
 #include <xlw/XlfException.h>
 #include <xlw/XlfExcel.h>
 #include <xlw/CellMatrix.h>
+#include <xlw/TempMemory.h>
 
 #if defined(_MSC_VER)
 #pragma once
@@ -48,9 +49,10 @@ If necessary, frees the internal buffer maintained by XlfExcel for heap memory
 that is returned to Excel.
 \sa XlfExcel
 */
-#define EXCEL_BEGIN XlfExcel::Instance().FreeMemory(); \
+#define EXCEL_BEGIN \
 try \
-{
+{ \
+    UsesTempMemory whileInScopeUseTempMemory;
 
 /*! \defgroup cleanup_macros Cleanup Macros
 Use a cleanup macro at the end of each user defined function implemented in the
@@ -95,21 +97,7 @@ functions.
 } catch (...) { \
     return XlfOper::Error(xlerrValue); \
 }
-//! Cleanup macro for function with return type XlfOper4
-#define EXCEL_END_4 \
-} catch (XlfException&) { \
-    return 0; \
-} catch (std::exception& error){\
-    return XlfOper4(error.what());\
-} catch (std::string& error){\
-    return XlfOper4(error);\
-} catch (const char* error){\
-    return XlfOper4(error);\
-} catch (const CellMatrix& error){\
-    return XlfOper4(error);\
-} catch (...) { \
-    return XlfOper4::Error(xlerrValue); \
-}
+
 //! Cleanup macro for function with return type XlfOper12
 #define EXCEL_END_12 \
 } catch (XlfException&) { \
@@ -125,12 +113,39 @@ functions.
 } catch (...) { \
     return XlfOper12::Error(xlerrValue); \
 }
+//! Cleanup macro for command with return type int
+#define EXCEL_END_CMD \
+} catch (XlfException&) { \
+    return 0; \
+} catch (std::exception&){\
+    return 0;\
+} catch (std::string&){\
+    return 0;\
+} catch (const char*){\
+    return 0;\
+} catch (const CellMatrix&){\
+    return 0;\
+} catch (...) { \
+    return 0; \
+} \
+return 1;
+
+//! Cleanup macro for command with return type LPXLARRAY
+#define EXCEL_END_ARRAY \
+} catch (XlfException&) { \
+    return 0; \
+} catch (std::exception&){\
+    return 0;\
+} catch (std::string&){\
+    return 0;\
+} catch (const char*){\
+    return 0;\
+} catch (const CellMatrix&){\
+    return 0;\
+} catch (...) { \
+    return 0; \
+} \
+
 //@}
-
-
-#define XLW__HERE__ __FILE__ "(" _MAKESTRING(__LINE__) "): "
-#define _MAKESTRING(a) __MAKESTRING(a)
-#define __MAKESTRING(a) #a
-
 #endif
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -177,29 +177,25 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="clw\Dispatcher.h" />
-    <ClInclude Include="clw\FileConverter.h" />
-    <ClInclude Include="mgw\cpp_xloper.h" />
-    <ClInclude Include="mgw\TLS.h" />
-    <ClInclude Include="mgw\xl_array.h" />
-    <ClInclude Include="mgw\xloper.h" />
-    <ClInclude Include="mgw\xloper12.h" />
-    <ClInclude Include="cache\cached.h" />
-    <ClInclude Include="cache\xlcache.h" />
+    <!-- XLW 6.x headers -->
     <ClInclude Include="ArgList.h" />
-    <ClInclude Include="ArgListFactory.h" />
-    <ClInclude Include="ArgListFactoryHelper.h" />
     <ClInclude Include="CellMatrix.h" />
+    <ClInclude Include="CellMatrixPimpl.h" />
+    <ClInclude Include="CellValue.h" />
+    <ClInclude Include="CriticalSection.h" />
     <ClInclude Include="DoubleOrNothing.h" />
-    <ClInclude Include="ERR_Macros.h" />
     <ClInclude Include="EXCEL32_API.h" />
-    <ClInclude Include="macros.h" />
-    <ClInclude Include="MJmatrices.h" />
+    <ClInclude Include="HiResTimer.h" />
+    <ClInclude Include="MJCellMatrix.h" />
     <ClInclude Include="MyContainers.h" />
+    <ClInclude Include="NCmatrices.h" />
+    <ClInclude Include="PascalStringConversions.h" />
+    <ClInclude Include="Singleton.h" />
+    <ClInclude Include="TempMemory.h" />
+    <ClInclude Include="ThreadLocalStorage.h" />
     <ClInclude Include="Win32StreamBuf.h" />
-    <ClInclude Include="wrapper.h" />
-    <ClInclude Include="xlarray.h" />
-    <ClInclude Include="xlcall32.h" />
+    <ClInclude Include="XlFunctionRegistration.h" />
+    <ClInclude Include="XlOpenClose.h" />
     <ClInclude Include="XlfAbstractCmdDesc.h" />
     <ClInclude Include="XlfArgDesc.h" />
     <ClInclude Include="XlfArgDescList.h" />
@@ -207,71 +203,61 @@
     <ClInclude Include="XlfExcel.h" />
     <ClInclude Include="XlfException.h" />
     <ClInclude Include="XlfFuncDesc.h" />
-    <ClInclude Include="XlfMutex.h" />
     <ClInclude Include="XlfOper.h" />
-    <ClInclude Include="XlfOper12.h" />
-    <ClInclude Include="XlfOper4.h" />
-    <ClInclude Include="XlfOperImpl.h" />
-    <ClInclude Include="XlfOperImpl12.h" />
-    <ClInclude Include="XlfOperImpl4.h" />
+    <ClInclude Include="XlfOperProperties.h" />
     <ClInclude Include="XlfRef.h" />
-    <ClInclude Include="XlfStr.h" />
-    <ClInclude Include="XlFunctionRegistration.h" />
-    <ClInclude Include="XlOpenClose.h" />
+    <ClInclude Include="XlfServices.h" />
+    <ClInclude Include="XlfWindows.h" />
+    <ClInclude Include="eshared_ptr.h" />
+    <ClInclude Include="eshared_ptr_details.h" />
+    <ClInclude Include="macros.h" />
+    <ClInclude Include="xlarray.h" />
+    <ClInclude Include="xlcall32.h" />
     <ClInclude Include="xlw.h" />
+    <!-- MGlib cache layer -->
+    <ClInclude Include="cache\cached.h" />
+    <ClInclude Include="cache\xlcache.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="mgw\cpp_xloper.cpp" />
-    <ClCompile Include="mgw\GetTime.cpp" />
-    <ClCompile Include="mgw\TLS.cpp" />
-    <ClCompile Include="mgw\xl_array.cpp" />
-    <ClCompile Include="mgw\XllStrings.cpp" />
-    <ClCompile Include="mgw\xloper.cpp" />
-    <ClCompile Include="mgw\xloper12.cpp" />
+    <!-- XLW 6.x sources -->
+    <ClCompile Include="ArgList.cpp" />
+    <ClCompile Include="DoubleOrNothing.cpp" />
+    <ClCompile Include="HiResTimer.cpp" />
+    <ClCompile Include="MJCellMatrix.cpp" />
+    <ClCompile Include="NCmatrices.cpp" />
+    <ClCompile Include="PascalStringConversions.cpp" />
+    <ClCompile Include="TempMemory.cpp" />
+    <ClCompile Include="Win32StreamBuf.cpp" />
+    <ClCompile Include="XlFunctionRegistration.cpp" />
+    <ClCompile Include="XlOpenClose.cpp" />
+    <ClCompile Include="XlfAbstractCmdDesc.cpp" />
+    <ClCompile Include="XlfArgDesc.cpp" />
+    <ClCompile Include="XlfArgDescList.cpp" />
+    <ClCompile Include="XlfCmdDesc.cpp" />
+    <ClCompile Include="XlfExcel.cpp" />
+    <ClCompile Include="XlfFuncDesc.cpp" />
+    <ClCompile Include="XlfOperImpl.cpp" />
+    <ClCompile Include="XlfOperMG.cpp" />
+    <ClCompile Include="XlfRef.cpp" />
+    <ClCompile Include="XlfServices.cpp" />
+    <ClCompile Include="xlcall.cpp" />
+    <!-- MGlib cache layer -->
     <ClCompile Include="cache\cached.cpp" />
     <ClCompile Include="cache\xlcache.cpp">
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
       <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
       <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
     </ClCompile>
-    <ClCompile Include="ArgList.cpp" />
-    <ClCompile Include="CellMatrix.cpp" />
-    <ClCompile Include="Dispatcher.cpp" />
-    <ClCompile Include="DoubleOrNothing.cpp" />
-    <ClCompile Include="FileConverter.cpp" />
-    <ClCompile Include="MJmatrices.cpp" />
-    <ClCompile Include="MyContainers.cpp" />
-    <ClCompile Include="Win32StreamBuf.cpp" />
-    <ClCompile Include="xlarray.cpp" />
-    <ClCompile Include="xlcall.cpp" />
-    <ClCompile Include="XlfAbstractCmdDesc.cpp" />
-    <ClCompile Include="XlfArgDesc.cpp" />
-    <ClCompile Include="XlfArgDescList.cpp" />
-    <ClCompile Include="XlfCmdDesc.cpp" />
-    <ClCompile Include="XlfExcel.cpp" />
-    <ClCompile Include="XlfException.cpp" />
-    <ClCompile Include="XlfFuncDesc.cpp" />
-    <ClCompile Include="XlfOper.cpp" />
-    <ClCompile Include="XlfOper12.cpp" />
-    <ClCompile Include="XlfOper4.cpp" />
-    <ClCompile Include="XlfOperImpl.cpp" />
-    <ClCompile Include="XlfOperImpl12.cpp" />
-    <ClCompile Include="XlfOperImpl4.cpp" />
-    <ClCompile Include="XlfRef.cpp" />
-    <ClCompile Include="XlfStr.cpp" />
-    <ClCompile Include="XlFunctionRegistration.cpp" />
-    <ClCompile Include="XlOpenClose.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Win32StreamBuf.inl" />
-    <None Include="XlfAbstractCmdDesc.inl" />
-    <None Include="XlfExcel.inl" />
-    <None Include="XlfException.inl" />
-    <None Include="XlfOper.inl" />
-    <None Include="XlfOper12.inl" />
-    <None Include="XlfOper4.inl" />
     <None Include="XlfRef.inl" />
+    <None Include="xlw.def" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

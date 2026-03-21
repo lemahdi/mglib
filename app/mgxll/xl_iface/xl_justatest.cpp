@@ -14,7 +14,7 @@
 #include <ctime>
 #include <nova/utils/utils.h>
 
-#include <xlw/cache/cached.h>
+#include "xlw/cache/cached.h"
 
 namespace {
 const char* LibraryName = "MyTestLibrary";
