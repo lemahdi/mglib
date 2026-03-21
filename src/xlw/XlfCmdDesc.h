@@ -4,7 +4,7 @@
  Copyright (C) 2007, 2008 Eric Ehlers
 
  This file is part of XLW, a free-software/open-source C++ wrapper of the
- Excel C API - http://xlw.sourceforge.net/
+ Excel C API - https://xlw.github.io/
 
  XLW is free software: you can redistribute it and/or modify it under the
  terms of the XLW license.  You should have received a copy of the
@@ -23,16 +23,12 @@
 \brief Class XlfCmdDesc - Encapsulates Excel C macro command
 */
 
-// $Id: XlfCmdDesc.h 474 2008-03-05 15:40:40Z ericehlers $
+// $Id$
 
 #include <xlw/XlfAbstractCmdDesc.h>
 
 #if defined(_MSC_VER)
 #pragma once
-#endif
-
-#if defined(DEBUG_HEADERS)
-#pragma DEBUG_HEADERS
 #endif
 
 namespace xlw {
@@ -47,7 +43,12 @@ namespace xlw {
         //! \name Structors
         //@{
         //! Ctor.
-        XlfCmdDesc(const std::string& name, const std::string& alias, const std::string& comment, const bool hidden);
+        XlfCmdDesc(const std::string& name,
+                   const std::string& alias,
+                   const std::string& comment,
+                   const std::string& menu,
+                   const std::string& menuText,
+                   bool hidden);
         //! Dtor.
         ~XlfCmdDesc();
         //@}
@@ -55,27 +56,32 @@ namespace xlw {
         //! \name Management of command properties
         //@{
         //! Adds the command to an Excel menu bar.
-        int AddToMenuBar(const std::string& menu, const std::string& text);
+        int AddToMenuBar(const char* menu = 0, const char* text = 0);
         //! Is the command already in a menu bar?
         bool IsAddedToMenuBar();
         //! Activates/Deactivates the check box next to the command menu.
         int Check(bool) const;
+        void RemoveFromMenuBar();
         //@}
     protected:
         //! \name Registration
         //@{
         //! Registers the command with Excel.
-        int DoRegister(const std::string& dllName) const;
+        int DoRegister(const std::string& dllName, const std::string& suggestedHelpId) const;
         //! Unregisters the command with Excel.
         int DoUnregister(const std::string& dllName) const;
+        //!Generates the documentation in Sandcastle format
+        virtual void DoMamlDocs(std::ostream& ostream) const;
         //@}
     private:
-      //! Menu in which the command is to be displayed.
-      std::string menu_;
-      //! Text in the menu.
-      std::string text_;
-      //! Hidden flag
-      bool hidden_;
+        //! Menu in which the command is to be displayed.
+        std::string menu_;
+        //! Text in the menu.
+        std::string text_;
+        //! Hidden flag
+        bool hidden_;
+        //! function ID returned from register
+        mutable double funcId_;
     };
 
 }

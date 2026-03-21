@@ -1,10 +1,7 @@
-//
-//
-//                                  DoubleOrNothing.h
-//
-//
+
 /*
- Copyright (C) 2006 Mark Joshi
+ Copyright (C) 2011 Narinder S Claire
+
 
  This file is part of XLW, a free-software/open-source C++ wrapper of the
  Excel C API - https://xlw.github.io/
@@ -17,32 +14,34 @@
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
-#ifndef DOUBLE_OR_NOTHING_H
-#define DOUBLE_OR_NOTHING_H
 
-#include <string>
-#include <xlw/CellMatrix.h>
+#ifndef SINGLETON_HEADER_GUARD
+#define SINGLETON_HEADER_GUARD
+
 
 namespace xlw {
+template<class Object>
+class singleton 
+{
+public:
 
-
-
-    class DoubleOrNothing
+    static Object & Instance()
     {
-    public:
-        DoubleOrNothing(const CellMatrix& cells, const std::string& identifier);
+        static Object theObject;
+        return theObject;
+    }
+    virtual ~singleton() {} 
 
-        bool IsEmpty() const;
-        double GetValueOrDefault(double defaultValue) const;
-
-
-
-    private:
-        bool Empty;
-        double Value;
-
-    };
-
+protected:
+    singleton(){}
+private:
+    singleton(const singleton &);
+    singleton & operator=(const singleton &);
+} ;
 }
 
-#endif
+
+
+
+
+#endif //  SINGLETON_HEADER_GUARD

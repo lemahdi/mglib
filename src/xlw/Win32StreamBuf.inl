@@ -3,7 +3,7 @@
  Copyright (C) 1998, 1999, 2001, 2002, 2003 Jérôme Lecomte
 
  This file is part of xlw, a free-software/open-source C++ wrapper of the
- Excel C API - http://xlw.sourceforge.net/
+ Excel C API - https://xlw.github.io/
 
  xlw is free software: you can redistribute it and/or modify it under the
  terms of the xlw license.  You should have received a copy of the
@@ -20,13 +20,7 @@
  * \ingroup utils
  */
 
-// $Id: Win32StreamBuf.inl 474 2008-03-05 15:40:40Z ericehlers $
-
-#ifdef NDEBUG
-#define INLINE inline
-#else
-#define INLINE
-#endif
+// $Id$
 
 namespace xlw {
 
@@ -34,7 +28,7 @@ namespace xlw {
     This method is called to dump stuff in the put area out to the file.
     We intercept it to send to debug window.
     */
-    INLINE int Win32StreamBuf::sync()
+    inline int Win32StreamBuf::sync()
     {
         SendToDebugWindow();
         buf_.erase();
@@ -45,7 +39,7 @@ namespace xlw {
     This method is called to dump stuff in the put area out to the file.
     We intercept it to send to debug window.
     */
-    INLINE int Win32StreamBuf::overflow(int ch)
+    inline Win32StreamBuf::int_type Win32StreamBuf::overflow(int_type ch)
     {
         if (!traits_type::eq_int_type(traits_type::eof(), ch))
         {

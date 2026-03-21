@@ -1,43 +1,32 @@
+/*
+ * Copyright : 2010-2024 by MG
+ * Version   : 0.1.22 (ported to XLW 6.x – uses XlfServices instead of cpp_xloper)
+ * Purpose   : MG_XL_Cached – Excel caller-info helpers
+ */
+
 #include "xlw/cache/xlcache.h"
-#include "xlw/mgw/cpp_xloper.h"
+#include <xlw/XlfOper.h>
+#include <xlw/XlfRef.h>
+#include <xlw/XlfServices.h>
 #include "nova/glob/exception.h"
 
-#include <locale>
-#include <sstream>
-
-
 using namespace MG;
-using namespace std;
-
+using namespace xlw;
 
 void MG_XL_Cached::GetCaller(Coord& aTopC, Coord& aBottomC)
 {
-	cpp_xloper vRetCaller;
-	if (vRetCaller.Excel(xlfCaller) != xlretSuccess)
-		MG_THROW("Cannot call Excel function xlfCaller.");
-	aTopC.first		= vRetCaller.GetTopRow();
-	aTopC.second	= vRetCaller.GetLeftColumn();
-	aBottomC.first	= vRetCaller.GetBottomRow();
-	aBottomC.second	= vRetCaller.GetRightColumn();
+    // GetCallingCell() returns an XlfOper wrapping an xltypeRef/xltypeSRef
+    XlfOper caller = XlfServices.Information.GetCallingCell();
+    XlfRef ref = caller.AsRef("GetCaller");
+
+    aTopC.first = ref.GetRowBegin();
+    aTopC.second = ref.GetColBegin();
+    aBottomC.first = ref.GetRowEnd() - 1;   // GetRowEnd() is one-past-end
+    aBottomC.second = ref.GetColEnd() - 1;
 }
 
-void MG_XL_Cached::GetSheetNm(string& aSheetName)
+void MG_XL_Cached::GetSheetNm(std::string& aSheetName)
 {
-	cpp_xloper vRetCaller, vRetSheetname;
-
-	if (vRetCaller.Excel(xlfCaller) != xlretSuccess)
-		MG_THROW("Cannot call Excel function xlfCaller.");
-
-	if (vRetSheetname.Excel(xlSheetNm, 1, &vRetCaller) != xlretSuccess)
-		MG_THROW("Cannot call Excel function xlSheetNm.");
-
-	XCHAR* vSheetName = vRetSheetname.ExtractXloper12()->val.str;
-	wstring vSN = wstring(vSheetName);
-	string vTmp(vSN.begin(), vSN.end());
-
-	string::iterator vIt(vTmp.begin());
-	size_t vSize = *vIt;
-	++vIt;
-	aSheetName.assign(vIt, vIt+vSize);
+    XlfOper caller = XlfServices.Information.GetCallingCell();
+    aSheetName = XlfServices.Information.GetSheetName(caller);
 }
-

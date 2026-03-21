@@ -1,16 +1,129 @@
-# XLW Upgrade Assessment
+# XLW Migration — XLW 4.0.0f0 → XLW 6.0.0f0
 
-## Current State
+## Status: **COMPLETED**
 
-MGlib bundles **XLW 4.0.0f0** (vendored in `src/xlw/`) — an open-source C++
-wrapper of the Excel C API originally hosted on SourceForge
-(http://xlw.sourceforge.net/).  The version string is declared in
-`src/xlw/EXCEL32_API.h`:
+MGlib has been upgraded from **XLW 4.0.0f0** (2009) to **XLW 6.0.0f0**
+(GitHub master, https://github.com/xlw/xlw).
 
+---
+
+## What Changed
+
+### `src/xlw/` — XLW library sources replaced
+
+| Old (4.0.0f0) | New (6.0.0f0) | Notes |
+|---------------|---------------|-------|
+| `XlfOper.h/.cpp` (monolithic, `XlfOperImpl` delegation) | `XlfOper.h` (header-only template, XLOPER12 native) | API-compatible for callers |
+| `XlfOper4.h/.cpp`, `XlfOper12.h/.cpp` | Removed — merged into single `XlfOper` | `typedef XlfOper XlfOper12` kept for compat |
+| `XlfOperImpl.h`, `XlfOperImpl4.h/.cpp`, `XlfOperImpl12.h/.cpp` | `XlfOperImpl.cpp` only (no header) | Implementation detail |
+| `CellMatrix.cpp` | Header-only pimpl (`CellMatrixPimpl.h`, `CellValue.h`) | No `.cpp` needed |
+| `MJmatrices.h/.cpp` | `MJCellMatrix.h/.cpp` | Renamed |
+| `Dispatcher.cpp`, `FileConverter.cpp` | Removed | Merged upstream |
+| `XlfException.cpp`, `XlfStr.h/.cpp` | Removed | Inlined into `XlfOper.h` |
+| `XlfMutex.h` | `CriticalSection.h`, `ThreadLocalStorage.h` | Replaced |
+| `macros.h` (`EXCEL_BEGIN` uses `FreeMemory()`) | `macros.h` (`EXCEL_BEGIN` uses `UsesTempMemory`) | Semantic change — same effect |
+| `wrapper.h`, `ERR_Macros.h` | Removed | Unused |
+| `ArgListFactory.h`, `ArgListFactoryHelper.h` | Removed | No longer needed |
+| `mgw/` (cpp_xloper, xloper/xloper12 wrappers) | Removed | Replaced by `XlfServices` |
+| `clw/` (Dispatcher, FileConverter) | Removed | Merged into core sources |
+
+### New files added
+
+| File | Purpose |
+|------|---------|
+| `TempMemory.h/.cpp` | Per-call Excel memory arena (used by `UsesTempMemory` in `EXCEL_BEGIN`) |
+| `XlfServices.h/.cpp` | High-level Excel service functions (`GetCallingCell`, `GetSheetName`, …) |
+| `XlfOperProperties.h` | XLOPER12 field accessors |
+| `XlfWindows.h` | Windows SDK include with proper version guards |
+| `CriticalSection.h`, `ThreadLocalStorage.h` | Thread-safety helpers |
+| `Singleton.h` | XLW-internal singleton helper |
+| `eshared_ptr.h`, `eshared_ptr_details.h` | Enhanced shared pointer |
+| `PascalStringConversions.h/.cpp` | Pascal-string ↔ `std::string` |
+| `HiResTimer.h/.cpp` | High-resolution timer |
+| `NCmatrices.h/.cpp` | Non-copyable matrix type |
+
+### MGlib-specific extensions preserved
+
+| Extension | Location | Notes |
+|-----------|----------|-------|
+| `XlfOper::AsMGDate()` | `src/xlw/XlfOperMG.cpp` | Converts Excel serial-date → `MG_Date` |
+| `XlfOper::AsMGGenDate()` | `src/xlw/XlfOperMG.cpp` | Converts string or serial-date → `MG_GenericDate` |
+| `XlfOper::AsMGXLObject()` | `src/xlw/XlfOperMG.cpp` | Looks up cached `MG_XLObject` by reference string |
+| `MG_Cache` / `MG_SCache` | `src/xlw/cache/cached.h/.cpp` | Object persistence cache |
+| `MG_XL_Cached::GetCaller()` | `src/xlw/cache/xlcache.h/.cpp` | Ported from `cpp_xloper` → `XlfServices` |
+
+### `app/mgxll/cpp_iface/justatest.h`
+
+Removed `#include <xlw/Wrapper.h>` (no longer exists in XLW 6.x; was not used).
+
+### `app/mgxll/xl_iface/xl_justatest.cpp`
+
+Changed `#include <xlw/cache/cached.h>` → `#include "xlw/cache/cached.h"` (MGlib
+local file, not part of the XLW public API).
+
+---
+
+## Key API Differences: 4.x → 6.x
+
+### `EXCEL_BEGIN` macro
+
+| 4.0.0f0 | 6.0.0f0 |
+|---------|---------|
+| `XlfExcel::Instance().FreeMemory(); try {` | `try { UsesTempMemory whileInScopeUseTempMemory;` |
+
+The semantics are equivalent: both ensure the per-call Excel memory arena is
+reclaimed when the function returns.  The 6.x approach uses RAII.
+
+### `XlfOper` internal storage
+
+| 4.0.0f0 | 6.0.0f0 |
+|---------|---------|
+| Union of `LPXLOPER` / `LPXLOPER12`, selected at runtime | Always `LPXLOPER12` (64-bit Excel only) |
+
+`LPXLFOPER` is `typedef LPXLOPER12 LPXLFOPER;` in 6.x — the generated
+`xl_justatest.cpp` uses `LPXLFOPER` throughout and remains unchanged.
+
+### `MG_XL_Cached::GetCaller()` / `GetSheetNm()`
+
+| 4.0.0f0 (via `cpp_xloper`) | 6.0.0f0 (via `XlfServices`) |
+|---------------------------|------------------------------|
+| `cpp_xloper vRetCaller; vRetCaller.Excel(xlfCaller)` | `XlfServices.Information.GetCallingCell()` |
+| `vRetCaller.GetTopRow()` | `caller.AsRef().GetRowBegin()` |
+| `vRetSheetname.Excel(xlSheetNm, ...)` | `XlfServices.Information.GetSheetName(caller)` |
+
+---
+
+## Build
+
+The XLL is still built via `msbuild app\mgxll\mgxll.vcxproj` — unchanged from
+the previous session's CI fix.  The `src/xlw/xlw.vcxproj` lists all 6.x
+sources and the two MGlib-specific additions (`XlfOperMG.cpp`,
+`cache/xlcache.cpp`).
+
+### Validation
+
+```powershell
+# After building on Windows:
+python tests/validate_xll.py --xll bin\win\Release\mgxll.xll --arch win32 --verbose
+python tests/validate_xll.py --xll bin\win\x64\Release\mgxll.xll --arch x64 --verbose
 ```
-XLW_HEX_VERSION  0x040000f0
-XLW_VERSION      "4.0.0f0"
-```
+
+---
+
+## Related Files
+
+| Path | Purpose |
+|------|---------|
+| `src/xlw/` | XLW 6.0.0f0 headers + sources (vendored) |
+| `src/xlw/xlw.vcxproj` | VS project for XLW static library |
+| `src/xlw/EXCEL32_API.h` | Version: 6.0.0f0 |
+| `src/xlw/XlfOperMG.cpp` | MGlib-specific `XlfOper` extensions (new file) |
+| `src/xlw/cache/` | MGlib object-persistence cache (preserved, updated) |
+| `app/mgxll/cpp_iface/justatest.h` | C++ function declarations |
+| `app/mgxll/xl_iface/xl_justatest.cpp` | Auto-generated Excel C API wrappers |
+| `tests/validate_xll.py` | Post-build XLL validator |
+| `.github/workflows/build-windows.yml` | CI: build + validate Win32 & x64 XLLs |
+
 
 This release dates from around 2009 and targets VS2008/2010 + Excel 2003/2007.
 The bundled code already includes `XlfOper12.h` / `XlfOperImpl12.cpp` which are

@@ -2,11 +2,12 @@
 /*
  Copyright (C) 1998, 1999, 2001, 2002, 2003, 2004 Jérôme Lecomte
  Copyright (C) 2007, 2008 Eric Ehlers
- Copyright (C) 2009 Narinder S Claire
+ Copyright (C) 2009 2011 Narinder S Claire
+ Copyright (C) 2011 John Adcock
 
 
  This file is part of XLW, a free-software/open-source C++ wrapper of the
- Excel C API - http://xlw.sourceforge.net/
+ Excel C API - https://xlw.github.io/
 
  XLW is free software: you can redistribute it and/or modify it under the
  terms of the XLW license.  You should have received a copy of the
@@ -22,33 +23,12 @@
 \brief Implements the XlfFuncDesc class.
 */
 
-// $Id: XlfFuncDesc.cpp 474 2008-03-05 15:40:40Z ericehlers $
+// $Id$
 
 #include <xlw/XlfFuncDesc.h>
 #include <xlw/XlfException.h>
-#include <xlw/XlfOper4.h>
-
-// Stop header precompilation
-#ifdef _MSC_VER
-#pragma hdrstop
-#endif
-
-//! Internal implementation of XlfFuncDesc.
-struct xlw::XlfFuncDescImpl
-{
-    //! Ctor.
-    XlfFuncDescImpl(xlw::XlfFuncDesc::RecalcPolicy recalcPolicy, bool Threadsafe,
-        const std::string& category): recalcPolicy_(recalcPolicy), Threadsafe_(Threadsafe), category_(category)
-        {}
-    //! Recalculation policy.
-    xlw::XlfFuncDesc::RecalcPolicy recalcPolicy_;
-    //! Category where the function is displayed in the function wizard.
-    std::string category_;
-    //! List of the argument descriptions of the function.
-    XlfArgDescList arguments_;
-    //! Flag indicating whether this function is threadsafe in Excel 2007.
-    bool Threadsafe_;
-};
+#include <xlw/XlfOper.h>
+#include <algorithm>
 
 /*!
 \param name
@@ -59,18 +39,25 @@ XlfAbstractCmdDesc::XlfAbstractCmdDesc.
 \param recalcPolicy Policy to recalculate the cell.
 \param Threadsafe Whether this function should be registered threadsafe under Excel 12
 \param returnTypeCode The excel code for the datatype of the return value
+\param helpID the help id for the function in the chm help file
+\param Asynchronous does this function run Asynchronously
+\param MacroSheetEquivalent should calling Excel Macro function be allowed, incompatible with multi-threading
+\param ClusterSafe Can function be run on a cluster in Excel 2010
 */
 xlw::XlfFuncDesc::XlfFuncDesc(const std::string& name, const std::string& alias,
                          const std::string& comment, const std::string& category,
-                         RecalcPolicy recalcPolicy, bool Threadsafe, const std::string &returnTypeCode)
-    : XlfAbstractCmdDesc(name, alias, comment), impl_(0), returnTypeCode_(returnTypeCode)
+                         RecalcPolicy recalcPolicy, bool Threadsafe, const std::string &returnTypeCode,
+                         const std::string &helpID,
+                         bool Asynchronous, bool MacroSheetEquivalent,
+                         bool ClusterSafe)
+    : XlfAbstractCmdDesc(name, alias, comment),helpID_(helpID),returnTypeCode_(returnTypeCode),
+    impl_(new XlfFuncDescImpl(recalcPolicy,Threadsafe,category, Asynchronous, MacroSheetEquivalent, ClusterSafe)),
+    funcId_(InvalidFunctionId)
 {
-    impl_ = new XlfFuncDescImpl(recalcPolicy,Threadsafe,category);
 }
 
 xlw::XlfFuncDesc::~XlfFuncDesc()
 {
-    delete impl_;
 }
 
 /*!
@@ -96,20 +83,48 @@ void xlw::XlfFuncDesc::SetArguments(const XlfArgDescList& arguments)
 Registers the function as a function in excel.
 \sa XlfExcel, XlfCmdDesc.
 */
-int xlw::XlfFuncDesc::DoRegister(const std::string& dllName) const
+int xlw::XlfFuncDesc::DoRegister(const std::string& dllName, const std::string& suggestedHelpId) const
 {
-    //live_ = true;
-    return RegisterAs(dllName, 1);
+    if (returnTypeCode_.empty())
+        returnTypeCode_= XlfExcel::Instance().xlfOperType();
+    if(returnTypeCode_ == "XLW_FP")
+        returnTypeCode_= XlfExcel::Instance().fpType();
+    return RegisterAs(dllName, suggestedHelpId, 1);
 }
 
 int xlw::XlfFuncDesc::DoUnregister(const std::string& dllName) const
 {
-    //live_ = false;
+    if(funcId_ != InvalidFunctionId)
+    {
+        // slightly pointless as it doesn't work but we're supposed to deregister
+        // the name as well as the function
+        XlfExcel::Instance().Call12(xlfSetName, NULL, 1, XlfOper(GetAlias()));
 
-    XlfArgDescList arguments = GetArguments();
-    size_t nbargs = arguments.size();
-    std::string args(XlfExcel::Instance().xlfOperType());
+        XlfOper unreg;
+        int err = XlfExcel::Instance().Call12(xlfUnregister, unreg, 1, XlfOper(funcId_));
+        return err;
+    }
+    else
+    {
+        return xlretSuccess;
+    }
+}
+
+// function Excel4 calls always as using XLOPER12 seem problematic
+int xlw::XlfFuncDesc::RegisterAs(const std::string& dllName, const std::string& suggestedHelpId, double mode_) const
+{
+    // alias arguments
+    XlfArgDescList& arguments = impl_->arguments_;
+
+    int nbargs = static_cast<int>(arguments.size());
+    std::string args(returnTypeCode_);
     std::string argnames;
+
+    // the synchronous part of an asynchronous function returns void
+    if (XlfExcel::Instance().excel14() && impl_->Asynchronous_)
+    {
+        args = ">";
+    }
 
     XlfArgDescList::const_iterator it = arguments.begin();
     while (it != arguments.end())
@@ -120,41 +135,19 @@ int xlw::XlfFuncDesc::DoUnregister(const std::string& dllName) const
         if (it != arguments.end())
             argnames+=", ";
     }
-
-    double funcId;
-    int err = RegisterAs(dllName, 0, &funcId);
-
-    XlfOper unreg;
-    //err = Excel4(xlfUnregister, unreg, 1, XlfOper(funcId));
-    //err = static_cast<int>(XlfExcel::Instance().Call4(xlfUnregister, unreg, 1, XlfOper(funcId)));
-    err = static_cast<int>(XlfExcel::Instance().Call(xlfUnregister, unreg, 1, static_cast<LPXLFOPER>(XlfOper(funcId))));
-
-    return err;
-}
-
-// VERY Important :
-// In the following function we are using Excel4 instead of Excel12 ( hence also 
-// using XLOPER4 instead of XLOPER12. This is deliberate. Registering functions
-// Excel12(..) when the arguments add up to more then 255 char is problematic. the functions
-// will not register see  see BUG ID: 2834715 on sourceforge - nc
-int xlw::XlfFuncDesc::RegisterAs(const std::string& dllName, double mode_, double* funcId) const
-{
-
-    // alias arguments
-    XlfArgDescList& arguments = impl_->arguments_;
-
-    int nbargs = static_cast<int>(arguments.size());
-    std::string args = returnTypeCode_;
-    std::string argnames;
-
-    XlfArgDescList::const_iterator it = arguments.begin();
-    while (it != arguments.end())
+    
+    // When the arguments add up to more then 255 char is problematic. the functions
+    // will not register see  see BUG ID: 2834715 on sourceforge - nc
+    if(argnames.length() > 255)
     {
-        argnames += (*it).GetName();
-        args += (*it).GetType();
-        ++it;
-        if (it != arguments.end())
-            argnames+=", ";
+        argnames = "Too many arguments for Function Wizard";
+    }
+
+    // the synchronous part of an asynchronous function have an extra 
+    // bigdata xloper on the end containing the handle
+    if (XlfExcel::Instance().excel14() && impl_->Asynchronous_)
+    {
+        args += "X";
     }
     if (impl_->recalcPolicy_ == xlw::XlfFuncDesc::Volatile)
     {
@@ -164,35 +157,122 @@ int xlw::XlfFuncDesc::RegisterAs(const std::string& dllName, double mode_, doubl
     {
         args+="$";
     }
+    if (XlfExcel::Instance().excel14() && impl_->ClusterSafe_)
+    {
+        args+="&";
+    }
+    if (impl_->MacroSheetEquivalent_)
+    {
+        args+="#";
+    }
 
-    args+='\0'; // null termination for C string
+    std::vector<LPXLOPER12> argArray(10 + nbargs);
+    LPXLOPER12 *px = &argArray[0];
+    std::string functionName(GetName());
 
-    LPXLOPER *rgx = new LPXLOPER[10 + nbargs];
-    LPXLOPER *px = rgx;
-    (*px++) = XlfOper4(dllName);
-    (*px++) = XlfOper4(GetName());
-    (*px++) = XlfOper4(args);
-    (*px++) = XlfOper4(GetAlias());
-    (*px++) = XlfOper4(argnames);
-    (*px++) = XlfOper4(mode_);
-    (*px++) = XlfOper4(impl_->category_);
-    (*px++) = XlfOper4("");
-    (*px++) = XlfOper4("");
-    (*px++) = XlfOper4(GetComment());
+    // We need to have 2 functions exposed one for less than
+    // version 14 and that it the normal function, we also need
+    // the Synchronous part that returns void and takes an extra int
+    // By convension this is the same as the normal function but with 
+    // Sync on the end
+    if (XlfExcel::Instance().excel14() && impl_->Asynchronous_)
+    {
+        functionName += "Sync";
+    }
+
+    (*px++) = XlfOper(dllName);
+    (*px++) = XlfOper(functionName);
+    (*px++) = XlfOper(args);
+    (*px++) = XlfOper(GetAlias());
+    (*px++) = XlfOper(argnames);
+    (*px++) = XlfOper(mode_);
+    (*px++) = XlfOper(impl_->category_);
+    (*px++) = XlfOper(""); // shortcut
+    // use best help context
+    if(!helpID_.empty() && helpID_ != "auto")
+    {
+        (*px++) = XlfOper(helpID_);
+    }
+    else
+    {
+        (*px++) = XlfOper(suggestedHelpId); 
+    }
+    (*px++) = XlfOper(GetComment());
+    int counter(0);
     for (it = arguments.begin(); it != arguments.end(); ++it)
     {
-        (*px++) = XlfOper4((*it).GetComment());
+        ++counter;
+        if(counter < nbargs)
+        {
+            (*px++) = XlfOper((*it).GetComment());
+        }
+        else
+        {
+            // add dot space to last comment to work around known excel bug
+            // see http://msdn.microsoft.com/en-us/library/bb687841.aspx
+            (*px++) = XlfOper((*it).GetComment() + ". ");
+        }
     }
 
-	XlfOper4 res;
-    int err = static_cast<int>(XlfExcel::Instance().Call4v(xlfRegister, static_cast<LPXLOPER>(res), 10 + nbargs, rgx));
-
-    if(funcId != NULL)
+    if(XlfExcel::Instance().excel12())
     {
-		*funcId = res.AsDouble();
+        // total number of arguments limited to 255
+        // so we can't send more than 245 argument comments
+        nbargs = std::min(nbargs, 245);
+    }
+    else
+    {
+        // you can't send more than 30 arguments to the register function
+        // in up to version 2003, so just only send help for up to the first 20 parameters
+        nbargs = std::min(nbargs, 20);
     }
 
-    delete[] rgx;
+    XlfOper res;
+    int err = XlfExcel::Instance().Call12v(xlfRegister, res, 10 + nbargs, &argArray[0]);
+    if(err == xlretSuccess && res.IsNumber())
+    {
+        funcId_ = res.AsDouble();
+    }
+    else
+    {
+        funcId_ = InvalidFunctionId;
+    }
+
     return err;
+}
+
+void xlw::XlfFuncDesc::DoMamlDocs(std::ostream& ostr) const
+{
+    ostr << "<introduction>" << std::endl;
+    XlfArgDescList& arguments = impl_->arguments_;
+    ostr << "<para>" << GetComment() << "</para>" << std::endl;
+
+    std::string argnames;
+
+    XlfArgDescList::const_iterator it = arguments.begin();
+    while (it != arguments.end())
+    {
+        argnames += (*it).GetName();
+        ++it;
+        if (it != arguments.end())
+            argnames+=", ";
+    }
+
+    ostr << "<code>=" << GetAlias() << "(" << argnames << ")</code>" << std::endl;
+    ostr << "</introduction>" << std::endl;
+
+    ostr << "<section>" << std::endl;
+    ostr << "  <title>Parameters</title>" << std::endl;
+    ostr << "  <content>" << std::endl;
+
+
+    for (it = arguments.begin(); it != arguments.end(); ++it)
+    {
+        ostr << "    <para>";
+        ostr << (*it).GetName() << ": " << (*it).GetComment();
+        ostr << "</para>" << std::endl;
+    }
+    ostr << "  </content>" << std::endl;
+    ostr << "</section>" << std::endl;
 }
 

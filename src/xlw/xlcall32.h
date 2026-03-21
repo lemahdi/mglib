@@ -17,43 +17,26 @@
 
 //#pragma once
 
-#ifndef INC_excel32_H
-#define INC_excel32_H
+#ifndef INC_xlcall32_H
+#define INC_xlcall32_H
 
-#ifndef STRICT
-#define STRICT 1
-#endif
-#include "windows.h"
-
-/* Define pascal calling convention if not already defined (not available in x64 builds) */
-#ifndef pascal
-#define pascal __stdcall
-#endif
+#include <xlw/XlfWindows.h>
 
 /*
 ** XL 12 Basic Datatypes
 **/
 
-#ifndef BOOL
 typedef INT32 BOOL;            /* Boolean */
-#endif
 typedef WCHAR XCHAR;        /* Wide Character */
 typedef INT32 RW;            /* XL 12 Row */
 typedef INT32 COL;            /* XL 12 Column */
-
+typedef DWORD_PTR IDSHEET;        /* XL12 Sheet ID */
 /*
 ** XLREF structure
 **
 ** Describes a single rectangular reference.
 */
 
-typedef struct xlref
-{
-    WORD rwFirst;
-    WORD rwLast;
-    BYTE colFirst;
-    BYTE colLast;
-} XLREF, *LPXLREF;
 
 
 /*
@@ -63,13 +46,6 @@ typedef struct xlref
 ** This is a variable size structure, default
 ** size is 1 reference.
 */
-
-typedef struct xlmref
-{
-    WORD count;
-    XLREF reftbl[1];                    /* actually reftbl[count] */
-} XLMREF, *LPXLMREF;
-
 
 /*
 ** XLREF12 structure
@@ -107,13 +83,6 @@ typedef struct xlmref12
 ** Describes FP structure.
 */
 
-typedef struct _FP
-{
-    unsigned short int rows;
-    unsigned short int columns;
-    double array[1];        /* Actually, array[rows][columns] */
-} FP;
-
 /*
 ** FP12 structure
 **
@@ -136,59 +105,7 @@ typedef struct _FP12
 ** REGISTER function.
 **/
 
-typedef struct xloper
-{
-    union
-    {
-        double num;                    /* xltypeNum */
-        LPSTR str;                    /* xltypeStr */
-#ifdef __cplusplus
-        WORD xbool;                    /* xltypeBool */
-#else
-        WORD bool;                    /* xltypeBool */
-#endif
-        WORD err;                    /* xltypeErr */
-        short int w;                    /* xltypeInt */
-        struct
-        {
-            WORD count;                /* always = 1 */
-            XLREF ref;
-        } sref;                        /* xltypeSRef */
-        struct
-        {
-            XLMREF *lpmref;
-            DWORD idSheet;
-        } mref;                        /* xltypeRef */
-        struct
-        {
-            struct xloper *lparray;
-            WORD rows;
-            WORD columns;
-        } array;                    /* xltypeMulti */
-        struct
-        {
-            union
-            {
-                short int level;        /* xlflowRestart */
-                short int tbctrl;        /* xlflowPause */
-                DWORD idSheet;            /* xlflowGoto */
-            } valflow;
-            WORD rw;                /* xlflowGoto */
-            BYTE col;                /* xlflowGoto */
-            BYTE xlflow;
-        } flow;                        /* xltypeFlow */
-        struct
-        {
-            union
-            {
-                BYTE *lpbData;            /* data passed to XL */
-                HANDLE hdata;            /* data returned from XL */
-            } h;
-            long cbData;
-        } bigdata;                    /* xltypeBigData */
-    } val;
-    WORD xltype;
-} XLOPER, *LPXLOPER;
+
 
 /*
 ** XLOPER12 structure
@@ -215,7 +132,7 @@ typedef struct xloper12
         struct
         {
             XLMREF12 *lpmref;
-            DWORD idSheet;
+            IDSHEET idSheet;
         } mref;                        /* xltypeRef */
         struct
         {
@@ -229,7 +146,7 @@ typedef struct xloper12
             {
                 int level;            /* xlflowRestart */
                 int tbctrl;            /* xlflowPause */
-                DWORD idSheet;            /* xlflowGoto */
+                IDSHEET idSheet;            /* xlflowGoto */
             } valflow;
             RW rw;                           /* xlflowGoto */
             COL col;                       /* xlflowGoto */
@@ -308,15 +225,17 @@ typedef struct xloper12
 ** These values can be returned from Excel4(), Excel4v(), Excel12() or Excel12v().
 */
 
-#define xlretSuccess        0    /* success */
-#define xlretAbort          1    /* macro halted */
-#define xlretInvXlfn        2    /* invalid function number */
-#define xlretInvCount       4    /* invalid number of arguments */
-#define xlretInvXloper      8    /* invalid OPER structure */
-#define xlretStackOvfl      16   /* stack overflow */
-#define xlretFailed         32   /* command failed */
-#define xlretUncalced       64   /* uncalced cell */
-#define xlretNotThreadSafe  128  /* not allowed during multi-threaded calc */
+#define xlretSuccess                    0       /* success */
+#define xlretAbort                      1       /* macro halted */
+#define xlretInvXlfn                    2       /* invalid function number */
+#define xlretInvCount                   4       /* invalid number of arguments */
+#define xlretInvXloper                  8       /* invalid OPER structure */
+#define xlretStackOvfl                  16      /* stack overflow */
+#define xlretFailed                     32      /* command failed */
+#define xlretUncalced                   64      /* uncalced cell */
+#define xlretNotThreadSafe              128     /* not allowed during multi-threaded calc */
+#define xlRetInvAsynchronousContext     256     /* the async handle is invalid */
+#define xlretNotClusterSafe             512     /* The call is not supported on clusters */
 
 
 /*
@@ -333,12 +252,7 @@ typedef struct xloper12
 extern "C" {
 #endif
 
-//int _cdecl Excel4(int xlfn, LPXLOPER operRes, int count,... );
-extern int (_cdecl *Excel4)(int xlfn, LPXLOPER operRes, int count,... );
-/* followed by count LPXLOPERs */
 
-//int pascal Excel4v(int xlfn, LPXLOPER operRes, int count, LPXLOPER opers[]);
-extern int (pascal *Excel4v)(int xlfn, LPXLOPER operRes, int count, LPXLOPER opers[]);
 
 int pascal XLCallVer(void);
 
@@ -348,7 +262,7 @@ int _cdecl Excel12(int xlfn, LPXLOPER12 operRes, int count,... );
 //extern int (_cdecl *Excel12)(int xlfn, LPXLOPER12 operRes, int count,... );
 /* followed by count LPXLOPER12s */
 
-int pascal Excel12v(int xlfn, LPXLOPER12 operRes, int count, LPXLOPER12 opers[]);
+int pascal Excel12v(int xlfn, LPXLOPER12 operRes, int count, const LPXLOPER12 opers[]);
 //extern int (pascal *Excel12v)(int xlfn, LPXLOPER12 operRes, int count, LPXLOPER12 opers[]);
 
 #ifdef __cplusplus
@@ -390,6 +304,9 @@ int pascal Excel12v(int xlfn, LPXLOPER12 operRes, int count, LPXLOPER12 opers[])
 /* GetFooInfo are valid only for calls to LPenHelper */
 #define xlGetFmlaInfo    (14 | xlSpecial)
 #define xlGetMouseInfo    (15 | xlSpecial)
+#define xlAsyncReturn     (16 | xlSpecial)
+#define xlEventRegister    (17 | xlSpecial)
+#define xlRunningOnCluster (18 | xlSpecial)
 
 /* edit modes */
 #define xlModeReady    0    // not in edit mode

@@ -1,10 +1,5 @@
-//
-//
-//                                  DoubleOrNothing.h
-//
-//
 /*
- Copyright (C) 2006 Mark Joshi
+ Copyright (C) 2011 John Adcock
 
  This file is part of XLW, a free-software/open-source C++ wrapper of the
  Excel C API - https://xlw.github.io/
@@ -17,31 +12,39 @@
  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  FOR A PARTICULAR PURPOSE.  See the license for more details.
 */
-#ifndef DOUBLE_OR_NOTHING_H
-#define DOUBLE_OR_NOTHING_H
 
-#include <string>
-#include <xlw/CellMatrix.h>
+
+#ifndef INC_HiResTimer_H
+#define INC_HiResTimer_H
+
+#include <xlw/XlfWindows.h>
+
+/*!
+\file HiResTimer.h
+\brief Declares class HiResTimer
+*/
+
+// $Id$
 
 namespace xlw {
+//! Wrapper for a windows High Resolution Timers functions
+/*!
+Create one of these objects for each time you
+need to accurately time something.
 
+Call elasped to get the time in number of seconds since the object
+was created.
 
-
-    class DoubleOrNothing
-    {
-    public:
-        DoubleOrNothing(const CellMatrix& cells, const std::string& identifier);
-
-        bool IsEmpty() const;
-        double GetValueOrDefault(double defaultValue) const;
-
-
-
-    private:
-        bool Empty;
-        double Value;
-
-    };
+*/
+class HiResTimer
+{
+public:
+    HiResTimer();
+    ~HiResTimer();
+    double elapsed() const;
+private:
+    LARGE_INTEGER m_start;
+};
 
 }
 

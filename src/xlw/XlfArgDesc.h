@@ -4,7 +4,7 @@
  Copyright (C) 2007, 2008 Eric Ehlers
 
  This file is part of XLW, a free-software/open-source C++ wrapper of the
- Excel C API - http://xlw.sourceforge.net/
+ Excel C API - https://xlw.github.io/
 
  XLW is free software: you can redistribute it and/or modify it under the
  terms of the XLW license.  You should have received a copy of the
@@ -23,17 +23,13 @@
 \brief Class XlfArgDesc - Encapsulates the argument definition
 */
 
-// $Id: XlfArgDesc.h 523 2008-04-10 16:10:03Z ericehlers $
+// $Id$
 
 #include <xlw/EXCEL32_API.h>
 #include <string>
 
 #if defined(_MSC_VER)
 #pragma once
-#endif
-
-#if defined(DEBUG_HEADERS)
-#pragma DEBUG_HEADERS
 #endif
 
 namespace xlw {
@@ -83,8 +79,6 @@ namespace xlw {
         std::string type_;
         //! Controls the name is valid to be used properly by the function wizard.
         void CheckNameLength();
-        //! Controls that the comment associated to the argument ends is not truncated.
-        void CheckDescEnd();
     };
 
 }

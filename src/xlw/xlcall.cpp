@@ -11,11 +11,6 @@
 **
 */
 
-#ifndef _WINDOWS_
-#include <windows.h>
-#endif
-
-//#include <xlw/xlcall.h>
 #include <xlw/xlcall32.h>
 
 /*
@@ -27,24 +22,13 @@
 */
 
 #define cxloper12Max 255
-
-/* In 64-bit Excel the callback entry point is MdCallBack12Ex;
-   in 32-bit Excel it is MdCallBack12.  Both have the same signature. */
-#ifdef _WIN64
-#define EXCEL12ENTRYPT "MdCallBack12Ex"
-#else
 #define EXCEL12ENTRYPT "MdCallBack12"
-#endif
 
-typedef int (PASCAL *EXCEL12PROC) (int xlfn, int coper, LPXLOPER12 *rgpxloper12, LPXLOPER12 xloper12Res);
+typedef int (PASCAL *EXCEL12PROC) (int xlfn, int coper, const LPXLOPER12 *rgpxloper12, LPXLOPER12 xloper12Res);
 
 HMODULE hmodule;
 EXCEL12PROC pexcel12;
 
-//__forceinline void FetchExcel12EntryPt(void)
-#if defined(_MSC_VER)
-__forceinline
-#endif
 void FetchExcel12EntryPt(void)
 {
     if (pexcel12 == NULL)
@@ -86,7 +70,7 @@ int _cdecl Excel12(int xlfn, LPXLOPER12 operRes, int count, ...)
     return(mdRet);
 }
 
-int pascal Excel12v(int xlfn, LPXLOPER12 operRes, int count, LPXLOPER12 opers[])
+int pascal Excel12v(int xlfn, LPXLOPER12 operRes, int count, const LPXLOPER12 opers[])
 {
     int mdRet;
 

@@ -3,7 +3,7 @@
  Copyright (C) 1998, 1999, 2001, 2002, 2003, 2004 Jérôme Lecomte
 
  This file is part of XLW, a free-software/open-source C++ wrapper of the
- Excel C API - http://xlw.sourceforge.net/
+ Excel C API - https://xlw.github.io/
 
  XLW is free software: you can redistribute it and/or modify it under the
  terms of the XLW license.  You should have received a copy of the
@@ -19,14 +19,9 @@
 \brief Implements the XlfArgDescList class.
 */
 
-// $Id: XlfArgDescList.cpp 474 2008-03-05 15:40:40Z ericehlers $
+// $Id$
 
 #include <xlw/XlfArgDescList.h>
-
-// Stop header precompilation
-#ifdef _MSC_VER
-#pragma hdrstop
-#endif
 
 xlw::XlfArgDescList::XlfArgDescList()
 {}
