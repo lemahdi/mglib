@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "app", "app", "{C376948D-85A5-41CA-9F3A-6A118A1FE6F9}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mgapp", "app\mgapp\mgapp.vcxproj", "{EE81CD37-E9CB-4730-A7A5-B49BA7E2E51B}"

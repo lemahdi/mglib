@@ -42,13 +42,18 @@ jobs:
           Write-Host "Generated lib\win\x64\xlcall32.lib"
 
       # ── Win32 build ─────────────────────────────────────────────────────────
-      # The PreBuildEvent in mgxll.vcxproj runs xlwIfaceGen.exe to regenerate
-      # xl_justatest.cpp from justatest.h.  The pre-generated file is already
-      # committed, so a non-zero exit from the generator is not fatal.
+      # Build mgxll.vcxproj directly (not via /t:mgxll on the .sln) to avoid
+      # MSBuild propagating the target name to every ProjectReference item,
+      # which would cause MSB4057 in nova/mktdata/vanilla/genpricer/xlw.
+      # Building the .vcxproj directly makes MSBuild resolve each
+      # ProjectReference with the standard "Build" target.
+      # The PreBuildEvent runs xlwIfaceGen.exe to regenerate xl_justatest.cpp
+      # from justatest.h; the pre-generated file is already committed so a
+      # non-zero exit from the generator is not fatal.
       - name: Build XLL – Release|Win32
         shell: pwsh
         run: |
-          msbuild MGlib.sln /t:mgxll /p:Configuration=Release /p:Platform=Win32 `
+          msbuild app\mgxll\mgxll.vcxproj /p:Configuration=Release /p:Platform=Win32 `
               /m /nologo /verbosity:minimal
           if ($LASTEXITCODE -ne 0) { Write-Error "Win32 build failed"; exit 1 }
 
@@ -56,18 +61,18 @@ jobs:
       - name: Build XLL – Release|x64
         shell: pwsh
         run: |
-          msbuild MGlib.sln /t:mgxll /p:Configuration=Release /p:Platform=x64 `
+          msbuild app\mgxll\mgxll.vcxproj /p:Configuration=Release /p:Platform=x64 `
               /m /nologo /verbosity:minimal
           if ($LASTEXITCODE -ne 0) { Write-Error "x64 build failed"; exit 1 }
 
       # ── validation ──────────────────────────────────────────────────────────
       - name: Validate Win32 XLL
         shell: pwsh
-        run: python tests/validate_xll.py --xll bin\win\Release\mgxll.xll
+        run: python tests/validate_xll.py --xll bin\win\Release\mgxll.xll --arch win32
 
       - name: Validate x64 XLL
         shell: pwsh
-        run: python tests/validate_xll.py --xll bin\win\x64\Release\mgxll.xll
+        run: python tests/validate_xll.py --xll bin\win\x64\Release\mgxll.xll --arch x64
 
       # ── artifacts ───────────────────────────────────────────────────────────
       - name: Upload Win32 XLL

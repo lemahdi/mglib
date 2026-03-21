@@ -6,14 +6,22 @@ What this script checks
 -----------------------
 1. The XLL file exists and is non-empty.
 2. Its PE structure is intact (Windows: LoadLibraryEx with LOAD_LIBRARY_AS_DATAFILE).
-3. It exports every required symbol (parsed from the PE export directory).
-4. *Optionally*, if Excel is installed and the ``xlwings`` package is available,
+3. The PE machine architecture matches the expected bitness (Win32 vs x64).
+4. It exports every required symbol (parsed from the PE export directory).
+5. *Optionally*, if Excel is installed and the ``xlwings`` package is available,
    it loads the XLL into a live Excel session and calls a smoke-test function.
 
 Usage
 -----
     # CI / headless (no Excel required):
     python tests/validate_xll.py --xll bin\\win\\Release\\mgxll.xll
+
+    # Explicit architecture check:
+    python tests/validate_xll.py --xll bin\\win\\Release\\mgxll.xll --arch win32
+    python tests/validate_xll.py --xll bin\\win\\x64\\Release\\mgxll.xll --arch x64
+
+    # Verbose: print all exported symbols:
+    python tests/validate_xll.py --xll bin\\win\\Release\\mgxll.xll --verbose
 
     # Interactive / manual (with Excel installed):
     pip install xlwings
@@ -31,7 +39,7 @@ import argparse
 import os
 import struct
 import sys
-from typing import List
+from typing import List, Optional
 
 # ── required XLL exports ────────────────────────────────────────────────────
 # These are the C-exported names as they appear in the PE export table.
@@ -64,6 +72,10 @@ REQUIRED_EXPORTS: List[str] = [
     "xlCallPut_Create",
 ]
 
+# PE machine constants
+_MACHINE_I386  = 0x014C  # Win32 / x86
+_MACHINE_AMD64 = 0x8664  # x64 / AMD64
+
 # ── PE export-table parser ──────────────────────────────────────────────────
 
 def parse_pe_exports(dll_path: str) -> List[str]:
@@ -79,7 +91,7 @@ def parse_pe_exports(dll_path: str) -> List[str]:
         raise ValueError("Invalid PE signature")
 
     machine = struct.unpack_from("<H", data, pe_off + 4)[0]
-    is_pe32_plus = machine == 0x8664  # AMD64 / x86-64
+    is_pe32_plus = machine == _MACHINE_AMD64
 
     num_sections   = struct.unpack_from("<H", data, pe_off + 6)[0]
     opt_hdr_sz     = struct.unpack_from("<H", data, pe_off + 20)[0]
@@ -122,6 +134,19 @@ def parse_pe_exports(dll_path: str) -> List[str]:
         exports.append(data[name_off:end].decode("ascii", errors="replace"))
 
     return exports
+
+
+def get_pe_machine(dll_path: str) -> int:
+    """Return the PE Machine field value (e.g. 0x014C for x86, 0x8664 for x64)."""
+    with open(dll_path, "rb") as fh:
+        data = fh.read(0x100)  # only need the headers
+
+    if data[:2] != b"MZ":
+        raise ValueError("Not a valid PE file (MZ header missing)")
+    pe_off = struct.unpack_from("<I", data, 0x3C)[0]
+    if data[pe_off : pe_off + 4] != b"PE\x00\x00":
+        raise ValueError("Invalid PE signature")
+    return struct.unpack_from("<H", data, pe_off + 4)[0]
 
 
 # ── LoadLibraryEx check (Windows only) ─────────────────────────────────────
@@ -191,7 +216,7 @@ def _separator(title: str) -> None:
     print(f"{'─' * 60}")
 
 
-def main(argv: List[str] | None = None) -> int:
+def main(argv: Optional[List[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         description="Validate mgxll.xll – exports and optional live Excel test",
     )
@@ -199,6 +224,17 @@ def main(argv: List[str] | None = None) -> int:
         "--xll",
         default=r"bin\win\Release\mgxll.xll",
         help="Path to mgxll.xll (default: %(default)s)",
+    )
+    parser.add_argument(
+        "--arch",
+        choices=["win32", "x64"],
+        help="Expected PE architecture: 'win32' (x86) or 'x64'. "
+             "When omitted the check is skipped.",
+    )
+    parser.add_argument(
+        "--verbose",
+        action="store_true",
+        help="Print every exported symbol found in the XLL.",
     )
     parser.add_argument(
         "--live",
@@ -230,8 +266,34 @@ def main(argv: List[str] | None = None) -> int:
     else:
         print("\n[skip] PE load check (non-Windows platform)")
 
-    # ── 3. Export table ──────────────────────────────────────────────────────
-    _separator("3. Export table check")
+    # ── 3. Architecture check ────────────────────────────────────────────────
+    _separator("3. PE architecture check")
+    try:
+        machine = get_pe_machine(xll_path)
+    except Exception as exc:
+        print(f"FAIL: Could not read PE machine field: {exc}")
+        failures += 1
+        machine = None
+
+    if machine is not None:
+        arch_name = {
+            _MACHINE_I386:  "Win32 (x86, 0x014C)",
+            _MACHINE_AMD64: "x64  (AMD64, 0x8664)",
+        }.get(machine, f"Unknown (0x{machine:04X})")
+        print(f"PE Machine: {arch_name}")
+
+        if args.arch:
+            expected_machine = _MACHINE_I386 if args.arch == "win32" else _MACHINE_AMD64
+            if machine == expected_machine:
+                print(f"PASS: architecture matches --arch {args.arch}")
+            else:
+                print(f"FAIL: expected --arch {args.arch} but got {arch_name}")
+                failures += 1
+        else:
+            print("(no --arch flag supplied; architecture not enforced)")
+
+    # ── 4. Export table ──────────────────────────────────────────────────────
+    _separator("4. Export table check")
     try:
         exports = parse_pe_exports(xll_path)
     except Exception as exc:
@@ -240,6 +302,12 @@ def main(argv: List[str] | None = None) -> int:
 
     export_set = set(exports)
     print(f"Found {len(exports)} exported symbol(s) in total.")
+
+    if args.verbose:
+        print("\nAll exported symbols:")
+        for sym in sorted(exports):
+            print(f"  {sym}")
+        print()
 
     missing: List[str] = []
     for name in REQUIRED_EXPORTS:
@@ -255,9 +323,9 @@ def main(argv: List[str] | None = None) -> int:
     else:
         print(f"\nPASS: All {len(REQUIRED_EXPORTS)} required exports present.")
 
-    # ── 4. Optional live Excel test ──────────────────────────────────────────
+    # ── 5. Optional live Excel test ──────────────────────────────────────────
     if args.live:
-        _separator("4. Live Excel smoke test")
+        _separator("5. Live Excel smoke test")
         try:
             ok = live_excel_test(xll_path)
         except ImportError:
